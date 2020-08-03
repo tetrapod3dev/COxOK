@@ -26,7 +26,6 @@ public class EmailServiceImpl implements EmailService {
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(text,true);
-			helper.setFrom("104admin@ssafy.com");
 			
 			emailSender.send(mimeMessage);
 		} catch (MessagingException e) {

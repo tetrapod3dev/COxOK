@@ -10,9 +10,10 @@ import com.ssafy.cookblog.util.JwtInterceptor;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 	private static final String[] INCLUDE_PATHS = {
-			"/user/**",
-			"/recipe/**",
-			"/review/**"
+//			"/user/**",
+//			"/recipe/**",
+//			"/review/**"
+			"/**"
 	};
 	private static final String[] EXCLUDE_PATHS = {
 			"/user/signup/**",
