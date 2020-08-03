@@ -41,14 +41,6 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	public int remove(int reviewId) {
 		int count = reviewDao.delete(reviewId);
-		
-		ReviewDto reviewDto = new ReviewDto();
-		reviewDto.setReviewId(reviewId);
-
-		if(count == 1) {
-			reviewDao.updateRecipeRating(reviewDto);
-		}
-		
 		return count;
 	}
 

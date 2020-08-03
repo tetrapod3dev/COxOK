@@ -29,4 +29,5 @@ public class RecipeRequestDto {
 	
 	private long userId;
 	
+	private String uploadPath;
 }

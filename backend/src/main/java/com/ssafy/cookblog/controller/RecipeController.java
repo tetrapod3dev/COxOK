@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.cookblog.dto.FoodCategoryDto;
 import com.ssafy.cookblog.dto.IngredientDto;
@@ -125,7 +124,7 @@ public class RecipeController {
 	// 레시피 등록
 	@PostMapping("/register")
 	public Object registerRecipe(@ModelAttribute RecipeRequestDto recipe, HttpServletRequest request) {
-		
+	
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		recipe.setUserId(userService.findUserByEmail(email).getUserId());
 		

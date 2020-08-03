@@ -21,6 +21,7 @@
 			r.reg_time as regTime, r.recipe_id as recipeId, cook_time as cookTime, level
 		from
 			recipe as r
+		order by recipe_id desc
 		LIMIT #{startIndex}, 6
 	</select>
 	
@@ -119,6 +120,7 @@
 					where 
 						r.recipe_id = ri.recipe_id and r.recipe_id = rfc.recipe_id
 		   				and ri.ingredient_id = #{ingredient.value}
+		   			
 	   			</foreach>
 	   		</if>
    		) selected order by recipeId desc
@@ -164,9 +166,10 @@
 					where 
 						r.recipe_id = ri.recipe_id and r.recipe_id = rfc.recipe_id
 		   				and ri.ingredient_id = #{ingredient.value}
+		   			
 	   			</foreach>
 	   		</if>
-   		) selected 
+   		) selected
    	</select>
    	
 </mapper>

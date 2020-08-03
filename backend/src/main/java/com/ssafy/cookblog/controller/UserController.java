@@ -114,11 +114,13 @@ public class UserController {
 		response = new ResponseEntity(map, HttpStatus.OK);
 		
 		String encoding = base64Service.encode(email);
-
-		emailService.sendSimpleMessage(email, "쿡가대표 가입 인증메일 입니다.", 
-						email + "님 가입을 환영합니다.\n" +
-						"가입을 인증하기 위해서 아래의 링크를 클릭해주십시오.\n "+
-						"http://localhost:8080/user/auth/" + encoding
+		String link="http://i3a104.p.ssafy.io/user/auth/"+encoding;
+		
+		emailService.sendSimpleMessage(email, "CO-OK 가입 인증메일 입니다.", 
+						email + "님 가입을 환영합니다.<br>" +
+						"가입을 인증하기 위해서 아래의 링크를 클릭해주십시오.<br> "+
+						"<strong>아래 링크를 클릭하면 인증이 완료됩니다.</strong><br> "+
+						"<a href='"+link+"'>링크</a>"
 				);
 
 		return response;
@@ -142,7 +144,7 @@ public class UserController {
 			map.put("msg","인증 성공");
 			map.put("status", "success");
 			response = new ResponseEntity(map, HttpStatus.OK);
-			res.sendRedirect("http://localhost:3000/accounts/auth");
+			res.sendRedirect("/");
 		}else {
 			map.put("msg","이메일 인증 실패");
 			map.put("status", "fail");
