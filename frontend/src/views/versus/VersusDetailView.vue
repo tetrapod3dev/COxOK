@@ -2,8 +2,17 @@
   <div class="container">
     <h2>요리대전 상세 페이지입니다.</h2>
     
-    <div v-if="maxNow != 1">
-      <h2>{{ maxNow }}강전</h2>
+    <div v-if="selectedMax == 0">
+      <select name="rounds" id="round">
+        <option value="" selected>-- 선택 --</option>
+        <option v-for="length in possibleLength" :key="length" :value="length">{{ length }} 강</option>
+      </select>
+
+      <button @click="submitRound">선택</button>
+    </div>
+
+    <div v-else-if="selectedMax != 1">
+      <h2>{{ selectedMax }}강전</h2>
       <div class="row">
         <div v-for="recipe in nowRecipes" :key="recipe.id" class="col-6">
           <div @click="selectRecipe(recipe)" >
@@ -13,9 +22,11 @@
         </div>
       </div>
     </div>
+
     <div v-else>
       1등 : {{ recipes[0].title }}
     </div>
+
   </div>
 </template>
 
@@ -26,7 +37,8 @@ export default {
   name: 'VersusDetailView',
   data() {
     return {
-      maxNow: 16,
+      TempMax: 4,
+      selectedMax: 0,
       cur: 0,
       selectedRecipes: [],
       recipes: [
@@ -46,7 +58,12 @@ export default {
         {'title': '14번 요리', '평점': 4.2, 'id': 14},
         {'title': '15번 요리', '평점': 4.2, 'id': 15},
         {'title': '16번 요리', '평점': 4.2, 'id': 16},
+        {'title': '17번 요리', '평점': 4.2, 'id': 17},
+        {'title': '18번 요리', '평점': 4.2, 'id': 18},
+        {'title': '19번 요리', '평점': 4.2, 'id': 19},
+        {'title': '20번 요리', '평점': 4.2, 'id': 20},
       ],
+      possibleLength: [],
     }
   },
   computed: {
@@ -58,19 +75,34 @@ export default {
     selectRecipe(recipe) {
       this.selectedRecipes.push(recipe)
       this.cur += 2
-      if (this.cur == this.maxNow) {
+      if (this.cur == this.selectedMax) {
         this.cur = 0
-        this.maxNow = this.maxNow / 2
+        this.selectedMax = this.selectedMax / 2
         this.recipes = _.shuffle(this.selectedRecipes)
         this.selectedRecipes = []
+      }
+      if (this.selectedMax == 2) {
+        console.log(this.selectedRecipes[0])
       }
     },
     showDetail(recipe_id) {
       console.log(recipe_id)
+    },
+    submitRound() {
+      const selection = document.getElementById('round')
+      this.selectedMax = selection.value
+
+      this.recipes = _.shuffle(this.recipes.slice(0, this.selectedMax))
     }
   },
   created() {
-    this.recipes = _.shuffle(this.recipes.slice(0, 16))
+    // this.recipes = _.shuffle(this.recipes.slice(0, this.maxNow))
+    const recipeLength = this.recipes.length
+    while (this.TempMax <= recipeLength) {
+      this.possibleLength.push(this.TempMax)
+      this.TempMax *= 2
+    }
+    this.TempMax /= 2
   }
 }
 </script>

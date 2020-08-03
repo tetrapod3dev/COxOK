@@ -11,23 +11,26 @@
 			<label for="content">요리대전 설명</label>
 			<input type="text" id="content" v-model="versusContent">
     </div>
+
+    <button @click="submitVersus">작성 완료</button>
     
     <hr>
-
+ 
     <div class="row">
-      <button class="col-1 btn btn-outline-primary" @click="movePrev">P</button>
+      <button class="col-1 btn btn-outline-primary" @click="movePrev">&laquo;</button>
 
-      <div class="col-10 row">
-        <div v-for="recipe in curRecipes" :key="recipe.recipeId" class="card col-3">
-          <img :src="recipe.recipeThumbnailSrc" class="card-img-top" alt="레시피 사진">
+      <div class="col-10 row p-3">
+        <div v-for="(recipe, index) in curRecipes" :key="index" class="card col-3 m-0">
+          <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="card-img-top" alt="레시피 사진">
           <div class="card-body">
             <h5 class="card-title">{{ recipe.recipeName }}</h5>
             <p class="card-text">{{ recipe.recipeDetail}}</p>
+            <button @click="removeSelectedRecipe(index)">x</button>
           </div>
         </div>
       </div>
 
-      <button class="col-1 btn btn-outline-primary" @click="moveNext">N</button>
+      <button class="col-1 btn btn-outline-primary" @click="moveNext">&raquo;</button>
     </div>
 
     <hr>
@@ -37,13 +40,12 @@
       @searchRecipe="categorySubmit" />
 
     <div v-for="recipe in recipes" :key="recipe.id" class="row">
-      <img :src="recipe.recipeThumbnailSrc" class="col-4">
+      <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="col-4">
       <div class="col-7">
         <h3 class="row">{{ recipe.recipeName }} ({{ recipe.recipeId }})</h3>
         <p class="row">{{ recipe.recipeDetail }}</p>
       </div>
-      <input v-if="isSelected(recipe.recipeId)" type="checkbox" checked class="col-1" @click="checkRecipe(recipe)">
-      <input v-else type="checkbox" class="col-1" @click="checkRecipe(recipe)">
+      <input type="checkbox" v-model="checker[recipe.recipeId]" class="col-1" @click="checkRecipe(recipe)">
     </div>
 
     
@@ -92,8 +94,28 @@ export default {
       return this.selectedRecipes.slice(4*this.selectedCurPage, 4*(this.selectedCurPage+1))
     },
     ...mapGetters(["searchingData"]),
+    checker() {
+      let tempChecker = {};
+      const self = this;
+
+      this.recipes.forEach(function (recipe) {
+        if (self.selectedRecipesId.indexOf(recipe.recipeId) >= 0) {
+          tempChecker[recipe.recipeId] = true;
+        } else {
+          tempChecker[recipe.recipeId] = false;
+        }
+      });
+
+      return tempChecker;
+    },
   },
   methods: {
+    removeSelectedRecipe(index) {
+      this.selectedRecipes.splice(this.selectedCurPage * 4 + index, 1);
+    },
+    imageSrc(image) {
+      return SERVER.URL + '/img/' + image
+    },
     categorySubmit() {
       this.recipes = [];
       this.curPage = 1;
@@ -112,7 +134,8 @@ export default {
         .then((res) => {
           this.recipes = [...this.recipes, ...res.data.list];
           this.maxPage = parseInt((res.data.total - 1) / 6);
-        });
+        })
+        .catch(err =>console.log(err))
     },
     searchRecipe(page) {
       let frm = new FormData();
@@ -142,9 +165,6 @@ export default {
       } else {
         this.selectedRecipes.splice(this.selectedRecipesId.indexOf(recipe.recipeId), 1);
       }
-    },
-    isSelected(id) {
-      return (this.selectedRecipesId.indexOf(id) >= 0) ? true : false
     },
     movePrev() {
       if (this.selectedCurPage != 0) {
@@ -191,6 +211,9 @@ export default {
     scrollToTop() {
       scroll(0, 0)
     },
+    submitVersus() {
+      console.log(this.selectedRecipesId)
+    }
   },
   created() {
     this.getRecipes()
