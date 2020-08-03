@@ -1,5 +1,5 @@
 export default {
-  URL: 'http://i3a104.p.ssafy.io/',
+  URL: 'http://localhost:8080',
   ROUTES: {
     // Accounts ROUTES
     signup: '/user/signup/',

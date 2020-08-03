@@ -9,7 +9,7 @@
           <div class="stats">
             <span v-popover:popover-fav>
               <i class="fa fa-star-o"></i>
-              {{ recipe.avgRating }}
+              {{ avgRating }}
             </span>
             <el-popover
               ref="popover-fav"
@@ -51,7 +51,7 @@
       </card>
     </section>
     <!--     *********    TEAM 1     *********      -->
-    <div class="team-1">
+    <div class="team-1" id="recipeInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto text-left">
@@ -64,7 +64,7 @@
           <div class="col-md-4 ml-1">
             <div class="col-md-8 ml-auto mr-auto">
               <h3 class="text-left mb-3">목차</h3>
-              <p @click="scrollDoc('ingredientInfo')" class="text-left text-link">1. 재료 정보</p>
+              <p @click="scrollDoc('recipeInfo')" class="text-left text-link">1. 레시피 설명</p>
               <p @click="scrollDoc('nutrientInfo')" class="text-left text-link">2. 영양소 정보</p>
               <p @click="scrollDoc('detailInfo')" class="text-left text-link">3. 상세 요리 과정</p>
               <p @click="scrollDoc('reviewInfo')" class="text-left text-link">4. 한줄평 보기</p>
@@ -80,9 +80,8 @@
                   class="col-6 my-3"
                 >
                   <div class="row">
-                    <input @click="checkIngredient(index, $event)" type="checkbox" />
-                    <p :id="makeId(index)">{{ ingredient.name }}</p>
-                    <p>{{ ingredient.amount }} {{ingredient.unit}}</p>
+                    <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/>
+                    <p :id="makeId(index)" class="mb-0">{{ ingredient.name }} {{ ingredient.amount }} {{ingredient.unit}}</p>
                   </div>
                 </div>
               </div>
@@ -118,7 +117,7 @@
         </div>
       </div>
     </section>
-    <div class="blogs-3">
+    <div class="blogs-3" id="detailInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-10 ml-auto mr-auto">
@@ -146,7 +145,7 @@
         </div>
       </div>
     </div>
-    <div class="section section-comments">
+    <div class="section section-comments" id="reviewInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto">
@@ -160,7 +159,7 @@
                 <!-- 
                 v-model="form.comment"-->
 
-                <ReviewMake @submitReview="submitReview" />
+                <ReviewMake v-show="isLoggedIn" @submitReview="submitReview" />
                 <div class="media-footer">
                   <span @click="copyRecipe" class="pull-left">
                     <n-button type="info" round block>
@@ -168,7 +167,7 @@
                     </n-button>
                   </span>
                   <span @click="changeLike" class="pull-left">
-                    <n-button type="danger" round block>
+                    <n-button v-show="isLoggedIn" type="danger" round block>
                       <i :class="isLiked ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
                       {{ likeCnt }}
                     </n-button>
@@ -225,6 +224,9 @@ export default {
     recipeThumbnailSrc() {
       return "http://i3a104.p.ssafy.io/img/" + this.recipe.recipeThumbnailSrc;
     },
+    avgRating() {
+      return Math.round(this.recipe.avgRating * 10) / 10
+    }
   },
   methods: {
     makeId(index) {
