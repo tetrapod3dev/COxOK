@@ -170,6 +170,31 @@ public class RecipeController {
 		
 	}
 	
+	// 레시피 수정
+	@PostMapping("/modify")
+	public Object modifyRecipe(@ModelAttribute RecipeRequestDto recipe, HttpServletRequest request) {
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		recipe.setUserId(userService.findUserByEmail(email).getUserId());
+		
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+
+		int count = recipeService.updateRecipe(recipe);
+		
+		if(count != 0) {
+			map.put("msg", "레시피 수정에 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		} else {
+			map.put("msg", "레시피 수정에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
 	// 레시피 삭제
 	@DeleteMapping("/delete/{id}")
 	public Object deleteRecipe(@PathVariable long id) {
