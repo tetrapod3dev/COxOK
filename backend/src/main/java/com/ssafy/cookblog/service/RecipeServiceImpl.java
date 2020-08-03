@@ -156,6 +156,104 @@ public class RecipeServiceImpl implements RecipeService {
 		
 		return 1;
 	}
+	
+	@Override
+	public int updateRecipe(RecipeRequestDto recipeRequestDto) {
+		RecipeDto recipeDto = new RecipeDto();
+		
+		recipeDto.setRecipeId(recipeRequestDto.getRecipeId());
+		recipeDto.setUserId(recipeRequestDto.getUserId());
+		
+		recipeDto.setLevel(Integer.parseInt(recipeRequestDto.getLevel()));
+		recipeDto.setCookTime(Integer.parseInt(recipeRequestDto.getCookTime()));
+		
+		// 재료 영양성분 계산
+		int len = recipeRequestDto.getIngredientPk().length;
+		int sumCalorie=0, sumCarbon=0, sumProtein=0, sumFat=0, sumSugar=0, sumNatrium=0;
+		for(int i=0; i < len; i++) {
+			long ingredientId = recipeRequestDto.getIngredientPk()[i];
+			IngredientDto ingredientDto = recipeDao.selectIngredientById(ingredientId);
+			double per = (double) recipeRequestDto.getIngredientAmount()[i] / ingredientDto.getBaseAmount();
+			sumCalorie += (int) (ingredientDto.getCalorie() * per);
+			sumCarbon += (int) (ingredientDto.getCarbon() * per);
+			sumProtein += (int) (ingredientDto.getProtein() * per);
+			sumFat += (int) (ingredientDto.getFat() * per);
+			sumSugar += (int) (ingredientDto.getSugar() * per);
+			sumNatrium += (int) (ingredientDto.getNatrium() * per);
+		}
+		
+		recipeDto.setCalorie(sumCalorie);
+		recipeDto.setCarbon(sumCarbon);
+		recipeDto.setProtein(sumProtein);
+		recipeDto.setFat(sumFat);
+		recipeDto.setSugar(sumSugar);
+		recipeDto.setNatrium(sumNatrium);
+				
+		recipeDto.setRecipeName(recipeRequestDto.getRecipeName());
+		
+		// 썸네일 사진 이미지 변경
+		
+		String fileName = recipeRequestDto.getRecipeThumbnail().getOriginalFilename();
+		String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());  //현재시간
+	    String realFileName = now + "_" + fileName;
+	    try {
+			recipeRequestDto.getRecipeThumbnail().transferTo(new File(realFileName));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		recipeDto.setRecipeThumbnailSrc(realFileName);
+		recipeDto.setRecipeDetail(recipeRequestDto.getRecipeDetail());
+		
+		int res = recipeDao.updateRecipe(recipeDto);
+		if(res == 0)
+			return res;
+		
+		long recipeId = recipeRequestDto.getRecipeId();
+
+		//카테고리 추가
+		for(int categoryId : recipeRequestDto.getCategories()) {
+			RecipeFoodCategoryDto dto = new RecipeFoodCategoryDto();
+			dto.setRecipeId(recipeId);
+			dto.setFoodCategoryId(categoryId);
+			res = categoryDao.insertRecipeCategory(dto);
+			if(res == 0) return res;
+		}
+		
+		len = recipeRequestDto.getDescription().length;
+		for(int i = 0; i < len; i++) {
+			// 레시피 사진 이미지 이름 변경
+			fileName = recipeRequestDto.getPhoto()[i].getOriginalFilename();
+			now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());  //현재시간
+		    realFileName = now + "_" + fileName;
+		    try {
+				recipeRequestDto.getPhoto()[i].transferTo(new File(realFileName));
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			recipeDto.setRecipeThumbnailSrc(realFileName);
+			RecipePhotoDto photoDto = new RecipePhotoDto();
+			photoDto.setRecipeId(recipeId);
+			photoDto.setPhotoSrc(realFileName);
+			photoDto.setPhotoDetail(recipeRequestDto.getDescription()[i]);
+			res = recipePhotoDao.insert(photoDto);
+			if(res == 0) return res;
+		}
+		
+		for(int i = 0; i < recipeRequestDto.getIngredientPk().length; i++) {
+			RecipeIngredientDto recipeIngredient = new RecipeIngredientDto();
+			recipeIngredient.setIngredientId(recipeRequestDto.getIngredientPk()[i]);
+			recipeIngredient.setRecipeId(recipeId);
+			recipeIngredient.setAmount(recipeRequestDto.getIngredientAmount()[i]);
+			res = recipeDao.insertRecipeIngredient(recipeIngredient);
+			if(res == 0) return res;
+		}
+		
+		return 1;
+	}
 
 	@Override
 	public List<FoodCategoryDto> selectAllFoodCategory() {
@@ -250,5 +348,12 @@ public class RecipeServiceImpl implements RecipeService {
 	public boolean reipceUserLike(LikeDto likeDto) {
 		return recipeDao.reipceUserLike(likeDto);
 	}
+
+	@Override
+	public List<LikeDto> allUserLike(long recipeId) {
+		return recipeDao.allUserLike(recipeId);
+	}
+
+	
 	
 }

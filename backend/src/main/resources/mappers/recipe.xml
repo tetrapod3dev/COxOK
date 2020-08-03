@@ -39,6 +39,13 @@
 			(#{recipeName}, #{recipeThumbnailSrc}, #{recipeDetail}, #{cookTime}, #{level}, #{calorie}, #{carbon}, #{protein}, #{fat}, #{sugar}, #{natrium}, #{userId})
 	</insert>
 	
+	<insert id="updateRecipe">
+		insert into 
+			recipe(recipe_id, recipe_name, recipe_thumbnail_src, recipe_detail, cook_time, level, calorie, carbon, protein, fat, sugar, natrium, user_id)
+		values
+			(#{recipeId}, #{recipeName}, #{recipeThumbnailSrc}, #{recipeDetail}, #{cookTime}, #{level}, #{calorie}, #{carbon}, #{protein}, #{fat}, #{sugar}, #{natrium}, #{userId})
+	</insert>
+	
 	<delete id="delete">
 		delete from recipe
 		where recipe_id = #{recipeId}

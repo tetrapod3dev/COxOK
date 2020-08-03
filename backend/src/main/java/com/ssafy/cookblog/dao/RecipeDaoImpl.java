@@ -116,4 +116,14 @@ public class RecipeDaoImpl implements RecipeDao{
 		return session.selectList("recipe.select16Recipe");
 	}
 
+	@Override
+	public List<LikeDto> allUserLike(long recipeId) {
+		return session.selectList("recipe.allUserLike", recipeId);
+	}
+
+	@Override
+	public int updateRecipe(RecipeDto recipeDto) {
+		return session.insert("recipe.updateRecipe", recipeDto);
+	}
+
 }

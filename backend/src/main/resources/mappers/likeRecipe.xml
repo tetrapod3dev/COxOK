@@ -23,4 +23,9 @@
 		FROM like_recipe
 		WHERE recipe_id = #{recipeId} AND user_id = #{userId}
 	</select>
+	
+	<select id="allUserLike" resultType="LikeDto">
+		SELECT *
+		FROM like_recipe
+	</select>
 </mapper>

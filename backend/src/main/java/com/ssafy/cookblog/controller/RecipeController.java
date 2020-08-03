@@ -145,8 +145,35 @@ public class RecipeController {
 		return response;
 	}
 	
+	// 레시피 수정 버튼 클릭 시 기존 정보
+	@GetMapping("/modifyInfo/{id}")
+	public Object modifyInfoRecipe(@PathVariable int id) {
+		
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		RecipeResponseDto recipe = recipeService.getOneRecipe(id);
+		
+		if(recipe != null) {
+			recipe.setRecipeId(id);
+			map.put("msg", "레시피 정보 조회 성공");
+			map.put("status", "success");
+			map.put("recipe", recipe);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		} else {
+			map.put("msg", "레시피 정보 조회 실패");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+		
+	}
+	
+	// 레시피 삭제
 	@DeleteMapping("/delete/{id}")
 	public Object deleteRecipe(@PathVariable long id) {
+		
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		

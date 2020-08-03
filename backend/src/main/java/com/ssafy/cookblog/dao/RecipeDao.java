@@ -17,6 +17,7 @@ public interface RecipeDao {
 	public RecipeResponseDto select(long recipeId);
 	public List<RecipeDto> selectAll(int startIndex);
 	public int write(RecipeDto recipeDto);
+	public int updateRecipe(RecipeDto recipeDto);
 	public int delete(long recipeId);
 	public long getRecipeId();
 	public List<FoodCategoryDto> selectAllFoodCategory();
@@ -32,5 +33,6 @@ public interface RecipeDao {
 	public int cancelRecipeLike(LikeDto like);
 	public int recipeLikeCount(long recipeId);
 	public boolean reipceUserLike(LikeDto likeDto);
+	public List<LikeDto> allUserLike(long recipeId);
 	public List<RecipeDto> select16Recipe();
 }

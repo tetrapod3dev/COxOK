@@ -15,6 +15,7 @@ public interface RecipeService {
 	public RecipeResponseDto getOneRecipe(long recipeId);
 	public List<RecipeDto> selectAll(int startIndex);
 	public int registerRecipe(RecipeRequestDto recipeRequestDto);
+	public int updateRecipe(RecipeRequestDto recipeRequestDto);
 	public int deleteRecipe(long recipeId);
 	public List<FoodCategoryDto> selectAllFoodCategory();
 	public List<IngredientDto> selectAllIngredient();
@@ -27,5 +28,5 @@ public interface RecipeService {
 	public int cancelRecipeLike(LikeDto like);
 	public int recipeLikeCount(long recipeId);
 	public boolean reipceUserLike(LikeDto likeDto);
-	
+	public List<LikeDto> allUserLike(long recipeId);
 }

@@ -15,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecipeRequestDto {
+	private long recipeId;
 	private String recipeName;
 	private String recipeDetail;
 	private MultipartFile recipeThumbnail;	//수정필요
