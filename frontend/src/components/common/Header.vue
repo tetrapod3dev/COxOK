@@ -1,0 +1,90 @@
+<template>
+  <div>
+    <navbar
+      type="primary"
+      position="fixed"
+      :transparent="transparent"
+      :color-on-scroll="300"
+      menu-classes="ml-auto"
+    >
+      <template>
+        <router-link v-popover:popover1 class="navbar-brand" :to="isLoggedIn ? '/main/' : '/'">CO×OK</router-link>
+        <el-popover
+          ref="popover1"
+          popper-class="popover"
+          placement="bottom"
+          width="200"
+          trigger="hover"
+        >
+          <div class="popover-body">4팀 씨 없는 수박</div>
+        </el-popover>
+      </template>
+      <template slot="navbar-menu">
+        <li class="nav-item">
+          <router-link class="nav-link" :to="isLoggedIn ? '/main/' : '/'">
+            <i class="now-ui-icons shopping_shop"></i>
+            <p>홈</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'PrevRecipeList' }">
+            <i class="now-ui-icons education_paper"></i>
+            <p>레시피</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" v-if="isLoggedIn" to="/accounts/setting/">
+            <i class="now-ui-icons users_circle-08"></i>
+            <p>회원정보</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" v-if="isLoggedIn" @click="logout">
+            <p>로그아웃</p>
+            <p></p>
+          </a>
+          <a class="nav-link" v-if="!isLoggedIn">
+            <LoginModal />
+          </a>
+        </li>
+      </template>
+    </navbar>
+    <!-- <b-nav-item :to="/versus/">요리대전</b-nav-item> -->
+    <!-- <b-nav-item :to="{ name: 'ClubListView', params: { pageNum: 1 } }">소모임</b-nav-item> -->
+  </div>
+</template>
+
+<script>
+import { Navbar } from "@/components/global";
+import { Popover } from "element-ui";
+import { mapGetters, mapActions } from "vuex";
+import LoginModal from "../accounts/LoginModal.vue";
+
+export default {
+  name: "Header",
+  props: {
+    transparent: Boolean,
+  },
+  components: {
+    LoginModal,
+    Navbar,
+    [Popover.name]: Popover,
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+  },
+  watch: {},
+  created() {},
+  methods: {
+    ...mapActions(["logout"]),
+  },
+  data() {
+    return {
+      keyword: "",
+    };
+  },
+};
+</script>
+
+<style scoped>
+</style>

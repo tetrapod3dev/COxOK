@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="recipePhoto">
+	<insert id="insert">
+		insert into recipe_photo (recipe_id, photo_src, photo_detail) 
+		values (#{recipeId}, #{photoSrc}, #{photoDetail})
+	</insert>
+
+<!-- 	<update id="update">
+		update user set
+		password = #{password}
+		where email = #{email}
+	</update> -->
+	
+	<select id="selectAll" resultType="RecipePhotoDto">
+		select recipe_photo_id as recipePhotoId, recipe_id as recipeId, photo_src as photoSrc, photo_detail as photoDetail
+		from recipe_photo
+		where recipe_id = #{recipeId}
+	</select>
+	
+	<delete id="delete">
+		delete from recipe_photo where recipe_id=#{recipeId}
+	</delete>
+	
+</mapper>

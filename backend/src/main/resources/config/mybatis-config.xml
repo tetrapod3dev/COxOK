@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<!-- Type Alias 등록 하세요 -->
+		<package name="com.ssafy.cookblog.dto" />
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mappers/user.xml" />
+		<mapper resource="mappers/recipe.xml" />
+		<mapper resource="mappers/recipePhoto.xml" />
+		<mapper resource="mappers/review.xml" />
+		<mapper resource="mappers/category.xml" />
+		<mapper resource="mappers/blog.xml" />
+		<mapper resource="mappers/likeRecipe.xml" />
+	</mappers>
+</configuration>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="recipe">
+	
+	<select id="select" resultType="RecipeResponseDto">
+		select 
+			r.recipe_name as recipeName , r.recipe_thumbnail_src as recipeThumbnailSrc, r.recipe_detail as recipeDetail
+			, u.nickname as nickname, r.reg_time as regTime, r.cook_time as cookTime
+			, r.level, r.calorie, r.carbon, r.protein, r.fat, r.sugar, r.natrium, r.avg_rating as avgRating
+		from 
+			recipe as r, user as u
+		where 
+			r.user_id = u.user_id 
+				and 
+			r.recipe_id=#{recipeId} 
+	</select>
+	
+	<select id="selectAll" resultType="RecipeDto">
+		select
+			r.recipe_name as recipeName, r.recipe_thumbnail_src as recipeThumbnailSrc, r.avg_rating as avgRating,
+			r.reg_time as regTime, r.recipe_id as recipeId, cook_time as cookTime, level
+		from
+			recipe as r
+		LIMIT #{startIndex}, 6
+	</select>
+	
+	<select id="getRecipeId" resultType="Long">
+		select 
+			MAX(recipe_id)
+		from
+			recipe
+	</select>
+	
+	<insert id="write">
+		insert into 
+			recipe(recipe_name, recipe_thumbnail_src, recipe_detail, cook_time, level, calorie, carbon, protein, fat, sugar, natrium, user_id)
+		values
+			(#{recipeName}, #{recipeThumbnailSrc}, #{recipeDetail}, #{cookTime}, #{level}, #{calorie}, #{carbon}, #{protein}, #{fat}, #{sugar}, #{natrium}, #{userId})
+	</insert>
+	
+	<delete id="delete">
+		delete from recipe
+		where recipe_id = #{recipeId}
+	</delete>
+	
+	<select id="selectAllFoodCategory" resultType="FoodCategoryDto">
+      	select food_category_id as foodCategoryId, food_category_name as foodCategoryName
+      	from food_category
+   	</select>
+   
+   	<select id="selectAllIngredient" resultType="IngredientDto">
+      	select ingredient_id as ingredientId, name, detail, unit
+      	from ingredient 
+   	</select>
+   
+   	<select id="selectRecipeIngredient" resultType="RecipeIngredientResponseDto">
+      	select name, amount, unit
+      	from ingredient i join recipe_ingredient ri 
+      	on i.ingredient_id = ri.ingredient_id 
+      	where ri.recipe_id = #{recipeId}
+   	</select>
+   	
+   	<select id="selectIngredientById" resultType="IngredientDto">
+      	select ingredient_id as ingredientId, calorie, carbon, protein, fat, sugar, natrium, unit, base_amount as baseAmount
+      	from ingredient
+      	where ingredient_id = #{ingredientId}
+   	</select>
+   	
+   	<insert id="insertRecipeIngredient">
+   		insert into recipe_ingredient(recipe_id, ingredient_id, amount)
+   		VALUES (#{recipeId}, #{ingredientId}, #{amount})
+   	</insert>
+   	
+   	<insert id="insertRecipeCategory">
+   		insert into recipe_food_category(recipe_id, food_category_id)
+   		values (#{recipeId}, #{foodCategoryId}) 
+   	</insert>
+   	
+   	<select id = "selectTotalRecipeNum" resultType="Long">
+   		select count(*) from recipe
+   	</select>
+   	
+   	<select id= "search" resultType="RecipeDto">
+   		select * from (
+			select
+				distinct(r.recipe_id) as recipeId, 
+				r.recipe_name as recipeName, 
+				r.recipe_thumbnail_src as recipeThumbnailSrc, 
+				r.avg_rating as avgRating,
+				r.reg_time as regTime, 
+				r.cook_time as cookTime, 
+				r.level
+			from
+				recipe as r , recipe_ingredient as ri , recipe_food_category as rfc
+   			where
+   				r.recipe_id = ri.recipe_id and r.recipe_id = rfc.recipe_id
+	   		<if test="categoryId!=null">
+	   			and ( 
+	   				0=1
+		   		<foreach collection="categoryId" item="category">
+					or 
+					rfc.food_category_id = #{category.value}
+		   		</foreach>
+		   		)
+	   		</if>	
+	   		<if test="ingredientId != null">
+	   			<foreach collection="ingredientId" item="ingredient">
+	   				intersect
+	   				select 
+						distinct(r.recipe_id) as recipeId, 
+				        r.recipe_name as recipeName, 
+				        r.recipe_thumbnail_src as recipeThumbnailSrc, 
+				        r.avg_rating as avgRating,
+				        r.reg_time as regTime, 
+				        r.cook_time as cookTime, 
+				        r.level 
+					from 
+						recipe as r , recipe_ingredient AS ri , recipe_food_category AS rfc 
+					where 
+						r.recipe_id = ri.recipe_id and r.recipe_id = rfc.recipe_id
+		   				and ri.ingredient_id = #{ingredient.value}
+	   			</foreach>
+	   		</if>
+   		) selected order by recipeId desc
+   		limit #{startIndex}, 6
+   	</select>
+   	
+   	<select id = "searchTotal" resultType="Long">
+   		select count(*) from (
+			select
+				distinct(r.recipe_id) as recipeId, 
+				r.recipe_name as recipeName, 
+				r.recipe_thumbnail_src as recipeThumbnailSrc, 
+				r.avg_rating as avgRating,
+				r.reg_time as regTime, 
+				r.cook_time as cookTime, 
+				r.level
+			from
+				recipe as r , recipe_ingredient as ri , recipe_food_category as rfc
+   			where
+   				r.recipe_id = ri.recipe_id and r.recipe_id = rfc.recipe_id
+	   		<if test="categoryId!=null">
+	   			and ( 
+	   				0=1
+		   		<foreach collection="categoryId" item="category">
+					or 
+					rfc.food_category_id = #{category.value}
+		   		</foreach>
+		   		)
+	   		</if>	
+	   		<if test="ingredientId != null">
+	   			<foreach collection="ingredientId" item="ingredient">
+	   				intersect
+	   				select 
+						distinct(r.recipe_id) as recipeId, 
+				        r.recipe_name as recipeName, 
+				        r.recipe_thumbnail_src as recipeThumbnailSrc, 
+				        r.avg_rating as avgRating,
+				        r.reg_time as regTime, 
+				        r.cook_time as cookTime, 
+				        r.level 
+					from 
+						recipe as r , recipe_ingredient AS ri , recipe_food_category AS rfc 
+					where 
+						r.recipe_id = ri.recipe_id and r.recipe_id = rfc.recipe_id
+		   				and ri.ingredient_id = #{ingredient.value}
+	   			</foreach>
+	   		</if>
+   		) selected 
+   	</select>
+   	
+</mapper>

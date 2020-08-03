@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="review">
+	<insert id="insert">
+		insert into review (user_id, recipe_id, rating, content) 
+		values (#{userId}, #{recipeId}, #{rating}, #{content})
+	</insert>
+	
+	<update id="updateRecipeRating">
+		update 
+			recipe 
+		set 
+			avg_rating = (select AVG(rating) from review where recipe_id=#{recipeId})
+		where
+			recipe_id = #{recipeId}
+	</update>
+
+	<update id="update">
+		update review set
+		rating = #{rating},
+		content = #{content}
+		where review_id = #{reviewId}
+	</update>
+	
+	<select id="select" resultType="ReviewResponseDto">
+		select 
+			review_id as reviewId, r.user_id as userId, 
+			nickname, recipe_id as recipeId, rating, content, reg_time as regTime
+		from 
+			review r join user u on r.user_id = u.user_id
+		where 
+			review_id = #{reviewId}
+	</select>
+	
+	<select id="selectAll" resultType="ReviewResponseDto">
+		select review_id as reviewId, r.user_id as userId, nickname, recipe_id as recipeId, rating, content, reg_time as regTime
+		from review r join user u on r.user_id = u.user_id
+		where recipe_id = #{recipeId}
+	</select>
+	
+	<delete id="delete">
+		delete from review where review_id = #{reviewId}
+	</delete>
+	
+	<delete id="deleteByRecipe">
+		delete from review where recipe_id = #{recipeId}
+	</delete>
+	
+</mapper>

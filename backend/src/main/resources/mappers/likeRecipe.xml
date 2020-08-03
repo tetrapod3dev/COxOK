@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="likeRecipe">
+
+	<insert id="createLike">
+		INSERT INTO like_recipe(recipe_id, user_id)
+		VALUES(#{recipeId}, #{userId})
+	</insert>
+	
+	<delete id="cancelLike">
+		DELETE FROM like_recipe
+		WHERE user_id = #{userId} AND recipe_id = #{recipeId}
+	</delete>
+	
+	<select id="likeCount" resultType="Integer">
+		SELECT COUNT(*)
+		FROM like_recipe
+		WHERE recipe_id = #{recipeId}
+	</select>
+	
+	<select id="userLike" resultType="Boolean">
+		SELECT COUNT(*) > 0
+		FROM like_recipe
+		WHERE recipe_id = #{recipeId} AND user_id = #{userId}
+	</select>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="user">
+	<insert id="insert">
+		insert into user (email, password, nickname)
+		values (#{email}, #{password}, #{nickname})
+	</insert>
+
+	<update id="update">
+		update user set
+		password = #{password}, nickname = #{nickname}
+		where email = #{email}
+	</update>
+	
+	<update id="updateAuth">
+		update user set
+		auth = 1
+		where email = #{email}
+	</update>
+
+	<delete id="delete">
+		delete from user where email =#{email}
+	</delete>
+ 
+	<select id="select" resultType="UserDto">
+		select user_id as userId, email, password, nickname
+		from user where email= #{email}
+	</select>
+	
+	<select id="selectNickname" resultType="UserDto">
+		select user_id as userId, email, password, nickname
+		from user where nickname= #{nickname}
+	</select>
+
+	<select id="selectAll" resultType="UserDto">
+		select user_id as userId, email, password, nickname
+		from user
+	</select>
+
+	<select id="login" resultType="UserDto">
+		select user_id as userId, email, password, nickname, auth
+		from user where email= #{email} and password = #{password}
+	</select>
+	
+	<select id="selectUseridByEmail" resultType="long">
+		select user_id from user where email= #{email}
+	</select>
+	
+
+</mapper>
