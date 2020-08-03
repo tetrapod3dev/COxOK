@@ -110,5 +110,10 @@ public class RecipeDaoImpl implements RecipeDao{
 	public boolean reipceUserLike(LikeDto like) {
 		return session.selectOne("likeRecipe.userLike", like);
 	}
+	
+	@Override
+	public List<RecipeDto> select16Recipe() {
+		return session.selectList("recipe.select16Recipe");
+	}
 
 }
