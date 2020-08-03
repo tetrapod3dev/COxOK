@@ -172,4 +172,12 @@
    		) selected
    	</select>
    	
+   	<select id = "select16Recipe" resultType="RecipeDto">
+   		select
+			r.recipe_name as recipeName, r.recipe_thumbnail_src as recipeThumbnailSrc, r.recipe_id as recipeId
+		from
+			recipe as r
+		order by rand() limit 16;
+   	</select>
+   	
 </mapper>

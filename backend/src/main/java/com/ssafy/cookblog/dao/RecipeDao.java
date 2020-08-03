@@ -28,9 +28,9 @@ public interface RecipeDao {
 	public List<RecipeDto> search(RecipeSearchRequestDto recipeSearchRequestDto);
 	public Long searchTotal(RecipeSearchRequestDto recipeSearchRequestDto);
 	
-	
 	public int insertRecipeLike(LikeDto like);
 	public int cancelRecipeLike(LikeDto like);
 	public int recipeLikeCount(long recipeId);
 	public boolean reipceUserLike(LikeDto likeDto);
+	public List<RecipeDto> select16Recipe();
 }

@@ -12,7 +12,8 @@ public class WebConfig implements WebMvcConfigurer {
 	private static final String[] INCLUDE_PATHS = {
 			"/user/**",
 			"/recipe/**",
-			"/review/**"
+			"/review/**",
+			"/versus/**"
 //			"/**"
 	};
 	private static final String[] EXCLUDE_PATHS = {
@@ -28,6 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
 			"/recipe/goRegister/**",
 			
 			"/review/view/**",
+			
+			"/versus/random/**",
 			
 			"/swagger-ui.html",
 			"/swagger-resources/**",
