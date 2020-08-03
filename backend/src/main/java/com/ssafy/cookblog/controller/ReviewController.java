@@ -78,14 +78,15 @@ public class ReviewController {
 		return response;
 	}
 	
-	@PutMapping("/")
-	public Object registerModify(@RequestBody ReviewDto reviewDto,HttpServletRequest request ) {
+	@PutMapping("/{reviewid}")
+	public Object registerModify(@PathVariable("reviewid")int reviewId, @RequestBody ReviewDto reviewDto,HttpServletRequest request ) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		long userId=userService.findUserByEmail(email).getUserId();
 		reviewDto.setUserId(userId);
+		reviewDto.setReviewId(reviewId);
 		
 		int count = reviewService.modify(reviewDto);
 		if(count !=0 ) {
