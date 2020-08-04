@@ -1,5 +1,6 @@
 export default {
   URL: 'http://localhost:8080',
+  // URL: 'http://i3a104.p.ssafy.io',
   ROUTES: {
     // Accounts ROUTES
     signup: '/user/signup/',
@@ -18,6 +19,10 @@ export default {
 
     goRegister: '/recipe/goRegister/', // categories와 ingredients 리스트를 받기 위해 요청을 보내는 주소
     recipeRegister: '/recipe/register/', // 레시피 작성을 위해 데이터를 보내야 되는 곳
+    photoRegister: '/photo/register/', // 사진 등록 및 URL 리턴
+
+    updateInfo: '/recipe/modifyInfo/', // UPDATE 시 정보 획득
+    recipeUpdate: '/recipe/modify/',
 
     recipeDelte: '/recipe/delete/', // 뒤에 recipe_id 붙여주기
 

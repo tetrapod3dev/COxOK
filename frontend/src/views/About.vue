@@ -40,6 +40,8 @@
       </li>
     </ul> -->
     <button class="btn btn-danger" @click="makeRecipe">제출 실험</button>
+
+    <button class="btn btn-info" @click="submitTest">제출 실험222222</button>
   </div>
 </template>
 
@@ -161,6 +163,31 @@ export default {
           console.log(err);
         });
     },
+    submitTest() {
+      let frm = new FormData();
+      this.tempInputs.forEach(function (tempInput) {
+        frm.append("photo", tempInput.rawFile);
+      });
+
+      let configs = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      for (var value of frm.values()) {
+        console.log(value);
+      }
+
+      axios
+        .post(SERVER.URL + SERVER.ROUTES.photoRegister, frm, configs)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 }
 </script>

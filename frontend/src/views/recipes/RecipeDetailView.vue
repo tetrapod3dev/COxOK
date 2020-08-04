@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <section id="top">
+
       <card type="background" :style="'background-image: url(' + recipeThumbnailSrc + ')'">
         <div class="card-title text-left">
           <h3>{{ recipe.recipeName }}</h3>
@@ -50,6 +51,11 @@
         </div>
       </card>
     </section>
+    
+      <router-link :to="{ name: 'RecipeUpdateView', params: { recipe_id: recipe.recipeId } }">
+        <button class="btn btn-primary">수정하러 가기</button>
+      </router-link>
+      
     <!--     *********    TEAM 1     *********      -->
     <div class="team-1" id="recipeInfo">
       <div class="container">
