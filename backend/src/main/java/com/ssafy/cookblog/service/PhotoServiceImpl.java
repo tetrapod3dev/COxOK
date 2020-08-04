@@ -1,26 +1,17 @@
 package com.ssafy.cookblog.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.cookblog.dao.PhotoDao;
-import com.ssafy.cookblog.dto.RecipePhotoDto;
 import com.ssafy.cookblog.dto.request.PhotoRequestDto;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
-	
-	@Autowired
-	PhotoDao photoDao;
-	
-	
 	public List<String> registerPhoto(PhotoRequestDto photo) {
 		List<String> result=new ArrayList<String>();
 		
@@ -32,15 +23,7 @@ public class PhotoServiceImpl implements PhotoService {
 		    String realFileName = now + "_" + fileName;
 		    try {
 				photo.getPhoto()[i].transferTo(new File(realFileName));
-				//insert
 				result.add(realFileName);
-				
-				System.out.println("???"+realFileName);
-				
-				RecipePhotoDto dto= new RecipePhotoDto();
-				dto.setPhotoSrc(realFileName);
-				photoDao.insertPhoto(dto);
-				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
