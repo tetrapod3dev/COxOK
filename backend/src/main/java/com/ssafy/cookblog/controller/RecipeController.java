@@ -174,7 +174,7 @@ public class RecipeController {
 	}
 	
 	// 레시피 수정
-	@GetMapping("/modify")
+	@PostMapping("/modify")
 	public Object modifyRecipe(@ModelAttribute RecipeUpdateRequestDto recipe, HttpServletRequest request) {
 		
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
