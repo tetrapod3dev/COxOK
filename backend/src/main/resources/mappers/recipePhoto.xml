@@ -5,6 +5,11 @@
 		insert into recipe_photo (recipe_id, photo_src, photo_detail) 
 		values (#{recipeId}, #{photoSrc}, #{photoDetail})
 	</insert>
+	
+	<insert id="insertPhotoSrc">
+		insert into recipe_photo(photo_src) 
+		values (#{photoSrc})
+	</insert>
 
 <!-- 	<update id="update">
 		update user set

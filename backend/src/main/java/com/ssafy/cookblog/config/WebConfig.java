@@ -13,7 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
 			"/user/**",
 			"/recipe/**",
 			"/review/**",
-			"/versus/**"
+			"/versus/**",
+			"/photo/**"
 //			"/**"
 	};
 	private static final String[] EXCLUDE_PATHS = {
@@ -36,6 +37,8 @@ public class WebConfig implements WebMvcConfigurer {
 			"/swagger-resources/**",
 			"/webjars/**",
 			"/v2/**",
+			
+			"/photo/**",
 	};
 
 	@Autowired
