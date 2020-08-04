@@ -63,7 +63,7 @@
    	</select>
    
    	<select id="selectRecipeIngredient" resultType="RecipeIngredientResponseDto">
-      	select name, amount, unit
+      	select name, amount, unit, i.ingredient_id as ingredientId
       	from ingredient i join recipe_ingredient ri 
       	on i.ingredient_id = ri.ingredient_id 
       	where ri.recipe_id = #{recipeId}

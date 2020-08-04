@@ -28,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
 			"/recipe/search/**",
 			"/recipe/view/**",
 			"/recipe/goRegister/**",
+			"/recipe/modifyInfo	/**",
 			
 			"/review/view/**",
 			

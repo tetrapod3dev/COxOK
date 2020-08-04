@@ -8,4 +8,5 @@ public interface CategoryDao {
 	
 	public int insertRecipeCategory(RecipeFoodCategoryDto recipeFoodCategoryDto);
 	public List<String> selectRecipeCategoryName(long recipeId);
+	public List<Integer> selectRecipeCategoryId(long recipeId);
 }

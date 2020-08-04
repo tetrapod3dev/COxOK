@@ -50,6 +50,7 @@ public class RecipeServiceImpl implements RecipeService {
 		recipeResponseDto.setRecipePhotoList(recipePhotoDao.selectAll(recipeId));
 		recipeResponseDto.setIngredientList(recipeDao.selectRecipeIngredient(recipeId));
 		recipeResponseDto.setReviewDtoList(reviewDao.selectAll(recipeId));
+		recipeResponseDto.setFoodCategoryId(categoryDao.selectRecipeCategoryId(recipeId));
 		recipeResponseDto.setFoodCategoryName(categoryDao.selectRecipeCategoryName(recipeId));
 		return recipeResponseDto;
 	}

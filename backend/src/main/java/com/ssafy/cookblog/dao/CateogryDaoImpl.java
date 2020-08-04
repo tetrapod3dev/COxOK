@@ -23,4 +23,9 @@ public class CateogryDaoImpl implements CategoryDao {
 	public List<String> selectRecipeCategoryName(long recipeId) {
 		return session.selectList("category.selectRecipeCategoryName", recipeId);
 	}
+
+	@Override
+	public List<Integer> selectRecipeCategoryId(long recipeId) {
+		return session.selectList("category.selectRecipeCategoryId", recipeId);
+	}
 }

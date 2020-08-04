@@ -19,4 +19,16 @@
    			r.recipe_id = #{recipeId} 
    	</select>
    	
+   	<select id="selectRecipeCategoryId" resultType="Integer">
+   		select f.food_category_id as foodCategoryId
+   		from 
+   			recipe_food_category as r 
+   				,
+   			food_category as f
+   		where 
+   			r.food_category_id = f.food_category_id
+   				and
+   			r.recipe_id = #{recipeId} 
+   	</select>
+   	
 </mapper>
