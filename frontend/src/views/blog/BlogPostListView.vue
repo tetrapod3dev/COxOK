@@ -1,5 +1,11 @@
 <template>
-  <div class="row">
+  <div class="wrapper">
+    <div class="page-header page-header-mini">
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
+      ></parallax>
+    </div>
     <BlogMenu />
 
     <div class="col-10">
@@ -23,13 +29,19 @@
             name="kw"
             value
           />
-          <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">검색</button>
+          <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">
+            검색
+          </button>
         </form>
       </div>
 
       <PostList :posts="posts" />
 
-      <PageButtons :curPage="curPage" :maxPage="maxPage" @move-page="movePage" />
+      <PageButtons
+        :curPage="curPage"
+        :maxPage="maxPage"
+        @move-page="movePage"
+      />
     </div>
   </div>
 </template>
@@ -39,7 +51,6 @@ import PostList from "@/components/blog/PostList.vue";
 import PageButtons from "@/components/common/PageButtons.vue";
 import PostSortButtons from "@/components/blog/PostSortButtons.vue";
 import BlogMenu from "@/components/blog/BlogMenu.vue";
-
 
 export default {
   name: "BlogPostListView",
@@ -133,5 +144,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

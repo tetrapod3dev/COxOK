@@ -1,5 +1,5 @@
 export default {
-  URL: 'http://i3a104.p.ssafy.io/',
+  URL: 'http://i3a104.p.ssafy.io',
   ROUTES: {
     // Accounts ROUTES
     signup: '/user/signup/',
@@ -8,7 +8,7 @@ export default {
     checkNickname: '/user/nickname/',
     myPage: '/user/mypage/', // 회원 정보 리턴 페이지..?
     update: '/user/modify/', // 회원 정보 수정
-    withdrawal : '/user/withdrawal/', // 회원 탈퇴
+    withdrawal: '/user/withdrawal/', // 회원 탈퇴
 
     // Recipes ROUTES
     recipeList: '/recipe/all/', // 모든 레시피 리스트를 받기 위한 주소(뒤에 페이지 주소 0부터 시작 / 6개씩 전달)
@@ -28,5 +28,8 @@ export default {
     recipeReview: '/review/view/', // 레시피 아이디를 보내면 레시피의 리뷰들이 반환되는 것같아요.
     reviewRegister: '/review/', // 리뷰 작성을 위한 데이터를 전달할 주소
     reviewDelete: '/review/', // 뒤에 review_id 붙여주기
+
+    // Blog ROUTES
+    blogRegister: '/blog/',
   }
 }
