@@ -15,5 +15,6 @@ public interface VersusDao {
 	List<VersusResponseDto> selectAllVersus(int startIndex);
 	VersusViewResponseDto selectVersus(long versusId);
 	List<RecipeDto> selectVersusRecipe(VersusViewResponseDto versusView);
+	int delete(long versusId);
 
 }

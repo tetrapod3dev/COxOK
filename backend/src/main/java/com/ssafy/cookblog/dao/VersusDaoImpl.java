@@ -45,4 +45,9 @@ public class VersusDaoImpl implements VersusDao {
 		return session.selectList("versus.selectVersusRecipe", versusView);
 	}
 
+	@Override
+	public int delete(long versusId) {
+		return session.delete("versus.delete", versusId);
+	}
+
 }

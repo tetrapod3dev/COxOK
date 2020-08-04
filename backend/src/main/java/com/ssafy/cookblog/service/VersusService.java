@@ -13,4 +13,5 @@ public interface VersusService {
 	int winVersus(VersusPointDto versusPoint);
 	List<VersusResponseDto> getAllVersus(int startIndex);
 	VersusViewResponseDto getOneVersus(long versusId);
+	int deleteVersus(long versusId);
 }
