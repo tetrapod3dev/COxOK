@@ -24,18 +24,38 @@
 		LIMIT #{startIndex}, 6
 	</select>
 	
+ 	<select id="selectVersus" resultType="VersusViewResponseDto">
+		select
+			versus_id as versusId, title, content, user_id AS userId,
+			recipe_id_1, recipe_id_2, recipe_id_3, recipe_id_4,
+			recipe_id_5, recipe_id_6, recipe_id_7, recipe_id_8,
+			recipe_id_9, recipe_id_10, recipe_id_11, recipe_id_12,
+			recipe_id_13, recipe_id_14, recipe_id_15, recipe_id_16
+		from
+			versus
+		where versus_id = #{versusId}
+	</select>
 	
-	<!-- 수정 -->
- 	<select id="selectAllRecipe" resultType="VersusViewResponseDto">
+	<select id="selectVersusRecipe" resultType="recipeDto"> 
 		select
 			recipe_id as recipeId, recipe_name as recipeName, recipe_thumbnail_src as recipeThumbnailSrc
 		from
-			
+			recipe
+		where
+			recipe_id in (null
+				<foreach collection="recipeIdList" item="recipeId">
+					, #{recipeId.value}
+				</foreach>
+			)
 	</select>
 	
 	<insert id="insertVersusPoint">
 		insert into versus_point (versus_id, recipe_id) 
 		values (#{versusId}, #{recipeId})
 	</insert>
+	
+	<delete id="delete">
+		delete from versus where versus_id = #{versusId}
+	</delete>
 	
 </mapper>

@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.cookblog.dto.LikeDto;
 import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.VersusDto;
 import com.ssafy.cookblog.dto.VersusPointDto;
+import com.ssafy.cookblog.dto.response.RecipeResponseDto;
 import com.ssafy.cookblog.dto.response.VersusResponseDto;
+import com.ssafy.cookblog.dto.response.VersusViewResponseDto;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.service.VersusService;
 import com.ssafy.cookblog.util.JwtService;
@@ -102,6 +105,27 @@ public class VersusController {
 		return response;
 	}
 		
+	
+	// 레시피 상세 조회
+	@GetMapping("/view/{id}")
+	public Object getOneRecipe(@PathVariable("id") long id) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+
+		VersusViewResponseDto versus = versusService.getOneVersus(id);
+		
+		if(versus!=null) {
+			map.put("msg", "레시피 조회를 성공했습니다.");
+			map.put("status", "success");
+			map.put("versus", versus);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "레시피를 찾지 못했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
 	
 }
 

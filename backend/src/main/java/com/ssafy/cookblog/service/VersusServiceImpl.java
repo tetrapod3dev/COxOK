@@ -9,6 +9,7 @@ import com.ssafy.cookblog.dao.VersusDao;
 import com.ssafy.cookblog.dto.VersusDto;
 import com.ssafy.cookblog.dto.VersusPointDto;
 import com.ssafy.cookblog.dto.response.VersusResponseDto;
+import com.ssafy.cookblog.dto.response.VersusViewResponseDto;
 
 @Service
 public class VersusServiceImpl implements VersusService {
@@ -29,6 +30,15 @@ public class VersusServiceImpl implements VersusService {
 	@Override
 	public List<VersusResponseDto> getAllVersus(int startIndex) {
 		return versusDao.selectAllVersus(startIndex);
+	}
+
+	@Override
+	public VersusViewResponseDto getOneVersus(long versusId) {
+		VersusViewResponseDto versusView = versusDao.selectVersus(versusId);
+		versusView.changeList();
+		System.out.println(versusView.getRecipeIdList());
+		versusView.setRecipeList(versusDao.selectVersusRecipe(versusView));
+		return versusView;
 	}
 
 

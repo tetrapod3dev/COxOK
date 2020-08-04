@@ -6,9 +6,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.VersusDto;
 import com.ssafy.cookblog.dto.VersusPointDto;
 import com.ssafy.cookblog.dto.response.VersusResponseDto;
+import com.ssafy.cookblog.dto.response.VersusViewResponseDto;
 
 @Repository
 public class VersusDaoImpl implements VersusDao {
@@ -31,6 +33,16 @@ public class VersusDaoImpl implements VersusDao {
 	@Override
 	public List<VersusResponseDto> selectAllVersus(int startIndex) {
 		return session.selectList("versus.selectAllVersus", startIndex);
+	}
+
+	@Override
+	public VersusViewResponseDto selectVersus(long versusId) {
+		return session.selectOne("versus.selectVersus", versusId);
+	}
+
+	@Override
+	public List<RecipeDto> selectVersusRecipe(VersusViewResponseDto versusView) {
+		return session.selectList("versus.selectVersusRecipe", versusView);
 	}
 
 }
