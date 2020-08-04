@@ -41,11 +41,14 @@ public class BlogController {
 	
 	// Create
 	@PostMapping("/")
-	public Object register(@RequestBody BlogDto blog) {
+	public Object register(@RequestBody BlogDto blog,HttpServletRequest request) {
 		
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
-		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		blog.setUserId(userId);
 		int cnt = blogService.register(blog);
 		
 		if(cnt != 0) {
