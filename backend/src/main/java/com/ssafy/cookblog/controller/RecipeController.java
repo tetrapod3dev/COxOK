@@ -58,6 +58,7 @@ public class RecipeController {
 		
 		String token = request.getHeader("Authorization");
 		String email = null;
+		long userId = -1;
 		
 		if(recipe!=null) {
 			recipe.setRecipeId(id);
@@ -68,14 +69,14 @@ public class RecipeController {
 			boolean userLike = false;
 			if(token != null) {
 				email = jwtService.getEmailFromToken(token.substring(7));
-				long userId = userService.userIdByEmail(email);
+				userId = userService.userIdByEmail(email);
 				LikeDto like = new LikeDto();
 				like.setRecipeId(id);
 				like.setUserId(userId);
 				userLike = recipeService.reipceUserLike(like);
 			}
 			map.put("userLike", userLike);
-			map.put("userId", (userService.findUserByEmail(email).getUserId()));
+			map.put("userId", userId);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "레시피를 찾지 못했습니다.");
