@@ -34,6 +34,8 @@ public class PhotoServiceImpl implements PhotoService {
 				//insert
 				result.add(realFileName);
 				
+				System.out.println("???"+realFileName);
+				
 				RecipePhotoDto dto= new RecipePhotoDto();
 				dto.setPhotoSrc(realFileName);
 				photoService.registerPhoto(photo);
