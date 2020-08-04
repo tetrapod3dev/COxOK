@@ -1,12 +1,11 @@
-package com.ssafy.cookblog.service;
+package com.ssafy.cookblog.dao;
 
-import java.util.List;
-
-import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.VersusDto;
 import com.ssafy.cookblog.dto.VersusPointDto;
 
-public interface VersusService {
+public interface VersusDao {
+
 	int registerVersus(VersusDto versusDto);
 	int winVersus(VersusPointDto versusPoint);
+
 }

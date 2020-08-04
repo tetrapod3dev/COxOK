@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="versus">
+	<insert id="insert">
+		insert into versus (title, content, user_id, 
+			recipe_id_1, recipe_id_2, recipe_id_3, recipe_id_4,
+			recipe_id_5, recipe_id_6, recipe_id_7, recipe_id_8,
+			recipe_id_9, recipe_id_10, recipe_id_11, recipe_id_12,
+			recipe_id_13, recipe_id_14, recipe_id_15, recipe_id_16
+		) 
+		values (#{title}, #{content}, #{userId}
+		<foreach collection="recipeIdList" item="recipeId">
+			, #{recipeId.value}
+		</foreach>
+		)
+	</insert>
+	
+	<insert id="insertVersusPoint">
+		insert into versus_point (versus_id, recipe_id) 
+		values (#{versusId}, #{recipeId})
+	</insert>
+	
+</mapper>
