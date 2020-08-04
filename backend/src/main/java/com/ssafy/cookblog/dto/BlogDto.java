@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlogDto {
+	private long blogId;
 	private long userId;
 	private long recipeId;
 	private String title;
