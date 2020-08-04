@@ -15,6 +15,24 @@
 		)
 	</insert>
 	
+	<select id="selectAllVersus" resultType="VersusResponseDto">
+		select 
+			versus_id AS versusId, title, r1.recipe_thumbnail_src AS recipeThumbnail1, r2.recipe_thumbnail_src AS recipeThumbnail2
+		FROM
+			versus JOIN recipe AS r1 ON (recipe_id_1 = r1.recipe_id) JOIN recipe AS r2 ON (recipe_id_2 = r2.recipe_id)
+		order by versus_id desc
+		LIMIT #{startIndex}, 6
+	</select>
+	
+	
+	<!-- 수정 -->
+ 	<select id="selectAllRecipe" resultType="VersusViewResponseDto">
+		select
+			recipe_id as recipeId, recipe_name as recipeName, recipe_thumbnail_src as recipeThumbnailSrc
+		from
+			
+	</select>
+	
 	<insert id="insertVersusPoint">
 		insert into versus_point (versus_id, recipe_id) 
 		values (#{versusId}, #{recipeId})

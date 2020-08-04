@@ -1,6 +1,4 @@
-package com.ssafy.cookblog.dto;
-
-import java.util.List;
+package com.ssafy.cookblog.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,13 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VersusDto {
+public class VersusResponseDto {
 	private long versusId;
 	private String title;
-	private String content;
-	private long userId;
-	private List<Long> recipeIdList;
+	private String recipeThumbnail1;
+	private String recipeThumbnail2;
 }
 
-
-	
