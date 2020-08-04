@@ -175,7 +175,7 @@ public class RecipeController {
 	
 	// 레시피 수정
 	@PostMapping("/modify")
-	public Object modifyRecipe(@ModelAttribute RecipeUpdateRequestDto recipe, HttpServletRequest request) {
+	public Object modifyRecipe(@RequestBody RecipeUpdateRequestDto recipe, HttpServletRequest request) {
 		
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		recipe.setUserId(userService.findUserByEmail(email).getUserId());
