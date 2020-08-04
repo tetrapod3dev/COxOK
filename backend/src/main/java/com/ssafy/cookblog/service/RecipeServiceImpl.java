@@ -161,6 +161,9 @@ public class RecipeServiceImpl implements RecipeService {
 	public int updateRecipe(RecipeRequestDto recipeRequestDto) {
 		RecipeDto recipeDto = new RecipeDto();
 		
+		recipeDao.delete(recipeRequestDto.getRecipeId());
+		
+		
 		recipeDto.setRecipeId(recipeRequestDto.getRecipeId());
 		recipeDto.setUserId(recipeRequestDto.getUserId());
 		
