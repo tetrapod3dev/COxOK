@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.cookblog.dao.PhotoDao;
 import com.ssafy.cookblog.dto.RecipePhotoDto;
 import com.ssafy.cookblog.dto.request.PhotoRequestDto;
 
@@ -17,7 +18,7 @@ import com.ssafy.cookblog.dto.request.PhotoRequestDto;
 public class PhotoServiceImpl implements PhotoService {
 	
 	@Autowired
-	PhotoService photoService;
+	PhotoDao photoDao;
 	
 	
 	public List<String> registerPhoto(PhotoRequestDto photo) {
@@ -38,7 +39,7 @@ public class PhotoServiceImpl implements PhotoService {
 				
 				RecipePhotoDto dto= new RecipePhotoDto();
 				dto.setPhotoSrc(realFileName);
-				photoService.registerPhoto(photo);
+				photoDao.insertPhoto(dto);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
