@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ import com.ssafy.cookblog.dto.LikeDto;
 import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.request.RecipeRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeResponseDto;
 import com.ssafy.cookblog.service.RecipeService;
 import com.ssafy.cookblog.service.UserService;
@@ -73,7 +75,7 @@ public class RecipeController {
 				userLike = recipeService.reipceUserLike(like);
 			}
 			map.put("userLike", userLike);
-			map.put("email", email);
+			map.put("userId", (userService.findUserByEmail(email).getUserId()));
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "레시피를 찾지 못했습니다.");
@@ -171,8 +173,8 @@ public class RecipeController {
 	}
 	
 	// 레시피 수정
-	@PostMapping("/modify")
-	public Object modifyRecipe(@ModelAttribute RecipeRequestDto recipe, HttpServletRequest request) {
+	@GetMapping("/modify")
+	public Object modifyRecipe(@ModelAttribute RecipeUpdateRequestDto recipe, HttpServletRequest request) {
 		
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		recipe.setUserId(userService.findUserByEmail(email).getUserId());
