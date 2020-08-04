@@ -5,13 +5,7 @@
 		insert into recipe_photo (recipe_id, photo_src, photo_detail) 
 		values (#{recipeId}, #{photoSrc}, #{photoDetail})
 	</insert>
-	
-<!-- 	<update id="update">
-		update user set
-		password = #{password}
-		where email = #{email}
-	</update> -->
-	
+
 	<select id="selectAll" resultType="RecipePhotoDto">
 		select recipe_photo_id as recipePhotoId, recipe_id as recipeId, photo_src as photoSrc, photo_detail as photoDetail
 		from recipe_photo

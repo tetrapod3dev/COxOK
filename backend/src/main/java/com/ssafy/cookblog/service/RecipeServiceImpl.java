@@ -25,6 +25,7 @@ import com.ssafy.cookblog.dto.RecipeIngredientDto;
 import com.ssafy.cookblog.dto.RecipePhotoDto;
 import com.ssafy.cookblog.dto.request.RecipeRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeIngredientResponseDto;
 import com.ssafy.cookblog.dto.response.RecipeResponseDto;
 
@@ -106,8 +107,6 @@ public class RecipeServiceImpl implements RecipeService {
 		recipeDto.setRecipeThumbnailSrc(realFileName);
 		recipeDto.setRecipeDetail(recipeRequestDto.getRecipeDetail());
 		
-		System.out.println(recipeDto);
-		
 		int res = recipeDao.write(recipeDto);
 		if(res == 0)
 			return res;
@@ -158,25 +157,26 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 	
 	@Override
-	public int updateRecipe(RecipeRequestDto recipeRequestDto) {
+	public int updateRecipe(RecipeUpdateRequestDto recipeUpdateRequestDto) {
 		RecipeDto recipeDto = new RecipeDto();
 		
-		recipeDao.delete(recipeRequestDto.getRecipeId());
+		long recipeId = recipeUpdateRequestDto.getRecipeId();
+		recipeDao.delete(recipeId);
 		
 		
-		recipeDto.setRecipeId(recipeRequestDto.getRecipeId());
-		recipeDto.setUserId(recipeRequestDto.getUserId());
+		recipeDto.setRecipeId(recipeId);
+		recipeDto.setUserId(recipeUpdateRequestDto.getUserId());
 		
-		recipeDto.setLevel(Integer.parseInt(recipeRequestDto.getLevel()));
-		recipeDto.setCookTime(Integer.parseInt(recipeRequestDto.getCookTime()));
+		recipeDto.setLevel(Integer.parseInt(recipeUpdateRequestDto.getLevel()));
+		recipeDto.setCookTime(Integer.parseInt(recipeUpdateRequestDto.getCookTime()));
 		
 		// 재료 영양성분 계산
-		int len = recipeRequestDto.getIngredientPk().length;
+		int len = recipeUpdateRequestDto.getIngredientPk().length;
 		int sumCalorie=0, sumCarbon=0, sumProtein=0, sumFat=0, sumSugar=0, sumNatrium=0;
 		for(int i=0; i < len; i++) {
-			long ingredientId = recipeRequestDto.getIngredientPk()[i];
+			long ingredientId = recipeUpdateRequestDto.getIngredientPk()[i];
 			IngredientDto ingredientDto = recipeDao.selectIngredientById(ingredientId);
-			double per = (double) recipeRequestDto.getIngredientAmount()[i] / ingredientDto.getBaseAmount();
+			double per = (double) recipeUpdateRequestDto.getIngredientAmount()[i] / ingredientDto.getBaseAmount();
 			sumCalorie += (int) (ingredientDto.getCalorie() * per);
 			sumCarbon += (int) (ingredientDto.getCarbon() * per);
 			sumProtein += (int) (ingredientDto.getProtein() * per);
@@ -192,31 +192,18 @@ public class RecipeServiceImpl implements RecipeService {
 		recipeDto.setSugar(sumSugar);
 		recipeDto.setNatrium(sumNatrium);
 				
-		recipeDto.setRecipeName(recipeRequestDto.getRecipeName());
+		recipeDto.setRecipeName(recipeUpdateRequestDto.getRecipeName());
 		
 		// 썸네일 사진 이미지 변경
-		
-		String fileName = recipeRequestDto.getRecipeThumbnail().getOriginalFilename();
-		String now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());  //현재시간
-	    String realFileName = now + "_" + fileName;
-	    try {
-			recipeRequestDto.getRecipeThumbnail().transferTo(new File(realFileName));
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		recipeDto.setRecipeThumbnailSrc(realFileName);
-		recipeDto.setRecipeDetail(recipeRequestDto.getRecipeDetail());
+		recipeDto.setRecipeThumbnailSrc(recipeUpdateRequestDto.getRecipeThumbnail());
+		recipeDto.setRecipeDetail(recipeUpdateRequestDto.getRecipeDetail());
 		
 		int res = recipeDao.updateRecipe(recipeDto);
 		if(res == 0)
 			return res;
-		
-		long recipeId = recipeRequestDto.getRecipeId();
 
 		//카테고리 추가
-		for(int categoryId : recipeRequestDto.getCategories()) {
+		for(int categoryId : recipeUpdateRequestDto.getCategories()) {
 			RecipeFoodCategoryDto dto = new RecipeFoodCategoryDto();
 			dto.setRecipeId(recipeId);
 			dto.setFoodCategoryId(categoryId);
@@ -224,33 +211,21 @@ public class RecipeServiceImpl implements RecipeService {
 			if(res == 0) return res;
 		}
 		
-		len = recipeRequestDto.getDescription().length;
+		len = recipeUpdateRequestDto.getDescription().length;
 		for(int i = 0; i < len; i++) {
-			// 레시피 사진 이미지 이름 변경
-			fileName = recipeRequestDto.getPhoto()[i].getOriginalFilename();
-			now = new SimpleDateFormat("yyyyMMddHmsS").format(new Date());  //현재시간
-		    realFileName = now + "_" + fileName;
-		    try {
-				recipeRequestDto.getPhoto()[i].transferTo(new File(realFileName));
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			recipeDto.setRecipeThumbnailSrc(realFileName);
 			RecipePhotoDto photoDto = new RecipePhotoDto();
 			photoDto.setRecipeId(recipeId);
-			photoDto.setPhotoSrc(realFileName);
-			photoDto.setPhotoDetail(recipeRequestDto.getDescription()[i]);
+			photoDto.setPhotoSrc(recipeUpdateRequestDto.getPhoto()[i]);
+			photoDto.setPhotoDetail(recipeUpdateRequestDto.getDescription()[i]);
 			res = recipePhotoDao.insert(photoDto);
 			if(res == 0) return res;
 		}
 		
-		for(int i = 0; i < recipeRequestDto.getIngredientPk().length; i++) {
+		for(int i = 0; i < recipeUpdateRequestDto.getIngredientPk().length; i++) {
 			RecipeIngredientDto recipeIngredient = new RecipeIngredientDto();
-			recipeIngredient.setIngredientId(recipeRequestDto.getIngredientPk()[i]);
+			recipeIngredient.setIngredientId(recipeUpdateRequestDto.getIngredientPk()[i]);
 			recipeIngredient.setRecipeId(recipeId);
-			recipeIngredient.setAmount(recipeRequestDto.getIngredientAmount()[i]);
+			recipeIngredient.setAmount(recipeUpdateRequestDto.getIngredientAmount()[i]);
 			res = recipeDao.insertRecipeIngredient(recipeIngredient);
 			if(res == 0) return res;
 		}
