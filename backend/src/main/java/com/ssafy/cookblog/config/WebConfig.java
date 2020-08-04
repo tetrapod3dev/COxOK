@@ -32,7 +32,8 @@ public class WebConfig implements WebMvcConfigurer {
 			
 			"/review/view/**",
 			
-			"/versus/random/**",
+			"/versus/all/**",
+			"/versus/view/**",
 			
 			"/swagger-ui.html",
 			"/swagger-resources/**",

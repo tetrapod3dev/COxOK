@@ -1,4 +1,4 @@
-package com.ssafy.cookblog.service;
+package com.ssafy.cookblog.dao;
 
 import java.util.List;
 
@@ -8,10 +8,13 @@ import com.ssafy.cookblog.dto.VersusPointDto;
 import com.ssafy.cookblog.dto.response.VersusResponseDto;
 import com.ssafy.cookblog.dto.response.VersusViewResponseDto;
 
-public interface VersusService {
+public interface VersusDao {
+
 	int registerVersus(VersusDto versusDto);
 	int winVersus(VersusPointDto versusPoint);
-	List<VersusResponseDto> getAllVersus(int startIndex);
-	VersusViewResponseDto getOneVersus(long versusId);
-	int deleteVersus(long versusId);
+	List<VersusResponseDto> selectAllVersus(int startIndex);
+	VersusViewResponseDto selectVersus(long versusId);
+	List<RecipeDto> selectVersusRecipe(VersusViewResponseDto versusView);
+	int delete(long versusId);
+
 }
