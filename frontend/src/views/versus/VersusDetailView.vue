@@ -58,10 +58,6 @@ export default {
         {'title': '14번 요리', '평점': 4.2, 'id': 14},
         {'title': '15번 요리', '평점': 4.2, 'id': 15},
         {'title': '16번 요리', '평점': 4.2, 'id': 16},
-        {'title': '17번 요리', '평점': 4.2, 'id': 17},
-        {'title': '18번 요리', '평점': 4.2, 'id': 18},
-        {'title': '19번 요리', '평점': 4.2, 'id': 19},
-        {'title': '20번 요리', '평점': 4.2, 'id': 20},
       ],
       possibleLength: [],
     }
@@ -102,7 +98,7 @@ export default {
       this.possibleLength.push(this.TempMax)
       this.TempMax *= 2
     }
-    this.TempMax /= 2
+    // this.TempMax /= 2
   }
 }
 </script>
