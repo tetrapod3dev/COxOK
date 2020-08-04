@@ -41,7 +41,7 @@ public class BlogController {
 	
 	// Create
 	@PostMapping("/")
-	public Object register(@ModelAttribute BlogDto blog) {
+	public Object register(@RequestBody BlogDto blog) {
 		
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
