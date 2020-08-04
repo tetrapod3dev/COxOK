@@ -35,8 +35,8 @@
 	</insert>
 
 	<update id="update">
-		update blog set	
-			user_id=#{userId}, recipe_id = #{recipeId}, title=#{title},
+		update blog set
+			 recipe_id = #{recipeId}, title=#{title},
 			content = #{content}, tag1=#{tag1}, tag2=#{tag2}, tag3=#{tag3}
 		where blog_id = #{blogId}
 	</update>
