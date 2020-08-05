@@ -9,9 +9,9 @@ public interface MeetDao {
 	public int update(MeetDto meetDto);
 	public int insert(MeetDto meetDto);
 
-	List<MeetDto> selectAllMeet(int startIndex);
-	MeetViewResponseDto selectMeet(long meetId);
-	List<MeetJoinDto> selectMeetJoinList(long meetId);
-	int delete(long meetId);
+	public List<MeetDto> selectAllMeet(int startIndex);
+	public MeetViewResponseDto selectMeet(long meetId);
+	public List<MeetJoinDto> selectMeetJoinList(long meetId);
+	public int delete(long meetId);
 
 }
