@@ -3,6 +3,7 @@ package com.ssafy.cookblog.service;
 import java.util.List;
 
 import com.ssafy.cookblog.dto.UserDto;
+import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 
 public interface UserService {
 	
@@ -18,7 +19,7 @@ public interface UserService {
 	public long userIdByEmail(String email);
 
 	//회원정보수정
-	public int modify(UserDto user);
+	public int modify(UserModifyRequestDto userModifyRequestDto);
 	public int authEmail(UserDto user);
 	
 	//회원삭제

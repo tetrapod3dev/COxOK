@@ -1,6 +1,7 @@
 package com.ssafy.cookblog.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.cookblog.dto.FoodCategoryDto;
 import com.ssafy.cookblog.dto.UserDto;
+import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
+import com.ssafy.cookblog.service.RecipeService;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.Base64Service;
 import com.ssafy.cookblog.util.EmailService;
@@ -39,6 +43,9 @@ public class UserController {
 
 	@Autowired
 	private JwtService jwtService;
+	
+	@Autowired
+	private RecipeService recipeService;
 	
 	@Autowired
 	private Base64Service base64Service;
@@ -157,11 +164,13 @@ public class UserController {
 		ResponseEntity response = null;
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		UserDto user = userService.findUserByEmail(email);
+		List<FoodCategoryDto> categories = recipeService.selectAllFoodCategory();
 		
 		if(user != null) {
 			map.put("msg", "회원 정보 성공");
 			map.put("status", "success");
 			map.put("user", user);
+			map.put("categories", categories);
 			response = new ResponseEntity(map,HttpStatus.OK);
 			return response;
 		} else {
@@ -175,11 +184,12 @@ public class UserController {
 
 	// 회원정보수정
 	@PutMapping("/modify")
-	public Object modifyMember(@RequestBody UserDto userRequest) {
+	public Object modifyMember(@RequestBody UserModifyRequestDto userModifyRequestDto) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		int count = userService.modify(userRequest);
+		int count = userService.modify(userModifyRequestDto);
+		
 		if (count == 1) {
 			map.put("msg", "회원 정보 수정 성공");
 			map.put("status", "success");
