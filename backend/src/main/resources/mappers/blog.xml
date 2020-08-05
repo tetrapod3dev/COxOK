@@ -34,10 +34,10 @@
 		values (
 			#{userId}, 
 		<if test="recipeId==0">
-			#{recipeId}
+			null
 		</if>
 		<if test="recipeId!=0">
-			null
+			#{recipeId}
 		</if>
 		, #{title}, #{content}, #{tag1}, #{tag2}, #{tag3})
 	</insert>
