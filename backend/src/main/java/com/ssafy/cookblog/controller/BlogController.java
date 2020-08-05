@@ -47,9 +47,9 @@ public class BlogController {
 		String email = jwtService.getEmailFromToken(token.substring(7));
 		long userId = userService.userIdByEmail(email);
 		blog.setUserId(userId);
+		System.out.println(">>>>"+blog);
 		int cnt = blogService.register(blog);
 		
-		System.out.println(">>>>"+blog);
 		
 		if(cnt != 0) {
 			map.put("msg", "블로그 포스트 작성에 성공했습니다.");
