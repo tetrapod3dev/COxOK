@@ -47,7 +47,7 @@ public class BlogController {
 		String email = jwtService.getEmailFromToken(token.substring(7));
 		long userId = userService.userIdByEmail(email);
 		blog.setUserId(userId);
-		System.out.println(">>>>"+blog);
+
 		int cnt = blogService.register(blog);
 		
 		
