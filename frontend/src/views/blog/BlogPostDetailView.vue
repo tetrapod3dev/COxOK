@@ -12,30 +12,36 @@
     </div>
     <!-- 페이지 배너 끝 -->
     <BlogMenu />
-    <!-- 게시글 작성 시작 -->
+    <!-- 게시글 시작 -->
+
+    <router-link
+      :to="{ name: 'BlogPostUpdateView', params: { blogId: blogPost.blogId } }"
+      tag="button"
+    >수정</router-link>
     <div class="section">
       <div class="container">
-        <div class="row justify-content-md-center" id="row_style">
+        <div class="justify-content-md-center" id="row_style">
           <!-- 제목 -->
-          <div>제목 : {{post.title}}</div>
+          <div>제목 : {{blogPost.title}}</div>
           <br />
           <!-- 내용 -->
-          <div>내용 : {{post.content}}</div>
+          <div>내용</div>
+          <div v-html="blogPost.content" style="border: solid"></div>
           <br />
-
+          <hr />
           <!-- 태그 시작 -->
           태그 :
-          <div>{{post.tag1}}</div>
-          <div>{{post.tag2}}</div>
-          <div>{{post.tag3}}</div>
+          <div>{{blogPost.tag1}}</div>
+          <div>{{blogPost.tag2}}</div>
+          <div>{{blogPost.tag3}}</div>
           <br />
           <!-- recipe -->
           레시피 :
-          <div>{{post.recipe_id}}</div>
+          <div>{{blogPost.recipe_id}}</div>
         </div>
       </div>
     </div>
-    <!-- 게시글 작성 끝 -->
+    <!-- 게시글 끝 -->
   </div>
 </template>
 
@@ -53,13 +59,13 @@ export default {
   },
   data() {
     return {
-      post: {
-        title: "test tit",
-        content: "test con",
-        tag1: "test t1",
-        tag2: "test t2",
-        tag3: "test t3",
-        recipe_id: "test ri",
+      blogPost: {
+        title: "",
+        content: "",
+        tag1: null,
+        tag2: null,
+        tag3: null,
+        recipe_id: null,
       },
     };
   },
@@ -82,8 +88,7 @@ export default {
           configs
         )
         .then((res) => {
-          console.log(res);
-          this.post = res.data.blog;
+          this.blogPost = res.data.blog;
         })
         .catch((err) => console.log(err.response));
     },

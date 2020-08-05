@@ -83,8 +83,10 @@
       id="__cxk__content"
       class="__cxk__content"
       contenteditable="true"
-      ref="cxkeditorContent"
-      @input="udpateEditorContent"
+      @input="update"
+      @focus="focus"
+      @blur="blur"
+      v-html="valueText"
     ></div>
   </div>
 </template>
@@ -102,12 +104,38 @@ export default {
       cxkSelectFontSize: "16",
       cxkInputFontColor: "#000000",
       cxkInputHiliteColor: "#FFFFFF",
+      focusIn: false,
+      valueText: "",
     };
+  },
+  props: {
+    value: {
+      type: String,
+      default: "",
+    },
+  },
+  computed: {
+    localValue: {
+      get: function () {
+        return this.value;
+      },
+      set: function (newValue) {
+        this.$emit("update:value", newValue);
+      },
+    },
   },
   created() {
     this.commandRelation = CONFIG.COMMAND_RELATION;
     this.listFontSize = CONFIG.LIST_FONT_SIZE;
     this.listFontFamily = CONFIG.LIST_FONT_FAMILY;
+    this.valueText = this.value;
+  },
+  watch: {
+    localValue(newVal) {
+      if (!this.focusIn) {
+        this.valueText = newVal;
+      }
+    },
   },
   methods: {
     showOnlyIcon: (cmd) => {
@@ -161,7 +189,7 @@ export default {
 
         if (fileToLoad.type.match("image")) {
           var fileReader = new FileReader();
-          fileReader.onload = function(fileLoadedEvent) {
+          fileReader.onload = function (fileLoadedEvent) {
             var imageLoaded = document.createElement("img");
             imageLoaded.src = fileLoadedEvent.target.result;
             console.log(document.getSelection());
@@ -171,11 +199,14 @@ export default {
         }
       }
     },
-    udpateEditorContent() {
-      this.$emit(
-        "content",
-        document.getElementById("__cxk__content").innerHTML
-      );
+    update(event) {
+      this.localValue = event.target.innerHTML;
+    },
+    focus() {
+      this.focusIn = true;
+    },
+    blur() {
+      this.focusIn = false;
     },
   },
 };
