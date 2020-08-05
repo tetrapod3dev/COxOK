@@ -31,6 +31,6 @@ public class CateogryDaoImpl implements CategoryDao {
 
 	@Override
 	public int deleteRecipeCategory(long recipeId) {
-		return session.delete("category.deleteRecipeIngredient", recipeId);
+		return session.delete("category.deleteRecipeCategory", recipeId);
 	}
 }
