@@ -16,7 +16,10 @@
 			reg_time as regTime, tag1, tag2, tag3
 		from 
 			blog 
-		limit #{startIndex},10
+		order by 
+			blog_id desc
+		limit 
+			#{startIndex},10
 	</select>
  
 	<select id="select" resultType="BlogDto">
@@ -44,7 +47,10 @@
 
 	<update id="update">
 		update blog set
-			recipe_id = #{recipeId}, title=#{title},
+			<if test="recipeId!=0">
+				recipe_id = #{recipeId},
+			</if>
+			title=#{title},
 			content = #{content}, tag1=#{tag1}, tag2=#{tag2}, tag3=#{tag3}
 		where blog_id = #{blogId}
 	</update>
