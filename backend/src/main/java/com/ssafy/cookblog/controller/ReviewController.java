@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.ReviewDto;
-import com.ssafy.cookblog.dto.request.RecipeRequestDto;
 import com.ssafy.cookblog.dto.response.ReviewResponseDto;
 import com.ssafy.cookblog.service.ReviewService;
 import com.ssafy.cookblog.service.UserService;

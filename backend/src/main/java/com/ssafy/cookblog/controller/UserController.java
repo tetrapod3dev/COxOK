@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.UserDto;
@@ -27,7 +25,6 @@ import com.ssafy.cookblog.util.Base64Service;
 import com.ssafy.cookblog.util.EmailService;
 import com.ssafy.cookblog.util.JwtService;
 
-import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin("*")

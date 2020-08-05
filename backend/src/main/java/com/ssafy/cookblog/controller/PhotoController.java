@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.request.PhotoRequestDto;
-import com.ssafy.cookblog.dto.request.RecipeRequestDto;
 import com.ssafy.cookblog.service.PhotoService;
 
 @RestController

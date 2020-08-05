@@ -16,5 +16,6 @@
 		<mapper resource="mappers/blog.xml" />
 		<mapper resource="mappers/likeRecipe.xml" />
 		<mapper resource="mappers/versus.xml" />
+		<mapper resource="mappers/meet.xml" />
 	</mappers>
 </configuration>

@@ -16,14 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.cookblog.dto.LikeDto;
-import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.VersusDto;
 import com.ssafy.cookblog.dto.VersusPointDto;
-import com.ssafy.cookblog.dto.response.RecipeResponseDto;
 import com.ssafy.cookblog.dto.response.VersusResponseDto;
 import com.ssafy.cookblog.dto.response.VersusViewResponseDto;
 import com.ssafy.cookblog.service.UserService;
