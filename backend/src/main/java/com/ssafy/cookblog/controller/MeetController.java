@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.cookblog.dto.MeetDto;
 import com.ssafy.cookblog.dto.request.MeetRegisterRequestDto;
 import com.ssafy.cookblog.dto.response.MeetViewResponseDto;
-import com.ssafy.cookblog.dto.response.VersusResponseDto;
-import com.ssafy.cookblog.dto.response.VersusViewResponseDto;
 import com.ssafy.cookblog.service.MeetService;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.JwtService;

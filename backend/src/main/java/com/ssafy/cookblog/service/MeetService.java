@@ -9,7 +9,6 @@ public interface MeetService {
 
 	public int register(MeetRegisterRequestDto meetRegisterReqeustDto);
 	public int modify(MeetDto meetDto);
-
 	List<MeetDto> getAllMeet(int startIndex);
 	MeetViewResponseDto getOneMeet(long meetId);
 	int deleteMeet(long meetId);

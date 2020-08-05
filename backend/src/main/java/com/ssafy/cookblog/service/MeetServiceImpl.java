@@ -36,8 +36,6 @@ public class MeetServiceImpl implements MeetService {
 		return meetDao.delete(meetId);
 	}
 	
-	
-	
 	@Override
 	public int register(MeetRegisterRequestDto meetRegisterReqeustDto) {
 		

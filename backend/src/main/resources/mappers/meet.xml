@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="meet">
+
 	<insert id="insert">
 		insert into 
 			meet (user_id, recipe_id, thumbnail_src, type, join_limit, price, title,
@@ -9,7 +10,6 @@
 			(#{userId}, #{recipeId}, #{thumbnailSrc}, #{type}, #{joinLimit}, 
 			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng} )
 	</insert>
-	
 	
 	<update id="update">
 		update 
@@ -65,7 +65,7 @@
 	
 	<select id="selectMeetJoinByUserid" resultType="MeetDto">
 		select 
-			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, TYPE, m.join_limit as joinLimit, m.price, m.title
+			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, type, m.join_limit as joinLimit, price, title
 		FROM
 			meet_join mj join meet m on mj.meet_id = m.meet_id
 		where
