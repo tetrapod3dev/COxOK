@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.cookblog.dao.CategoryDao;
 import com.ssafy.cookblog.dao.UserDao;
+import com.ssafy.cookblog.dto.FavoriteDto;
 import com.ssafy.cookblog.dto.UserDto;
 import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 
@@ -46,7 +47,17 @@ public class UserServiceImpl implements UserService{
 	//회원수정
 	@Transactional 
 	public int modify(UserModifyRequestDto userModifyRequestDto) {
+		long userId = userModifyRequestDto.getUserId();
+		categoryDao.deleteUserFavoriteCategory(userId);
 		
+		List<Long> categories = userModifyRequestDto.getFoodCategoryId();
+		
+		for(long categoryId : categories) {
+			FavoriteDto dto = new FavoriteDto();
+			dto.setUserId(userId);
+			dto.setFoodCategoryId(categoryId);
+			categoryDao.insertUserFavoriteCategory(dto);
+		}
 		return userDao.update(userModifyRequestDto);
 	}
 	
