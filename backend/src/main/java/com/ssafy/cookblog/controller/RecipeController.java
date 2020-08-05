@@ -74,7 +74,7 @@ public class RecipeController {
 				userLike = recipeService.reipceUserLike(like);
 			}
 			map.put("userLike", userLike);
-			map.put("userId", userId);
+			map.put("loginUserId", userId);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "레시피를 찾지 못했습니다.");
