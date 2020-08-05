@@ -23,7 +23,7 @@ import com.ssafy.cookblog.dto.FoodCategoryDto;
 import com.ssafy.cookblog.dto.IngredientDto;
 import com.ssafy.cookblog.dto.LikeDto;
 import com.ssafy.cookblog.dto.RecipeDto;
-import com.ssafy.cookblog.dto.request.RecipeRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeResponseDto;
@@ -124,7 +124,7 @@ public class RecipeController {
 	
 	// 레시피 등록
 	@PostMapping("/register")
-	public Object registerRecipe(@ModelAttribute RecipeRequestDto recipe, HttpServletRequest request) {
+	public Object registerRecipe(@ModelAttribute RecipeRegisterRequestDto recipe, HttpServletRequest request) {
 	
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		recipe.setUserId(userService.findUserByEmail(email).getUserId());

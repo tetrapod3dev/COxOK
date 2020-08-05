@@ -23,7 +23,7 @@ import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.RecipeFoodCategoryDto;
 import com.ssafy.cookblog.dto.RecipeIngredientDto;
 import com.ssafy.cookblog.dto.RecipePhotoDto;
-import com.ssafy.cookblog.dto.request.RecipeRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeIngredientResponseDto;
@@ -61,7 +61,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public int registerRecipe(RecipeRequestDto recipeRequestDto) {
+	public int registerRecipe(RecipeRegisterRequestDto recipeRequestDto) {
 		RecipeDto recipeDto = new RecipeDto();
 		
 		recipeDto.setUserId(recipeRequestDto.getUserId());

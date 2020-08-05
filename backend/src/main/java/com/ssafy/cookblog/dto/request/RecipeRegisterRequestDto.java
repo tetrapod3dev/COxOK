@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecipeRequestDto {
+public class RecipeRegisterRequestDto {
 	private long recipeId;
 	private String recipeName;
 	private String recipeDetail;

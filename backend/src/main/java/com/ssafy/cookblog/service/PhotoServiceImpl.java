@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ssafy.cookblog.dto.request.PhotoRequestDto;
+import com.ssafy.cookblog.dto.request.PhotoRegisterRequestDto;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
-	public List<String> registerPhoto(PhotoRequestDto photo) {
+	public List<String> registerPhoto(PhotoRegisterRequestDto photo) {
 		List<String> result=new ArrayList<String>();
 		
 		int len = photo.getPhoto().length;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.cookblog.dto.request.PhotoRequestDto;
+import com.ssafy.cookblog.dto.request.PhotoRegisterRequestDto;
 import com.ssafy.cookblog.service.PhotoService;
 
 @RestController
@@ -27,7 +27,7 @@ public class PhotoController {
 	PhotoService photoService;
 
 	@PostMapping("/register")
-	public Object registerRecipe(@ModelAttribute PhotoRequestDto photo, HttpServletRequest request) {
+	public Object registerRecipe(@ModelAttribute PhotoRegisterRequestDto photo, HttpServletRequest request) {
 	
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();

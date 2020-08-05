@@ -8,7 +8,7 @@ import com.ssafy.cookblog.dto.LikeDto;
 import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.RecipeFoodCategoryDto;
 import com.ssafy.cookblog.dto.RecipeIngredientDto;
-import com.ssafy.cookblog.dto.request.RecipeRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeIngredientResponseDto;
 import com.ssafy.cookblog.dto.response.RecipeResponseDto;

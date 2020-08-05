@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhotoRequestDto {	
+public class PhotoRegisterRequestDto {	
 	private MultipartFile[] photo;
 }
