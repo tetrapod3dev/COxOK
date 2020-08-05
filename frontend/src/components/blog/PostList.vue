@@ -11,7 +11,7 @@
 
       <tbody v-for="(post, index) in posts" :key="index">
         <tr>
-          <td>{{ curPage * 10 - index - 10 + posts.length }}</td>
+          <td>{{ total - (curPage - 1) * 10 - index }}</td>
           <td>
             <router-link
               :to="{ name: 'BlogPostDetailView', params: { blogId: post.blogId } }"
@@ -34,6 +34,7 @@ export default {
     curPage: Number,
     maxPage: Number,
     numPostPerPage: Number,
+    total: Number,
   },
 };
 </script>

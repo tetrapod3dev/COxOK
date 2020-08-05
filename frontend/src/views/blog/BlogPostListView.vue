@@ -32,9 +32,15 @@
         :curPage="curPage"
         :maxPage="maxPage"
         :numPostPerPage="numPostPerPage"
+        :total="total"
       />
 
-      <PageButtons :curPage="curPage" :maxPage="maxPage" @move-page="movePage" />
+      <PageButtons
+        class="d-flex justify-content-center"
+        :curPage="curPage"
+        :maxPage="maxPage"
+        @move-page="movePage"
+      />
     </div>
   </div>
 </template>
@@ -51,10 +57,11 @@ export default {
   name: "BlogPostListView",
   data() {
     return {
-      curPage: 1,
-      maxPage: 20,
+      curPage: 0,
+      maxPage: 0,
       numPostPerPage: 10,
       posts: [],
+      total: 0,
     };
   },
   components: {
@@ -64,14 +71,13 @@ export default {
   },
   methods: {
     movePage(page) {
-      if (page == "처음") {
+      if (page == "«") {
         this.$router.push({ params: { pageNum: 1 } });
-      } else if (page == "마지막") {
+      } else if (page == "»") {
         this.$router.push({ params: { pageNum: this.maxPage } });
       } else {
         this.$router.push({ params: { pageNum: parseInt(page) } });
       }
-      this.curPage = this.$route.params.pageNum * 1;
       scroll(0, 0);
     },
     changeSortKey(sortKey) {
@@ -100,6 +106,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.posts = res.data.list;
+          this.total = res.data.total;
           this.maxPage =
             parseInt((res.data.total - 1) / this.numPostPerPage) + 1;
         });

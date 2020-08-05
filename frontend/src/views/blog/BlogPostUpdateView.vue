@@ -153,10 +153,13 @@ export default {
         this.blogPost.tag1 = this.blogTags[0];
       }
       axios
-        .post(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
+        .put(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
         .then((res) => {
           console.log(res);
-          router.push({ name: "BlogPostListView", params: { pageNum: 1 } });
+          router.push({
+            name: "BlogPostDetailView",
+            params: { blogId: this.$route.params.blogId },
+          });
         })
         .catch((err) => {
           console.log(err);
