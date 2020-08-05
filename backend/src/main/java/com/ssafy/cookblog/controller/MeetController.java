@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.MeetDto;
+import com.ssafy.cookblog.dto.MeetJoinDto;
 import com.ssafy.cookblog.dto.request.MeetRegisterRequestDto;
 import com.ssafy.cookblog.dto.response.MeetViewResponseDto;
 import com.ssafy.cookblog.service.MeetService;
@@ -146,5 +147,47 @@ public class MeetController {
 		return response;
 	}
 	
+	@PostMapping("/meetjoin")
+	public Object registerMeetJoin(@RequestBody MeetJoinDto meetJoinDto,HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		meetJoinDto.setUserId(userId);
+		
+		int count = meetService.registerMeetJoin(meetJoinDto);
+		if(count!=0) {
+			map.put("msg", "소모임 참석을 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "소모임 참석을 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
 	
+	@DeleteMapping("/meetjoin/{meetJoinId}")
+	public Object deleteMeetJoin(@PathVariable("meetJoinId") long meetJoinId) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		int count = meetService.removeMeetJoin(meetJoinId);
+		if(count!=0) {
+			map.put("msg", "소모임 참석 삭제를 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "소모임 참석 삭제를 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+		
 }

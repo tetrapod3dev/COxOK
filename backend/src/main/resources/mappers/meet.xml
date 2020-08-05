@@ -73,4 +73,14 @@
 		order BY m.meet_id desc
 	</select>
 	
+	<insert id="insertMeetJoin">
+		insert into 
+			meet_join (meet_id, user_id)
+		values 
+			(#{meet_id}, #{user_id})
+	</insert>
+	
+	<delete id="deleteMeetJoin">
+		delete from meet_join where meet_join_id = #{meetJoinId}
+	</delete>
 </mapper>

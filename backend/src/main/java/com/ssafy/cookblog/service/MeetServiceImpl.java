@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.cookblog.dao.MeetDao;
 import com.ssafy.cookblog.dto.MeetDto;
+import com.ssafy.cookblog.dto.MeetJoinDto;
 import com.ssafy.cookblog.dto.request.MeetRegisterRequestDto;
 import com.ssafy.cookblog.dto.response.MeetViewResponseDto;
 
@@ -64,15 +65,22 @@ public class MeetServiceImpl implements MeetService {
 		meetDto.setLng(meetRegisterReqeustDto.getLng());
 
 		//insert
-		int count = meetDao.insert(meetDto);
-		
-		return count;
+		return meetDao.insert(meetDto);
 	}
 	
 	@Override
 	public int modify(MeetDto meetDto) {
-		int count=meetDao.update(meetDto);
-		return count;
+		return meetDao.update(meetDto);
+	}
+	
+	@Override
+	public int registerMeetJoin(MeetJoinDto meetJoinDto) {
+		return meetDao.insertMeetJoin(meetJoinDto);
+	}
+	
+	@Override
+	public int removeMeetJoin(long meetJoinId) {
+		return meetDao.deleteMeetJoin(meetJoinId);
 	}
 	
 }

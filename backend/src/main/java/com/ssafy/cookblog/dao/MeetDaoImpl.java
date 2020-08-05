@@ -45,4 +45,14 @@ public class MeetDaoImpl implements MeetDao {
 	public int update(MeetDto meetDto) {
 		return session.update("meet.update",meetDto);
 	}
+	
+	@Override
+	public int insertMeetJoin(MeetJoinDto meetJoinDto) {
+		return session.insert("meet.insertMeetJoin",meetJoinDto);
+	}
+	
+	@Override
+	public int deleteMeetJoin(long meetJoinId) {
+		return session.delete("meet.deleteMeetJoin",meetJoinId);
+	}
 }
