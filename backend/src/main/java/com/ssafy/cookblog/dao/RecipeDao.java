@@ -25,6 +25,7 @@ public interface RecipeDao {
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId);
 	public IngredientDto selectIngredientById(long ingredientId);
 	public int insertRecipeIngredient(RecipeIngredientDto recipeIngredient);
+	public int deleteRecipeIngredient(long recipeId);
 	public Long selectTotalRecipeNum();
 	public List<RecipeDto> search(RecipeSearchRequestDto recipeSearchRequestDto);
 	public Long searchTotal(RecipeSearchRequestDto recipeSearchRequestDto);

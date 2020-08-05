@@ -76,6 +76,11 @@ public class RecipeDaoImpl implements RecipeDao{
 	}
 	
 	@Override
+	public int deleteRecipeIngredient(long recipeId) {
+		return session.delete("recipe.deleteRecipeIngredient", recipeId);
+	}
+	
+	@Override
 	public Long selectTotalRecipeNum() {
 		return session.selectOne("recipe.selectTotalRecipeNum");
 	}
@@ -117,7 +122,9 @@ public class RecipeDaoImpl implements RecipeDao{
 
 	@Override
 	public int updateRecipe(RecipeDto recipeDto) {
-		return session.insert("recipe.updateRecipe", recipeDto);
+		return session.update("recipe.updateRecipe", recipeDto);
 	}
+
+	
 
 }

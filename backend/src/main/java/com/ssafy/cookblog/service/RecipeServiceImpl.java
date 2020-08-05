@@ -162,8 +162,9 @@ public class RecipeServiceImpl implements RecipeService {
 		RecipeDto recipeDto = new RecipeDto();
 		
 		long recipeId = recipeUpdateRequestDto.getRecipeId();
-		recipeDao.delete(recipeId);
-		
+		categoryDao.deleteRecipeCategory(recipeId); // recipeId에 연결된 카테고리 삭제
+		recipePhotoDao.delete(recipeId); // recipeId에 연결된 포토 삭제
+		recipeDao.deleteRecipeIngredient(recipeId); // recipeId에 연결된 재료 삭제
 		
 		recipeDto.setRecipeId(recipeId);
 		recipeDto.setUserId(recipeUpdateRequestDto.getUserId());

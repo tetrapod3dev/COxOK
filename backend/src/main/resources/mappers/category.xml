@@ -31,4 +31,11 @@
    			r.recipe_id = #{recipeId} 
    	</select>
    	
+   	<delete id="deleteRecipeCategory">
+   		delete from
+   			recipe_food_category
+   		where
+   			recipe_id = #{recipeId}
+   	</delete>
+   	
 </mapper>
