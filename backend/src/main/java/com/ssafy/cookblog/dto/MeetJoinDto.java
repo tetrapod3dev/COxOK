@@ -11,5 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MeetJoinDto {
 	private long meetJoinId;
-	//추가
+	private long meedId;
+	private long userId;
 }
