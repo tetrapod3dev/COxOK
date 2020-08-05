@@ -103,9 +103,9 @@ public class VersusController {
 	}
 		
 	
-	// 레시피 상세 조회
+	// 요리대전 상세 조회
 	@GetMapping("/view/{id}")
-	public Object getOneRecipe(@PathVariable("id") long id) {
+	public Object getOneVersus(@PathVariable("id") long id) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
@@ -124,9 +124,9 @@ public class VersusController {
 		return response;
 	}
 	
-	// 레시피 삭제
+	// 요리대전 삭제
 	@DeleteMapping("/delete/{id}")
-	public Object deleteRecipe(@PathVariable long id) {
+	public Object deleteVersus(@PathVariable long id) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
