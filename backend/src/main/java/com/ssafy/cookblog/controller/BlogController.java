@@ -41,7 +41,6 @@ public class BlogController {
 	// Create
 	@PostMapping("/")
 	public Object register(@RequestBody BlogDto blog,HttpServletRequest request) {
-		
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		String token = request.getHeader("Authorization");
@@ -49,6 +48,8 @@ public class BlogController {
 		long userId = userService.userIdByEmail(email);
 		blog.setUserId(userId);
 		int cnt = blogService.register(blog);
+		
+		System.out.println(">>>>"+blog);
 		
 		if(cnt != 0) {
 			map.put("msg", "블로그 포스트 작성에 성공했습니다.");
