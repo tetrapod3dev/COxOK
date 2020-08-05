@@ -237,15 +237,12 @@ export default {
       this.inputImageFile(event.target.files)
     },
     inputImageFile (addingfiles) {
-      console.log(addingfiles)
       this.addingFiles = addingfiles
       this.fileList = [...this.fileList, ...addingfiles]
-      console.log(this.fileList)
       this.onClickUpload()
     },
     onClickUpload () {
       const self = this
-      console.log(1)
       this.addingFiles.forEach(function(file) {
         self.tempInputs.push(
           {'imageSrc': URL.createObjectURL(file), 'content': null, 'rawFile': file}
@@ -345,13 +342,9 @@ export default {
         },
       };
 
-      for (var value of frm.values()) {
-        console.log(value);
-      }
       axios
-        .post(SERVER.URL + SERVER.ROUTES.recipeRegister +1212412512, frm, configs)
-        .then((res) => {
-          console.log(res);
+        .post(SERVER.URL + SERVER.ROUTES.recipeRegister, frm, configs)
+        .then(() => {
           router.push({ name: "RecipeListView", params: { pageNum: 1 } });
         })
         .catch((err) => {

@@ -10,7 +10,7 @@
           <div class="stats">
             <span v-popover:popover-fav>
               <i class="fa fa-star-o"></i>
-              {{ avgRating }}
+              {{ recipe.avgRating }}
             </span>
             <el-popover
               ref="popover-fav"
@@ -157,7 +157,7 @@
           <div class="col-md-8 ml-auto mr-auto">
             <div class="media-area">
               <h3 class="title text-center">한줄평</h3>
-              <ReviewList :reviewList="recipe.reviewDtoList" />
+              <ReviewList :loginUserId="loginUserId" :reviewList="recipe.reviewDtoList" @deleteReview="deleteReview" @modifyMod="modifyMod" @updateReview="updateReview" />
             </div>
 
             <div class="media media-post">
@@ -165,7 +165,7 @@
                 <!-- 
                 v-model="form.comment"-->
 
-                <ReviewMake v-show="isLoggedIn" @submitReview="submitReview" />
+                <ReviewMake v-show="isLoggedIn && !isReviewed" @submitReview="submitReview" />
                 <div class="media-footer">
                   <span @click="copyRecipe" class="pull-left">
                     <n-button type="info" round block>
@@ -215,11 +215,15 @@ export default {
   },
   data() {
     return {
-      recipe: {},
       recipeDataSet: {},
       likeCnt: null,
       isLiked: null,
+      loginUserId: null,
+      recipe: {
+        'reviewDtoList': [],
+      },
       unitList: ["kcal", "g", "g", "mg", "g", "g"],
+      tempUserId: [],
     };
   },
   computed: {
@@ -228,10 +232,16 @@ export default {
       return this.isLiked ? "좋아요 취소" : "좋아요";
     },
     recipeThumbnailSrc() {
-      return "http://i3a104.p.ssafy.io/img/" + this.recipe.recipeThumbnailSrc;
+      return SERVER.IMAGE_URL + this.recipe.recipeThumbnailSrc;
     },
     avgRating() {
       return Math.round(this.recipe.avgRating * 10) / 10
+    },
+    reviewedUser() {
+      return this.recipe.reviewDtoList.map(reviewDto => reviewDto.userId)
+    },
+    isReviewed() {
+      return (this.reviewedUser.indexOf(this.loginUserId) >= 0) ? true : false
     }
   },
   methods: {
@@ -257,7 +267,7 @@ export default {
       }
     },
     imageSrc(recipePhoto) {
-      return "http://i3a104.p.ssafy.io/img/" + recipePhoto.photoSrc;
+      return SERVER.IMAGE_URL + recipePhoto.photoSrc;
     },
     changeLike() {
       if (this.isLiked) {
@@ -279,13 +289,31 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    deleteReview(reviewId) {
+      axios.delete(SERVER.URL + SERVER.ROUTES.reviewDelete + reviewId, {
+          headers: {
+            Authorization: this.config,
+          },
+        })
+        .then(() => {
+          this.getRecipe();
+        })
+        .catch(err => console.log(err))
+    },
+    modifyMod(review) {
+      // this.$set(review, 'changing', true);
+      review['changing'] = !review['changing']
+    },
+    updateReview(review) {
+      console.log(review)
+    },
     copyRecipe() {
       var tempCopyEl = document.createElement("textarea");
       tempCopyEl.innerHTML =
         "레시피 제목: " +
         this.recipe.recipeName +
         "\r\n레시피 주소: " +
-        "localhost:3000" +
+        SERVER.URL +
         this.$route.fullPath;
       document.body.appendChild(tempCopyEl);
 
@@ -327,64 +355,42 @@ export default {
         .catch((err) => console.log(err));
     },
     getRecipe() {
-      if (!this.isLoggedIn) {
-        axios
-          .get(
-            SERVER.URL +
-              SERVER.ROUTES.recipeDetail +
-              this.$route.params.recipe_id
-          )
-          .then((res) => {
-            console.log(res);
-            this.recipe = res.data.recipe;
-            this.recipeDataSet = {
-              calorie: res.data.recipe.calorie,
-              carbon: res.data.recipe.carbon,
-              fat: res.data.recipe.fat,
-              natrium: res.data.recipe.natrium,
-              protein: res.data.recipe.protein,
-              sugar: res.data.recipe.sugar,
-            };
+      let config = (this.config == "Bearer null") ? null : { headers: {Authorization: this.config} }
 
-            this.likeCnt = res.data.likeCnt;
-            this.isLiked = res.data.userLike;
-          })
-          .catch((err) => console.log(err.response));
-      } else {
-        axios
-          .get(
-            SERVER.URL +
-              SERVER.ROUTES.recipeDetail +
-              this.$route.params.recipe_id,
-            {
-              headers: {
-                Authorization: this.config,
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-            this.recipe = res.data.recipe;
-            this.recipeDataSet = {
-              calorie: res.data.recipe.calorie,
-              carbon: res.data.recipe.carbon,
-              fat: res.data.recipe.fat,
-              natrium: res.data.recipe.natrium,
-              protein: res.data.recipe.protein,
-              sugar: res.data.recipe.sugar,
-            };
+      axios
+        .get(
+          SERVER.URL +
+            SERVER.ROUTES.recipeDetail +
+            this.$route.params.recipe_id, config
+        )
+        .then((res) => {
+          this.recipe = res.data.recipe
+          this.recipeDataSet = {
+            'calorie': res.data.recipe.calorie,
+            'carbon': res.data.recipe.carbon,
+            'fat': res.data.recipe.fat,
+            'natrium': res.data.recipe.natrium,
+            'protein': res.data.recipe.protein,
+            'sugar': res.data.recipe.sugar,
+          };
 
-            this.likeCnt = res.data.likeCnt;
-            this.isLiked = res.data.userLike;
+          this.likeCnt = res.data.likeCnt;
+          this.isLiked = res.data.userLike;
+          this.loginUserId = res.data.loginUserId
+
+          this.recipe.reviewDtoList.forEach(function (review) {
+            review['changing'] = false
           })
-          .catch((err) => console.log(err.response));
-      }
+
+        })
+        .catch((err) => console.log(err));
     },
   },
   created() {
     this.getRecipe();
   },
-  mounted() {},
+  mounted() {
+  },
 };
 </script>
 
