@@ -16,21 +16,27 @@
       <div class="row">
         <div v-for="recipe in nowRecipes" :key="recipe.id" class="col-6">
           <div @click="selectRecipe(recipe)" >
-            <button class="btn btn-outline-primary">{{ recipe.title }}</button>
+            <img :src="imageSrc(recipe.recipeThumbnailSrc)">
+            <button class="btn btn-outline-primary">{{ recipe.recipeName }}</button>
           </div>
-          <button @click="showDetail(recipe.id)">{{ recipe.id }}번 상세보기</button>
+          <button @click="showDetail(recipe.recipeId)">{{ recipe.recipeId }}번 상세보기</button>
         </div>
       </div>
     </div>
 
     <div v-else>
-      1등 : {{ recipes[0].title }}
+      <h1>1등</h1>
+      <img :src="imageSrc(recipes[0].recipeThumbnailSrc)">
+      <button class="btn btn-outline-primary">{{ recipes[0].recipeName }}</button>
     </div>
 
   </div>
 </template>
 
 <script>
+import SERVER from '@/api/api'
+
+import axios from 'axios'
 import _ from 'lodash'
 
 export default {
@@ -41,24 +47,7 @@ export default {
       selectedMax: 0,
       cur: 0,
       selectedRecipes: [],
-      recipes: [
-        {'title': '1번 요리', '평점': 4.2, 'id': 1},
-        {'title': '2번 요리', '평점': 4.2, 'id': 2},
-        {'title': '3번 요리', '평점': 4.2, 'id': 3},
-        {'title': '4번 요리', '평점': 4.2, 'id': 4},
-        {'title': '5번 요리', '평점': 4.2, 'id': 5},
-        {'title': '6번 요리', '평점': 4.2, 'id': 6},
-        {'title': '7번 요리', '평점': 4.2, 'id': 7},
-        {'title': '8번 요리', '평점': 4.2, 'id': 8},
-        {'title': '9번 요리', '평점': 4.2, 'id': 9},
-        {'title': '10번 요리', '평점': 4.2, 'id': 10},
-        {'title': '11번 요리', '평점': 4.2, 'id': 11},
-        {'title': '12번 요리', '평점': 4.2, 'id': 12},
-        {'title': '13번 요리', '평점': 4.2, 'id': 13},
-        {'title': '14번 요리', '평점': 4.2, 'id': 14},
-        {'title': '15번 요리', '평점': 4.2, 'id': 15},
-        {'title': '16번 요리', '평점': 4.2, 'id': 16},
-      ],
+      recipes: [],
       possibleLength: [],
     }
   },
@@ -89,15 +78,27 @@ export default {
       this.selectedMax = selection.value
 
       this.recipes = _.shuffle(this.recipes.slice(0, this.selectedMax))
+    },
+    imageSrc(recipeSrc) {
+      return SERVER.IMAGE_URL + recipeSrc
     }
   },
   created() {
     // this.recipes = _.shuffle(this.recipes.slice(0, this.maxNow))
-    const recipeLength = this.recipes.length
-    while (this.TempMax <= recipeLength) {
-      this.possibleLength.push(this.TempMax)
-      this.TempMax *= 2
-    }
+    axios.get(SERVER.URL + SERVER.ROUTES.versusDetail + this.$route.params.versus_id)
+      .then(res => {
+        this.recipes = res.data.versus.recipeList
+
+        const recipeLength = res.data.versus.recipeList.length
+        while (this.TempMax <= recipeLength) {
+          this.possibleLength.push(this.TempMax)
+          this.TempMax *= 2
+        }
+      })
+      .catch(err => console.log(err))
+
+    // const recipeLength = this.recipes.length
+    
     // this.TempMax /= 2
   }
 }

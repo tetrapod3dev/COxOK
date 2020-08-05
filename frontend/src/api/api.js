@@ -1,5 +1,6 @@
 export default {
   URL: 'http://i3a104.p.ssafy.io/',
+  IMAGE_URL: 'http://i3a104.p.ssafy.io/img/',
   ROUTES: {
     // Accounts ROUTES
     signup: '/user/signup/',
@@ -28,5 +29,10 @@ export default {
     recipeReview: '/review/view/', // 레시피 아이디를 보내면 레시피의 리뷰들이 반환되는 것같아요.
     reviewRegister: '/review/', // 리뷰 작성을 위한 데이터를 전달할 주소
     reviewDelete: '/review/', // 뒤에 review_id 붙여주기
+
+    // Versus ROUTES
+    versusRegister: '/versus/register/', // POST / 요리대전 생성
+    versusList: '/versus/all/', // GET / 요리대전 목록 (6개씩)
+    versusDetail: '/versus/view/', // GET / 요리대전 상세보기
   }
 }

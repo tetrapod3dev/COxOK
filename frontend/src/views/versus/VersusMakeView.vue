@@ -84,6 +84,7 @@ export default {
     CategorySelector
   },
   computed: {
+    ...mapGetters(["config", "searchingData"]),
     selectedRecipesId() {
       return this.selectedRecipes.map(recipe => recipe.recipeId)
     },
@@ -93,7 +94,6 @@ export default {
     curRecipes() {
       return this.selectedRecipes.slice(4*this.selectedCurPage, 4*(this.selectedCurPage+1))
     },
-    ...mapGetters(["searchingData"]),
     checker() {
       let tempChecker = {};
       const self = this;
@@ -212,7 +212,20 @@ export default {
       scroll(0, 0)
     },
     submitVersus() {
-      console.log(this.selectedRecipesId)
+      let versusData = {
+        "title": this.versusTitle,
+        "content": this.versusContent,
+        "recipeIdList": this.selectedRecipesId
+      }
+
+      axios.post(SERVER.URL + SERVER.ROUTES.versusRegister, versusData, {
+        headers: {
+          Authorization: this.config,
+        }
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+
     }
   },
   created() {
