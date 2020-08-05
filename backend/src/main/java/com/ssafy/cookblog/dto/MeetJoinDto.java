@@ -13,4 +13,5 @@ public class MeetJoinDto {
 	private long meetJoinId;
 	private long meedId;
 	private long userId;
+	private String nickname;
 }

@@ -42,7 +42,7 @@ public class ReviewController {
 
 	//레시피번호에 따른 리뷰 조회
 	@GetMapping("/view/{recipeId}")
-	public Object getAllReview(@PathVariable("recipeId") int recipeId ) {
+	public Object getAllReview(@PathVariable("recipeId") int recipeId) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
