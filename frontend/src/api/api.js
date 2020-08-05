@@ -29,7 +29,7 @@ export default {
     reviewDelete: "/review/", // 뒤에 review_id 붙여주기
 
     // Blog ROUTES
-    blogRegister: "/blog/",
+    blog: "/blog/",
     blogList: "/blog/all/", // 모든 블로그 게시글을 받기 위한 주소
   },
 };

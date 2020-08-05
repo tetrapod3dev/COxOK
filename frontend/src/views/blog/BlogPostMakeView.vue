@@ -124,10 +124,8 @@ export default {
       if (this.blogTags.length > 0) {
         this.blogPost.tag1 = this.blogTags[0];
       }
-
-      console.log(this.blogPost);
       axios
-        .post(SERVER.URL + SERVER.ROUTES.blogRegister, this.blogPost, configs)
+        .post(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
         .then((res) => {
           console.log(res);
           router.push({ name: "BlogPostListView", params: { pageNum: 1 } });
