@@ -45,11 +45,30 @@ SSAFY 3기 2학기 공통 프로젝트 (트랙 1-웹 기술)
 |swagger2|2.9.2|
 |mybatis|2.1.2|
 
+## 주요 항목
+|wiki|코 x 옥|설치 가이드|기술 문서|
+|-|-|-|-|
+|![i1][wiki-image]|![i2][help-image]|![i3][setup-image]|![i4][techdocs-image]|
+|[Home][home]|[코 x 옥][about]|[설치 가이드][setupdocs]|[기술 문서][techdocs]|
+|코 x 옥 프로젝트 gitlab wiki|코 x 옥 프로젝트에 대한 설명|단계별 설치 가이드|기술에 대한 상세 문서|
 
-## 팀원
-
+### 코 x 옥 팀원
 * **권민** - *backend* - [minkwon4](https://lab.ssafy.com/minkwon4)
 * **박태록** - *PM, frontend* - [sdf7575](https://lab.ssafy.com/sdf7575)
 * **이동혁** - *frontend* - [lee33843](https://lab.ssafy.com/lee33843)
 * **장윤정** - *backend* - [wkddbswjd325](https://lab.ssafy.com/wkddbswjd325)
 * **최원대** - *backend* - [ryunhoo123](https://lab.ssafy.com/ryunhoo123)
+
+---
+
+[Home][home] _|_ [About][about] _|_ [Setup Guide][setupdocs] _|_ [Technical Docs][techdocs] _|_ Copyright © 2020 SSAFY
+
+[home]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/Home
+[about]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/coxok-overview
+[setupdocs]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/Setting-up-coxok
+[techdocs]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/technical-documentation
+
+[techdocs-image]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/raw/master/assets/database.png
+[setup-image]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/raw/master/assets/tools.png
+[help-image]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/raw/master/assets/help.png
+[wiki-image]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/raw/master/assets/wiki.png
