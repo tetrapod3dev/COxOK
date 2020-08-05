@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.cookblog.dto.UserDto;
+import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -42,8 +43,8 @@ public class UserDaoImpl implements UserDao{
 	
 	//Update
 	@Override
-	public int update(UserDto user) {
-		return session.update("user.update",user);
+	public int update(UserModifyRequestDto userModifyRequestDto) {
+		return session.update("user.update", userModifyRequestDto);
 	}
 	@Override
 	public int updateEmail(UserDto user) {

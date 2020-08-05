@@ -7,6 +7,18 @@
    		values (#{recipeId}, #{foodCategoryId}) 
    	</insert>
    	
+   	<insert id="insertUserFavoriteCategory">
+   		insert into favorite_category(user_id, food_category_id)
+   		values (#{userId}, #{foodCategoryId})
+   	</insert>
+   	
+   	<delete id="deleteUserFavoriteCategory">
+   		delete from 
+   			favorite_category
+   		where
+   			user_id = #{userId}
+   	</delete>
+   	
    	<select id="selectRecipeCategoryName" resultType="String">
    		select food_category_name as foodCategoryName
    		from 
