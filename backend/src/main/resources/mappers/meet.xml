@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="meet">
+	<insert id="insert">
+		insert into 
+			meet (user_id, recipe_id, thumbnail_src, type, join_limit, price, title,
+			content, address, lat, lng )
+		values
+			(#{userId}, #{recipeId}, #{thumbnailSrc}, #{type}, #{joinLimit}, 
+			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng} )
+	</insert>
+	
+	
+	<update id="update">
+		update 
+			meet
+		set
+			recipe_id = #{recipeId}, thumbnail_src = #{thumbnaulSrc},
+			type = #{type}, join_limit = #{joinLimit}, price = #{price},
+			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}
+		where
+			meet_id = #{meetId}
+	</update>
 	
 </mapper>
