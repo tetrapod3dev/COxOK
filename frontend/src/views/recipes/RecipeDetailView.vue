@@ -52,9 +52,12 @@
       </card>
     </section>
     
+    <div v-if="loginUserId == recipe.userId">
       <router-link :to="{ name: 'RecipeUpdateView', params: { recipe_id: recipe.recipeId } }">
         <button class="btn btn-primary">수정하러 가기</button>
       </router-link>
+      <button @click="deleteRecipe">삭제</button>
+    </div>
       
     <!--     *********    TEAM 1     *********      -->
     <div class="team-1" id="recipeInfo">
@@ -276,6 +279,20 @@ export default {
         this.likeRecipe();
       }
     },
+    deleteRecipe() {
+      let response = confirm('진짜요??? 에이..설마...')
+      if (response) {
+        axios.delete(SERVER.URL + SERVER.ROUTES.recipeDelte + this.recipe.recipeId, {
+          headers: {
+            Authorization: this.config,
+          },
+        })
+        .then(() => {
+          this.$router.push({ name:'RecipeListView', params: { pageNum: 1 } });
+        })
+        .catch(err => console.log(err))
+      }
+    },
     submitReview(reviewData) {
       reviewData["recipeId"] = this.$route.params.recipe_id;
       axios
@@ -305,8 +322,19 @@ export default {
       review['changing'] = !review['changing']
     },
     updateReview(review) {
-      console.log(review)
+      let reviewData = {
+        'rating': review.rating,
+        'content': review.content
+      }
+      axios.put(SERVER.URL + SERVER.ROUTES.reviewUpdate + review.reviewId, reviewData, {
+          headers: {
+            Authorization: this.config,
+          },
+        })
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
     },
+
     copyRecipe() {
       var tempCopyEl = document.createElement("textarea");
       tempCopyEl.innerHTML =

@@ -32,8 +32,9 @@ export default {
 
 
     // Review Routes
-    recipeReview: '/review/view/', // 레시피 아이디를 보내면 레시피의 리뷰들이 반환되는 것같아요.
-    reviewRegister: '/review/', // 리뷰 작성을 위한 데이터를 전달할 주소
-    reviewDelete: '/review/', // 뒤에 review_id 붙여주기
+    recipeReview: '/review/view/', // GET / 레시피 아이디를 보내면 레시피의 리뷰들이 반환되는 것같아요.
+    reviewRegister: '/review/', // POST / 리뷰 작성을 위한 데이터를 전달할 주소
+    reviewDelete: '/review/', // DELETE / 뒤에 review_id 붙여주기
+    reviewUpdate: '/review/', // PUT / 뒤에 review_id
   }
 }
