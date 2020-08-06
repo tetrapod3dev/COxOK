@@ -31,6 +31,11 @@ public class CateogryDaoImpl implements CategoryDao {
 	}
 
 	@Override
+	public List<Long> selectUserFavoriteCategoryId(long userId) {
+		return session.selectList("category.selectUserFavoriteCategory", userId);
+	}
+	
+	@Override
 	public int deleteRecipeCategory(long recipeId) {
 		return session.delete("category.deleteRecipeCategory", recipeId);
 	}

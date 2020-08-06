@@ -206,12 +206,14 @@ public class UserController {
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		UserDto user = userService.findUserByEmail(email);
 		List<FoodCategoryDto> categories = recipeService.selectAllFoodCategory();
+		List<Long> userFavoriteCategories = userService.readUserFavoriteCategory(user.getUserId());
 
 		if (user != null) {
 			map.put("msg", "회원 정보 성공");
 			map.put("status", "success");
 			map.put("user", user);
 			map.put("categories", categories);
+			map.put("userFavoriteCategories", userFavoriteCategories);
 			response = new ResponseEntity(map, HttpStatus.OK);
 			return response;
 		} else {
