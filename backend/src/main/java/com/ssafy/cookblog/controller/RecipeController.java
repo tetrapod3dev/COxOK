@@ -47,7 +47,7 @@ public class RecipeController {
 	
 	// 레시피 상세 조회
 	@GetMapping("/view/{id}")
-	public Object getOneRecipe(@PathVariable("id")int id, HttpServletRequest request ) {
+	public Object getOneRecipe(@PathVariable("id")int id, HttpServletRequest request ) throws Exception {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
@@ -65,7 +65,7 @@ public class RecipeController {
 			map.put("recipe", recipe);
 			map.put("likeCnt", likeCnt);
 			boolean userLike = false;
-			if(token != null) {
+			if(token != null && jwtService.isValid(token)) {
 				email = jwtService.getEmailFromToken(token.substring(7));
 				userId = userService.userIdByEmail(email);
 				LikeDto like = new LikeDto();
