@@ -58,4 +58,13 @@
 		delete from versus where versus_id = #{versusId}
 	</delete>
 	
+	<select id="selectVersusResult" resultType="VersusPointDto"> 
+		SELECT recipe_id AS recipeId, COUNT(*) AS count, 
+			recipe_name AS recipeName, recipe_thumbnail_src AS recipeThumbnailSrc
+		FROM versus_point JOIN recipe USING(recipe_id)
+		WHERE versus_id = #{versusId}
+		GROUP BY recipe_id 
+		ORDER BY COUNT(*) desc
+	</select>
+	
 </mapper>

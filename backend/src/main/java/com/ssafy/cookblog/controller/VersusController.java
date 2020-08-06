@@ -126,17 +126,38 @@ public class VersusController {
 	
 	// 요리대전 삭제
 	@DeleteMapping("/delete/{id}")
-	public Object deleteVersus(@PathVariable long id) {
+	public Object removeVersus(@PathVariable long id) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		int count = versusService.deleteVersus(id);
+		int count = versusService.removeVersus(id);
 		if(count != 0) {
 			map.put("msg", "요리대전이 삭제되었습니다.");
 			map.put("status", "success");
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "요리대전을 삭제하지 못했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
+	// 요리대전 결과 조회
+	@GetMapping("/result/{id}")
+	public Object getVersusResult(@PathVariable("id") long id) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+
+		List<VersusPointDto> versusResult = versusService.getVersusResult(id);
+		
+		if(versusResult!=null) {
+			map.put("msg", "요리대전 결과 조회를 성공했습니다.");
+			map.put("status", "success");
+			map.put("versus", versusResult);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "요리대전 결과를 찾지 못했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
