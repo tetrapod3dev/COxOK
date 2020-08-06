@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import cookies from 'vue-cookies' // cookie 사용(토큰 저장)
 import router from "@/router";
 import axios from "axios";
 
@@ -10,7 +11,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    authToken: localStorage.getItem("auth-token"),
+    // authToken: localStorage.getItem("auth-token"),
+    authToken: cookies.get('auth-token'),
     searchData: {
       selectedCategory: [],
       selectedIngredients: [],
@@ -28,7 +30,8 @@ export default new Vuex.Store({
   mutations: {
     SET_TOKEN(state, token) {
       state.authToken = token;
-      localStorage.setItem("auth-token", token);
+      // localStorage.setItem("auth-token", token);
+      cookies.set('auth-token', token, 60 * 60 * 2)
       // state의 authToken을 바꾸고, 이왕 한 김에 localStorage에서도 갱신
     },
     setSearchData(state, searchData) {
@@ -84,7 +87,8 @@ export default new Vuex.Store({
 
     logout({ commit }) {
       commit("SET_TOKEN", null);
-      localStorage.removeItem("auth-token");
+      // localStorage.removeItem("auth-token");
+      cookies.remove('auth-token')
       router.push({ name: "Home" });
     },
 

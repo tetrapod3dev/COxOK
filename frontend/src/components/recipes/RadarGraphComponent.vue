@@ -8,6 +8,7 @@ export default {
       datacollection: {
         labels: [
           "칼로리", "탄수화물", "지방", "나트륨", "단백질"
+          // "탄수화물", "지방", "단백질"
         ],
         datasets: [
           {
@@ -44,10 +45,10 @@ export default {
   computed: {
     dataTest() {
       return (this.recipeDataSet.calorie !== undefined) ? [
-        this.recipeDataSet.calorie,
+        this.recipeDataSet.sugar, // 주석처리
         this.recipeDataSet.carbon,
         this.recipeDataSet.fat,
-        this.recipeDataSet.natrium / 1000,
+        this.recipeDataSet.natrium / 1000, // 주석처리
         this.recipeDataSet.protein
       ] : null
     }

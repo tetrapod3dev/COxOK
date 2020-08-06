@@ -161,6 +161,7 @@
             <div class="media-area">
               <h3 class="title text-center">한줄평</h3>
               <ReviewList :loginUserId="loginUserId" :reviewList="recipe.reviewDtoList" @deleteReview="deleteReview" @modifyMod="modifyMod" @updateReview="updateReview" />
+              <p v-if="recipe.reviewDtoList.length == 0">작성된 한줄평이 없습니다.</p>
             </div>
 
             <div class="media media-post">
@@ -168,7 +169,9 @@
                 <!-- 
                 v-model="form.comment"-->
 
-                <ReviewMake v-show="isLoggedIn && !isReviewed" @submitReview="submitReview" />
+                <ReviewMake v-if="(loginUserId > 0) && !isReviewed" @submitReview="submitReview" />
+                <h3 v-else>한줄평을 작성하기 위해서는 로그인을 해주세요.</h3>
+
                 <div class="media-footer">
                   <span @click="copyRecipe" class="pull-left">
                     <n-button type="info" round block>
@@ -176,7 +179,7 @@
                     </n-button>
                   </span>
                   <span @click="changeLike" class="pull-left">
-                    <n-button v-show="isLoggedIn" type="danger" round block>
+                    <n-button v-show="(loginUserId > 0)" type="danger" round block>
                       <i :class="isLiked ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
                       {{ likeCnt }}
                     </n-button>
@@ -204,7 +207,7 @@ import { Popover } from "element-ui";
 
 import SERVER from "@/api/api";
 import axios from "axios";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "RecipeItemView",
@@ -248,6 +251,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['logout']),
     makeId(index) {
       return "ingredient-" + index;
     },
@@ -290,7 +294,11 @@ export default {
         .then(() => {
           this.$router.push({ name:'RecipeListView', params: { pageNum: 1 } });
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
       }
     },
     submitReview(reviewData) {
@@ -304,7 +312,11 @@ export default {
         .then(() => {
           this.getRecipe();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     deleteReview(reviewId) {
       axios.delete(SERVER.URL + SERVER.ROUTES.reviewDelete + reviewId, {
@@ -315,7 +327,11 @@ export default {
         .then(() => {
           this.getRecipe();
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     modifyMod(review) {
       // this.$set(review, 'changing', true);
@@ -331,8 +347,11 @@ export default {
             Authorization: this.config,
           },
         })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        .catch(err => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
 
     copyRecipe() {
@@ -364,7 +383,11 @@ export default {
           this.likeCnt = res.data.likeCnt;
           this.isLiked = !this.isLiked;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     dislikeRecipe() {
       axios
@@ -380,7 +403,11 @@ export default {
           this.likeCnt = res.data.likeCnt;
           this.isLiked = !this.isLiked;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     getRecipe() {
       let config = (this.config == "Bearer null") ? null : { headers: {Authorization: this.config} }
@@ -411,7 +438,7 @@ export default {
           })
 
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err.response));
     },
   },
   created() {

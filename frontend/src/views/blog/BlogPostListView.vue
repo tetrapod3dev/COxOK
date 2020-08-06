@@ -1,60 +1,73 @@
 <template>
   <div class="wrapper">
-    <div class="page-header page-header-mini">
-      <parallax
-        class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
-      ></parallax>
+    <div class="page-header page-header-mini header-filter" filter-color="orange">
+      <parallax class="page-header-image" style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"></parallax>
+      <blog-profile/>
     </div>
-    <BlogMenu />
 
-    <div class="col-10">
-      <div class="d-flex bd-highlight mb-1">
-        <router-link to="/blog/posts/make">
-          <button class="btn btn-outline-secondary mx-2">글 작성</button>
-        </router-link>
+    <div class="section">
+      <div class="container">
+        
+        <blog-menu/>
 
-        <form class="form-inline my-2 my-lg-0 bd-highlight" method="GET" action>
-          <input
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder
-            aria-label="Search"
-            name="kw"
-            value
-          />
-          <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">검색</button>
-        </form>
+        <div class="row">
+          <div class="col-md-12">
+            <!-- blog inner page start -->
+            <div class="d-flex bd-highlight mb-1">
+              <router-link to="/blog/posts/make">
+                <button class="btn btn-outline-secondary mx-2">글 작성</button>
+              </router-link>
+
+              <form class="form-inline my-2 my-lg-0 bd-highlight" method="GET" action>
+                <input
+                  class="form-control mr-sm-2"
+                  type="search"
+                  placeholder
+                  aria-label="Search"
+                  name="kw"
+                  value
+                />
+                <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">검색</button>
+              </form>
+            </div>
+
+            <PostList
+              :posts="posts"
+              :curPage="curPage"
+              :maxPage="maxPage"
+              :numPostPerPage="numPostPerPage"
+              :total="total"
+            />
+
+            <PageButtons
+              class="d-flex justify-content-center"
+              :curPage="curPage"
+              :maxPage="maxPage"
+              @move-page="movePage"
+            />
+
+            <!-- blog inner Page end -->
+          </div>
+        </div>
       </div>
-
-      <PostList
-        :posts="posts"
-        :curPage="curPage"
-        :maxPage="maxPage"
-        :numPostPerPage="numPostPerPage"
-        :total="total"
-      />
-
-      <PageButtons
-        class="d-flex justify-content-center"
-        :curPage="curPage"
-        :maxPage="maxPage"
-        @move-page="movePage"
-      />
     </div>
   </div>
 </template>
 
 <script>
-import PostList from "@/components/blog/PostList.vue";
-import PageButtons from "@/components/common/PageButtons.vue";
+import BlogProfile from "@/components/blog/BlogProfile.vue";
 import BlogMenu from "@/components/blog/BlogMenu.vue";
 
-import axios from "axios";
+import PostList from "@/components/blog/PostList.vue";
+import PageButtons from "@/components/common/PageButtons.vue";
+
 import SERVER from "@/api/api";
+import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BlogPostListView",
+  bodyClass: "profile-page",
   data() {
     return {
       curPage: 0,
@@ -64,11 +77,16 @@ export default {
       total: 0,
     };
   },
+  computed: {
+    ...mapGetters(["config"]),
+  },
   components: {
     PostList,
     PageButtons,
+    BlogProfile,
     BlogMenu,
   },
+  
   methods: {
     movePage(page) {
       if (page == "«") {
@@ -116,6 +134,7 @@ export default {
     this.curPage = this.$route.params.pageNum * 1;
     this.changePage(this.curPage);
   },
+
   watch: {
     $route() {
       this.curPage = parseInt(this.$route.params.pageNum);
@@ -125,4 +144,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

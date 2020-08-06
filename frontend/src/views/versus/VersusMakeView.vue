@@ -57,7 +57,7 @@
 <script>
 import CategorySelector from '@/components/recipes/CategorySelector'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import SERVER from '@/api/api'
 
 import axios from 'axios'
@@ -110,6 +110,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['logout']),
     removeSelectedRecipe(index) {
       this.selectedRecipes.splice(this.selectedCurPage * 4 + index, 1);
     },
@@ -215,7 +216,7 @@ export default {
       let versusData = {
         "title": this.versusTitle,
         "content": this.versusContent,
-        "recipeIdList": this.selectedRecipesId
+        "recipeIdList": [103,92,86,85,84,82,81,80,79,78,77,76,75,74,73,71],
       }
 
       axios.post(SERVER.URL + SERVER.ROUTES.versusRegister, versusData, {
@@ -223,8 +224,15 @@ export default {
           Authorization: this.config,
         }
       })
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+      .then(res => {
+        console.log(res)
+        this.$router.push({ 'name': 'VersusHomeView' })
+      })
+      .catch((err) => {
+        if (err.response.status) {
+          alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          this.logout()
+        }});
 
     }
   },

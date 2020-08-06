@@ -38,17 +38,22 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link
-            class="nav-link"
-            v-if="isLoggedIn"
-            to="/accounts/setting/"
-          >
+          <router-link class="nav-link" to="/">
             <i class="now-ui-icons users_circle-08"></i>
-            <p>회원정보</p>
+            <p>소모임</p>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/blog/">
+          <router-link class="nav-link" :to="{ name: 'VersusHomeView' }">
+            <i class="now-ui-icons users_circle-08"></i>
+            <p>요리대전</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link 
+            class="nav-link"
+            v-if="isLoggedIn"
+            to="/blog/">
             <i class="now-ui-icons users_circle-08"></i>
             <p>블로그</p>
           </router-link>

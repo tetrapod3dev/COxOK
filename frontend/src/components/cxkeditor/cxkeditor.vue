@@ -60,6 +60,7 @@
             id="inputFileToLoad"
             ref="inputFileToLoad"
             @change="loadImageFileAsURL"
+            multiple
             hidden
           />
         </div>
@@ -183,6 +184,15 @@ export default {
       document.execCommand("insertImage", false, event.target.value);
     },
     loadImageFileAsURL: () => {
+      // console.log(event.target.files)
+      // let frm = FormData()
+      // event.target.files.forEach(function(file) {
+      //   frm.append('photo', file)
+      // })
+
+      // axios.post(SERVER.URL + SERVER.ROUTES.photoResgister, frm)
+      //   .then(res => console.log(res))
+      //   .catch(err => console.log(err))
       var filesSelected = document.getElementById("inputFileToLoad").files;
       if (filesSelected.length > 0) {
         var fileToLoad = filesSelected[0];

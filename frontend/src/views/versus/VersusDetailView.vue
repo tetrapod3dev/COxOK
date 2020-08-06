@@ -19,8 +19,18 @@
             <img :src="imageSrc(recipe.recipeThumbnailSrc)">
             <button class="btn btn-outline-primary">{{ recipe.recipeName }}</button>
           </div>
-          <button @click="showDetail(recipe.recipeId)">{{ recipe.recipeId }}번 상세보기</button>
+            
+          <b-button v-b-modal.modal-lg variant="primary" @click="showDetail(recipe.recipeId)">{{ recipe.recipeId }}번 상세보기</b-button>
         </div>
+
+        <!-- <b-modal id="modal-lg" size="lg" :title="recipeDetail.recipeName">
+          <p>{{ recipeDetail.recipeDetail }}</p>
+        </b-modal> -->
+        
+        <b-modal id="modal-lg" size="lg" ok-only :title="recipeDetail.recipeName">
+          <p>{{ recipeDetail.recipeDetail }}</p>
+        </b-modal>
+
       </div>
     </div>
 
@@ -49,6 +59,7 @@ export default {
       selectedRecipes: [],
       recipes: [],
       possibleLength: [],
+      recipeDetail: {},
     }
   },
   computed: {
@@ -57,6 +68,15 @@ export default {
     }
   },
   methods: {
+    showModal() {
+      const loginModal = document.querySelector("#recipe-modal");
+      loginModal.style.display = "block";
+    },
+    hideModal() {
+      const loginModal = document.querySelector("#recipe-modal");
+      loginModal.style.display = "none";
+    },
+
     selectRecipe(recipe) {
       this.selectedRecipes.push(recipe)
       this.cur += 2
@@ -71,7 +91,17 @@ export default {
       }
     },
     showDetail(recipe_id) {
-      console.log(recipe_id)
+      axios
+        .get(
+          SERVER.URL +
+            SERVER.ROUTES.recipeDetail +
+            recipe_id
+        )
+        .then((res) => {
+          this.recipeDetail = res.data.recipe
+          this.showModal()
+        })
+        .catch((err) => console.log(err.response));
     },
     submitRound() {
       const selection = document.getElementById('round')
@@ -104,6 +134,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

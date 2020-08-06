@@ -133,7 +133,7 @@
 <script>
 import axios from 'axios'
 import SERVER from '@/api/api'
-import {mapGetters} from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { Button, FormGroupInput as FgInput } from "@/components/global";
 
 import draggable from 'vuedraggable'
@@ -213,6 +213,7 @@ export default {
     this.getCategory()
   },
   methods: {
+    ...mapActions(['logout']),
     changeThumbnail(event) {
       const file = event.target.files[0]
       this.recipe.recipeThumbnailSrc = URL.createObjectURL(file)
@@ -225,7 +226,10 @@ export default {
     },
     getCategory() {
       axios
-        .get(SERVER.URL + SERVER.ROUTES.goRegister)
+        .get(SERVER.URL + SERVER.ROUTES.goRegister, {
+        headers: {
+          Authorization: this.config,
+        }})
         .then((res) => {
           this.categories = res.data.catogories;
           const self = this;
@@ -237,7 +241,11 @@ export default {
           });
           this.ingredientsName = Object.keys(this.ingredients);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
 
     imageSrc(fileSrc) {
@@ -383,7 +391,11 @@ export default {
           console.log(res)
           this.$router.push({ name: "RecipeDetailView", params: { recipe_id: this.$route.params.recipe_id } });
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
   }
 }
