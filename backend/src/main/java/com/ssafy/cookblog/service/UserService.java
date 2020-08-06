@@ -27,4 +27,6 @@ public interface UserService {
 	//회원삭제
 	public int remove(String email);
 	
+	public List<Long> readUserFavoriteCategory(long userId);
+	
 }

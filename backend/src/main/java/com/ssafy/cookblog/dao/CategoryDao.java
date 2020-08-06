@@ -10,6 +10,7 @@ public interface CategoryDao {
 	public int insertRecipeCategory(RecipeFoodCategoryDto recipeFoodCategoryDto);
 	public List<String> selectRecipeCategoryName(long recipeId);
 	public List<Integer> selectRecipeCategoryId(long recipeId);
+	public List<Long> selectUserFavoriteCategoryId(long userId);
 	public int deleteRecipeCategory(long recipeId);
 	public int insertUserFavoriteCategory(FavoriteDto favoriteDto);
 	public int deleteUserFavoriteCategory(long userId);
