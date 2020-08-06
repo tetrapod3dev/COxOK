@@ -1,36 +1,32 @@
 <template>
-  <div class="col-2">
-    <BlogProfile />
-    <router-link :to="{ name: 'BlogPostListView', params: { pageNum: 1 } }">
-      <button class="btn btn-outline-secondary mx-2">작성한 게시글</button>
-    </router-link>
-    <router-link :to="{ name: 'BlogRecipeListView', params: { pageNum: 1 } }">
-      <button class="btn btn-outline-secondary mx-2">작성한 레시피</button>
-    </router-link>
+  <div class="button-container">
+    <router-link
+      :to="{ name: 'BlogPostListView', params: { pageNum: 1 } }"
+      class="btn btn-primary btn-round btn-lg"
+    >게시글</router-link>
+    <router-link
+      :to="{ name: 'BlogRecipeListView', params: { pageNum: 1 } }"
+      class="btn btn-primary btn-round btn-lg"
+    >내가 쓴 레시피</router-link>
     <router-link
       :to="{ name: 'BlogMarkedRecipeListView', params: { pageNum: 1 } }"
+      class="btn btn-primary btn-round btn-lg"
+    >좋아하는 레시피</router-link>
+    <router-link
+      :to="{ name: 'UserSettingView' }"
+      class="btn btn-default btn-icon btn-round btn-lg"
     >
-      <button class="btn btn-outline-secondary mx-2">북마크 레시피</button>
-    </router-link>
-    <router-link :to="{ name: 'BlogGraphView' }">
-      <button class="btn btn-outline-secondary mx-2">통계</button>
-    </router-link>
-    <router-link :to="{ name: 'UserSettingView' }">
-      <button class="btn btn-outline-secondary mx-2">설정</button>
+    <i class="now-ui-icons ui-1_settings-gear-63"></i>
     </router-link>
   </div>
 </template>
 
 <script>
-import BlogProfile from "./BlogProfile.vue";
 
 export default {
   name: "BlogMenu",
   data() {
     return {};
-  },
-  components: {
-    BlogProfile,
   },
   methods: {},
   created() {},

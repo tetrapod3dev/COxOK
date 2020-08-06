@@ -118,35 +118,33 @@
 
         <hr class="my-5" />
 
-        <div>
-          <h2 class="text-left">상세 과정 입력창</h2>
-          <div v-for="(tempInput, index) in tempInputs" :key="index" class="row">
-            <div class="col-4">
-              <input
-                ref="imageInput"
-                type="file"
-                name="photo"
-                class="photo"
-                hidden
-                @change="onChangeImages(index, $event)"
-              />
-              <img class="preview-image w-100" :src="tempInput.imageUrl" />
-              <button
-                type="button"
-                class="imgUpBtn w-100"
-                @click="onClickImageUpload(index)"
-              >이미지 업로드</button>
-            </div>
+        <h2>상세 과정 입력</h2>
 
-            <div class="col-7">
-              <p class="text-left">내용</p>
-              <input type="text" v-model="tempInput.description" class="w-100" />
+        <div v-show="tempInputs.length > 0" class="upload-image">
+          <draggable v-model="tempInputs" group="recipeDetail" @start="drag=true" @end="drag=false">
+            <div v-for="(tempInput, index) in tempInputs" :key="index" class="row my-3">
+              <img :src="tempInput.imageSrc" class="col-4 offset-1">
+              <input type="text" v-model="tempInput.content" class="col-5">
+              <button class="btn btn-danger col-1" @click="removeRecipeDetail(index)">-</button>
             </div>
+          </draggable>
+        </div>
 
-            <button class="btn btn-outline-secondary col-1" @click="removeRecipeDetail(index)">-</button>
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="드래그 & 드랍하거나 인풋을 클릭하세용"
+            v-model="filename"
+            @dragover.prevent
+            @drop.prevent="onDrop"
+            multiple>
+          <div class="input-group-append">
+            <span class="input-group-text" @click="onClickFile">
+              <i class="fa fa-paperclip" />
+            </span>
           </div>
-
-          <button class="btn btn-outline-secondary" @click="addOrder">+</button>
+          <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
         </div>
 
         <button class="btn btn-danger" @click="preTest">제출</button>
@@ -156,11 +154,13 @@
 </template>
 
 <script>
-import axios from "axios";
 import router from "@/router";
 import SERVER from "@/api/api";
-import { mapGetters } from "vuex";
 
+import { mapGetters, mapActions } from "vuex";
+
+import axios from "axios";
+import draggable from 'vuedraggable'
 import { Button, FormGroupInput as FgInput } from "@/components/global";
 
 export default {
@@ -177,21 +177,20 @@ export default {
       ingredientsName: [],
       selectedCategories: [],
       selectedIngredients: [{ ingredient: null, amount: null, unit: null }],
-      tempInputs: [{ imageUrl: null, description: null }],
+      filename: '',
+      addingFiles: [],
+      fileList: [],
+      tempInputs: [],
     };
   },
   components: {
     FgInput,
     [Button.name]: Button,
+    draggable,
   },
   methods: {
-    test(ingredient) {
-      if (this.ingredientsName.indexOf(ingredient.ingredient) == -1) {
-        ingredient.unit = null;
-      } else {
-        ingredient.unit = this.ingredients[ingredient.ingredient][1];
-      }
-    },
+    ...mapActions(['logout']),
+    // 썸네일 변경 및 미리보기 관련 함수
     onClickThumbnailUpload() {
       this.$refs.thumbnailInput.click();
     },
@@ -202,28 +201,22 @@ export default {
       const previewImage = document.querySelectorAll("#recipe-preview");
       previewImage.src = this.recipePreview;
     },
-    onClickImageUpload(index) {
-      this.$refs.imageInput[index].click();
-    },
-    onChangeImages(index, event) {
-      const file = event.target.files[0]; // Get first index in files
 
-      this.tempInputs[index].imageUrl = URL.createObjectURL(file); // Create File URL
-      const previewImages = document.querySelectorAll(".preview-image");
-      let self = this;
-      previewImages.forEach(function (previewImage, index) {
-        if (self.tempInputs[index].imageUrl == null) {
-          self.tempInputs[index].imageUrl = null;
-        } else {
-          previewImage.src = self.tempInputs[index].imageUrl;
-        }
-      });
-    },
+    // 카테고리 선택 관련 함수
     selectCategory(id) {
       if (this.selectedCategories.indexOf(id) >= 0) {
         this.selectedCategories.splice(this.selectedCategories.indexOf(id), 1);
       } else {
         this.selectedCategories.push(id);
+      }
+    },
+
+    // 재료 선택 관련 함수
+    test(ingredient) {
+      if (this.ingredientsName.indexOf(ingredient.ingredient) == -1) {
+        ingredient.unit = null;
+      } else {
+        ingredient.unit = this.ingredients[ingredient.ingredient][1];
       }
     },
     addIngredient() {
@@ -233,19 +226,35 @@ export default {
     removeIngredient(index) {
       this.selectedIngredients.splice(index, 1);
     },
-    getIngredientInputId(index) {
-      return "input-with-list" + index;
+
+    // 레시피 상세 과정 관련 함수
+    onDrop (event) {
+      this.inputImageFile(event.dataTransfer.files)
     },
-    getIngredientDatalistId(index) {
-      return "input-list" + index;
+    onClickFile() {
+      this.$refs.fileInput.click()
     },
-    addOrder() {
-      let tempfile = { imageURL: null, description: null };
-      this.tempInputs.push(tempfile);
+    onFileChange(event) {
+      this.inputImageFile(event.target.files)
+    },
+    inputImageFile (addingfiles) {
+      this.addingFiles = addingfiles
+      this.fileList = [...this.fileList, ...addingfiles]
+      this.onClickUpload()
+    },
+    onClickUpload () {
+      const self = this
+      this.addingFiles.forEach(function(file) {
+        self.tempInputs.push(
+          {'imageSrc': URL.createObjectURL(file), 'content': null, 'rawFile': file}
+          )
+      })
     },
     removeRecipeDetail(index) {
       this.tempInputs.splice(index, 1);
     },
+
+    // 제출 전 유효성 확인 함수
     preTest() {
       let problems = [];
       let photoFile = document.getElementById("recipe_thumbnail");
@@ -279,10 +288,10 @@ export default {
       });
 
       this.tempInputs.forEach(function (tempInput, index) {
-        if (tempInput.imageUrl == null) {
+        if (tempInput.rawFile == null) {
           problems.push(index + 1 + "번째 상세 과정의 사진");
         }
-        if (tempInput.description == null) {
+        if (tempInput.content == null) {
           problems.push(index + 1 + "번째 상세 과정의 설명");
         }
       });
@@ -319,15 +328,13 @@ export default {
       });
 
       // 상세 정보의 경우에도 description 배열에 String으로 들어갑니다.
+      // 사진의 경우 photo배열에 Blob 파일로 들어갑니다.
+
       this.tempInputs.forEach(function (tempInput) {
-        frm.append("description", tempInput.description);
+        frm.append("description", tempInput.content);
+        frm.append("photo", tempInput.rawFile);
       });
 
-      // 사진의 경우 photo배열에 Blob 파일로 들어갑니다.
-      const photoFiles = document.getElementsByClassName("photo");
-      photoFiles.forEach(function (photoFile) {
-        frm.append("photo", photoFile.files[0]);
-      });
 
       let configs = {
         headers: {
@@ -338,33 +345,50 @@ export default {
 
       axios
         .post(SERVER.URL + SERVER.ROUTES.recipeRegister, frm, configs)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           router.push({ name: "RecipeListView", params: { pageNum: 1 } });
         })
         .catch((err) => {
-          console.log(err);
-        });
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
+    },
+    getIngredientInputId(index) {
+      return "input-with-list" + index;
+    },
+    getIngredientDatalistId(index) {
+      return "input-list" + index;
+    },
+    getCategory() {
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.goRegister, {
+        headers: {
+          Authorization: this.config,
+        }})
+        .then((res) => {
+          this.categories = res.data.catogories;
+          const self = this;
+          res.data.ingredients.forEach(function (ingredient) {
+            self.ingredients[ingredient.name] = [
+              ingredient.ingredientId,
+              ingredient.unit,
+            ];
+          });
+          this.ingredientsName = Object.keys(this.ingredients);
+        })
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
   },
   computed: {
     ...mapGetters(["config"]),
   },
   created() {
-    axios
-      .get(SERVER.URL + SERVER.ROUTES.goRegister)
-      .then((res) => {
-        this.categories = res.data.catogories;
-        const self = this;
-        res.data.ingredients.forEach(function (ingredient) {
-          self.ingredients[ingredient.name] = [
-            ingredient.ingredientId,
-            ingredient.unit,
-          ];
-        });
-        this.ingredientsName = Object.keys(this.ingredients);
-      })
-      .catch((err) => console.log(err));
+    this.getCategory()
   },
 };
 </script>

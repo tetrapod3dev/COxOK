@@ -13,6 +13,9 @@
       <div class="row">
         <!-- <BlogMenu /> -->
         <div class="col-12">
+          <img :src="profileImage">
+          <input type="file" @change="changeProfilePhoto" />
+          <button @click="removeProfile">프로필 없애기</button>
           <!-- <div class="mt-5 row">
         <label for="id_profile_image">프로필 사진:</label>
         <img :src="userimage" />
@@ -63,6 +66,16 @@
           </div>
         </div>
           </div>-->
+          <section class="my-5 row">
+            <h3 class="col-3 offset-2">자기 소개글</h3>
+            <textarea class="col-8 offset-2" rows="5" cols="40" v-model="user.detail"></textarea>
+          </section>
+
+          <div class="row">
+            <div v-for="foodCategory in foodCategories" :key="foodCategory.foodCategoryId" @click="checkCategory(foodCategory.foodCategoryId)" class="col-2 text-left">
+              <input type="checkbox" v-model="checker[foodCategory.foodCategoryId]" class="align-self-center my-2"> {{ foodCategory.foodCategoryName }}
+            </div>
+          </div>
 
           <div v-if="isChangingNickname" class="mt-5 row justify-content-center">
             <button class="btn" @click="notChecked">정보 수정</button>
@@ -91,37 +104,11 @@ export default {
   name: "UserSettingView",
   data() {
     return {
-      foodCategory: [
-        { food_category_id: 1, food_category_name: "한식 요리" },
-        { food_category_id: 2, food_category_name: "중식 요리" },
-        { food_category_id: 3, food_category_name: "일식 요리" },
-        { food_category_id: 4, food_category_name: "동남아 요리" },
-        { food_category_id: 5, food_category_name: "인도 요리" },
-        { food_category_id: 6, food_category_name: "멕시칸 요리" },
-        { food_category_id: 7, food_category_name: "양식 요리" },
-        { food_category_id: 8, food_category_name: "퓨전 요리" },
-        { food_category_id: 11, food_category_name: "육류 요리" },
-        { food_category_id: 12, food_category_name: "채소류 요리" },
-        { food_category_id: 13, food_category_name: "찜/조림/구이 요리" },
-        { food_category_id: 14, food_category_name: "볶음/튀김/부침 요리" },
-        { food_category_id: 15, food_category_name: "나물/샐러드 요리" },
-        { food_category_id: 16, food_category_name: "베이킹/디저트 요리" },
-        { food_category_id: 17, food_category_name: "면 요리" },
-        { food_category_id: 18, food_category_name: "음료/차/커피" },
-        { food_category_id: 19, food_category_name: "김치 요리" },
-        { food_category_id: 20, food_category_name: "해산물 요리" },
-        { food_category_id: 21, food_category_name: "밥 요리" },
-        { food_category_id: 22, food_category_name: "국물 요리" },
-      ],
-      user: {
-        email: "",
-        password: "",
-        nickname: "",
-      },
-      currentNickname: "",
-      passwordConfirm: "",
-      userimage:
-        "https://images.vexels.com/media/users/3/175535/isolated/lists/7206865561bf45af453fa84335297977-man-fringe-posture-flat-person.png",
+      foodCategories: [],
+      user: {},
+      currentNickname: null,
+      passwordConfirm: null,
+      selectedCategory: [],
     };
   },
   components: {
@@ -130,16 +117,20 @@ export default {
   created() {
     axios
       .get(SERVER.URL + SERVER.ROUTES.myPage, {
-        headers: { Authorization: this.$store.getters.config },
+        headers: { Authorization: this.config },
       })
       .then((res) => {
-        this.user.email = res.data.user.email;
-        this.user.nickname = res.data.user.nickname;
-        this.currentNickname = this.user.nickname;
+        this.user = res.data.user
+        this.foodCategories = res.data.categories
+        this.selectedCategory = res.data.userFavoriteCategories
+        this.currentNickname = res.data.user.nickname
+        this.user.password = null
       })
       .catch((err) => {
-        console.log(err);
-      });
+        if (err.response.status) {
+          alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          this.logout()
+        }});
   },
   computed: {
     checkPassword() {
@@ -149,9 +140,58 @@ export default {
       return this.user.nickname != this.currentNickname ? true : false;
     },
     ...mapGetters(["config"]),
+    profileImage() {
+      return SERVER.IMAGE_URL + this.user.profilePhoto
+    },
+    checker() {
+      let tempChecker = {};
+      const self = this;
+
+      this.foodCategories.forEach(function (category) {
+        if (self.selectedCategory.indexOf(category.foodCategoryId) >= 0) {
+          tempChecker[category.foodCategoryId] = true;
+        } else {
+          tempChecker[category.foodCategoryId] = false;
+        }
+      });
+      return tempChecker;
+    },
   },
   methods: {
     ...mapActions(["logout"]),
+    changeProfilePhoto(event) {
+      const newProfilePhoto = event.target.files[0]
+      console.log(newProfilePhoto)
+
+      let frm = new FormData();
+      const self = this
+      frm.append("photo", newProfilePhoto);
+    // formData를 API에 전달해서 src 주소를 받습니다..
+      // 그리고 그걸 저장합니다.
+      axios
+        .post(SERVER.URL + SERVER.ROUTES.photoRegister, frm, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          self.user.profilePhoto = res.data.photo[0]
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+    },
+    removeProfile() {
+      this.user.profilePhoto = 'dochi.png'
+    },
+    checkCategory(id) {
+      if (this.selectedCategory.indexOf(id) < 0) {
+        this.selectedCategory.push(id)
+      } else {
+        this.selectedCategory.splice(this.selectedCategory.indexOf(id), 1)
+      }
+    },
     withdrawal() {
       const self = this;
       let answer = confirm("정말로 탈퇴하실건가요..?");
@@ -199,8 +239,18 @@ export default {
         alert("비밀번호를 확인하세요");
         return;
       }
+
+      let data = {
+        "detail": this.user.detail,
+        "email": this.user.email,
+        "foodCategoryId": this.selectedCategory,
+        "nickname": this.user.nickname,
+        "password": this.user.password,
+        "profilePhoto": this.user.profilePhoto,
+        "userId": this.user.userId
+      }
       axios
-        .put(SERVER.URL + SERVER.ROUTES.update, this.user, {
+        .put(SERVER.URL + SERVER.ROUTES.update, data, {
           headers: { Authorization: this.config },
         })
         .then((res) => {
@@ -208,7 +258,11 @@ export default {
             alert("정보 수정 완료");
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
   },
 };

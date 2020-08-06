@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
     <section id="top">
+
       <card type="background" :style="'background-image: url(' + recipeThumbnailSrc + ')'">
         <div class="card-title text-left">
           <h3>{{ recipe.recipeName }}</h3>
@@ -50,8 +51,16 @@
         </div>
       </card>
     </section>
+    
+    <div v-if="loginUserId == recipe.userId">
+      <router-link :to="{ name: 'RecipeUpdateView', params: { recipe_id: recipe.recipeId } }">
+        <button class="btn btn-primary">수정하러 가기</button>
+      </router-link>
+      <button @click="deleteRecipe">삭제</button>
+    </div>
+      
     <!--     *********    TEAM 1     *********      -->
-    <div class="team-1">
+    <div class="team-1" id="recipeInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto text-left">
@@ -64,7 +73,7 @@
           <div class="col-md-4 ml-1">
             <div class="col-md-8 ml-auto mr-auto">
               <h3 class="text-left mb-3">목차</h3>
-              <p @click="scrollDoc('ingredientInfo')" class="text-left text-link">1. 재료 정보</p>
+              <p @click="scrollDoc('recipeInfo')" class="text-left text-link">1. 레시피 설명</p>
               <p @click="scrollDoc('nutrientInfo')" class="text-left text-link">2. 영양소 정보</p>
               <p @click="scrollDoc('detailInfo')" class="text-left text-link">3. 상세 요리 과정</p>
               <p @click="scrollDoc('reviewInfo')" class="text-left text-link">4. 한줄평 보기</p>
@@ -80,9 +89,8 @@
                   class="col-6 my-3"
                 >
                   <div class="row">
-                    <input @click="checkIngredient(index, $event)" type="checkbox" />
-                    <p :id="makeId(index)">{{ ingredient.name }}</p>
-                    <p>{{ ingredient.amount }} {{ingredient.unit}}</p>
+                    <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/>
+                    <p :id="makeId(index)" class="mb-0">{{ ingredient.name }} {{ ingredient.amount }} {{ingredient.unit}}</p>
                   </div>
                 </div>
               </div>
@@ -118,7 +126,7 @@
         </div>
       </div>
     </section>
-    <div class="blogs-3">
+    <div class="blogs-3" id="detailInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-10 ml-auto mr-auto">
@@ -146,13 +154,14 @@
         </div>
       </div>
     </div>
-    <div class="section section-comments">
+    <div class="section section-comments" id="reviewInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto">
             <div class="media-area">
               <h3 class="title text-center">한줄평</h3>
-              <ReviewList :reviewList="recipe.reviewDtoList" />
+              <ReviewList :loginUserId="loginUserId" :reviewList="recipe.reviewDtoList" @deleteReview="deleteReview" @modifyMod="modifyMod" @updateReview="updateReview" />
+              <p v-if="recipe.reviewDtoList.length == 0">작성된 한줄평이 없습니다.</p>
             </div>
 
             <div class="media media-post">
@@ -160,7 +169,9 @@
                 <!-- 
                 v-model="form.comment"-->
 
-                <ReviewMake @submitReview="submitReview" />
+                <ReviewMake v-if="(loginUserId > 0) && !isReviewed" @submitReview="submitReview" />
+                <h3 v-else>한줄평을 작성하기 위해서는 로그인을 해주세요.</h3>
+
                 <div class="media-footer">
                   <span @click="copyRecipe" class="pull-left">
                     <n-button type="info" round block>
@@ -168,7 +179,7 @@
                     </n-button>
                   </span>
                   <span @click="changeLike" class="pull-left">
-                    <n-button type="danger" round block>
+                    <n-button v-show="(loginUserId > 0)" type="danger" round block>
                       <i :class="isLiked ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
                       {{ likeCnt }}
                     </n-button>
@@ -196,7 +207,7 @@ import { Popover } from "element-ui";
 
 import SERVER from "@/api/api";
 import axios from "axios";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "RecipeItemView",
@@ -210,11 +221,15 @@ export default {
   },
   data() {
     return {
-      recipe: {},
       recipeDataSet: {},
       likeCnt: null,
       isLiked: null,
+      loginUserId: null,
+      recipe: {
+        'reviewDtoList': [],
+      },
       unitList: ["kcal", "g", "g", "mg", "g", "g"],
+      tempUserId: [],
     };
   },
   computed: {
@@ -223,10 +238,20 @@ export default {
       return this.isLiked ? "좋아요 취소" : "좋아요";
     },
     recipeThumbnailSrc() {
-      return "http://i3a104.p.ssafy.io/img/" + this.recipe.recipeThumbnailSrc;
+      return SERVER.IMAGE_URL + this.recipe.recipeThumbnailSrc;
     },
+    avgRating() {
+      return Math.round(this.recipe.avgRating * 10) / 10
+    },
+    reviewedUser() {
+      return this.recipe.reviewDtoList.map(reviewDto => reviewDto.userId)
+    },
+    isReviewed() {
+      return (this.reviewedUser.indexOf(this.loginUserId) >= 0) ? true : false
+    }
   },
   methods: {
+    ...mapActions(['logout']),
     makeId(index) {
       return "ingredient-" + index;
     },
@@ -249,13 +274,31 @@ export default {
       }
     },
     imageSrc(recipePhoto) {
-      return "http://i3a104.p.ssafy.io/img/" + recipePhoto.photoSrc;
+      return SERVER.IMAGE_URL + recipePhoto.photoSrc;
     },
     changeLike() {
       if (this.isLiked) {
         this.dislikeRecipe();
       } else {
         this.likeRecipe();
+      }
+    },
+    deleteRecipe() {
+      let response = confirm('진짜요??? 에이..설마...')
+      if (response) {
+        axios.delete(SERVER.URL + SERVER.ROUTES.recipeDelte + this.recipe.recipeId, {
+          headers: {
+            Authorization: this.config,
+          },
+        })
+        .then(() => {
+          this.$router.push({ name:'RecipeListView', params: { pageNum: 1 } });
+        })
+        .catch(err => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
       }
     },
     submitReview(reviewData) {
@@ -269,15 +312,55 @@ export default {
         .then(() => {
           this.getRecipe();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
+    deleteReview(reviewId) {
+      axios.delete(SERVER.URL + SERVER.ROUTES.reviewDelete + reviewId, {
+          headers: {
+            Authorization: this.config,
+          },
+        })
+        .then(() => {
+          this.getRecipe();
+        })
+        .catch(err => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
+    },
+    modifyMod(review) {
+      // this.$set(review, 'changing', true);
+      review['changing'] = !review['changing']
+    },
+    updateReview(review) {
+      let reviewData = {
+        'rating': review.rating,
+        'content': review.content
+      }
+      axios.put(SERVER.URL + SERVER.ROUTES.reviewUpdate + review.reviewId, reviewData, {
+          headers: {
+            Authorization: this.config,
+          },
+        })
+        .catch(err => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
+    },
+
     copyRecipe() {
       var tempCopyEl = document.createElement("textarea");
       tempCopyEl.innerHTML =
         "레시피 제목: " +
         this.recipe.recipeName +
         "\r\n레시피 주소: " +
-        "localhost:3000" +
+        SERVER.URL +
         this.$route.fullPath;
       document.body.appendChild(tempCopyEl);
 
@@ -300,7 +383,11 @@ export default {
           this.likeCnt = res.data.likeCnt;
           this.isLiked = !this.isLiked;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     dislikeRecipe() {
       axios
@@ -316,67 +403,49 @@ export default {
           this.likeCnt = res.data.likeCnt;
           this.isLiked = !this.isLiked;
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     getRecipe() {
-      if (!this.isLoggedIn) {
-        axios
-          .get(
-            SERVER.URL +
-              SERVER.ROUTES.recipeDetail +
-              this.$route.params.recipe_id
-          )
-          .then((res) => {
-            console.log(res);
-            this.recipe = res.data.recipe;
-            this.recipeDataSet = {
-              calorie: res.data.recipe.calorie,
-              carbon: res.data.recipe.carbon,
-              fat: res.data.recipe.fat,
-              natrium: res.data.recipe.natrium,
-              protein: res.data.recipe.protein,
-              sugar: res.data.recipe.sugar,
-            };
+      let config = (this.config == "Bearer null") ? null : { headers: {Authorization: this.config} }
 
-            this.likeCnt = res.data.likeCnt;
-            this.isLiked = res.data.userLike;
-          })
-          .catch((err) => console.log(err.response));
-      } else {
-        axios
-          .get(
-            SERVER.URL +
-              SERVER.ROUTES.recipeDetail +
-              this.$route.params.recipe_id,
-            {
-              headers: {
-                Authorization: this.config,
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-            this.recipe = res.data.recipe;
-            this.recipeDataSet = {
-              calorie: res.data.recipe.calorie,
-              carbon: res.data.recipe.carbon,
-              fat: res.data.recipe.fat,
-              natrium: res.data.recipe.natrium,
-              protein: res.data.recipe.protein,
-              sugar: res.data.recipe.sugar,
-            };
+      axios
+        .get(
+          SERVER.URL +
+            SERVER.ROUTES.recipeDetail +
+            this.$route.params.recipe_id, config
+        )
+        .then((res) => {
+          this.recipe = res.data.recipe
+          this.recipeDataSet = {
+            'calorie': res.data.recipe.calorie,
+            'carbon': res.data.recipe.carbon,
+            'fat': res.data.recipe.fat,
+            'natrium': res.data.recipe.natrium,
+            'protein': res.data.recipe.protein,
+            'sugar': res.data.recipe.sugar,
+          };
 
-            this.likeCnt = res.data.likeCnt;
-            this.isLiked = res.data.userLike;
+          this.likeCnt = res.data.likeCnt;
+          this.isLiked = res.data.userLike;
+          this.loginUserId = res.data.loginUserId
+
+          this.recipe.reviewDtoList.forEach(function (review) {
+            review['changing'] = false
           })
-          .catch((err) => console.log(err.response));
-      }
+
+        })
+        .catch((err) => console.log(err.response));
     },
   },
   created() {
     this.getRecipe();
   },
-  mounted() {},
+  mounted() {
+  },
 };
 </script>
 

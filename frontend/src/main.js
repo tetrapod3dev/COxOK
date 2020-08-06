@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import VueCookies from 'vue-cookies'
 
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
@@ -12,8 +13,10 @@ import "./registerServiceWorker";
 import NowUIKit from "./plugins/now-ui-kit";
 
 Vue.config.productionTip = false;
-Vue.use(NowUIKit);
 
+Vue.use(VueCookies);
+
+Vue.use(NowUIKit);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
