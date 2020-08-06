@@ -19,6 +19,10 @@ public interface UserService {
 	public UserDto login(UserDto user);
 	public long userIdByEmail(String email);
 	public List<RecipeDto> likeRecipe(long userId);
+	
+	public int getTotalRecipe(long userId);
+	public int getTotalLike(long userId);
+	public int getTotalMeet(long userId);
 
 	//회원정보수정
 	public int modify(UserModifyRequestDto userModifyRequestDto);

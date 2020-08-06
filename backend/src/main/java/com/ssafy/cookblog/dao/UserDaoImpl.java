@@ -42,6 +42,21 @@ public class UserDaoImpl implements UserDao{
 		return session.selectOne("user.login",user);
 	}
 	
+	@Override
+	public int selectTotalRecipe(long userId) {
+		return session.selectOne("user.selectTotalRecipe",userId);
+	}
+	
+	@Override
+	public int selectTotalLike(long userId) {
+		return session.selectOne("user.selectTotalLike",userId);
+	}
+	
+	@Override
+	public int selectTotalMeet(long userId) {
+		return session.selectOne("user.selectTotalMeet",userId);
+	}
+	
 	//Update
 	@Override
 	public int update(UserModifyRequestDto userModifyRequestDto) {

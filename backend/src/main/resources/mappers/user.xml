@@ -46,5 +46,17 @@
 		select user_id from user where email= #{email}
 	</select>
 	
-
+	
+	<select id="selectTotalRecipe" resultType="Integer">
+		select count(recipe_id) from recipe where user_id = #{userId}
+	</select>
+	
+	<select id="selectTotalLike" resultType="Integer">
+		select count(like_id) from like_recipe where user_id =#{userId}
+	</select>
+	
+	<select id="selectTotalMeet" resultType="Integer">
+		select count(meet_join_id) from meet_join where user_id = #{user_id}
+	</select>
+	
 </mapper>
