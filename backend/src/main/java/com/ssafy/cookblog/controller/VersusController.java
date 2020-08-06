@@ -95,7 +95,7 @@ public class VersusController {
 			map.put("list",list);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
-			map.put("msg", "레시피를 찾지 못했습니다.");
+			map.put("msg", "요리대전 찾지 못했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
@@ -112,12 +112,12 @@ public class VersusController {
 		VersusViewResponseDto versus = versusService.getOneVersus(id);
 		
 		if(versus!=null) {
-			map.put("msg", "레시피 조회를 성공했습니다.");
+			map.put("msg", "요리대전 상세 조회를 성공했습니다.");
 			map.put("status", "success");
 			map.put("versus", versus);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
-			map.put("msg", "레시피를 찾지 못했습니다.");
+			map.put("msg", "요리대전 찾지 못했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
