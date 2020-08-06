@@ -46,7 +46,7 @@
 
         <div class="form-group">
           <button @click="preTest" class="btn btn-primary" id="submit">수정</button>
-          <button class="btn btn-default" id="submit">취소</button>
+          <button @click="goBackPage" class="btn btn-default" id="submit">취소</button>
         </div>
       </div>
     </div>
@@ -164,6 +164,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    goBackPage() {
+      this.$router.go(-1);
     },
   },
 };
