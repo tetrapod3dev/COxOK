@@ -12,7 +12,6 @@ import com.ssafy.cookblog.dto.LikeDto;
 import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.RecipeFoodCategoryDto;
 import com.ssafy.cookblog.dto.RecipeIngredientDto;
-import com.ssafy.cookblog.dto.request.RecipeRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeIngredientResponseDto;
 import com.ssafy.cookblog.dto.response.RecipeResponseDto;
@@ -77,6 +76,11 @@ public class RecipeDaoImpl implements RecipeDao{
 	}
 	
 	@Override
+	public int deleteRecipeIngredient(long recipeId) {
+		return session.delete("recipe.deleteRecipeIngredient", recipeId);
+	}
+	
+	@Override
 	public Long selectTotalRecipeNum() {
 		return session.selectOne("recipe.selectTotalRecipeNum");
 	}
@@ -110,5 +114,17 @@ public class RecipeDaoImpl implements RecipeDao{
 	public boolean reipceUserLike(LikeDto like) {
 		return session.selectOne("likeRecipe.userLike", like);
 	}
+	
+	@Override
+	public List<LikeDto> allUserLike(long recipeId) {
+		return session.selectList("recipe.allUserLike", recipeId);
+	}
+
+	@Override
+	public int updateRecipe(RecipeDto recipeDto) {
+		return session.update("recipe.updateRecipe", recipeDto);
+	}
+
+	
 
 }

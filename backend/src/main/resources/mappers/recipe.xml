@@ -7,6 +7,7 @@
 			r.recipe_name as recipeName , r.recipe_thumbnail_src as recipeThumbnailSrc, r.recipe_detail as recipeDetail
 			, u.nickname as nickname, r.reg_time as regTime, r.cook_time as cookTime
 			, r.level, r.calorie, r.carbon, r.protein, r.fat, r.sugar, r.natrium, r.avg_rating as avgRating
+			, r.user_id as userId
 		from 
 			recipe as r, user as u
 		where 
@@ -21,6 +22,7 @@
 			r.reg_time as regTime, r.recipe_id as recipeId, cook_time as cookTime, level
 		from
 			recipe as r
+		order by recipe_id desc
 		LIMIT #{startIndex}, 6
 	</select>
 	
@@ -38,6 +40,17 @@
 			(#{recipeName}, #{recipeThumbnailSrc}, #{recipeDetail}, #{cookTime}, #{level}, #{calorie}, #{carbon}, #{protein}, #{fat}, #{sugar}, #{natrium}, #{userId})
 	</insert>
 	
+	<update id="updateRecipe">
+		update	
+			recipe
+		set
+			recipe_name = #{recipeName}, recipe_thumbnail_src = #{recipeThumbnailSrc}, recipe_detail = #{recipeDetail},
+			cook_time = #{cookTime}, level = #{level}, calorie = #{calorie}, carbon = #{carbon},
+			protein = #{protein}, fat = #{fat}, sugar = #{sugar}, natrium = #{natrium}
+		where
+			recipe_id = #{recipeId}
+	</update>
+	
 	<delete id="delete">
 		delete from recipe
 		where recipe_id = #{recipeId}
@@ -52,9 +65,16 @@
       	select ingredient_id as ingredientId, name, detail, unit
       	from ingredient 
    	</select>
+   	
+   	<delete id="deleteRecipeIngredient">
+   		delete from
+   			recipe_ingredient
+   		where
+   			recipe_id = #{recipeId}
+   	</delete>
    
    	<select id="selectRecipeIngredient" resultType="RecipeIngredientResponseDto">
-      	select name, amount, unit
+      	select name, amount, unit, i.ingredient_id as ingredientId
       	from ingredient i join recipe_ingredient ri 
       	on i.ingredient_id = ri.ingredient_id 
       	where ri.recipe_id = #{recipeId}
@@ -119,6 +139,7 @@
 					where 
 						r.recipe_id = ri.recipe_id and r.recipe_id = rfc.recipe_id
 		   				and ri.ingredient_id = #{ingredient.value}
+		   			
 	   			</foreach>
 	   		</if>
    		) selected order by recipeId desc
@@ -164,9 +185,10 @@
 					where 
 						r.recipe_id = ri.recipe_id and r.recipe_id = rfc.recipe_id
 		   				and ri.ingredient_id = #{ingredient.value}
+		   			
 	   			</foreach>
 	   		</if>
-   		) selected 
+   		) selected
    	</select>
    	
 </mapper>

@@ -17,16 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.cookblog.dto.FoodCategoryDto;
 import com.ssafy.cookblog.dto.IngredientDto;
 import com.ssafy.cookblog.dto.LikeDto;
 import com.ssafy.cookblog.dto.RecipeDto;
-import com.ssafy.cookblog.dto.request.RecipeRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeResponseDto;
 import com.ssafy.cookblog.service.RecipeService;
 import com.ssafy.cookblog.service.UserService;
@@ -48,7 +47,7 @@ public class RecipeController {
 	
 	// 레시피 상세 조회
 	@GetMapping("/view/{id}")
-	public Object getOneRecipe(@PathVariable("id")int id, HttpServletRequest request ) {
+	public Object getOneRecipe(@PathVariable("id")int id, HttpServletRequest request ) throws Exception {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
@@ -57,6 +56,7 @@ public class RecipeController {
 		
 		String token = request.getHeader("Authorization");
 		String email = null;
+		long userId = -1;
 		
 		if(recipe!=null) {
 			recipe.setRecipeId(id);
@@ -65,16 +65,17 @@ public class RecipeController {
 			map.put("recipe", recipe);
 			map.put("likeCnt", likeCnt);
 			boolean userLike = false;
-			if(token != null) {
+			if(token != null && jwtService.isValid(token)) {
+				System.out.println(token);
 				email = jwtService.getEmailFromToken(token.substring(7));
-				long userId = userService.userIdByEmail(email);
+				userId = userService.userIdByEmail(email);
 				LikeDto like = new LikeDto();
 				like.setRecipeId(id);
 				like.setUserId(userId);
 				userLike = recipeService.reipceUserLike(like);
 			}
 			map.put("userLike", userLike);
-			map.put("email", email);
+			map.put("loginUserId", userId);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "레시피를 찾지 못했습니다.");
@@ -124,8 +125,8 @@ public class RecipeController {
 	
 	// 레시피 등록
 	@PostMapping("/register")
-	public Object registerRecipe(@ModelAttribute RecipeRequestDto recipe, HttpServletRequest request) {
-		
+	public Object registerRecipe(@ModelAttribute RecipeRegisterRequestDto recipe, HttpServletRequest request) {
+	
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		recipe.setUserId(userService.findUserByEmail(email).getUserId());
 		
@@ -146,8 +147,60 @@ public class RecipeController {
 		return response;
 	}
 	
+	// 레시피 수정 버튼 클릭 시 기존 정보
+	@GetMapping("/modifyInfo/{id}")
+	public Object modifyInfoRecipe(@PathVariable int id) {
+		
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		RecipeResponseDto recipe = recipeService.getOneRecipe(id);
+		
+		if(recipe != null) {
+			recipe.setRecipeId(id);
+			map.put("msg", "레시피 정보 조회 성공");
+			map.put("status", "success");
+			map.put("recipe", recipe);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		} else {
+			map.put("msg", "레시피 정보 조회 실패");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+		
+	}
+	
+	// 레시피 수정
+	@PostMapping("/modify")
+	public Object modifyRecipe(@RequestBody RecipeUpdateRequestDto recipe, HttpServletRequest request) {
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		recipe.setUserId(userService.findUserByEmail(email).getUserId());
+		
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+
+		int count = recipeService.updateRecipe(recipe);
+		
+		if(count != 0) {
+			map.put("msg", "레시피 수정에 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		} else {
+			map.put("msg", "레시피 수정에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	// 레시피 삭제
 	@DeleteMapping("/delete/{id}")
 	public Object deleteRecipe(@PathVariable long id) {
+		
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		

@@ -6,20 +6,54 @@
 		delete from blog where blog_id = #{blogId}
 	</delete>
 	
+	<select id ="selectTotalNum" resultType="Long">
+		select count(blog_id) from blog
+	</select>
+	
 	<select id="selectAll" resultType = "BlogDto">
 		select 
 			blog_id as blogId, user_id as userId, recipe_id as recipeId, title, content,
 			reg_time as regTime, tag1, tag2, tag3
-		from blog 
+		from 
+			blog 
+		order by 
+			blog_id desc
+		limit 
+			#{startIndex},10
 	</select>
  
 	<select id="select" resultType="BlogDto">
 		select 
 			blog_id as blogId, user_id as userId, recipe_id as recipeId, title, content,
 			reg_time as regTime, tag1, tag2, tag3
-		from blog 		
-		where blog_id = #{blogId}
+		from 
+			blog 		
+		where 
+			blog_id = #{blogId}
 	</select>
+	
+	<insert id ="insert">
+		insert into blog (user_id, recipe_id, title, content, tag1, tag2, tag3)
+		values (
+			#{userId}, 
+		<if test="recipeId==0">
+			null
+		</if>
+		<if test="recipeId!=0">
+			#{recipeId}
+		</if>
+		, #{title}, #{content}, #{tag1}, #{tag2}, #{tag3})
+	</insert>
 
-   	
+	<update id="update">
+		update blog set
+			<if test="recipeId!=0">
+				recipe_id = #{recipeId},
+			</if>
+			title=#{title},
+			content = #{content}, tag1=#{tag1}, tag2=#{tag2}, tag3=#{tag3}
+		where blog_id = #{blogId}
+	</update>
+	
+	   	
 </mapper>

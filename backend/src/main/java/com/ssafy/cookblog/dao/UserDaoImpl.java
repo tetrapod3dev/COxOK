@@ -6,7 +6,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
+import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -42,8 +44,8 @@ public class UserDaoImpl implements UserDao{
 	
 	//Update
 	@Override
-	public int update(UserDto user) {
-		return session.update("user.update",user);
+	public int update(UserModifyRequestDto userModifyRequestDto) {
+		return session.update("user.update", userModifyRequestDto);
 	}
 	@Override
 	public int updateEmail(UserDto user) {
@@ -59,6 +61,11 @@ public class UserDaoImpl implements UserDao{
 	@Override
 	public long userIdByEmail(String email) {
 		return session.selectOne("user.selectUseridByEmail", email);
+	}
+
+	@Override
+	public List<RecipeDto> likeRecipe(long userId) {
+		return session.selectList("likeRecipe.userRecipeLike", userId);
 	}
 
 }

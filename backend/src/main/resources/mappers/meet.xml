@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="meet">
+
+	<insert id="insert">
+		insert into 
+			meet (user_id, recipe_id, thumbnail_src, type, join_limit, price, title,
+			content, address, lat, lng )
+		values
+			(#{userId}, #{recipeId}, #{thumbnailSrc}, #{type}, #{joinLimit}, 
+			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng} )
+	</insert>
+	
+	<update id="update">
+		update 
+			meet
+		set
+			recipe_id = #{recipeId}, thumbnail_src = #{thumbnaulSrc},
+			type = #{type}, join_limit = #{joinLimit}, price = #{price},
+			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}
+		where
+			meet_id = #{meetId}
+	</update>
+
+	<select id="selectAllMeet" resultType="MeetDto">
+		select 
+			meet_id as meetId, user_id as userId, thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, title
+		FROM
+			meet
+		order by meet_id desc
+		LIMIT #{startIndex}, 6
+	</select>
+	
+	<select id="selectMeet" resultType="MeetDto">
+		select 
+			meet_id as meetId, user_id as userId, recipe_id as recipeId,
+			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
+			title, content, date, address, lat, lng
+		FROM
+			meet
+		where meet_id = #{meetId}
+	</select>
+	
+	<select id="selectMeetJoinList" resultType="MeetJoinDto">
+		select 
+			meet_join_id as meetJoinId, meet_id as meetId, user_id as userId, nickname
+		FROM
+			meet_join join user using(user_id)
+		where meet_id = #{meetId}
+	</select>
+	
+	<delete id="delete">
+		delete from meet where meet_id = #{meetId}
+	</delete>
+	
+	<select id="selectMeetByUserid" resultType="MeetDto">
+		select 
+			meet_id as meetId, user_id as userId, thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, title
+		FROM
+			meet
+		where
+			user_id = #{userId}
+		order by meet_id desc
+	</select>
+	
+	<select id="selectMeetJoinByUserid" resultType="MeetDto">
+		select 
+			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, type, m.join_limit as joinLimit, price, title
+		FROM
+			meet_join mj join meet m on mj.meet_id = m.meet_id
+		where
+			mj.user_id = #{userId}
+		order BY m.meet_id desc
+	</select>
+	
+	<insert id="insertMeetJoin">
+		insert into 
+			meet_join (meet_id, user_id)
+		values 
+			(#{meet_id}, #{user_id})
+	</insert>
+	
+	<delete id="deleteMeetJoin">
+		delete from meet_join where meet_join_id = #{meetJoinId}
+	</delete>
+</mapper>

@@ -2,7 +2,9 @@ package com.ssafy.cookblog.service;
 
 import java.util.List;
 
+import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
+import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 
 public interface UserService {
 	
@@ -16,12 +18,15 @@ public interface UserService {
 	public List<UserDto> findAllUser();
 	public UserDto login(UserDto user);
 	public long userIdByEmail(String email);
+	public List<RecipeDto> likeRecipe(long userId);
 
 	//회원정보수정
-	public int modify(UserDto user);
+	public int modify(UserModifyRequestDto userModifyRequestDto);
 	public int authEmail(UserDto user);
 	
 	//회원삭제
 	public int remove(String email);
+	
+	public List<Long> readUserFavoriteCategory(long userId);
 	
 }

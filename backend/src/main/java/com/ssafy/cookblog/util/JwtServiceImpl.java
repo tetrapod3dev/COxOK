@@ -5,14 +5,13 @@ import java.util.Date;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class JwtServiceImpl implements JwtService{
 	private final String secret = "watermelon";
-	private final long validTime = 30*60*1000L;
+	private final long validTime = 2*60*60*1000L;
 	@Override
 	public String generateToken(String id) {
 		Claims claims = Jwts.claims().setSubject(id);
