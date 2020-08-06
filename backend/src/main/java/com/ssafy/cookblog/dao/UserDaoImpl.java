@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
 import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 
@@ -63,7 +64,7 @@ public class UserDaoImpl implements UserDao{
 	}
 
 	@Override
-	public List<Long> likeRecipe(long userId) {
+	public List<RecipeDto> likeRecipe(long userId) {
 		return session.selectList("likeRecipe.userRecipeLike", userId);
 	}
 

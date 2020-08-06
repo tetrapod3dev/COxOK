@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.cookblog.dao.CategoryDao;
 import com.ssafy.cookblog.dao.UserDao;
 import com.ssafy.cookblog.dto.FavoriteDto;
+import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
 import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<Long> likeRecipe(long userId) {
+	public List<RecipeDto> likeRecipe(long userId) {
 		return userDao.likeRecipe(userId);
 	}
 	
