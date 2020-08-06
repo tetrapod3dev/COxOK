@@ -18,10 +18,16 @@ public interface UserDao {
 	public long userIdByEmail(String email);
 	public List<RecipeDto> likeRecipe(long userId);
 	
+	public int selectTotalRecipe(long userId);
+	public int selectTotalLike(long userId);
+	public int selectTotalMeet(long userId);
+	
 	//Update
 	public int update(UserModifyRequestDto userModifyRequestDto);
 	public int updateEmail(UserDto user);
 	
 	//Delete
 	public int delete(String email);
+	
+	
 }

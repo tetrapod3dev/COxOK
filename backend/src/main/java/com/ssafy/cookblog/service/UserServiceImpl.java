@@ -44,6 +44,17 @@ public class UserServiceImpl implements UserService{
 	public long userIdByEmail(String email) {
 		return userDao.userIdByEmail(email);
 	}
+	public int getTotalRecipe(long userId) {
+		return userDao.selectTotalRecipe(userId);
+	}
+	public int getTotalLike(long userId) {
+		return userDao.selectTotalLike(userId);
+	}
+	public int getTotalMeet(long userId) {
+		return userDao.selectTotalMeet(userId);
+	}
+	
+	
 	
 	//회원수정
 	@Transactional 

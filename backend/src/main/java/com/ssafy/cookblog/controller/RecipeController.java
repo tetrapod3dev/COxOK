@@ -123,6 +123,23 @@ public class RecipeController {
 		return response;
 	}
 	
+	@GetMapping("/get")		//모든 재료 받기
+	public Object getAllIngredient2() {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		List<IngredientDto> ingredients = recipeService.selectAllIngredient();
+		List<FoodCategoryDto> catogories = recipeService.selectAllFoodCategory();
+		
+		map.put("msg", "성공");
+		map.put("status", "success");
+		map.put("ingredients",ingredients);
+		map.put("catogories",catogories);
+		
+		response = new ResponseEntity(map, HttpStatus.OK);
+		return response;
+	}
+	
 	// 레시피 등록
 	@PostMapping("/register")
 	public Object registerRecipe(@ModelAttribute RecipeRegisterRequestDto recipe, HttpServletRequest request) {
