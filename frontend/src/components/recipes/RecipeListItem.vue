@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import SERVER from '@/api/api'
 import { Card } from "@/components/global";
 
 export default {
@@ -27,7 +28,7 @@ export default {
   },
   computed: {
     imgSrc() {
-      return "http://i3a104.p.ssafy.io/img/" + this.recipe.recipeThumbnailSrc;
+      return SERVER.IMAGE_URL + this.recipe.recipeThumbnailSrc;
     },
   },
 };

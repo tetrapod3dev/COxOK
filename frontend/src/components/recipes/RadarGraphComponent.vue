@@ -44,11 +44,11 @@ export default {
   computed: {
     dataTest() {
       return (this.recipeDataSet.calorie !== undefined) ? [
-        parseInt(this.recipeDataSet.calorie / 2000 * 100),
-        parseInt(this.recipeDataSet.carbon / 130 * 100),
-        parseInt(this.recipeDataSet.fat / 51 * 100),
-        parseInt(this.recipeDataSet.natrium / 2000 * 100),
-        parseInt(this.recipeDataSet.protein / 56 * 100)
+        this.recipeDataSet.calorie,
+        this.recipeDataSet.carbon,
+        this.recipeDataSet.fat,
+        this.recipeDataSet.natrium / 1000,
+        this.recipeDataSet.protein
       ] : null
     }
   },
@@ -56,6 +56,8 @@ export default {
     dataTest() {
       const self = this
       self.datacollection.datasets[0].data = self.dataTest
+      self.options.scale.ticks.stepSize = Math.round((Math.max.apply(null, self.dataTest) - Math.min.apply(null, self.dataTest)) / 100) * 20
+      
       this.renderChart(self.datacollection, self.options);
     }}
   };

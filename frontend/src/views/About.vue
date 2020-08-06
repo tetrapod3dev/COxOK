@@ -15,8 +15,17 @@
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7903d1a2c2c53b0b1f5321ef4b9d7208&libraries=services"></script>
 
 <script>
+
 export default {
   name: 'About',
+  data () {
+      return {
+      }
+  },
+  components: {
+  },
+  computed: {
+  },
   methods: {
     onClickAddr() {
       var mapContainer = document.getElementById('map'), // 지도를 표시할 div

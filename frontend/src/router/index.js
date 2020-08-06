@@ -12,6 +12,7 @@ import EmailAuthView from '../views/accounts/EmailAuthView.vue'
 import PrevRecipeList from '../views/recipes/PrevRecipeList.vue'
 import RecipeListView from '../views/recipes/RecipeListView.vue'
 import RecipeDetailView from '../views/recipes/RecipeDetailView.vue'
+import RecipeUpdateView from '../views/recipes/RecipeUpdateView.vue'
 import RecipeMakeView from '../views/recipes/RecipeMakeView.vue'
 
 // Blog Router
@@ -87,6 +88,11 @@ const routes = [
     path: '/recipes/detail/:recipe_id',
     name: 'RecipeDetailView',
     component: RecipeDetailView
+  },
+  {
+    path: '/recipes/update/:recipe_id',
+    name: 'RecipeUpdateView',
+    component: RecipeUpdateView
   },
   // Blog Router
   {

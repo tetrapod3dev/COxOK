@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <button class="btn btn-outline-primary" @click="searchRecipe">검색</button>
+    <button class="btn btn-secondary" @click="searchRecipe">검색</button>
 
     <button class="btn btn-danger" @click="removeSelect">초기화</button>
   </div>
