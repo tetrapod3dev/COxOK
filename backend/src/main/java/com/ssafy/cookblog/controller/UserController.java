@@ -32,6 +32,8 @@ import com.ssafy.cookblog.util.Base64Service;
 import com.ssafy.cookblog.util.EmailService;
 import com.ssafy.cookblog.util.JwtService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/user")
@@ -52,7 +54,7 @@ public class UserController {
 	@Autowired
 	private Base64Service base64Service;
 
-	// 로그인
+	@ApiOperation("로그인")
 	@PostMapping("/login")
 	public Object login(@RequestBody UserDto userRequest) {
 		ResponseEntity response = null;
@@ -130,7 +132,7 @@ public class UserController {
 		return response;
 	}
 
-	// 토큰 유효성 체크
+	@ApiOperation("토큰 유효성 체크")
 	@PostMapping("/check")
 	public Object isValid(String email, String token) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -148,7 +150,7 @@ public class UserController {
 		return response;
 	}
 
-	// 회원가입
+	@ApiOperation("회원가입")
 	@PostMapping("/signup")
 	public Object signup(@RequestBody UserDto request) {
 		ResponseEntity response = null;
@@ -171,7 +173,7 @@ public class UserController {
 		return response;
 	}
 
-	// 이메일 인증
+	@ApiOperation("이메일 인증")
 	@GetMapping("/auth/{code}")
 	public Object authEmail(@PathVariable("code") String code, HttpServletResponse res) throws Exception {
 		ResponseEntity response = null;
@@ -198,7 +200,7 @@ public class UserController {
 		return response;
 	}
 
-	// 회원정보
+	@ApiOperation("회원 정보 가져오기")
 	@GetMapping("/mypage")
 	public Object userInfo(HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -225,7 +227,7 @@ public class UserController {
 
 	}
 
-	// 회원이 좋아하는 레시피 목록
+	@ApiOperation("회원이 좋아하는 레시피 목록")
 	@GetMapping("/likeRecipe")
 	public Object userLikeRecipe(HttpServletRequest request) {
 		ResponseEntity response = null;
@@ -243,7 +245,7 @@ public class UserController {
 		return response;
 	}
 
-	// 회원정보수정
+	@ApiOperation("회원 정보 수정")
 	@PutMapping("/modify")
 	public Object modifyMember(@RequestBody UserModifyRequestDto userModifyRequestDto) {
 		ResponseEntity response = null;
@@ -263,7 +265,7 @@ public class UserController {
 		return response;
 	}
 
-	// 회원탈퇴
+	@ApiOperation("회원탈퇴")
 	@DeleteMapping("/withdrawal")
 	public Object delete(HttpServletRequest request) {
 		ResponseEntity response = null;
@@ -284,7 +286,7 @@ public class UserController {
 		return response;
 	}
 
-	// 이메일 중복 체크
+	@ApiOperation("이메일 중복 체크")
 	@GetMapping("/email/{email}")
 	public Object findEmail(@PathVariable("email") String email) {
 		ResponseEntity response = null;
@@ -305,7 +307,7 @@ public class UserController {
 		return response;
 	}
 
-	// 닉네임 중복 체크
+	@ApiOperation("닉네임 중복 체크")
 	@GetMapping("/nickname/{nickname}")
 	public Object findNickname(@PathVariable("nickname") String nickname) {
 		ResponseEntity response = null;
@@ -326,6 +328,7 @@ public class UserController {
 		return response;
 	}
 	
+	@ApiOperation("해당 유저가 작성한 레시피, 좋아요 레시피, 소모임의 갯수")
 	@GetMapping("/total/{userId}")
 	public Object getTotal(@PathVariable("userId") long userId) {
 		ResponseEntity response = null;
