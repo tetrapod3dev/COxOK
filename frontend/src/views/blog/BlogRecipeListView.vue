@@ -1,15 +1,30 @@
 <template>
-  <div class="row">
-    <BlogMenu />
-    <div>
-      <h2>블로그에서 작성한 레시피를 모아서 보여주는 페이지입니다.</h2>
-      <div class="row">
-        <RecipeListItem
-          v-for="recipe in recipes"
-          :key="recipe.recipe_id"
-          :recipe="recipe"
-          class="col-3 mx-3"
-        />
+  <div class="wrapper">
+    <div class="page-header page-header-mini header-filter" filter-color="black">
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80')"
+      ></parallax>
+      <blog-profile />
+    </div>
+
+    <div class="section">
+      <div class="container">
+        <blog-menu />
+
+        <div class="row">
+          <div class="col-md-12">
+            <h2>작성한 레시피를 모아서 보여주는 페이지</h2>
+            <div class="row">
+              <RecipeListItem
+                v-for="recipe in recipes"
+                :key="recipe.recipe_id"
+                :recipe="recipe"
+                class="col-3 mx-3"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -17,10 +32,12 @@
 
 <script>
 import RecipeListItem from "../../components/recipes/RecipeListItem.vue";
+import BlogProfile from "@/components/blog/BlogProfile.vue";
 import BlogMenu from "@/components/blog/BlogMenu.vue";
 
 export default {
   name: "BlogRecipeListView",
+  bodyClass: "profile-page",
   data() {
     return {
       recipes: [
@@ -44,6 +61,7 @@ export default {
   },
   components: {
     RecipeListItem,
+    BlogProfile,
     BlogMenu,
   },
 };

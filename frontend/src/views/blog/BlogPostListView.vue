@@ -1,14 +1,16 @@
 <template>
   <div class="wrapper">
-    <div class="page-header page-header-mini header-filter" filter-color="orange">
-      <parallax class="page-header-image" style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"></parallax>
-      <blog-profile/>
+    <div class="page-header page-header-mini header-filter" filter-color="black">
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80')"
+      ></parallax>
+      <blog-profile />
     </div>
 
     <div class="section">
       <div class="container">
-        
-        <blog-menu/>
+        <blog-menu />
 
         <div class="row">
           <div class="col-md-12">
@@ -86,7 +88,7 @@ export default {
     BlogProfile,
     BlogMenu,
   },
-  
+
   methods: {
     movePage(page) {
       if (page == "«") {

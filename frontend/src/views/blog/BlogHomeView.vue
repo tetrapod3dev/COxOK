@@ -1,54 +1,58 @@
 <template>
   <div class="wrapper">
-    <div class="page-header page-header-mini header-filter" filter-color="orange">
-      <parallax class="page-header-image" style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"></parallax>
-      <blog-profile/>
+    <!-- 필터 -->
+    <div class="page-header page-header-mini header-filter" filter-color="black">
+      <!-- 배너 배경 사진 -->
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80')"
+      ></parallax>
+      <!-- 프로필 -->
+      <blog-profile />
     </div>
-    <div class="section">
+    <div class="section blog-main">
       <div class="container">
+        <!-- 블로그 메뉴 -->
+        <blog-menu />
+        <p class="description">좋아하는 카테고리</p>
+        <b-badge v-for="tag in tags" :key="tag" pill variant="dark">{{tag}}</b-badge>
+        <!-- 자기 소개 -->
+        <h3 class="title">자기 소개</h3>
+        <h5
+          class="description text-center"
+        >{{user.detail == '' || user.detail == null ? '안녕하세요. ' + user.nickname + '입니다.' : user.detail}}</h5>
 
-        <blog-menu/>
-
-        <div class="row">
-          <div class="col-md-12">
-            <!-- blog main page start -->
-            <div class="about-description text-center">
-              <div class="features-3">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="info info-hover">
-                        <div class="icon icon-success icon-circle">
-                          <i class="now-ui-icons education_paper"></i>
-                        </div>
-                        <h4 class="info-title">26</h4>
-                        <p class="description">작성 레시피</p>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="info info-hover">
-                        <div class="icon icon-primary icon-circle">
-                          <i class="fa fa-heart"></i>
-                        </div>
-                        <h4 class="info-title">26</h4>
-                        <p class="description">좋아하는 레시피</p>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="info info-hover">
-                        <div class="icon icon-info icon-circle">
-                          <i class="fa fa-group"></i>
-                        </div>
-                        <h4 class="info-title">48</h4>
-                        <p class="description">소모임 활동</p>
-                      </div>
-                    </div>
-                    <div class="social-description">
-                    </div>
-                  </div>
+        <!-- blog main page start -->
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="info info-hover">
+                <div class="icon icon-success icon-circle">
+                  <i class="now-ui-icons education_paper"></i>
                 </div>
+                <h4 class="info-title">13</h4>
+                <p class="description">작성 레시피</p>
               </div>
             </div>
+            <div class="col-md-4">
+              <div class="info info-hover">
+                <div class="icon icon-primary icon-circle">
+                  <i class="fa fa-heart"></i>
+                </div>
+                <h4 class="info-title">4</h4>
+                <p class="description">좋아하는 레시피</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="info info-hover">
+                <div class="icon icon-info icon-circle">
+                  <i class="fa fa-group"></i>
+                </div>
+                <h4 class="info-title">0</h4>
+                <p class="description">소모임 활동</p>
+              </div>
+            </div>
+            <div class="social-description"></div>
           </div>
         </div>
       </div>
@@ -57,6 +61,9 @@
 </template>
 
 <script>
+import SERVER from "@/api/api";
+import axios from "axios";
+import { mapGetters } from "vuex";
 // import { Card, Tabs, TabPane, Badge, InfoSection } from "@/components/global";
 import BlogProfile from "@/components/blog/BlogProfile.vue";
 import BlogMenu from "@/components/blog/BlogMenu.vue";
@@ -65,15 +72,60 @@ export default {
   name: "BlogHomeView",
   bodyClass: "profile-page",
   data() {
-    return {}
+    return {
+      user: {
+        nickname: "",
+        detail: "",
+      },
+      foodCategories: [],
+      selectedCategory: [],
+      tags: [],
+    };
   },
   components: {
     BlogProfile,
     BlogMenu,
   },
-  computed: {},
-  created() {},
+  computed: {
+    ...mapGetters(["config"]),
+  },
+  created() {
+    let configs = {
+      headers: {
+        Authorization: this.config,
+      },
+    };
+    axios
+      .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
+      .then((res) => {
+        this.user = res.data.user;
+        this.foodCategories = res.data.categories;
+        this.selectedCategory = res.data.userFavoriteCategories;
+        for (
+          let indexSelectedCategory = 0, indexFoodCategories = 0;
+          indexSelectedCategory < this.selectedCategory.length;
+          indexSelectedCategory++
+        ) {
+          console.log("test");
+          while (
+            this.foodCategories[indexFoodCategories]["foodCategoryId"] <
+            this.selectedCategory[indexSelectedCategory]
+          ) {
+            indexFoodCategories++;
+          }
+          this.tags.push(
+            this.foodCategories[indexFoodCategories]["foodCategoryName"]
+          );
+          indexFoodCategories++;
+        }
+      })
+      .catch((err) => console.log(err.response));
+  },
 };
 </script>
 
-<style></style>
+<style scoped>
+.blog-main .description {
+  color: #333333;
+}
+</style>
