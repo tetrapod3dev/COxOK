@@ -66,6 +66,7 @@ public class RecipeController {
 			map.put("likeCnt", likeCnt);
 			boolean userLike = false;
 			if(token != null && jwtService.isValid(token)) {
+				System.out.println(token);
 				email = jwtService.getEmailFromToken(token.substring(7));
 				userId = userService.userIdByEmail(email);
 				LikeDto like = new LikeDto();
