@@ -19,6 +19,8 @@ export default {
     recipeDetail: "/recipe/view/", // 레시피 상세 정보를 받기 위한 주소(뒤에 recipe id 붙여주기)
 
     goRegister: '/recipe/goRegister/', // categories와 ingredients 리스트를 받기 위해 요청을 보내는 주소
+    getCategory: '/recipe/get/', // categories와 ingredients 리스트를 받기 위해 요청을 보내는 주소(미인증 사용자용)
+    
     recipeRegister: '/recipe/register/', // 레시피 작성을 위해 데이터를 보내야 되는 곳
     photoRegister: '/photo/register/', // 사진 등록 및 URL 리턴
 

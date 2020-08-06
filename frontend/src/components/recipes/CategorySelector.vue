@@ -156,7 +156,7 @@ export default {
   },
   created() {
     axios
-      .get(SERVER.URL + SERVER.ROUTES.goRegister)
+      .get(SERVER.URL + SERVER.ROUTES.getCategory)
       .then((res) => {
         const self = this;
         res.data.catogories.forEach(function (category) {
@@ -172,7 +172,7 @@ export default {
 
         this.ingredientsName = Object.keys(this.ingredients);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err.response));
 
     this.selectedCategory = this.searchingData.selectedCategory;
     this.selectedIngredients = this.searchingData.selectedIngredients;

@@ -1,16 +1,29 @@
 <template>
-  <div>
+  <div class="wrapper">
+    <div class="page-header page-header-mini">
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
+      ></parallax>
+    </div>
     <h2>요리대전 메인 페이지입니다.</h2>
     <router-link :to="{ name: 'VersusMakeView' }"><button class="btn btn-outline-secondary mx-2">요리대전 만들기</button></router-link>
 
-    <router-link v-for="versus in versusList" :key="versus.versusId" :to="{name: 'VersusDetailView', params: {versus_id: versus.versusId} }">
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <img :src="imageSrc(versus)">
-          <h5 class="card-title">{{ versus.title }}</h5>
-        </div>
+    <div class="container">
+      <div class="row">
+        <router-link class="col-4" v-for="versus in versusList" :key="versus.versusId" :to="{name: 'VersusDetailView', params: {versus_id: versus.versusId} }">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <div class="row">
+                <img class="col-6" :src="imageSrc1(versus)">
+                <img class="col-6" :src="imageSrc2(versus)">
+              </div>
+              <h5 class="card-title">{{ versus.title }}</h5>
+            </div>
+          </div>
+        </router-link>
       </div>
-    </router-link>
+    </div>
 
     <div id="bottomSensor"></div>
     <button @click="scrollToTop" class="button-bottom">^</button>
@@ -31,8 +44,11 @@ export default {
     }
   },
   methods: {
-    imageSrc(versus) {
+    imageSrc1(versus) {
       return SERVER.IMAGE_URL + versus.recipeThumbnail1
+    },
+    imageSrc2(versus) {
+      return SERVER.IMAGE_URL + versus.recipeThumbnail2
     },
     getVersus: function () {
       const self = this
@@ -61,7 +77,7 @@ export default {
       })
     },
     scrollToTop: function () {
-      scroll(0, 0)
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     },
     loadUntilViewportIsFull: function () {
       const bottomSensor = document.querySelector('#bottomSensor')

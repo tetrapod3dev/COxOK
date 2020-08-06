@@ -157,7 +157,7 @@
 import router from "@/router";
 import SERVER from "@/api/api";
 
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 import axios from "axios";
 import draggable from 'vuedraggable'
@@ -189,6 +189,7 @@ export default {
     draggable,
   },
   methods: {
+    ...mapActions(['logout']),
     // 썸네일 변경 및 미리보기 관련 함수
     onClickThumbnailUpload() {
       this.$refs.thumbnailInput.click();
@@ -348,8 +349,10 @@ export default {
           router.push({ name: "RecipeListView", params: { pageNum: 1 } });
         })
         .catch((err) => {
-          console.log(err);
-        });
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     getIngredientInputId(index) {
       return "input-with-list" + index;
@@ -359,7 +362,10 @@ export default {
     },
     getCategory() {
       axios
-        .get(SERVER.URL + SERVER.ROUTES.goRegister)
+        .get(SERVER.URL + SERVER.ROUTES.goRegister, {
+        headers: {
+          Authorization: this.config,
+        }})
         .then((res) => {
           this.categories = res.data.catogories;
           const self = this;
@@ -371,7 +377,11 @@ export default {
           });
           this.ingredientsName = Object.keys(this.ingredients);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status) {
+            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
   },
   computed: {

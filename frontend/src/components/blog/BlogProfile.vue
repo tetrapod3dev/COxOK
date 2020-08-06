@@ -1,28 +1,59 @@
 <template>
-  <div class="profile">
-    <div class="profile-image">
-      <img
-        src="https://image.flaticon.com/icons/png/128/1277/1277763.png"
-        alt
-      />
+  <div class="container">
+    <div class="photo-container">
+      <img :src="profileSrc" alt />
+      
     </div>
-
-    <div class="profile-user-settings">
-      <p class="profile-user-name">사용자이름</p>
-    </div>
+    <h3 class="title">{{user.nickname}}</h3>
+    <p class="category">{{user.email}}</p>
   </div>
 </template>
 
 <script>
+import SERVER from "@/api/api";
+import axios from "axios";
+import { mapGetters } from "vuex";
+
 export default {
   name: "BlogPorfile",
   data() {
-    return {};
+    return {
+      user: {
+        email:"",
+        nickname: "",
+        profilePhoto: "",
+      },
+    };
+  },
+  computed: {
+    ...mapGetters(["config"]),
+    profileSrc() {
+      return SERVER.IMAGE_URL + this.user.profilePhoto
+    }
   },
   components: {},
   methods: {},
-  created() {},
+  created() {
+    let configs = {
+      headers: {
+        Authorization: this.config,
+      },
+    };
+    axios
+        .get(
+          SERVER.URL + SERVER.ROUTES.myPage,
+          configs
+        )
+        .then((res) => {
+          this.user = res.data.user;
+        })
+        .catch((err) => console.log(err.response));
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.profile-page .photo-container img {
+  height: 100px;
+}
+</style>

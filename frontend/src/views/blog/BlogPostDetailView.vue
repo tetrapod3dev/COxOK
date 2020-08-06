@@ -1,52 +1,83 @@
 <template>
-  <div class="wrapper">
-    <!-- 페이지 배너 시작 -->
-    <div class="page-header page-header-mini">
-      <parallax
-        class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
-      ></parallax>
-      <div class="content-center">
-        <h1>블로그</h1>
-      </div>
+  <div class="wrapper blog-post">
+    <div class="page-header page-header-mini header-filter" filter-color="orange">
+      <parallax class="page-header-image" style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"></parallax>
+      <blog-profile/>
     </div>
-    <!-- 페이지 배너 끝 -->
-    <BlogMenu />
-    <!-- 게시글 시작 -->
-
-    <router-link
-      :to="{ name: 'BlogPostUpdateView', params: { blogId: blogPost.blogId } }"
-      tag="button"
-    >수정</router-link>
     <div class="section">
       <div class="container">
-        <div class="justify-content-md-center" id="row_style">
-          <!-- 제목 -->
-          <div>제목 : {{blogPost.title}}</div>
-          <br />
-          <!-- 내용 -->
-          <div>내용</div>
-          <div v-html="blogPost.content" style="border: solid"></div>
-          <br />
-          <hr />
-          <!-- 태그 시작 -->
-          태그 :
-          <div>{{blogPost.tag1}}</div>
-          <div>{{blogPost.tag2}}</div>
-          <div>{{blogPost.tag3}}</div>
-          <br />
-          <!-- recipe -->
-          레시피 :
-          <div>{{blogPost.recipe_id}}</div>
+        
+      <blog-menu/>
+        <!-- 게시글 시작 -->
+
+      <router-link
+          :to="{ name: 'BlogPostUpdateView', params: { blogId: blogPost.blogId } }"
+          tag="button"
+          class="btn btn-outline-secondary mx-2"
+      >수정</router-link>
+    </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 ml-auto mr-auto">
+            <hr/>
+            <!-- 제목 -->
+            <h3 class="title">{{blogPost.title}}</h3>
+            <hr/>
+            <!-- 내용 -->
+            <p class="content" v-html="blogPost.content"></p>
+            <!-- 태그 -->
+            </div>
+          </div>
         </div>
       </div>
+      <div class="section section-blog-info">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 ml-auto mr-auto">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="blog-tags">
+                    Tags:
+                    <span class="label label-primary" v-if="blogPost.tag1 !== null" v-text="'#' + blogPost.tag1"></span>
+                    <span class="label label-primary" v-if="blogPost.tag2 !== null" v-text="'#' + blogPost.tag2"></span>
+                    <span class="label label-primary" v-if="blogPost.tag3 !== null" v-text="'#' + blogPost.tag3"></span>
+                  </div>
+                </div>
+              </div>
+              <hr/>
+            </div>
+            <!-- 레시피 -->
+            <card type="profile" plain>
+              <template slot="raw-content">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="card-avatar">
+                      <a href="#pablo">
+                        <img class="img img-raised" src="img/mike.jpg">
+                      </a>
+                      <div class="ripple-container"></div>
+                    </div>
+                    <h4 class="card-title">Alec Thompson</h4>
+                    <p class="description">I've been trying to figure out the bed design for the
+                      master bedroom at our Hidden Hills compound...I like good music from
+                      Youtube.</p>
+                  </div>
+                </div>
+              </template>
+            </card>
+          </div>
+        </div>
+        <!-- 게시글 끝 -->
+      </div>
     </div>
-    <!-- 게시글 끝 -->
   </div>
 </template>
 
 <script>
+import BlogProfile from "@/components/blog/BlogProfile.vue";
 import BlogMenu from "@/components/blog/BlogMenu.vue";
+import { Card } from "@/components/global";
 
 import SERVER from "@/api/api";
 import axios from "axios";
@@ -54,8 +85,11 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "BlogPostDetailView",
+  bodyClass: "profile-page",
   components: {
+    BlogProfile,
     BlogMenu,
+    Card,
   },
   data() {
     return {
@@ -96,5 +130,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+/* .content{
+  min-height: 1000px;
+}  */
 </style>
