@@ -10,11 +10,12 @@ import com.ssafy.cookblog.dto.response.VersusViewResponseDto;
 
 public interface VersusDao {
 
-	int registerVersus(VersusDto versusDto);
-	int winVersus(VersusPointDto versusPoint);
-	List<VersusResponseDto> selectAllVersus(int startIndex);
-	VersusViewResponseDto selectVersus(long versusId);
-	List<RecipeDto> selectVersusRecipe(VersusViewResponseDto versusView);
-	int delete(long versusId);
+	public int registerVersus(VersusDto versusDto);
+	public int winVersus(VersusPointDto versusPoint);
+	public List<VersusResponseDto> selectAllVersus(int startIndex);
+	public VersusViewResponseDto selectVersus(long versusId);
+	public List<RecipeDto> selectVersusRecipe(VersusViewResponseDto versusView);
+	public int delete(long versusId);
+	public List<VersusPointDto> selectVersusResult(long versusId);
 
 }

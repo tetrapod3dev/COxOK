@@ -9,9 +9,10 @@ import com.ssafy.cookblog.dto.response.VersusResponseDto;
 import com.ssafy.cookblog.dto.response.VersusViewResponseDto;
 
 public interface VersusService {
-	int registerVersus(VersusDto versusDto);
-	int winVersus(VersusPointDto versusPoint);
-	List<VersusResponseDto> getAllVersus(int startIndex);
-	VersusViewResponseDto getOneVersus(long versusId);
-	int deleteVersus(long versusId);
+	public int registerVersus(VersusDto versusDto);
+	public int winVersus(VersusPointDto versusPoint);
+	public List<VersusResponseDto> getAllVersus(int startIndex);
+	public VersusViewResponseDto getOneVersus(long versusId);
+	public int removeVersus(long versusId);
+	public List<VersusPointDto> getVersusResult(long versusId);
 }

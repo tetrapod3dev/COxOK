@@ -42,8 +42,13 @@ public class VersusServiceImpl implements VersusService {
 	}
 
 	@Override
-	public int deleteVersus(long versusId) {
+	public int removeVersus(long versusId) {
 		return versusDao.delete(versusId);
+	}
+
+	@Override
+	public List<VersusPointDto> getVersusResult(long versusId) {
+		return versusDao.selectVersusResult(versusId);
 	}
 
 
