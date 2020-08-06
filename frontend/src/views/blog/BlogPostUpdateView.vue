@@ -7,7 +7,7 @@
         style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
       ></parallax>
       <div class="content-center">
-        <h1>블로그 게시글 작성 페이지</h1>
+        <h1>블로그 게시글 수정 페이지</h1>
       </div>
     </div>
     <!-- 페이지 배너 끝 -->
@@ -45,8 +45,8 @@
         </div>
 
         <div class="form-group">
-          <button @click="preTest" class="btn btn-primary" id="submit">등록</button>
-          <button @click="preTest" class="btn btn-default" id="submit">취소</button>
+          <button @click="preTest" class="btn btn-primary" id="submit">수정</button>
+          <button class="btn btn-default" id="submit">취소</button>
         </div>
       </div>
     </div>
@@ -62,13 +62,13 @@ import SERVER from "@/api/api";
 import { mapGetters } from "vuex";
 
 export default {
-  name: "BlogPostMakeView",
+  name: "BlogPostUpdateView",
   data() {
     return {
       blogTags: [],
       blogPost: {
-        title: null,
-        content: null,
+        title: "",
+        content: "",
         tag1: null,
         tag2: null,
         tag3: null,
@@ -79,6 +79,9 @@ export default {
   components: {
     CxkEditor,
   },
+  created() {
+    this.getPosts();
+  },
   computed: {
     ...mapGetters(["config"]),
     tagState() {
@@ -86,10 +89,35 @@ export default {
     },
   },
   methods: {
+    getPosts() {
+      let configs = {
+        headers: {
+          Authorization: this.config,
+        },
+      };
+      axios
+        .get(
+          SERVER.URL + SERVER.ROUTES.blog + this.$route.params.blogId,
+          configs
+        )
+        .then((res) => {
+          console.log(res);
+          this.blogPost = res.data.blog;
+          if (this.blogPost.tag1 !== null) {
+            this.blogTags.push(this.blogPost.tag1);
+          }
+          if (this.blogPost.tag2 !== null) {
+            this.blogTags.push(this.blogPost.tag2);
+          }
+          if (this.blogPost.tag3 !== null) {
+            this.blogTags.push(this.blogPost.tag3);
+          }
+        })
+        .catch((err) => console.log(err.response));
+    },
     contentHandler(event) {
       this.blogPost.content = event;
     },
-
     preTest() {
       let problems = [];
       if (this.blogPost.title === null || this.blogPost.title === "") {
@@ -100,12 +128,12 @@ export default {
       }
 
       if (problems.length == 0) {
-        this.makeBlogPost();
+        this.updateBlogPost();
       } else {
         alert("문제가 있는 위치: " + problems);
       }
     },
-    makeBlogPost() {
+    updateBlogPost() {
       let configs = {
         headers: {
           Authorization: this.config,
@@ -125,10 +153,13 @@ export default {
         this.blogPost.tag1 = this.blogTags[0];
       }
       axios
-        .post(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
+        .put(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
         .then((res) => {
           console.log(res);
-          router.push({ name: "BlogPostListView", params: { pageNum: 1 } });
+          router.push({
+            name: "BlogPostDetailView",
+            params: { blogId: this.$route.params.blogId },
+          });
         })
         .catch((err) => {
           console.log(err);
