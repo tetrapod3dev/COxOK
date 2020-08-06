@@ -1,7 +1,7 @@
 export default {
   // URL: 'http://localhost:8080',
   URL: 'http://i3a104.p.ssafy.io',
-  IMAGE_URL: 'http://i3a104.p.ssafy.io/img/',
+  IMAGE_URL: '/img/',
   ROUTES: {
     // Accounts ROUTES
     signup: "/user/signup/",
