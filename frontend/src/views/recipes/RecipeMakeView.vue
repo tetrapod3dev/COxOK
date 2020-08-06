@@ -109,8 +109,8 @@
             </a>
           </div>
 
-          <div class="row">
-            <n-button type="secondary" @click="addIngredient">
+          <div class="row" @click="addIngredient">
+            <n-button type="secondary">
               <i class="now-ui-icons ui-1_simple-add"></i>
             </n-button>
           </div>
