@@ -325,4 +325,21 @@ public class UserController {
 
 		return response;
 	}
+	
+	@GetMapping("/total/{userId}")
+	public Object getTotal(@PathVariable("userId") long userId) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		
+		map.put("msg", "성공");
+		map.put("status", "success");
+		map.put("recipe",userService.getTotalRecipe(userId));
+		map.put("like",userService.getTotalLike(userId));
+		map.put("meet",userService.getTotalMeet(userId));
+		response = new ResponseEntity(map, HttpStatus.OK);
+			
+		return response;
+	}
+	
 }
