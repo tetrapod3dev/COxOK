@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.cookblog.dto.FoodCategoryDto;
 import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
@@ -29,7 +31,6 @@ import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.Base64Service;
 import com.ssafy.cookblog.util.EmailService;
 import com.ssafy.cookblog.util.JwtService;
-
 
 @RestController
 @CrossOrigin("*")
@@ -44,10 +45,10 @@ public class UserController {
 
 	@Autowired
 	private JwtService jwtService;
-	
+
 	@Autowired
 	private RecipeService recipeService;
-	
+
 	@Autowired
 	private Base64Service base64Service;
 
@@ -55,8 +56,8 @@ public class UserController {
 	@PostMapping("/login")
 	public Object login(@RequestBody UserDto userRequest) {
 		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		String email = userRequest.getEmail();
 		String password = userRequest.getPassword();
 
@@ -66,11 +67,11 @@ public class UserController {
 
 		if (user != null) {
 			if (user.getAuth() == 0) {
-				map.put("msg","이메일 인증 미완료");
-				response = new ResponseEntity(map,HttpStatus.BAD_REQUEST);
+				map.put("msg", "이메일 인증 미완료");
+				response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 				return response;
 			}
-			map.put("msg","로그인 성공");
+			map.put("msg", "로그인 성공");
 			map.put("status", "success");
 			map.put("email", email);
 			map.put("nickname", user.getNickname());
@@ -81,7 +82,49 @@ public class UserController {
 			response = new ResponseEntity(map, HttpStatus.OK);
 		} else {
 			map.put("status", "fail");
-			map.put("msg","로그인 실패");
+			map.put("msg", "로그인 실패");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+
+	@GetMapping("/loginform")
+	public Object userLoginForm() { 
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+//		String naverAuthUrl = naverLoginDTO.getAuthorizationUrl(session); 
+		String kakaoUrl = KakaoController.getAuthorizationUrl(); /* 생성한 인증 URL을 View로 전달 */ 
+		map.put("kakao_url", kakaoUrl);
+		
+		response = new ResponseEntity(map, HttpStatus.OK);
+		return response;
+	}
+	
+	@PostMapping("/kakaologin")
+	public Object kakaoLogin(@RequestParam("code") String code, HttpServletRequest request) throws Exception { 
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있음 
+		JsonNode accessToken = node.get("access_token"); // 사용자의 정보 
+		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken); 
+		
+		if(userInfo != null) {
+			String email = null; 
+			String nickname = null; 
+			JsonNode properties = userInfo.path("properties"); 
+			JsonNode kakao_account = userInfo.path("kakao_account"); 
+			email = kakao_account.path("email").asText(); 
+			nickname = properties.path("nickname").asText(); 
+			map.put("email", email);
+			map.put("nickname", nickname);
+			map.put("msg", "로그인 성공");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		} else {
+			map.put("status", "fail");
+			map.put("msg", "로그인 실패");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
 		return response;
@@ -90,16 +133,16 @@ public class UserController {
 	// 토큰 유효성 체크
 	@PostMapping("/check")
 	public Object isValid(String email, String token) throws Exception {
-		Map<String,Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		ResponseEntity response = null;
-		
+
 		if (jwtService.isValid(email, token) == false) {
-			map.put("msg","로그인 정보가 유효하지 않음");
+			map.put("msg", "로그인 정보가 유효하지 않음");
 			map.put("status", "success");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 			return response;
 		}
-		map.put("msg","성공");
+		map.put("msg", "성공");
 		map.put("status", "fail");
 		response = new ResponseEntity(map, HttpStatus.OK);
 		return response;
@@ -109,70 +152,67 @@ public class UserController {
 	@PostMapping("/signup")
 	public Object signup(@RequestBody UserDto request) {
 		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		String email = request.getEmail();
 
 		userService.register(request);
-		map.put("msg","회원가입 성공");
+		map.put("msg", "회원가입 성공");
 		map.put("status", "success");
 		response = new ResponseEntity(map, HttpStatus.OK);
-		
+
 		String encoding = base64Service.encode(email);
-		String link="http://i3a104.p.ssafy.io/user/auth/"+encoding;
-		
-		emailService.sendSimpleMessage(email, "CO-OK 가입 인증메일 입니다.", 
-						email + "님 가입을 환영합니다.<br>" +
-						"가입을 인증하기 위해서 아래의 링크를 클릭해주십시오.<br> "+
-						"<strong>아래 링크를 클릭하면 인증이 완료됩니다.</strong><br> "+
-						"<a href='"+link+"'>링크</a>"
-				);
+		String link = "http://i3a104.p.ssafy.io/user/auth/" + encoding;
+
+		emailService.sendSimpleMessage(email, "CO-OK 가입 인증메일 입니다.",
+				email + "님 가입을 환영합니다.<br>" + "가입을 인증하기 위해서 아래의 링크를 클릭해주십시오.<br> "
+						+ "<strong>아래 링크를 클릭하면 인증이 완료됩니다.</strong><br> " + "<a href='" + link + "'>링크</a>");
 
 		return response;
 	}
-	
+
 	// 이메일 인증
 	@GetMapping("/auth/{code}")
-	public Object authEmail(@PathVariable("code") String code,HttpServletResponse res) throws Exception {
+	public Object authEmail(@PathVariable("code") String code, HttpServletResponse res) throws Exception {
 		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		String email = base64Service.decode(code);
 		System.out.println("code : " + code);
 		System.out.println("email : " + email);
-		
-		UserDto user=new UserDto();
+
+		UserDto user = new UserDto();
 		user.setEmail(email);
-		
+
 		int count = userService.authEmail(user);
-		if(count==1) {
-			map.put("msg","인증 성공");
+		if (count == 1) {
+			map.put("msg", "인증 성공");
 			map.put("status", "success");
 			response = new ResponseEntity(map, HttpStatus.OK);
 			res.sendRedirect("/");
-		}else {
-			map.put("msg","이메일 인증 실패");
+		} else {
+			map.put("msg", "이메일 인증 실패");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
 		return response;
 	}
-	
+
 	// 회원정보
 	@GetMapping("/mypage")
-	public Object userInfo(HttpServletRequest request) throws Exception{
-		Map<String,Object> map = new HashMap<String, Object>();
+	public Object userInfo(HttpServletRequest request) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
 		ResponseEntity response = null;
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		UserDto user = userService.findUserByEmail(email);
 		List<FoodCategoryDto> categories = recipeService.selectAllFoodCategory();
-		
-		if(user != null) {
+
+		if (user != null) {
 			map.put("msg", "회원 정보 성공");
 			map.put("status", "success");
 			map.put("user", user);
 			map.put("categories", categories);
-			response = new ResponseEntity(map,HttpStatus.OK);
+			response = new ResponseEntity(map, HttpStatus.OK);
 			return response;
 		} else {
 			map.put("msg", "회원 정보 로딩 실패");
@@ -180,23 +220,23 @@ public class UserController {
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 			return response;
 		}
-		
+
 	}
-	
+
 	// 회원이 좋아하는 레시피 목록
 	@GetMapping("/likeRecipe")
 	public Object userLikeRecipe(HttpServletRequest request) {
 		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		Long userId = (userService.findUserByEmail(email).getUserId());
-		
+
 		List<RecipeDto> likeRecipe = userService.likeRecipe(userId);
 		map.put("msg", "유저 좋아요 레시피 목록 불러오기 성공");
 		map.put("userLikeRecipe", likeRecipe);
 		map.put("status", "success");
-		
+
 		response = new ResponseEntity(map, HttpStatus.OK);
 		return response;
 	}
@@ -205,10 +245,10 @@ public class UserController {
 	@PutMapping("/modify")
 	public Object modifyMember(@RequestBody UserModifyRequestDto userModifyRequestDto) {
 		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		int count = userService.modify(userModifyRequestDto);
-		
+
 		if (count == 1) {
 			map.put("msg", "회원 정보 수정 성공");
 			map.put("status", "success");
@@ -225,10 +265,10 @@ public class UserController {
 	@DeleteMapping("/withdrawal")
 	public Object delete(HttpServletRequest request) {
 		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
-		
+
 		int count = userService.remove(email);
 		if (count == 1) {
 			map.put("msg", "회원 탈퇴 성공");
@@ -246,8 +286,8 @@ public class UserController {
 	@GetMapping("/email/{email}")
 	public Object findEmail(@PathVariable("email") String email) {
 		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		UserDto user = userService.findUserByEmail(email);
 
 		if (user == null) {
@@ -259,7 +299,7 @@ public class UserController {
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return response;
 	}
 
@@ -267,8 +307,8 @@ public class UserController {
 	@GetMapping("/nickname/{nickname}")
 	public Object findNickname(@PathVariable("nickname") String nickname) {
 		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		UserDto user = userService.findUserByNickname(nickname);
 
 		if (user == null) {
@@ -280,7 +320,7 @@ public class UserController {
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return response;
 	}
 }
