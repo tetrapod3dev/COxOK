@@ -36,5 +36,10 @@ export default {
     reviewRegister: '/review/', // POST / 리뷰 작성을 위한 데이터를 전달할 주소
     reviewDelete: '/review/', // DELETE / 뒤에 review_id 붙여주기
     reviewUpdate: '/review/', // PUT / 뒤에 review_id
+
+    // Versus ROUTES
+    versusRegister: '/versus/register/', // POST / 요리대전 생성
+    versusList: '/versus/all/', // GET / 요리대전 목록 (6개씩)
+    versusDetail: '/versus/view/', // GET / 요리대전 상세보기
   }
 }
