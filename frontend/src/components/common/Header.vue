@@ -8,7 +8,12 @@
       menu-classes="ml-auto"
     >
       <template>
-        <router-link v-popover:popover1 class="navbar-brand" :to="isLoggedIn ? '/main/' : '/'">CO×OK</router-link>
+        <router-link
+          v-popover:popover1
+          class="navbar-brand"
+          :to="isLoggedIn ? '/main/' : '/'"
+          >CO×OK</router-link
+        >
         <el-popover
           ref="popover1"
           popper-class="popover"
@@ -33,9 +38,19 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" v-if="isLoggedIn" to="/accounts/setting/">
+          <router-link
+            class="nav-link"
+            v-if="isLoggedIn"
+            to="/accounts/setting/"
+          >
             <i class="now-ui-icons users_circle-08"></i>
             <p>회원정보</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" to="/blog/">
+            <i class="now-ui-icons users_circle-08"></i>
+            <p>블로그</p>
           </router-link>
         </li>
         <li class="nav-item">
@@ -86,5 +101,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

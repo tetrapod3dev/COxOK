@@ -3,74 +3,61 @@
     <h2>요리대전 메인 페이지입니다.</h2>
     <router-link :to="{ name: 'VersusMakeView' }"><button class="btn btn-outline-secondary mx-2">요리대전 만들기</button></router-link>
 
-    <router-link v-for="versus_dummy in versus_dummys" :key="versus_dummy.id" :to="{name: 'VersusDetailView', params: {versus_id: versus_dummy.id} }">
+    <router-link v-for="versus in versusList" :key="versus.versusId" :to="{name: 'VersusDetailView', params: {versus_id: versus.versusId} }">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <h5 class="card-title">{{ versus_dummy.title }}</h5>
-          <p class="card-text text-left">{{ versus_dummy.content }}</p>
+          <img :src="imageSrc(versus)">
+          <h5 class="card-title">{{ versus.title }}</h5>
         </div>
       </div>
     </router-link>
 
-    <div class="row">
-      <div v-for="photo in photos" :key="'A' + photo.id" class="col-4">
-        <h5>{{ photo.title }}</h5>
-        <img :src="photo.thumbnailUrl" :alt="photo.title">
-      </div>
-      <div id="bottomSensor"></div>
-      <button @click="scrollToTop" class="button-bottom">^</button>
-    </div>
-
+    <div id="bottomSensor"></div>
+    <button @click="scrollToTop" class="button-bottom">^</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import SERVER from '@/api/api'
 import scrollmonitor from 'scrollmonitor'
 
 export default {
   name: 'VersusHomeView',
   data() {
     return {
-      versus_dummys: [
-        {
-          'id': 1,
-          'title': '더미 데이터 제목',
-          'content': '더미 데이터 설명',
-        },
-        {
-          'id': 2,
-          'title': '더미 데이터 제목222',
-          'content': '더미 데이터 설명222',
-        },
-      ],
-      photos: [],
-      page: 1,
+      versusList: [],
+      curPage: 0,
     }
   },
   methods: {
-    getPhotos: function () {
-      const options = {
-        params: {
-          _page: this.page++,
-          _limit: 6,
-        }
+    imageSrc(versus) {
+      return SERVER.IMAGE_URL + versus.recipeThumbnail1
+    },
+    getVersus: function () {
+      const self = this
+      if (this.curPage >= 0) {
+        axios.get(SERVER.URL + SERVER.ROUTES.versusList + this.curPage)
+          .then(res => {
+            if (res.data.list.length == 0) {
+              self.curPage = -1
+            } else {
+              self.curPage += 1
+              self.versusList = [...self.versusList, ...res.data.list]
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
-      axios.get('https://jsonplaceholder.typicode.com/photos', options)
-        .then(res => {
-          this.photos = [...this.photos, ...res.data]
-        })
-        .catch(err => {
-          console.log(err)
-        })
     },
     addScrollWatcher: function () {
       const bottomSensor = document.querySelector('#bottomSensor')
       const watcher = scrollmonitor.create(bottomSensor)
       watcher.enterViewport(() => {
         setTimeout(() => {
-          this.getPhotos()
-        }, 100)
+          this.getVersus()
+        }, 1000)
       })
     },
     scrollToTop: function () {
@@ -80,12 +67,12 @@ export default {
       const bottomSensor = document.querySelector('#bottomSensor')
       const watcher = scrollmonitor.create(bottomSensor)
       if (watcher.isFullyInViewport) {
-        this.getPhotos()
+        this.getVersus()
       }
     },
   },
   created: function () {
-    this.getPhotos()
+    this.getVersus()
   },
   mounted: function() {
     this.addScrollWatcher()
