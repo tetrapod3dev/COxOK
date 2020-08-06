@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.FoodCategoryDto;
+import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
 import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 import com.ssafy.cookblog.service.RecipeService;
@@ -191,7 +192,7 @@ public class UserController {
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		Long userId = (userService.findUserByEmail(email).getUserId());
 		
-		List<Long> likeRecipe = userService.likeRecipe(userId);
+		List<RecipeDto> likeRecipe = userService.likeRecipe(userId);
 		map.put("msg", "유저 좋아요 레시피 목록 불러오기 성공");
 		map.put("userLikeRecipe", likeRecipe);
 		map.put("status", "success");
