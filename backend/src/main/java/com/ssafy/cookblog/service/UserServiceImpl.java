@@ -71,5 +71,10 @@ public class UserServiceImpl implements UserService{
 	public int remove(String email) {
 		return userDao.delete(email);
 	}
+
+	@Override
+	public List<Long> likeRecipe(long userId) {
+		return userDao.likeRecipe(userId);
+	}
 	
 }

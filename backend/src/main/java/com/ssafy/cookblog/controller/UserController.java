@@ -181,6 +181,21 @@ public class UserController {
 		}
 		
 	}
+	
+	// 회원이 좋아하는 레시피 목록
+	@GetMapping("/likeRecipe/{id}")
+	public Object userLikeRecipe(@PathVariable long id) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		List<Long> likeRecipe = userService.likeRecipe(id);
+		
+		map.put("msg", "유저 좋아요 레시피 목록 불러오기 성공");
+		map.put("userLikeRecipe", likeRecipe);
+		map.put("status", "success");
+		
+		return response;
+	}
 
 	// 회원정보수정
 	@PutMapping("/modify")

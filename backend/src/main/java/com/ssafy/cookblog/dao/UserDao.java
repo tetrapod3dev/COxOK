@@ -15,6 +15,7 @@ public interface UserDao {
 	public List<UserDto> selectAll();
 	public UserDto login(UserDto user);
 	public long userIdByEmail(String email);
+	public List<Long> likeRecipe(long userId);
 	
 	//Update
 	public int update(UserModifyRequestDto userModifyRequestDto);

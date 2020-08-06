@@ -62,4 +62,9 @@ public class UserDaoImpl implements UserDao{
 		return session.selectOne("user.selectUseridByEmail", email);
 	}
 
+	@Override
+	public List<Long> likeRecipe(long userId) {
+		return session.selectList("likeRecipe.userRecipeLike", userId);
+	}
+
 }

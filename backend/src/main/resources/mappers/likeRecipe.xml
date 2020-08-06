@@ -28,4 +28,13 @@
 		SELECT *
 		FROM like_recipe
 	</select>
+	
+	<select id="userRecipeLike" resultType="Long">
+		SELECT
+			recipe_id as recipeId
+		FROM
+			like_recipe
+		WHERE
+			user_id = #{userId}
+	</select>
 </mapper>

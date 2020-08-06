@@ -17,6 +17,7 @@ public interface UserService {
 	public List<UserDto> findAllUser();
 	public UserDto login(UserDto user);
 	public long userIdByEmail(String email);
+	public List<Long> likeRecipe(long userId);
 
 	//회원정보수정
 	public int modify(UserModifyRequestDto userModifyRequestDto);
