@@ -238,6 +238,7 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("레시피 검색")
 	@PostMapping("/search/{startIndex}")
 	public Object search(@ModelAttribute RecipeSearchRequestDto recipeSearchRequestDto,
 			@PathVariable("startIndex")int startIndex) {
