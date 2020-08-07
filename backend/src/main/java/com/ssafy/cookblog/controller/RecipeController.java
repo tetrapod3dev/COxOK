@@ -85,6 +85,32 @@ public class RecipeController {
 		return response;
 	}
 	
+	@GetMapping("/my")
+	public Object getMyRecommand(HttpServletRequest request ) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		FoodCategoryDto category = recipeService. ;
+		List<RecipeDto> recipe= recipeService. ;
+		
+		if(recipe!=null) {
+			map.put("msg", "레시피 조회를 성공했습니다.");
+			map.put("status", "success");
+			map.put("category",category);
+			map.put("recipe", recipe);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "레시피를 찾지 못했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
 	// 레시피 전체 조회
 	@GetMapping("/all/{startIndex}")
 	public Object getAllRecipe(@PathVariable("startIndex") int startIndex) {

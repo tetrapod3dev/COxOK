@@ -35,4 +35,6 @@ public interface RecipeDao {
 	public int recipeLikeCount(long recipeId);
 	public boolean reipceUserLike(LikeDto likeDto);
 	public List<LikeDto> allUserLike(long recipeId);
+	
+	
 }
