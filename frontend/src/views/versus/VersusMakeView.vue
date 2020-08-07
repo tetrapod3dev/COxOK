@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="container">
-      <p>선택한 레시피 목록</p>
+      <p class="selected-recipe-list-title">선택한 레시피 목록</p>
       <div class="selected-recipe-list row">
         <div class="ml-auto mr-auto align-self-center">
           <b-button variant="primary" class="btn-circle" pill @click="movePrev">
@@ -41,8 +41,8 @@
         <div v-for="(recipe, index) in curRecipes" :key="index" class="col-md-4 col-lg-2">
           <card
             type="pricing"
-            class="card-background"
-            :style="'width:8rem;height:12rem;background-image: url('+ imageSrc(recipe.recipeThumbnailSrc) +')'"
+            class="card-background selected-recipe-card"
+            :style="'background-image: url('+ imageSrc(recipe.recipeThumbnailSrc) +')'"
           >
             <a class="selected-recipe-remove" @click="removeSelectedRecipe(index)">
               <i class="now-ui-icons ui-1_simple-remove"></i>
@@ -51,6 +51,7 @@
             <p class="card-description">{{ recipe.recipeDetail }}</p>
           </card>
         </div>
+
         <div class="ml-auto mr-auto align-self-center">
           <b-button variant="primary" class="btn-circle" pill @click="moveNext">
             <i class="now-ui-icons arrows-1_minimal-right"></i>
@@ -119,7 +120,7 @@
 <script>
 import CategorySelector from "@/components/recipes/CategorySelector";
 
-import { Tabs, TabPane } from "@/components/global";
+import { Tabs, TabPane, Card } from "@/components/global";
 
 import { mapGetters, mapActions } from "vuex";
 import SERVER from "@/api/api";
@@ -147,6 +148,7 @@ export default {
   components: {
     CategorySelector,
     Tabs,
+    Card,
     TabPane,
   },
   computed: {
@@ -372,5 +374,9 @@ export default {
   text-align: center;
   font-size: 12px;
   line-height: 1.42857;
+}
+.selected-recipe-card {
+  width: 8rem;
+  height: 12rem;
 }
 </style>

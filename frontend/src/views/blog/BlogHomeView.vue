@@ -106,7 +106,6 @@ export default {
           indexSelectedCategory < this.selectedCategory.length;
           indexSelectedCategory++
         ) {
-          console.log("test");
           while (
             this.foodCategories[indexFoodCategories]["foodCategoryId"] <
             this.selectedCategory[indexSelectedCategory]
