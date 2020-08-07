@@ -346,15 +346,15 @@ public class UserController {
 	}
 	
 	@ApiOperation("회원이 쓴 레시피 목록")
-	@GetMapping("/writeRecipeList")
-	public Object writeRecipeList(HttpServletRequest request) {
+	@GetMapping("/myrecipe")
+	public Object getMyRecipeList(HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 		Long userId = (userService.findUserByEmail(email).getUserId());
 
-		List<RecipeDto> writeRecipeList = userService.writeRecipeList(userId);
+		List<RecipeDto> writeRecipeList = userService.getMyRecipeList(userId);
 		map.put("msg", "회원이 쓴 레시피 목록 불러오기 성공");
 		map.put("writeRecipeList", writeRecipeList);
 		map.put("status", "success");
