@@ -119,25 +119,26 @@ public class BlogController {
 	}
 	
 	// Read(상세)
-	@GetMapping("/my/{id}")
-	public Object getMyBlog(@PathVariable long id,HttpServletRequest request) {
+	@GetMapping("/my")
+	public Object getMyBlog(HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
-		
-		List<BlogDto> list = blogService.getMyBlog(id);
 		
 		String token = request.getHeader("Authorization");
 		String email = null;
 		long userId = -1;
+		List<BlogDto> list = null;
+		
+		if(token != null) {
+			email = jwtService.getEmailFromToken(token.substring(7));
+			userId = userService.userIdByEmail(email);
+			list = blogService.getMyBlog(userId);
+		}
 		
 		if(list != null) {
 			map.put("msg", "블로그 포스트 읽기에 성공했습니다.");
 			map.put("status", "success");
 			map.put("blog", list);
-			if(token != null) {
-				email = jwtService.getEmailFromToken(token.substring(7));
-				userId = userService.userIdByEmail(email);
-			}
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "블로그 포스트 읽기에 실패했습니다.");
