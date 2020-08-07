@@ -17,6 +17,9 @@ public class BlogServiceImpl implements BlogService{
 	public BlogDto get(long blogId) {
 		return blogDao.select(blogId);
 	}
+	public List<BlogDto> getMyBlog(long userId) {
+		return blogDao.selectMyBlog(userId);
+	}
 	public List<BlogDto> getAllBlog(int startIndex) {
 		return blogDao.selectAll(startIndex);
 	}
