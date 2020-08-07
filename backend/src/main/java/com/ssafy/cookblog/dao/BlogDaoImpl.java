@@ -19,7 +19,7 @@ public class BlogDaoImpl implements BlogDao{
 	}
 	
 	public List<BlogDto> selectMyBlog(long userId) {
-		return session.selectOne("blog.selectMyBlog",userId);
+		return session.selectList("blog.selectMyBlog",userId);
 	}
 	
 	public List<BlogDto> selectAll(int startIndex) {
