@@ -191,4 +191,14 @@
    		) selected
    	</select>
    	
+   	<select id="selectRecipeListByUserId" resultType="RecipeDto">
+		SELECT 
+			recipe_id, recipe_name as recipeName, recipe_thumbnail_src as recipeThumbnailSrc, avg_rating as avgRating,
+			reg_time as regTime, recipe_id as recipeId, cook_time as cookTime, level, recipe_detail as recipeDetail
+		FROM 
+			recipe
+		WHERE
+			user_id = #{userId}
+	</select>
+   	
 </mapper>

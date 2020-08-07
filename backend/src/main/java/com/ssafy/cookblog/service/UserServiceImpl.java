@@ -93,5 +93,10 @@ public class UserServiceImpl implements UserService{
 	public List<Long> readUserFavoriteCategory(long userId) {
 		return categoryDao.selectUserFavoriteCategoryId(userId);
 	}
+
+	@Override
+	public List<RecipeDto> writeRecipeList(Long userId) {
+		return userDao.selectRecipeListByUserId(userId);
+	}
 	
 }

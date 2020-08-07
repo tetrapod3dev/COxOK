@@ -28,6 +28,8 @@ public interface UserDao {
 	
 	//Delete
 	public int delete(String email);
+
+	public List<RecipeDto> selectRecipeListByUserId(Long userId);
 	
 	
 }
