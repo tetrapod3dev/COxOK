@@ -118,7 +118,6 @@ public class BlogController {
 		return response;
 	}
 	
-	// Read(상세)
 	@GetMapping("/my")
 	public Object getMyBlog(HttpServletRequest request) {
 		ResponseEntity response = null;
