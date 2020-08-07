@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.cookblog.dto.request.PhotoRegisterRequestDto;
 import com.ssafy.cookblog.service.PhotoService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/photo")
@@ -26,6 +28,7 @@ public class PhotoController {
 	@Autowired
 	PhotoService photoService;
 
+	@ApiOperation("레시피 사진 등록")
 	@PostMapping("/register")
 	public Object registerRecipe(@ModelAttribute PhotoRegisterRequestDto photo, HttpServletRequest request) {
 	

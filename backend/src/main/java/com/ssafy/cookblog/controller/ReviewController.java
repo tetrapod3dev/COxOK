@@ -25,6 +25,8 @@ import com.ssafy.cookblog.service.ReviewService;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.JwtService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/review")
@@ -40,7 +42,7 @@ public class ReviewController {
 	@Autowired
 	JwtService jwtService;
 
-	//레시피번호에 따른 리뷰 조회
+	@ApiOperation("레시피번호에 따른 리뷰 조회")
 	@GetMapping("/view/{recipeId}")
 	public Object getAllReview(@PathVariable("recipeId") int recipeId) {
 		ResponseEntity response = null;
@@ -54,7 +56,7 @@ public class ReviewController {
 		return response;
 	}
 
-	//레시피번호에 따른 리뷰 작성
+	@ApiOperation("레시피번호에 따른 리뷰 작성")
 	@PostMapping("/")
 	public Object registerReview(@RequestBody ReviewDto reviewDto,HttpServletRequest request ) {
 		ResponseEntity response = null;
@@ -77,6 +79,7 @@ public class ReviewController {
 		return response;
 	}
 	
+	@ApiOperation("리뷰 수정")
 	@PutMapping("/{reviewid}")
 	public Object registerModify(@PathVariable("reviewid")int reviewId, @RequestBody ReviewDto reviewDto,HttpServletRequest request ) {
 		ResponseEntity response = null;
@@ -100,7 +103,7 @@ public class ReviewController {
 		return response;
 	}
 	
-	//리뷰 번호에 따른 리뷰 삭제
+	@ApiOperation("리뷰 번호에 따른 리뷰 삭제")
 	@DeleteMapping("/{reviewid}")
 	public Object removeReview(@PathVariable("reviewid")int reviewId) {
 		ResponseEntity response = null;
