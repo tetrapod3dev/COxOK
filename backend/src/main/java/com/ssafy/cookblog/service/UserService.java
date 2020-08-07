@@ -33,6 +33,6 @@ public interface UserService {
 	
 	public List<Long> readUserFavoriteCategory(long userId);
 
-	public List<RecipeDto> writeRecipeList(Long userId);
+	public List<RecipeDto> getMyRecipeList(Long userId);
 	
 }

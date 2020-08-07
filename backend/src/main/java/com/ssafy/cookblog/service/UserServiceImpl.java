@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<RecipeDto> writeRecipeList(Long userId) {
+	public List<RecipeDto> getMyRecipeList(Long userId) {
 		return userDao.selectRecipeListByUserId(userId);
 	}
 	
