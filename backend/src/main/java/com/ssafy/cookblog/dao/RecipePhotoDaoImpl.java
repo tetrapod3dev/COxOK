@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.cookblog.dto.RecipePhotoDto;
-import com.ssafy.cookblog.dto.UserDto;
 
 @Repository
 public class RecipePhotoDaoImpl implements RecipePhotoDao {
