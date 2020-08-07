@@ -3,9 +3,7 @@ package com.ssafy.cookblog.dto.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.RecipePhotoDto;
-import com.ssafy.cookblog.dto.ReviewDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
