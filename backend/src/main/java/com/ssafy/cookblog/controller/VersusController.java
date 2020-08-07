@@ -26,6 +26,8 @@ import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.service.VersusService;
 import com.ssafy.cookblog.util.JwtService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/versus")
@@ -40,7 +42,7 @@ public class VersusController {
 	@Autowired
 	JwtService jwtService;
 	
-	//요리대전 작성
+	@ApiOperation("요리대전 작성")
 	@PostMapping("/register")
 	public Object registerVersus(@RequestBody VersusDto versusDto, HttpServletRequest request) {
 	
@@ -65,6 +67,7 @@ public class VersusController {
 		return response;
 	}
 	
+	@ApiOperation("승점 저장")
 	@PostMapping("/win")
 	public Object winVersus(@RequestBody VersusPointDto versusPoint) {
 		ResponseEntity response = null;
@@ -83,6 +86,7 @@ public class VersusController {
 		return response;
 	}
 	
+	@ApiOperation("요리 대전 전체 조회")
 	@GetMapping("/all/{startIndex}")
 	public Object getAllVersus(@PathVariable("startIndex") int startIndex) {
 		ResponseEntity response = null;
@@ -102,8 +106,7 @@ public class VersusController {
 		return response;
 	}
 		
-	
-	// 요리대전 상세 조회
+	@ApiOperation("요리대전 상세 조회")
 	@GetMapping("/view/{id}")
 	public Object getOneVersus(@PathVariable("id") long id) {
 		ResponseEntity response = null;
@@ -124,7 +127,7 @@ public class VersusController {
 		return response;
 	}
 	
-	// 요리대전 삭제
+	@ApiOperation("요리 대전 삭제")
 	@DeleteMapping("/delete/{id}")
 	public Object removeVersus(@PathVariable long id) {
 		ResponseEntity response = null;
@@ -143,7 +146,7 @@ public class VersusController {
 		return response;
 	}
 	
-	// 요리대전 결과 조회
+	@ApiOperation("요리대전 결과 조회")
 	@GetMapping("/result/{id}")
 	public Object getVersusResult(@PathVariable("id") long id) {
 		ResponseEntity response = null;

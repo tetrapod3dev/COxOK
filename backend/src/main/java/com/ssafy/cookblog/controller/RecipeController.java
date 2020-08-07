@@ -31,6 +31,8 @@ import com.ssafy.cookblog.service.RecipeService;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.JwtService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/recipe")
@@ -45,7 +47,7 @@ public class RecipeController {
 	@Autowired
 	UserService userService;
 	
-	// 레시피 상세 조회
+	@ApiOperation("레시피 상세 조회")
 	@GetMapping("/view/{id}")
 	public Object getOneRecipe(@PathVariable("id")int id, HttpServletRequest request ) throws Exception {
 		ResponseEntity response = null;
@@ -112,6 +114,7 @@ public class RecipeController {
 	}
 	
 	// 레시피 전체 조회
+	@ApiOperation("레시피 전체 조회")
 	@GetMapping("/all/{startIndex}")
 	public Object getAllRecipe(@PathVariable("startIndex") int startIndex) {
 		ResponseEntity response = null;
@@ -132,7 +135,8 @@ public class RecipeController {
 		return response;
 	}
 	
-	@GetMapping("/goRegister")		//모든 재료 받기
+	@ApiOperation("모든 재료 받기 (레시피 등록 과정)")
+	@GetMapping("/goRegister")		
 	public Object getAllIngredient() {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -149,7 +153,8 @@ public class RecipeController {
 		return response;
 	}
 	
-	@GetMapping("/get")		//모든 재료 받기
+	@ApiOperation("모든 재료 받기 (레시피 검색 과정)")
+	@GetMapping("/get")
 	public Object getAllIngredient2() {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -166,7 +171,7 @@ public class RecipeController {
 		return response;
 	}
 	
-	// 레시피 등록
+	@ApiOperation("레시피 등록")
 	@PostMapping("/register")
 	public Object registerRecipe(@ModelAttribute RecipeRegisterRequestDto recipe, HttpServletRequest request) {
 	
@@ -190,7 +195,7 @@ public class RecipeController {
 		return response;
 	}
 	
-	// 레시피 수정 버튼 클릭 시 기존 정보
+	@ApiOperation("레시피 수정 버튼 클릭 시 기존 정보 불러오기")
 	@GetMapping("/modifyInfo/{id}")
 	public Object modifyInfoRecipe(@PathVariable int id) {
 		
@@ -215,7 +220,7 @@ public class RecipeController {
 		
 	}
 	
-	// 레시피 수정
+	@ApiOperation("레시피 수정")
 	@PostMapping("/modify")
 	public Object modifyRecipe(@RequestBody RecipeUpdateRequestDto recipe, HttpServletRequest request) {
 		
@@ -240,7 +245,7 @@ public class RecipeController {
 		return response;
 	}
 	
-	// 레시피 삭제
+	@ApiOperation("레시피 삭제")
 	@DeleteMapping("/delete/{id}")
 	public Object deleteRecipe(@PathVariable long id) {
 		
@@ -260,6 +265,7 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("레시피 검색")
 	@PostMapping("/search/{startIndex}")
 	public Object search(@ModelAttribute RecipeSearchRequestDto recipeSearchRequestDto,
 			@PathVariable("startIndex")int startIndex) {
@@ -283,6 +289,7 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("좋아요 반영")
 	@PostMapping("/like")
 	public Object like(@RequestBody LikeDto like, HttpServletRequest request) {
 		ResponseEntity response = null;
@@ -308,6 +315,7 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("좋아요 취소")
 	@DeleteMapping("/likeCancel")
 	public Object likeCancel(@RequestBody LikeDto like, HttpServletRequest request) {
 		ResponseEntity response = null;
