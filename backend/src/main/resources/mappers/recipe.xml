@@ -204,7 +204,9 @@
 	<select id="selectRecipeListByCategoryId" resultType="RecipeDto">
 		SELECT recipe_id as recipeId, recipe_thumbnail_src as recipeThumbnailSrc
 		FROM recipe_food_category JOIN recipe USING(recipe_id)
-		WHERE food_category_id = #{foodCategoryId};
+		WHERE food_category_id = #{foodCategoryId}
+		order by recipe_id desc
+		limit 18;
 	</select>
    	
 </mapper>
