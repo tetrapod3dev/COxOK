@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ssafy.cookblog.dto.FavoriteDto;
+import com.ssafy.cookblog.dto.FoodCategoryDto;
 import com.ssafy.cookblog.dto.RecipeFoodCategoryDto;
 
 
@@ -48,5 +49,10 @@ public class CateogryDaoImpl implements CategoryDao {
 	@Override
 	public int deleteUserFavoriteCategory(long userId) {
 		return session.delete("category.deleteUserFavoriteCategory", userId);
+	}
+	
+	@Override
+	public FoodCategoryDto selectRandomCategoryByUserId(long userId) {
+		return session.selectOne("category.selectRandomCategoryByUserId",userId);
 	}
 }
