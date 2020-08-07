@@ -267,22 +267,22 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-1 align-self-center" @click="movePrev">
+            <div class="ml-auto mr-auto align-self-center" @click="movePrev">
               <n-button type="primary" round icon>
                 <i class="now-ui-icons arrows-1_minimal-left"></i>
               </n-button>
             </div>
             <div class="col-10 row">
-              <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-2">
+              <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-md-2 col-sm-1">
                 <router-link
-                  class="card-link"
+                  class="card-link main-list-recipe"
+                  tag="div"
+                  :style="'background-image: url('+imageSrc(recipe.recipeThumbnailSrc)+')'"
                   :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
-                >
-                  <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="w-100 h-100" />
-                </router-link>
+                ></router-link>
               </div>
             </div>
-            <div class="col-1 align-self-center" @click="moveNext">
+            <div class="ml-auto mr-auto align-self-center" @click="moveNext">
               <n-button type="primary" round icon>
                 <i class="now-ui-icons arrows-1_minimal-right"></i>
               </n-button>
@@ -351,3 +351,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.main-list-recipe {
+  width: 120px;
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+}
+</style>

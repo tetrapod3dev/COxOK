@@ -1,60 +1,67 @@
 <template>
   <div class="wrapper">
-    <!-- 페이지 배너 시작 -->
-    <div class="page-header page-header-mini">
+    <div class="page-header page-header-mini header-filter" filter-color="black">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
+        style="background-image: url('https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80')"
       ></parallax>
-      <div class="content-center">
-        <h1>블로그 게시글 작성 페이지</h1>
-      </div>
+      <blog-profile />
     </div>
-    <!-- 페이지 배너 끝 -->
 
-    <!-- 게시글 작성 시작 -->
     <div class="section">
       <div class="container">
-        <div class="row justify-content-md-center" id="row_style">
-          <!-- 제목 -->
-          <input type="text" class="form-control" placeholder="제목" v-model="blogPost.title" />
+        <blog-menu />
 
-          <!-- 텍스트 에디터 -->
-          <CxkEditor :value.sync="blogPost.content" />
-          <!-- 태그 시작 -->
-          <b-form-tags v-model="blogTags" no-outer-focus class="mb-2">
-            <template v-slot="{ tags, inputAttrs, inputHandlers, tagVariant, addTag, removeTag }">
-              <b-input-group v-show="blogTags.length < 3" class="mb-2">
-                <b-form-input v-bind="inputAttrs" v-on="inputHandlers" class="form-control"></b-form-input>
-                <b-input-group-append>
-                  <b-button @click="addTag()" variant="primary">Add</b-button>
-                </b-input-group-append>
-              </b-input-group>
-              <div class="d-inline-block" style="font-size: 1.5rem;">
-                <b-form-tag
-                  v-for="tag in tags"
-                  @remove="removeTag(tag)"
-                  :key="tag"
-                  :title="tag"
-                  :variant="tagVariant"
-                  class="mr-1"
-                >{{ tag }}</b-form-tag>
-              </div>
-            </template>
-          </b-form-tags>
-        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <!-- blog inner page start -->
+            <div class="row justify-content-md-center" id="row_style">
+              <!-- 제목 -->
+              <input type="text" class="form-control" placeholder="제목" v-model="blogPost.title" />
 
-        <div class="form-group">
-          <button @click="preTest" class="btn btn-primary" id="submit">등록</button>
-          <button @click="preTest" class="btn btn-default" id="submit">취소</button>
+              <!-- 텍스트 에디터 -->
+              <CxkEditor :value.sync="blogPost.content" />
+              <!-- 태그 시작 -->
+              <b-form-tags v-model="blogTags" no-outer-focus class="mb-2">
+                <template
+                  v-slot="{ tags, inputAttrs, inputHandlers, tagVariant, addTag, removeTag }"
+                >
+                  <b-input-group v-show="blogTags.length < 3" class="mb-2">
+                    <b-form-input v-bind="inputAttrs" v-on="inputHandlers" class="form-control"></b-form-input>
+                    <b-input-group-append>
+                      <b-button @click="addTag()" variant="primary">Add</b-button>
+                    </b-input-group-append>
+                  </b-input-group>
+                  <div class="d-inline-block" style="font-size: 1.5rem;">
+                    <b-form-tag
+                      v-for="tag in tags"
+                      @remove="removeTag(tag)"
+                      :key="tag"
+                      :title="tag"
+                      :variant="tagVariant"
+                      class="mr-1"
+                    >{{ tag }}</b-form-tag>
+                  </div>
+                </template>
+              </b-form-tags>
+            </div>
+
+            <div class="form-group">
+              <button @click="preTest" class="btn btn-primary" id="submit">등록</button>
+              <button @click="goBackPage" class="btn btn-default">취소</button>
+            </div>
+          </div>
         </div>
+        <!-- 게시글 작성 끝 -->
       </div>
     </div>
-    <!-- 게시글 작성 끝 -->
   </div>
 </template>
 
 <script>
+import BlogProfile from "@/components/blog/BlogProfile.vue";
+import BlogMenu from "@/components/blog/BlogMenu.vue";
+
 import CxkEditor from "@/components/cxkeditor/cxkeditor.vue";
 import axios from "axios";
 import router from "@/router";
@@ -63,6 +70,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "BlogPostMakeView",
+  bodyClass: "profile-page",
   data() {
     return {
       blogTags: [],
@@ -78,6 +86,8 @@ export default {
   },
   components: {
     CxkEditor,
+    BlogProfile,
+    BlogMenu,
   },
   computed: {
     ...mapGetters(["config"]),
@@ -133,6 +143,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    goBackPage() {
+      this.$router.go(-1);
     },
   },
 };

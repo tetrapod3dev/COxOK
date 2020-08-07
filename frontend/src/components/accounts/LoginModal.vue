@@ -53,9 +53,9 @@
 
           <div class="modal-footer">
             <p>아직 회원이 아니신가요?</p>
-            <router-link to="/accounts/signup">
-              <a style="color:#000000" @click="hideModal">회원 가입</a>
-            </router-link>
+            <span @click="hideModal">
+              <router-link to="/accounts/signup" tag="span">회원 가입</router-link>
+            </span>
           </div>
         </div>
       </div>
@@ -184,7 +184,7 @@ export default {
   justify-content: center;
 }
 
-.modal-login .modal-footer a {
+.modal-login .modal-footer span {
   color: #000000;
 }
 </style>

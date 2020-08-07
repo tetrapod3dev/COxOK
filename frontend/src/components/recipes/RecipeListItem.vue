@@ -4,8 +4,10 @@
       class="card-link"
       :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
     >
-      <card class="card" style="width: 20rem;">
-        <img slot="image" :src="imgSrc" class="card-img-top" alt="레시피 사진" />
+      <card type="profile" style="width:300px;height:300px;">
+        <div class="versus-card-image" :style="'background-image: url('+ imgSrc+')'" alt="레시피 사진"></div>
+        <!-- <card class="card" style="width: 20rem;">
+        <img slot="image" :src="imgSrc" class="card-img-top" alt="레시피 사진" />-->
         <div>
           <p class="card-text">{{ recipe.recipeName }}</p>
         </div>
@@ -15,7 +17,7 @@
 </template>
 
 <script>
-import SERVER from '@/api/api'
+import SERVER from "@/api/api";
 import { Card } from "@/components/global";
 
 export default {
@@ -35,4 +37,10 @@ export default {
 </script>
 
 <style scoped>
+.versus-card-image {
+  width: 260px;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
 </style>
