@@ -130,6 +130,7 @@ public class MeetController {
 		
 	}
 	
+	@ApiOperation("소모임 수정")
 	@PutMapping("/")
 	public Object update(@RequestBody MeetDto meetDto) {
 		ResponseEntity response = null;
@@ -138,11 +139,11 @@ public class MeetController {
 		
 		int count = meetService.modify(meetDto);
 		if(count!=0) {
-			map.put("msg", "소모임 등록을 성공했습니다.");
+			map.put("msg", "소모임 수정에 성공했습니다.");
 			map.put("status", "success");
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
-			map.put("msg", "소모임 등록을 실패했습니다.");
+			map.put("msg", "소모임 수정에 실패했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
@@ -150,6 +151,7 @@ public class MeetController {
 		return response;
 	}
 	
+	@ApiOperation("소모임 참석하기")
 	@PostMapping("/meetjoin")
 	public Object registerMeetJoin(@RequestBody MeetJoinDto meetJoinDto,HttpServletRequest request) {
 		ResponseEntity response = null;
@@ -174,6 +176,7 @@ public class MeetController {
 		return response;
 	}
 	
+	@ApiOperation("소모임 참석 취소하기")
 	@DeleteMapping("/meetjoin/{meetJoinId}")
 	public Object deleteMeetJoin(@PathVariable("meetJoinId") long meetJoinId) {
 		ResponseEntity response = null;
