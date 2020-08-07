@@ -87,7 +87,7 @@ public class RecipeController {
 		return response;
 	}
 	
-	@ApiOperation("레시피 전체 조회")
+	@ApiOperation("선호하는 카테고리중 18개 뽑기")
 	@GetMapping("/my")
 	public Object getMyRecommand(HttpServletRequest request ) {
 		ResponseEntity response = null;
