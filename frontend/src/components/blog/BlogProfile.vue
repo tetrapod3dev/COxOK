@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <div class="photo-container">
-      <img :src="profileSrc" alt />
-      
+      <router-link to="/blog/">
+        <img :src="profileSrc" alt />
+      </router-link>
     </div>
     <h3 class="title">{{user.nickname}}</h3>
     <p class="category">{{user.email}}</p>
@@ -19,7 +20,7 @@ export default {
   data() {
     return {
       user: {
-        email:"",
+        email: "",
         nickname: "",
         profilePhoto: "",
       },
@@ -28,8 +29,8 @@ export default {
   computed: {
     ...mapGetters(["config"]),
     profileSrc() {
-      return SERVER.IMAGE_URL + this.user.profilePhoto
-    }
+      return SERVER.IMAGE_URL + this.user.profilePhoto;
+    },
   },
   components: {},
   methods: {},
@@ -40,14 +41,11 @@ export default {
       },
     };
     axios
-        .get(
-          SERVER.URL + SERVER.ROUTES.myPage,
-          configs
-        )
-        .then((res) => {
-          this.user = res.data.user;
-        })
-        .catch((err) => console.log(err.response));
+      .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
+      .then((res) => {
+        this.user = res.data.user;
+      })
+      .catch((err) => console.log(err.response));
   },
 };
 </script>
@@ -55,5 +53,14 @@ export default {
 <style scoped>
 .profile-page .photo-container img {
   height: 100px;
+}
+.profile-page .photo-container {
+  -webkit-transition: -webkit-transform 0.4s;
+  transition: transform 0.4s;
+}
+.profile-page .photo-container:hover {
+  height: 100px;
+  -webkit-transform: scale(1.2) rotate(0.01deg);
+  transform: scale(1.2) rotate(0.01deg);
 }
 </style>

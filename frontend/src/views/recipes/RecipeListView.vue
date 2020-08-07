@@ -11,11 +11,11 @@
         <div class="row">
           <div class="col-md-2">
             <router-link to="/recipes/make">
-              <n-button type="primary" round block>레시피 작성하기</n-button>
+              <n-button type="primary" round block>레시피 작성</n-button>
             </router-link>
           </div>
           <div class="col-md-2 offset-md-8" @click="changeShow">
-            <n-button type="primary" round block>레시피 검색하기</n-button>
+            <n-button type="primary" round block>레시피 검색</n-button>
           </div>
         </div>
       </div>
@@ -30,13 +30,13 @@
         class="mt-5"
       />
 
-      <div v-if="recipes.length > 0" class="row mt-5">
-        <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-4 px-5 my-3">
+      <div v-if="recipes.length > 0" class="row mt-4">
+        <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-md-4 px-5 my-3">
           <RecipeListItem :recipe="recipe" />
         </div>
       </div>
 
-      <div v-else class="mt-5">
+      <div v-else class="mt-4">
         <h2>선택하신 조건에 맞는 레시피가 없습니다.</h2>
       </div>
 

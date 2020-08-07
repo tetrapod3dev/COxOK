@@ -1,77 +1,92 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper landing-page">
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
+        style="background-image: url('https://images.unsplash.com/photo-1452251889946-8ff5ea7b27ab?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=730&q=80') ;"
       ></parallax>
       <div class="content-center">
         <h1>회원가입</h1>
       </div>
     </div>
-
-    <div class="section section-about-us">
+    <div class="section section-contact-us text-center">
       <div class="container">
+        <p class="description">회원가입을 위에 아래에 내용을 기입해 주세요</p>
         <div class="row">
-          <div class="col-md-8 ml-auto mr-auto text-center">
-            <div class="row">
-              <fg-input
+          <!-- 회원 가입 form start -->
+          <div class="col-lg-6 text-center ml-auto mr-auto col-md-8 signup-form-group">
+            <!-- 이메일 input -->
+            <div class="input-lg ml-auto mr-auto row">
+              <b-form-input
                 v-model="signupData.email"
                 id="signup-email"
-                class="col-8"
+                :class="isNotDupEmail ? 'col-12' : 'col-10'"
                 type="text"
                 placeholder="이메일"
+                :state="isNotDupEmail ? true : null"
                 @keydown="returnEmail"
               />
-              <a v-show="!isNotDupEmail" @click="checkEmail">
-                <n-button type="primary" round block>중복 확인</n-button>
-              </a>
+              <b-button
+                class="check-btn"
+                lg="2"
+                v-show="!isNotDupEmail"
+                @click="checkEmail"
+                pill
+                variant="primary"
+                size="sm"
+              >인증</b-button>
             </div>
             <p v-show="emailMessage" v-text="emailMessage" class="text-center"></p>
-
-            <div class="row">
-              <fg-input
+            <br />
+            <!-- 닉네임 input -->
+            <div class="input-lg ml-auto mr-auto row">
+              <b-form-input
                 v-model="signupData.nickname"
                 id="signup-nickname"
-                class="col-8"
+                :class="isNotDupNickname ? 'col-12' : 'col-10'"
                 type="text"
                 placeholder="닉네임"
+                :state="isNotDupNickname ? true : null"
                 @keydown="returnNickname"
               />
-              <a v-show="!isNotDupNickname" @click="checkNickname">
-                <n-button type="primary" round block>중복 확인</n-button>
-              </a>
+              <b-button
+                class="check-btn"
+                lg="2"
+                v-show="!isNotDupNickname"
+                @click="checkNickname"
+                pill
+                variant="primary"
+                size="sm"
+              >체크</b-button>
             </div>
-
-            <div class="row">
-              <fg-input
-                v-model="signupData.password"
-                id="signup-password"
-                class="col-8"
-                type="password"
-                placeholder="비밀번호"
-              />
-            </div>
-
-            <div class="row">
-              <fg-input
-                v-model="passwordConfirm"
-                class="col-8"
-                id="signup-passwordConfirm"
-                type="password"
-                placeholder="비밀번호 확인"
-              />
-            </div>
-            <p v-if="!checkPassword">비밀번호가 일치하지 않습니다.</p>
-
-            <div v-if="isValid" class="mt-5 row justify-content-center">
-              <button class="btn btn-danger" @click="signup(signupData)">회원 가입</button>
-            </div>
-
-            <div v-else class="mt-5 row justify-content-center">
-              <button class="btn" @click="notChecked">회원 가입</button>
+            <br />
+            <!-- 비밀번호 input -->
+            <b-form-input
+              v-model="signupData.password"
+              class="col-12"
+              id="signup-password"
+              type="password"
+              placeholder="비밀번호"
+            />
+            <br />
+            <!-- 비밀번호 확인 input -->
+            <b-form-input
+              v-model="passwordConfirm"
+              class="col-12"
+              id="signup-passwordConfirm"
+              type="password"
+              placeholder="비밀번호 확인"
+              :state="checkPassword"
+            />
+            <div class="mt-5 row justify-content-center">
+              <b-button
+                pill
+                :class="isValid ? 'btn btn-danger' : 'btn'"
+                @click="isValid ? signup(signupData) : notChecked"
+              >회원 가입</b-button>
             </div>
           </div>
+          <!-- 회원 가입 form end -->
         </div>
       </div>
     </div>
@@ -84,7 +99,7 @@ import axios from "axios";
 
 import SERVER from "@/api/api";
 
-import { Button, FormGroupInput as FgInput } from "@/components/global";
+import { Button } from "@/components/global";
 
 function checktest(str) {
   var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -93,6 +108,7 @@ function checktest(str) {
 
 export default {
   name: "SignupView",
+  bodyClass: "landing-page",
   data() {
     return {
       signupData: {
@@ -102,17 +118,20 @@ export default {
       },
       passwordConfirm: "",
       isNotDupEmail: false,
-      isNotDupNickname: false,
+      isNotDupNickname: null,
       emailMessage: null,
       showDismissibleAlert: false,
     };
   },
   components: {
-    FgInput,
     [Button.name]: Button,
   },
   computed: {
     checkPassword() {
+      if (this.signupData.password === "") {
+        return null;
+      }
+
       return this.signupData.password == this.passwordConfirm ? true : false;
     },
     isValid() {
@@ -175,5 +194,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.signup-form-group .check-btn {
+  margin: 0px 0px 10px;
+}
 </style>
