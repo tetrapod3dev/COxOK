@@ -96,8 +96,8 @@ public class RecipeController {
 		String email = jwtService.getEmailFromToken(token.substring(7));
 		long userId = userService.userIdByEmail(email);
 		
-		FoodCategoryDto category = recipeService. ;
-		List<RecipeDto> recipe= recipeService. ;
+		FoodCategoryDto category = recipeService.getRandomCategoryByUserId(userId) ;
+		List<RecipeDto> recipe= recipeService.getRecipeListByCategoryId(category.getFoodCategoryId());
 		
 		if(recipe!=null) {
 			map.put("msg", "레시피 조회를 성공했습니다.");

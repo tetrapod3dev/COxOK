@@ -334,6 +334,13 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDao.allUserLike(recipeId);
 	}
 
+	@Override
+	public FoodCategoryDto getRandomCategoryByUserId(long userId) {
+		return categoryDao.selectRandomCategoryByUserId(userId);
+	}
 	
-	
+	@Override
+	public List<RecipeDto> getRecipeListByCategoryId(long foodCategoryId) {
+		return recipeDao.selectRecipeListByCategoryId(foodCategoryId);
+	}
 }

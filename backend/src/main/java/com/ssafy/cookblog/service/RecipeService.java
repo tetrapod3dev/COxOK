@@ -30,4 +30,7 @@ public interface RecipeService {
 	public int recipeLikeCount(long recipeId);
 	public boolean reipceUserLike(LikeDto likeDto);
 	public List<LikeDto> allUserLike(long recipeId);
+	
+	public FoodCategoryDto getRandomCategoryByUserId(long userId);
+	public List<RecipeDto> getRecipeListByCategoryId(long foodCategoryId);
 }

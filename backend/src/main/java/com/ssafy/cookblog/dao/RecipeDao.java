@@ -36,5 +36,7 @@ public interface RecipeDao {
 	public boolean reipceUserLike(LikeDto likeDto);
 	public List<LikeDto> allUserLike(long recipeId);
 	
+	public List<RecipeDto> selectRecipeListByCategoryId(long foodCategoryId);
+	
 	
 }

@@ -126,5 +126,9 @@ public class RecipeDaoImpl implements RecipeDao{
 	}
 
 	
+	@Override
+	public List<RecipeDto> selectRecipeListByCategoryId(long foodCategoryId) {
+		return session.selectList("recipe.selectRecipeListByCategoryId",foodCategoryId);
+	}
 
 }
