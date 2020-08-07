@@ -53,15 +53,11 @@
                 <div class="row">
                   <div class="col-md-8">
                     <div class="card-avatar">
-                      <a href="#pablo">
-                        <img class="img img-raised" src="img/mike.jpg">
-                      </a>
+                      
                       <div class="ripple-container"></div>
                     </div>
-                    <h4 class="card-title">Alec Thompson</h4>
-                    <p class="description">I've been trying to figure out the bed design for the
-                      master bedroom at our Hidden Hills compound...I like good music from
-                      Youtube.</p>
+                    <h4 class="card-title"></h4>
+                    <p class="description">레시피 추가되는 곳</p>
                   </div>
                 </div>
               </template>
