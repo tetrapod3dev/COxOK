@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@ToString
 public class UserDto {
 	private long userId;
 	
@@ -24,22 +26,8 @@ public class UserDto {
 	private String nickname;
 	private int auth;
 	
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("UserDto [userId=");
-		builder.append(userId);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append(", password=");
-		builder.append(password);
-		builder.append(", nickname=");
-		builder.append(nickname);
-		builder.append(", auth=");
-		builder.append(auth);
-		builder.append("]");
-		return builder.toString();
-	}
+	private String detail;
+	private String profilePhoto;
 	
 	@Override
 	public int hashCode() {

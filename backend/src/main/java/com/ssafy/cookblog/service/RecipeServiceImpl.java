@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +23,9 @@ import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.RecipeFoodCategoryDto;
 import com.ssafy.cookblog.dto.RecipeIngredientDto;
 import com.ssafy.cookblog.dto.RecipePhotoDto;
-import com.ssafy.cookblog.dto.request.RecipeRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
+import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeIngredientResponseDto;
 import com.ssafy.cookblog.dto.response.RecipeResponseDto;
 
@@ -47,6 +50,7 @@ public class RecipeServiceImpl implements RecipeService {
 		recipeResponseDto.setRecipePhotoList(recipePhotoDao.selectAll(recipeId));
 		recipeResponseDto.setIngredientList(recipeDao.selectRecipeIngredient(recipeId));
 		recipeResponseDto.setReviewDtoList(reviewDao.selectAll(recipeId));
+		recipeResponseDto.setFoodCategoryId(categoryDao.selectRecipeCategoryId(recipeId));
 		recipeResponseDto.setFoodCategoryName(categoryDao.selectRecipeCategoryName(recipeId));
 		return recipeResponseDto;
 	}
@@ -57,7 +61,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
-	public int registerRecipe(RecipeRequestDto recipeRequestDto) {
+	public int registerRecipe(RecipeRegisterRequestDto recipeRequestDto) {
 		RecipeDto recipeDto = new RecipeDto();
 		
 		recipeDto.setUserId(recipeRequestDto.getUserId());
@@ -104,8 +108,6 @@ public class RecipeServiceImpl implements RecipeService {
 		recipeDto.setRecipeThumbnailSrc(realFileName);
 		recipeDto.setRecipeDetail(recipeRequestDto.getRecipeDetail());
 		
-		System.out.println(recipeDto);
-		
 		int res = recipeDao.write(recipeDto);
 		if(res == 0)
 			return res;
@@ -148,6 +150,84 @@ public class RecipeServiceImpl implements RecipeService {
 			recipeIngredient.setIngredientId(recipeRequestDto.getIngredientPk()[i]);
 			recipeIngredient.setRecipeId(recipeId);
 			recipeIngredient.setAmount(recipeRequestDto.getIngredientAmount()[i]);
+			res = recipeDao.insertRecipeIngredient(recipeIngredient);
+			if(res == 0) return res;
+		}
+		
+		return 1;
+	}
+	
+	@Override
+	public int updateRecipe(RecipeUpdateRequestDto recipeUpdateRequestDto) {
+		RecipeDto recipeDto = new RecipeDto();
+		
+		long recipeId = recipeUpdateRequestDto.getRecipeId();
+		categoryDao.deleteRecipeCategory(recipeId); // recipeId에 연결된 카테고리 삭제
+		recipePhotoDao.delete(recipeId); // recipeId에 연결된 포토 삭제
+		recipeDao.deleteRecipeIngredient(recipeId); // recipeId에 연결된 재료 삭제
+		
+		recipeDto.setRecipeId(recipeId);
+		recipeDto.setUserId(recipeUpdateRequestDto.getUserId());
+		
+		recipeDto.setLevel(Integer.parseInt(recipeUpdateRequestDto.getLevel()));
+		recipeDto.setCookTime(Integer.parseInt(recipeUpdateRequestDto.getCookTime()));
+		
+		// 재료 영양성분 계산
+		int len = recipeUpdateRequestDto.getIngredientPk().length;
+		int sumCalorie=0, sumCarbon=0, sumProtein=0, sumFat=0, sumSugar=0, sumNatrium=0;
+		for(int i=0; i < len; i++) {
+			long ingredientId = recipeUpdateRequestDto.getIngredientPk()[i];
+			IngredientDto ingredientDto = recipeDao.selectIngredientById(ingredientId);
+			double per = (double) recipeUpdateRequestDto.getIngredientAmount()[i] / ingredientDto.getBaseAmount();
+			sumCalorie += (int) (ingredientDto.getCalorie() * per);
+			sumCarbon += (int) (ingredientDto.getCarbon() * per);
+			sumProtein += (int) (ingredientDto.getProtein() * per);
+			sumFat += (int) (ingredientDto.getFat() * per);
+			sumSugar += (int) (ingredientDto.getSugar() * per);
+			sumNatrium += (int) (ingredientDto.getNatrium() * per);
+		}
+		
+		recipeDto.setCalorie(sumCalorie);
+		recipeDto.setCarbon(sumCarbon);
+		recipeDto.setProtein(sumProtein);
+		recipeDto.setFat(sumFat);
+		recipeDto.setSugar(sumSugar);
+		recipeDto.setNatrium(sumNatrium);
+				
+		recipeDto.setRecipeName(recipeUpdateRequestDto.getRecipeName());
+		
+		// 썸네일 사진 이미지 변경
+		recipeDto.setRecipeThumbnailSrc(recipeUpdateRequestDto.getRecipeThumbnail());
+		recipeDto.setRecipeDetail(recipeUpdateRequestDto.getRecipeDetail());
+		
+		int res = recipeDao.updateRecipe(recipeDto);
+		if(res == 0)
+			return res;
+
+		//카테고리 추가
+		for(int categoryId : recipeUpdateRequestDto.getCategories()) {
+			RecipeFoodCategoryDto dto = new RecipeFoodCategoryDto();
+			dto.setRecipeId(recipeId);
+			dto.setFoodCategoryId(categoryId);
+			res = categoryDao.insertRecipeCategory(dto);
+			if(res == 0) return res;
+		}
+		
+		len = recipeUpdateRequestDto.getDescription().length;
+		for(int i = 0; i < len; i++) {
+			RecipePhotoDto photoDto = new RecipePhotoDto();
+			photoDto.setRecipeId(recipeId);
+			photoDto.setPhotoSrc(recipeUpdateRequestDto.getPhoto()[i]);
+			photoDto.setPhotoDetail(recipeUpdateRequestDto.getDescription()[i]);
+			res = recipePhotoDao.insert(photoDto);
+			if(res == 0) return res;
+		}
+		
+		for(int i = 0; i < recipeUpdateRequestDto.getIngredientPk().length; i++) {
+			RecipeIngredientDto recipeIngredient = new RecipeIngredientDto();
+			recipeIngredient.setIngredientId(recipeUpdateRequestDto.getIngredientPk()[i]);
+			recipeIngredient.setRecipeId(recipeId);
+			recipeIngredient.setAmount(recipeUpdateRequestDto.getIngredientAmount()[i]);
 			res = recipeDao.insertRecipeIngredient(recipeIngredient);
 			if(res == 0) return res;
 		}
@@ -248,5 +328,12 @@ public class RecipeServiceImpl implements RecipeService {
 	public boolean reipceUserLike(LikeDto likeDto) {
 		return recipeDao.reipceUserLike(likeDto);
 	}
+
+	@Override
+	public List<LikeDto> allUserLike(long recipeId) {
+		return recipeDao.allUserLike(recipeId);
+	}
+
+	
 	
 }

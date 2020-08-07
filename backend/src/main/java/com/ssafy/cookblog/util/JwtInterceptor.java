@@ -29,7 +29,7 @@ public class JwtInterceptor implements HandlerInterceptor{
 			response.setStatus(403);
 			return false;
 		}
-		
+
 	}
 	
 	

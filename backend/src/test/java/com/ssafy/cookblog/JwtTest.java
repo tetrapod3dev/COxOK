@@ -16,12 +16,13 @@ public class JwtTest {
 	JwtService service;
 	
 	@Test
-	public void jwtTest() {
+	public void jwtTest() throws Exception{
 		String email="email@email.com";
 		
 		String token =service.generateToken(email);
 		System.out.println(token);
 		
 		System.out.println(service.getEmailFromToken(token));
+		System.out.println(">>>>"+service.isValid("asdasd"));
 	}
 }

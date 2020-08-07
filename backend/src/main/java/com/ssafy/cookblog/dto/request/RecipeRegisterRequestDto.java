@@ -14,7 +14,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecipeRequestDto {
+public class RecipeRegisterRequestDto {
+	private long recipeId;
 	private String recipeName;
 	private String recipeDetail;
 	private MultipartFile recipeThumbnail;	//수정필요
@@ -29,4 +30,5 @@ public class RecipeRequestDto {
 	
 	private long userId;
 	
+	private String uploadPath;
 }

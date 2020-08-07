@@ -8,7 +8,7 @@
 
 	<update id="update">
 		update user set
-		password = #{password}, nickname = #{nickname}
+		password = #{password}, nickname = #{nickname}, detail = #{detail}, profile_photo = #{profilePhoto}
 		where email = #{email}
 	</update>
 	
@@ -23,22 +23,22 @@
 	</delete>
  
 	<select id="select" resultType="UserDto">
-		select user_id as userId, email, password, nickname
+		select user_id as userId, email, password, nickname, detail, profile_photo as profilePhoto
 		from user where email= #{email}
 	</select>
 	
 	<select id="selectNickname" resultType="UserDto">
-		select user_id as userId, email, password, nickname
+		select user_id as userId, email, password, nickname, detail, profile_photo as profilePhoto
 		from user where nickname= #{nickname}
 	</select>
 
 	<select id="selectAll" resultType="UserDto">
-		select user_id as userId, email, password, nickname
+		select user_id as userId, email, password, nickname, detail, profile_photo as profilePhoto
 		from user
 	</select>
 
 	<select id="login" resultType="UserDto">
-		select user_id as userId, email, password, nickname, auth
+		select user_id as userId, email, password, nickname, auth, detail, profile_photo as profilePhoto
 		from user where email= #{email} and password = #{password}
 	</select>
 	
@@ -46,5 +46,17 @@
 		select user_id from user where email= #{email}
 	</select>
 	
-
+	
+	<select id="selectTotalRecipe" resultType="Integer">
+		select count(recipe_id) from recipe where user_id = #{userId}
+	</select>
+	
+	<select id="selectTotalLike" resultType="Integer">
+		select count(like_id) from like_recipe where user_id =#{userId}
+	</select>
+	
+	<select id="selectTotalMeet" resultType="Integer">
+		select count(meet_join_id) from meet_join where user_id = #{user_id}
+	</select>
+	
 </mapper>

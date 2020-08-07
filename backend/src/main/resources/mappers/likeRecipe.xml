@@ -23,4 +23,19 @@
 		FROM like_recipe
 		WHERE recipe_id = #{recipeId} AND user_id = #{userId}
 	</select>
+	
+	<select id="allUserLike" resultType="LikeDto">
+		SELECT *
+		FROM like_recipe
+	</select>
+	
+	<select id="userRecipeLike" resultType="RecipeDto">
+		SELECT 
+			l.recipe_id, r.recipe_name as recipeName, r.recipe_thumbnail_src as recipeThumbnailSrc, r.avg_rating as avgRating,
+			r.reg_time as regTime, r.recipe_id as recipeId, cook_time as cookTime, level, r.recipe_detail as recipeDetail
+		FROM 
+			like_recipe AS l JOIN recipe AS r USING(recipe_id)
+		WHERE 
+			l.user_id = #{userId}
+	</select>
 </mapper>

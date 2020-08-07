@@ -7,6 +7,18 @@
    		values (#{recipeId}, #{foodCategoryId}) 
    	</insert>
    	
+   	<insert id="insertUserFavoriteCategory">
+   		insert into favorite_category(user_id, food_category_id)
+   		values (#{userId}, #{foodCategoryId})
+   	</insert>
+   	
+   	<delete id="deleteUserFavoriteCategory">
+   		delete from 
+   			favorite_category
+   		where
+   			user_id = #{userId}
+   	</delete>
+   	
    	<select id="selectRecipeCategoryName" resultType="String">
    		select food_category_name as foodCategoryName
    		from 
@@ -18,5 +30,33 @@
    				and
    			r.recipe_id = #{recipeId} 
    	</select>
+   	
+   	<select id="selectRecipeCategoryId" resultType="Integer">
+   		select f.food_category_id as foodCategoryId
+   		from 
+   			recipe_food_category as r 
+   				,
+   			food_category as f
+   		where 
+   			r.food_category_id = f.food_category_id
+   				and
+   			r.recipe_id = #{recipeId} 
+   	</select>
+   	
+   	<select id="selectUserFavoriteCategory" resultType="Long">
+   		select 
+   			food_category_id as foodCategoryId
+   		from
+   			favorite_category
+   		where
+   			user_id = #{userId}
+   	</select>
+   	
+   	<delete id="deleteRecipeCategory">
+   		delete from
+   			recipe_food_category
+   		where
+   			recipe_id = #{recipeId}
+   	</delete>
    	
 </mapper>
