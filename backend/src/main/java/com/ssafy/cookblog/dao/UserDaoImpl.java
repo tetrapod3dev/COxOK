@@ -83,4 +83,9 @@ public class UserDaoImpl implements UserDao{
 		return session.selectList("likeRecipe.userRecipeLike", userId);
 	}
 
+	@Override
+	public List<RecipeDto> selectRecipeListByUserId(Long userId) {
+		return session.selectList("recipe.selectRecipeListByUserId", userId);
+	}
+
 }

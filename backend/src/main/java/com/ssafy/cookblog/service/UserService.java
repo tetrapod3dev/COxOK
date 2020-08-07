@@ -32,5 +32,7 @@ public interface UserService {
 	public int remove(String email);
 	
 	public List<Long> readUserFavoriteCategory(long userId);
+
+	public List<RecipeDto> writeRecipeList(Long userId);
 	
 }
