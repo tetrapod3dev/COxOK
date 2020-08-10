@@ -329,11 +329,13 @@ public class UserController {
 	}
 	
 	@ApiOperation("해당 유저가 작성한 레시피, 좋아요 레시피, 소모임의 갯수")
-	@GetMapping("/total/{userId}")
-	public Object getTotal(@PathVariable("userId") long userId) {
+	@GetMapping("/total")
+	public Object getTotal(HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
 		
 		map.put("msg", "성공");
 		map.put("status", "success");
