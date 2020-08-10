@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.cookblog.dao.ReportDao;
 import com.ssafy.cookblog.dto.ReportRecipeDto;
@@ -15,6 +16,7 @@ public class ReportServiceImpl implements ReportService {
 	private ReportDao reportDao;
 
 	@Override
+	@Transactional 
 	public int reportRecipe(ReportRecipeDto reportDto) {
 		return reportDao.insertReportRecipe(reportDto);
 	}

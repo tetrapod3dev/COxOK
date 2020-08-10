@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.cookblog.dao.ReviewDao;
 import com.ssafy.cookblog.dto.ReviewDto;
@@ -20,6 +21,7 @@ public class ReviewServiceImpl implements ReviewService{
 		return list;
 	}
 	
+	@Transactional 
 	public int register(ReviewDto reviewDto) {
 		int count = reviewDao.insert(reviewDto);
 		
@@ -29,6 +31,7 @@ public class ReviewServiceImpl implements ReviewService{
 		return count;
 	}
 	
+	@Transactional 
 	public int modify(ReviewDto reviewDto) {
 		int count = reviewDao.update(reviewDto);
 		
@@ -39,6 +42,7 @@ public class ReviewServiceImpl implements ReviewService{
 		return count;
 	}
 	
+	@Transactional 
 	public int remove(int reviewId) {
 		int count = reviewDao.delete(reviewId);
 		

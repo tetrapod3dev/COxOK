@@ -13,6 +13,7 @@ public interface UserDao {
 	//Read
 	public UserDto select(String email);
 	public UserDto selectNickname(String nickname);
+	public UserDto selectUserId(long userId);
 	public List<UserDto> selectAll();
 	public UserDto login(UserDto user);
 	public long userIdByEmail(String email);
