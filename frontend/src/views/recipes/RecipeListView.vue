@@ -31,7 +31,11 @@
       />
 
       <div v-if="recipes.length > 0" class="row mt-4">
-        <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-md-4 px-5 my-3">
+        <div
+          v-for="recipe in recipes"
+          :key="recipe.recipeId"
+          class="col-12 col-lg-4 col-md-6 px-5 my-3"
+        >
           <RecipeListItem :recipe="recipe" />
         </div>
       </div>

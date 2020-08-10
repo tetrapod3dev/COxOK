@@ -32,12 +32,12 @@
 
     <div v-if="selectedMax == 0" class="section container">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-6">
           <card type="background" style="background-color: #B4D9C4">
             <h1 class="versus-first-title">V</h1>
           </card>
         </div>
-        <div class="col-md-6">
+        <div class="col-6">
           <card type="background" style="background-color: #F2A7A0">
             <h1 class="versus-first-title">S</h1>
           </card>
@@ -47,7 +47,7 @@
     <div v-if="selectedMax > 1" class="section container">
       <h2 class="versus-title">{{ selectedMax }}강전</h2>
       <div class="row">
-        <div v-for="recipe in nowRecipes" :key="recipe.id" class="col-md-6">
+        <div v-for="recipe in nowRecipes" :key="recipe.id" class="col-6">
           <card type="profile" style="width:465px;height:400px;">
             <div
               class="versus-card-image"
@@ -74,25 +74,31 @@
     </div>
     <div v-if="this.selectedMax == 1" class="section container">
       <h2 class="versus-title">1등</h2>
-      <card type="profile" style="width:465px;height:400px;">
-        <div
-          class="versus-card-image"
-          :style="'background-image: url('+ imageSrc(recipes[0].recipeThumbnailSrc)+')'"
-        ></div>
-        <h4 class="card-title text-left">{{ recipes[0].recipeName }}</h4>
-        <router-link
-          :to="{name:'RecipeDetailView', params: { recipe_id: recipes[0].recipeId }}"
-          tag="h6"
-          class="card-footer text-info text-right align-self-end"
-        >보러가기</router-link>
-      </card>
-      <div v-for="result in versusResult" :key="result.recipeId">
-        <!-- <div>레시피 아이디: {{ result.recipeId }}</div> -->
-        <div>레시피 이름: {{ result.recipeName }}</div>
-        <div>레시피 승점: {{ result.count ? result.count : 0 }}</div>
-        <!-- <div
+      <div class="row">
+        <div class="col-md-6">
+          <card type="profile" style="width:465px;height:400px;">
+            <div
+              class="versus-card-image"
+              :style="'background-image: url('+ imageSrc(recipes[0].recipeThumbnailSrc)+')'"
+            ></div>
+            <h4 class="card-title text-left">{{ recipes[0].recipeName }}</h4>
+            <router-link
+              :to="{name:'RecipeDetailView', params: { recipe_id: recipes[0].recipeId }}"
+              tag="h6"
+              class="card-footer text-info text-right align-self-end"
+            >보러가기</router-link>
+          </card>
+        </div>
+        <div class="col-md-6">
+          <div v-for="result in versusResult" :key="result.recipeId">
+            <!-- <div>레시피 아이디: {{ result.recipeId }}</div> -->
+            <div>레시피 이름: {{ result.recipeName }}</div>
+            <div>레시피 승점: {{ result.count ? result.count : 0 }}</div>
+            <!-- <div
           :style="'width:100px;height:100px;background-image: url('+ imageSrc(result.recipeThumbnailSrc)+')'"
-        ></div>-->
+            ></div>-->
+          </div>
+        </div>
       </div>
     </div>
   </div>
