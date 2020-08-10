@@ -146,4 +146,9 @@ public class RecipeDaoImpl implements RecipeDao{
 		return session.selectList("recipe.selectRecipeListByCategoryId", foodCategoryId);
 	}
 
+	@Override
+	public int deleteIngredientAdmin(long ingredientId) {
+		return session.delete("recipe.removeIngredientAdmin", ingredientId);
+	}
+
 }

@@ -357,4 +357,9 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDao.updateIngredientAdmin(ingredient);
 	}
 
+	@Override
+	public int removeIngredientAdmin(long ingredientId) {
+		return recipeDao.deleteIngredientAdmin(ingredientId);
+	}
+
 }

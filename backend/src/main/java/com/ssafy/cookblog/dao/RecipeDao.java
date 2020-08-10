@@ -23,6 +23,7 @@ public interface RecipeDao {
 	public List<IngredientDto> selectAllIngredientAdmin(int startIndex);
 	public int insertIngredientAdmin(IngredientDto ingredient);
 	public int updateIngredientAdmin(IngredientDto ingredient);
+	public int deleteIngredientAdmin(long ingredientId);
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId);
 	public IngredientDto selectIngredientById(long ingredientId);
 	public int insertRecipeIngredient(RecipeIngredientDto recipeIngredient);

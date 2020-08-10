@@ -427,4 +427,32 @@ public class RecipeController {
 		
 		return response;
 	}
+	
+	@ApiOperation("재료 삭제")
+	@DeleteMapping("/admin/ingredient/{id}")
+	public Object deleteIngredient(HttpServletRequest request, @PathVariable long ingredientId) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		int count = recipeService.removeIngredientAdmin(ingredientId);
+		
+		if(count != 0) {
+			map.put("msg", "재료 삭제에 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "재료 삭제에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
 }
