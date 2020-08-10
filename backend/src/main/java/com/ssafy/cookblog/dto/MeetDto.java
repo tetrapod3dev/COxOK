@@ -2,6 +2,8 @@ package com.ssafy.cookblog.dto;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,7 @@ public class MeetDto {
 	private int price;
 	private String title;
 	private String content;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime date;
 	private String address;
 	private double lat;
