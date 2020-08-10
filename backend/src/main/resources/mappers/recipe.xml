@@ -227,7 +227,12 @@
 	
 	<insert id="registerIngredientAdmin">
 		insert into ingredient(name, detail, base_amount, unit, calorie, carbon, fat, protein, natrium, sugar)
-		values(#{name}, #{detail}, #{baseAmoun}, #{unit}, #{calorie}, #{carbon}, #{fat}, #{protein}, #{natrium}, #{sugar})
+		values(#{name}, #{detail}, #{baseAmount}, #{unit}, #{calorie}, #{carbon}, #{fat}, #{protein}, #{natrium}, #{sugar})
+	</insert>
+	
+	<insert id="registerIngredientUser">
+		insert into ingredient(name, unit, calorie, carbon, fat, protein, natrium, sugar)
+		values(#{name}, #{unit}, -1, -1, -1, -1, -1, -1)
 	</insert>
 	
 	<update id="modifyIngredientAdmin">

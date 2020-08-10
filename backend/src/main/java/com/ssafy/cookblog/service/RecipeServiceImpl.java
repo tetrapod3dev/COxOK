@@ -21,6 +21,7 @@ import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.RecipeFoodCategoryDto;
 import com.ssafy.cookblog.dto.RecipeIngredientDto;
 import com.ssafy.cookblog.dto.RecipePhotoDto;
+import com.ssafy.cookblog.dto.request.IngredientRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
@@ -440,6 +441,16 @@ public class RecipeServiceImpl implements RecipeService {
 	@Override
 	public IngredientDto readIngredientAdmin(long ingredientId) {
 		return recipeDao.selectIngredientById(ingredientId);
+	}
+
+	@Override
+	public int registerIngredientUser(IngredientRequestDto ingredient) {
+		IngredientDto dto = new IngredientDto();
+		
+		dto.setName(ingredient.getName());
+		dto.setUnit(ingredient.getUnit());
+		
+		return recipeDao.insertIngredientUser(dto);
 	}
 
 }

@@ -161,4 +161,9 @@ public class RecipeDaoImpl implements RecipeDao{
 		return session.update("recipe.updateNutrient",recipeDto);
 	}
 
+	@Override
+	public int insertIngredientUser(IngredientDto ingredient) {
+		return session.insert("recipe.registerIngredientUser", ingredient);
+	}
+
 }
