@@ -27,9 +27,11 @@ public interface UserService {
 	//회원정보수정
 	public int modify(UserModifyRequestDto userModifyRequestDto);
 	public int authEmail(UserDto user);
+	public int modifyByAdmin(UserDto userDto);
 	
 	//회원삭제
 	public int remove(String email);
+	public int removeByUserId(long userId);
 	
 	public List<Long> readUserFavoriteCategory(long userId);
 
