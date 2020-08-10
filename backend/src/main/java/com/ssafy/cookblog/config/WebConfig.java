@@ -44,9 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
 			
 			"/photo/**",
 			
-			"/meet/all/**",
-			
-			"/error"
+			"/meet/all/**"
 	};
 
 	@Autowired
