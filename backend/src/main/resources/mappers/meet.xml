@@ -5,10 +5,10 @@
 	<insert id="insert">
 		insert into 
 			meet (user_id, recipe_id, thumbnail_src, type, join_limit, price, title,
-			content, address, lat, lng )
+			content, address, lat, lng, date)
 		values
 			(#{userId}, #{recipeId}, #{thumbnailSrc}, #{type}, #{joinLimit}, 
-			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng} )
+			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng}, #{date})
 	</insert>
 	
 	<update id="update">
@@ -17,7 +17,7 @@
 		set
 			recipe_id = #{recipeId}, thumbnail_src = #{thumbnailSrc},
 			type = #{type}, join_limit = #{joinLimit}, price = #{price},
-			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}
+			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}, date=#{date}
 		where
 			meet_id = #{meetId}
 	</update>
