@@ -51,6 +51,16 @@
 			recipe_id = #{recipeId}
 	</update>
 	
+	<update id="updateNutrient">
+		update	
+			recipe
+		set
+			calorie = #{calorie}, carbon = #{carbon},
+			protein = #{protein}, fat = #{fat}, sugar = #{sugar}, natrium = #{natrium}
+		where
+			recipe_id = #{recipeId}
+	</update>
+	
 	<delete id="delete">
 		delete from recipe
 		where recipe_id = #{recipeId}
@@ -250,5 +260,10 @@
 		where ingredient_id = #{ingredientId}
 	</delete>
 	
+	<select id="selectRecipeIdByIngredientId" resultType="Long">
+		select distinct(recipe_id) as recipeId
+		FROM recipe JOIN recipe_ingredient USING(recipe_id)
+		WHERE ingredient_id = #{ingredientId}
+	</select>
    	
 </mapper>
