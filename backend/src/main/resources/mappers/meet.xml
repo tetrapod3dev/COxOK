@@ -31,7 +31,7 @@
 		LIMIT #{startIndex}, 6
 	</select>
 	
-	<select id="selectMeet" resultType="MeetDto">
+	<select id="selectMeet" resultType="MeetViewResponseDto">
 		select 
 			meet_id as meetId, user_id as userId, recipe_id as recipeId,
 			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 

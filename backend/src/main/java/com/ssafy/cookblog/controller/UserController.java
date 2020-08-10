@@ -365,4 +365,85 @@ public class UserController {
 		return response;
 	}
 	
+	
+	@ApiOperation("전체 회원 목록(관리자)") 
+	@GetMapping("/admin/list")
+	public Object getAdminList(HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
+
+		if(userId ==0) {	//관리자인 경우
+			List<UserDto> list = userService.findAllUser();
+			map.put("msg", "전체 회원 목록 가져오기 성공");
+			map.put("list",list);
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
+	@ApiOperation("회원 삭제(관리자)")
+	@DeleteMapping("/admin/{id}")
+	public Object deleteUser(@PathVariable("id") long id, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
+
+
+		if(userId ==0) {	//관리자인 경우
+			int count = userService.removeByUserId(id);
+			if(count !=0) {
+				map.put("msg", "관리자 권한으로 회원 삭제 성공");
+				map.put("status", "success");
+				response = new ResponseEntity(map, HttpStatus.OK);
+			}else {
+				map.put("msg", "관리자 권한으로 회원 삭제 실패");
+				map.put("status", "fail");
+				response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+			}
+		}else {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
+	@ApiOperation("회원 수정(관리자)")
+	@PutMapping("/admin")
+	public Object modifyUser(@RequestBody UserDto userDto, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
+
+		if(userId ==0) {	//관리자인 경우
+			int count = userService.modifyByAdmin(userDto);
+			if(count !=0) {
+				map.put("msg", "관리자 권한으로 회원 수정 성공");
+				map.put("status", "success");
+				response = new ResponseEntity(map, HttpStatus.OK);
+			}else {
+				map.put("msg", "관리자 권한으로 회원 수정 실패");
+				map.put("status", "fail");
+				response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+			}
+		}else {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
 }
