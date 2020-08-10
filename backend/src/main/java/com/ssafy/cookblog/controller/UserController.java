@@ -447,5 +447,35 @@ public class UserController {
 		}
 		return response;
 	}
+
+	@ApiOperation("유저 재료 추가 요청")
+	@PostMapping("/ingredient")
+	public Object requsetAddIngredient(@RequestBody IngredientRequestDto ingredient, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		
+		UserDto user = userService.findUserByEmail(email);
+		long userId = user.getUserId();
+		String nickname = user.getNickname();
+		
+		int count = recipeService.registerIngredientUser(ingredient);
+		
+		if(count != 0) {
+			map.put("msg", "성공");
+			map.put("status", "success");
+			map.put("userId", userId);
+			map.put("nickname", nickname);
+			map.put("email", email);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		} else {
+			map.put("msg", "이메일 중복");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+
+		return response;
+	}
 	
 }
