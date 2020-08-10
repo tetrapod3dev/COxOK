@@ -3,14 +3,13 @@
     <h2>소모임 상세 정보 페이지입니당.</h2>
     
     <p>주소 : {{ address }} {{ detailAdress }}</p>
-    <div v-show="address != null" id="map" style="width:500px;height:400px;" class="mx-auto"></div>
+    <div id="map" style="width:500px;height:400px;" class="mx-auto"></div>
   </div>
 </template>
 
-
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7903d1a2c2c53b0b1f5321ef4b9d7208&libraries=services"></script>
 <script>
+const API_KEY = process.env.VUE_APP_KAKAO_API_KEY
 export default {
   name: 'ClubDetailView',
   data() {
@@ -23,21 +22,33 @@ export default {
     }
   },
   mounted() {
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-    mapOption = {
-      center: new daum.maps.LatLng(this.latitude, this.longitude), // 지도의 중심좌표
-      level: 5 // 지도의 확대 레벨
-    };
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
+    } else {
+      const script = document.createElement('script');
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${API_KEY}&autoload=false&libraries=services`;
+      document.head.appendChild(script);
+    }
+  },
+  methods: {
+    initMap() {
+      var container = document.getElementById('map');
+      var options = {
+        center: new kakao.maps.LatLng(this.latitude, this.longitude),
+        level: 3
+      };
 
-    //지도를 미리 생성
-    var map = new daum.maps.Map(mapContainer, mapOption);
-    //주소-좌표 변환 객체를 생성
-    var geocoder = new daum.maps.services.Geocoder();
-    //마커를 미리 생성
-    var marker = new daum.maps.Marker({
-      position: new daum.maps.LatLng(this.latitude, this.longitude),
-      map: map
-    });
+      var map = new kakao.maps.Map(container, options);
+      
+      var geocoder = new daum.maps.services.Geocoder();
+      
+      var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(this.latitude, this.longitude),
+        map: map
+      });
+    },
   }
 }
 </script>
