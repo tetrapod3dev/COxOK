@@ -10,6 +10,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VersusPointDto {
+	private long versusPointId;
+	private long versusId;
 	private long recipeId;
 	private int count;
 	private String recipeName;
