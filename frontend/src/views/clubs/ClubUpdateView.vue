@@ -1,0 +1,289 @@
+<template>
+  <div class="container">
+
+    <p class="my-5">Temp</p>
+    
+    <h2 class="my-5">소모임 작성 페이지입니당.</h2>
+
+    <div class="row">
+      <!-- 사진 입력 및 미리보기 -->
+      <div class="col-4 offset-1">
+        <img v-if="meet.thumbnail == undefined" :src="thumbnailSrc">
+        <img v-else :src="meet.thumbnailSrc">
+        <input type="file" @change="changeThumbnail">
+      </div>
+
+      <div class="col-7 text-left">
+        <!-- 유형(type) -->
+        <div>
+          <select v-model="meet.type">
+            <option disabled value="">Please select one</option>
+            <option>쿠킹 클래스</option>
+            <option>공유 키친</option>
+            <option>홈파티</option>
+          </select>
+          <span>선택함: {{ meet.type }}</span>
+        </div>
+
+        <!-- 제목 입력 -->
+        <input class="w-50" type="text" v-model="meet.title">
+      </div>
+    </div>
+
+    <!-- 텍스트 에디터 -->
+    <CxkEditor :value.sync="meet.content" />
+
+
+
+    <div class="row">
+      <!-- 날짜 시간 입력 -->
+      <datetime type="datetime" v-model="meet.date" format="yyyy-MM-dd HH:mm:ss" value-zone="Asia/Seoul" class="col-10 offset-1"></datetime>
+
+      <!-- 날짜 입력 -->
+      <!-- <b-form-datepicker id="example-datepicker" v-model="clubPost.date" class="mb-2 col-4 offset-2"></b-form-datepicker> -->
+      <!-- 시간 입력 -->
+      <!-- <b-time v-model="clubPost.time" show-seconds class="col-4"></b-time> -->
+    </div>
+
+    <div class="row">
+      <!-- 참여자 수 -->
+      <div class="col-6">
+        <p>참여자 수: </p>
+        <input type="number" v-model="meet.joinLimit">
+      </div>
+
+      <!-- 가격 -->
+      <div class="col-6">
+        <p>가격: </p>
+        <input type="number" v-model="meet.price">
+      </div>
+    </div>
+    
+
+    <!-- 주소 수정 -->
+    <div class="row">
+      <input type="text" v-model="postcode" readonly placeholder="우편번호" class="col-4 offset-2">
+      <input type="button" @click="onClickAddr" value="우편번호 찾기" class="col-2 offset-1"><br>
+      <input type="text" v-model="meet.address" readonly placeholder="주소" class="col-4 offset-2"><br>
+      <input type="text" v-model="detailAddress" placeholder="상세주소" class="col-3 offset-1">
+    </div>
+
+    <div id="map" style="width:500px;height:400px;" class="mx-auto"></div>
+
+    <button @click="submitUpdate">제출</button>
+  </div>
+</template>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+import SERVER from '@/api/api'
+import axios from 'axios'
+
+import CxkEditor from "@/components/cxkeditor/cxkeditor.vue";
+
+import { mapGetters } from 'vuex'
+import { Datetime } from 'vue-datetime';
+
+const API_KEY = process.env.VUE_APP_KAKAO_API_KEY
+
+export default {
+  name: 'ClubUpdateView',
+  data() {
+    return {
+      meet: {
+        address: null,
+        content: null,
+        date: null,
+        joinLimit: null,
+        lat: null,
+        lng: null,
+        meetId: null,
+        meetJoinList: [],
+        price: null,
+        recipeId: null,
+        thumbnailSrc: null,
+        title: null,
+        type: null,
+        userId: null,
+      },
+      postcode: null,
+      detailAddress: null,
+      newThumbnailSrc: null,
+    }
+  },
+  computed: {
+    ...mapGetters(['config']),
+    thumbnailSrc() {
+      return SERVER.IMAGE_URL + this.meet.thumbnailSrc
+    },
+    fullAddress() {
+      return (this.meet.detailAddress == null) ? this.meet.address + ' ' + this.detailAddress : this.meet.address
+    },
+    fullTime() {
+      return this.meet.date.slice(0, 10) + ' ' + this.meet.date.slice(11, 19)
+    }
+  },
+  components: {
+    CxkEditor,
+    datetime: Datetime,
+  },
+  created() {
+    axios
+      .get(SERVER.URL + SERVER.ROUTES.clubDetail + this.$route.params.club_id, {
+        headers: {
+          "Authorization": this.config,
+        },
+      })
+      .then(res => {
+        this.meet = res.data.meet
+      })
+      .catch(err => console.log(err))
+  },
+  mounted() {
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
+    } else {
+      const script = document.createElement('script');
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${API_KEY}&autoload=false&libraries=services`;
+      document.head.appendChild(script);
+    }
+  },
+  methods: {
+    changeThumbnail(event) {
+      const file = event.target.files[0]
+      this.meet.thumbnailSrc = URL.createObjectURL(file)
+      this.meet.thumbnail = file
+    },
+    initMap() {
+      var container = document.getElementById('map');
+      var options = {
+        center: new kakao.maps.LatLng(this.meet.lat, this.meet.lng),
+        level: 3
+      };
+
+      var map = new kakao.maps.Map(container, options);
+      
+      var geocoder = new daum.maps.services.Geocoder();
+      
+      var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(this.meet.lat, this.meet.lng),
+        map: map
+      });
+    },
+
+    onClickAddr() {
+      const self = this
+
+      var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+      mapOption = {
+        center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+      };
+
+      //지도를 미리 생성
+      var map = new daum.maps.Map(mapContainer, mapOption);
+      //주소-좌표 변환 객체를 생성
+      var geocoder = new daum.maps.services.Geocoder();
+      //마커를 미리 생성
+      var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(37.537187, 127.005476),
+        map: map
+      });
+
+      new daum.Postcode({
+        oncomplete: function(data) {
+          var addr = data.address; // 최종 주소 변수
+
+          // 주소 정보를 해당 필드에 넣는다.
+          self.postcode = data.zonecode;
+          self.meet.address = addr;
+          // 주소로 상세 정보를 검색
+          geocoder.addressSearch(data.address, function(results, status) {
+              // 정상적으로 검색이 완료됐으면
+            if (status === daum.maps.services.Status.OK) {
+
+              var result = results[0]; //첫번째 결과의 값을 활용
+
+              self.meet.lng = result.x
+              self.meet.lat = result.y
+
+              // 해당 주소에 대한 좌표를 받아서
+              var coords = new daum.maps.LatLng(result.y, result.x);
+              // 지도를 보여준다.
+              mapContainer.style.display = "block";
+              map.relayout();
+              // 지도 중심을 변경한다.
+              map.setCenter(coords);
+              // 마커를 결과값으로 받은 위치로 옮긴다.
+              marker.setPosition(coords)
+            }
+          });
+        }
+      }).open();
+    },
+
+
+    TestTumbnail: async function() {
+      let frm = new FormData();
+      const self = this
+
+      if (this.meet.thumbnail != undefined) {
+          frm.append("photo", this.meet.thumbnail);
+        // formData를 API에 전달해서 src 주소를 받습니다..
+        // 그리고 그걸 recipe에 저장합니다.
+        await axios
+          .post(SERVER.URL + SERVER.ROUTES.photoRegister, frm, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            self.newThumbnailSrc = res.data.photo[0]
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+    submitUpdate: async function() {
+      await this.TestTumbnail()
+      const thumbnail = (this.newThumbnailSrc != null) ? this.newThumbnailSrc : this.meet.thumbnailSrc
+      let body = {
+        "address": this.fullAddress,
+        "content": this.meet.content,
+        "date": this.fullTime,
+        "joinLimit": this.meet.joinLimit,
+        "lat": this.meet.lat,
+        "lng": this.meet.lng,
+        "meetId": parseInt(this.$route.params.club_id),
+        "price": this.meet.price,
+        "recipeId": this.meet.recipeId,
+        "thumbnailSrc": thumbnail,
+        "title": this.meet.title,
+        "type": this.meet.type,
+      }
+      console.log(body)
+
+      axios
+        .put(SERVER.URL + SERVER.ROUTES.clubUpdate, body, {
+          headers: {
+            Authorization: this.config,
+          },
+        })
+        .then(res => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err.response)
+        })
+    },
+
+  }
+}
+</script>
+
+<style>
+
+</style>

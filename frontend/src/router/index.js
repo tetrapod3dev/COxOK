@@ -32,8 +32,9 @@ import VersusDetailView from "../views/versus/VersusDetailView.vue";
 
 // Club Router
 import ClubListView from "../views/clubs/ClubListView.vue";
-import ClubDetailView from "../views/clubs/ClubDetailView.vue";
 import ClubMakeView from "../views/clubs/ClubMakeView.vue";
+import ClubDetailView from "../views/clubs/ClubDetailView.vue";
+import ClubUpdateView from "../views/clubs/ClubUpdateView.vue";
 
 // Test Router
 import EditorTest from "../views/articles/EditorTest.vue";
@@ -166,6 +167,11 @@ const routes = [
     path: "/clubs/detail/:club_id",
     name: "ClubDetailView",
     component: ClubDetailView,
+  },
+  {
+    path: "/clubs/Update/:club_id",
+    name: "ClubUpdateView",
+    component: ClubUpdateView,
   },
   // Test Router
   {
