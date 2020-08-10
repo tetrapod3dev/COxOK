@@ -5,6 +5,7 @@ import java.util.List;
 import com.ssafy.cookblog.dto.FoodCategoryDto;
 import com.ssafy.cookblog.dto.IngredientDto;
 import com.ssafy.cookblog.dto.LikeDto;
+import com.ssafy.cookblog.dto.request.IngredientRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
@@ -22,6 +23,7 @@ public interface RecipeService {
 	public List<IngredientDto> selectAllIngredient();
 	public List<IngredientDto> selectAllIngredientAdmin(int startIndex);
 	public IngredientDto readIngredientAdmin(long ingredientId);
+	public int registerIngredientUser(IngredientRequestDto ingredient);
 	public int registerIngredientAdmin(IngredientDto ingredient);
 	public int modifyIngredientAdmin(IngredientDto ingredient);
 	public int removeIngredientAdmin(long ingredientId);

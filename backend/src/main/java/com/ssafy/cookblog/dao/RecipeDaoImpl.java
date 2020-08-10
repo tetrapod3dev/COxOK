@@ -151,4 +151,9 @@ public class RecipeDaoImpl implements RecipeDao{
 		return session.delete("recipe.removeIngredientAdmin", ingredientId);
 	}
 
+	@Override
+	public int insertIngredientUser(IngredientDto ingredient) {
+		return session.insert("recipe.registerIngredientUser", ingredient);
+	}
+
 }
