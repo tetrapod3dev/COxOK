@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.cookblog.dao.CategoryDao;
 import com.ssafy.cookblog.dao.RecipeDao;
@@ -157,6 +158,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 	
 	@Override
+	@Transactional 
 	public int updateRecipe(RecipeUpdateRequestDto recipeUpdateRequestDto) {
 		RecipeDto recipeDto = new RecipeDto();
 		
@@ -250,6 +252,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 	
 	@Override
+	@Transactional 
 	public int registerIngredientAdmin(IngredientDto ingredient) {
 		return recipeDao.insertIngredientAdmin(ingredient);
 	}
@@ -260,6 +263,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@Transactional 
 	public int deleteRecipe(long recipeId) {
 		return recipeDao.delete(recipeId);
 	}
@@ -319,11 +323,13 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@Transactional 
 	public int insertRecipeLike(LikeDto likeDto) {
 		return recipeDao.insertRecipeLike(likeDto);
 	}
 
 	@Override
+	@Transactional 
 	public int cancelRecipeLike(LikeDto likeDto) {
 		return recipeDao.cancelRecipeLike(likeDto);
 	}
@@ -334,6 +340,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@Transactional 
 	public boolean reipceUserLike(LikeDto likeDto) {
 		return recipeDao.reipceUserLike(likeDto);
 	}
@@ -354,6 +361,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@Transactional 
 	public int modifyIngredientAdmin(IngredientDto ingredient) {
 		//재료가 포함된 레시피 리스트
 		List<Long> recipeList = recipeDao.selectRecipeIdByIngredientId(ingredient.getIngredientId());
@@ -396,6 +404,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@Transactional 
 	public int removeIngredientAdmin(long ingredientId) {
 		
 		//재료가 포함된 레시피 리스트
@@ -444,6 +453,7 @@ public class RecipeServiceImpl implements RecipeService {
 	}
 
 	@Override
+	@Transactional 
 	public int registerIngredientUser(IngredientRequestDto ingredient) {
 		IngredientDto dto = new IngredientDto();
 		
