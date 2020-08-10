@@ -354,12 +354,87 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public int modifyIngredientAdmin(IngredientDto ingredient) {
-		return recipeDao.updateIngredientAdmin(ingredient);
+		//재료가 포함된 레시피 리스트
+		List<Long> recipeList = recipeDao.selectRecipeIdByIngredientId(ingredient.getIngredientId());
+
+		//재료 내부 업데이트
+		recipeDao.updateIngredientAdmin(ingredient);
+		
+		if(recipeList!=null) {
+			for(long recipeId : recipeList) {	//레시피 하나당
+				List<RecipeIngredientResponseDto> recipeIngredient = recipeDao.selectRecipeIngredient(recipeId);
+				int len =recipeIngredient.size();
+				
+				RecipeDto recipeDto = new RecipeDto();
+				
+				int sumCalorie=0, sumCarbon=0, sumProtein=0, sumFat=0, sumSugar=0, sumNatrium=0;
+				
+				for(int i=0; i < len; i++) {
+					IngredientDto ingredientDto = recipeDao.selectIngredientById(recipeIngredient.get(i).getIngredientId());
+					double per = (double) recipeIngredient.get(i).getAmount() / ingredientDto.getBaseAmount();
+					sumCalorie += (int) (ingredientDto.getCalorie() * per);
+					sumCarbon += (int) (ingredientDto.getCarbon() * per);
+					sumProtein += (int) (ingredientDto.getProtein() * per);
+					sumFat += (int) (ingredientDto.getFat() * per);
+					sumSugar += (int) (ingredientDto.getSugar() * per);
+					sumNatrium += (int) (ingredientDto.getNatrium() * per);
+				}
+
+				recipeDto.setRecipeId(recipeId);
+				recipeDto.setCalorie(sumCalorie);
+				recipeDto.setCarbon(sumCarbon);
+				recipeDto.setProtein(sumProtein);
+				recipeDto.setFat(sumFat);
+				recipeDto.setSugar(sumSugar);
+				recipeDto.setNatrium(sumNatrium);
+						
+				recipeDao.updateNutrient(recipeDto);
+			}
+		}
+		return 1;
 	}
 
 	@Override
 	public int removeIngredientAdmin(long ingredientId) {
-		return recipeDao.deleteIngredientAdmin(ingredientId);
+		
+		//재료가 포함된 레시피 리스트
+		List<Long> recipeList = recipeDao.selectRecipeIdByIngredientId(ingredientId);
+
+		//재료 내부 업데이트
+		recipeDao.deleteIngredientAdmin(ingredientId);
+		
+		if(recipeList!=null) {
+			for(long recipeId : recipeList) {	//레시피 하나당
+				List<RecipeIngredientResponseDto> recipeIngredient = recipeDao.selectRecipeIngredient(recipeId);
+				int len =recipeIngredient.size();
+				
+				RecipeDto recipeDto = new RecipeDto();
+				
+				int sumCalorie=0, sumCarbon=0, sumProtein=0, sumFat=0, sumSugar=0, sumNatrium=0;
+				
+				for(int i=0; i < len; i++) {
+					IngredientDto ingredientDto = recipeDao.selectIngredientById(recipeIngredient.get(i).getIngredientId());
+					double per = (double) recipeIngredient.get(i).getAmount() / ingredientDto.getBaseAmount();
+					sumCalorie += (int) (ingredientDto.getCalorie() * per);
+					sumCarbon += (int) (ingredientDto.getCarbon() * per);
+					sumProtein += (int) (ingredientDto.getProtein() * per);
+					sumFat += (int) (ingredientDto.getFat() * per);
+					sumSugar += (int) (ingredientDto.getSugar() * per);
+					sumNatrium += (int) (ingredientDto.getNatrium() * per);
+				}
+
+				recipeDto.setRecipeId(recipeId);
+				recipeDto.setCalorie(sumCalorie);
+				recipeDto.setCarbon(sumCarbon);
+				recipeDto.setProtein(sumProtein);
+				recipeDto.setFat(sumFat);
+				recipeDto.setSugar(sumSugar);
+				recipeDto.setNatrium(sumNatrium);
+						
+				recipeDao.updateNutrient(recipeDto);
+			}
+		}
+		return 1;
 	}
 
 	@Override

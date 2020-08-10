@@ -150,5 +150,15 @@ public class RecipeDaoImpl implements RecipeDao{
 	public int deleteIngredientAdmin(long ingredientId) {
 		return session.delete("recipe.removeIngredientAdmin", ingredientId);
 	}
+	
+	@Override
+	public List<Long> selectRecipeIdByIngredientId(long ingredientId) {
+		return session.selectList("recipe.selectRecipeIdByIngredientId",ingredientId);
+	}
+	
+	@Override
+	public int updateNutrient(RecipeDto recipeDto) {
+		return session.update("recipe.updateNutrient",recipeDto);
+	}
 
 }

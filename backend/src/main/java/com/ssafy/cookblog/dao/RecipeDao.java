@@ -41,4 +41,9 @@ public interface RecipeDao {
 	public List<RecipeDto> selectRecipeListByCategoryId(long foodCategoryId);
 	
 	
+	public List<Long> selectRecipeIdByIngredientId(long ingredientId);
+	
+	public int updateNutrient(RecipeDto recipeDto);
+	
+	
 }
