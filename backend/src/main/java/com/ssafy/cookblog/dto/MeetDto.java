@@ -23,8 +23,10 @@ public class MeetDto {
 	private int price;
 	private String title;
 	private String content;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime date;
+	
 	private String address;
 	private double lat;
 	private double lng;

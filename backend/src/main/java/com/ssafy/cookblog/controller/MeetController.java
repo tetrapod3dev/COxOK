@@ -140,7 +140,6 @@ public class MeetController {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		
 		int count = meetService.modify(meetDto);
 		if(count!=0) {
 			map.put("msg", "소모임 수정에 성공했습니다.");

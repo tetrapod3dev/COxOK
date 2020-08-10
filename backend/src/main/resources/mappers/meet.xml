@@ -15,7 +15,7 @@
 		update 
 			meet
 		set
-			recipe_id = #{recipeId}, thumbnail_src = #{thumbnaulSrc},
+			recipe_id = #{recipeId}, thumbnail_src = #{thumbnailSrc},
 			type = #{type}, join_limit = #{joinLimit}, price = #{price},
 			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}
 		where
