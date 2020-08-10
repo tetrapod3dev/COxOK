@@ -72,12 +72,11 @@
         </b-modal>
       </div>
     </div>
-    <div v-if="selectedMax == 1" class="section container">
+    <div v-if="this.selectedMax == 1" class="section container">
       <h2 class="versus-title">1등</h2>
       <card type="profile" style="width:465px;height:400px;">
         <div
           class="versus-card-image"
-          @click="selectRecipe(recipe)"
           :style="'background-image: url('+ imageSrc(recipes[0].recipeThumbnailSrc)+')'"
         ></div>
         <h4 class="card-title text-left">{{ recipes[0].recipeName }}</h4>
@@ -87,6 +86,14 @@
           class="card-footer text-info text-right align-self-end"
         >보러가기</router-link>
       </card>
+      <div v-for="result in versusResult" :key="result.recipeId">
+        <!-- <div>레시피 아이디: {{ result.recipeId }}</div> -->
+        <div>레시피 이름: {{ result.recipeName }}</div>
+        <div>레시피 승점: {{ result.count ? result.count : 0 }}</div>
+        <!-- <div
+          :style="'width:100px;height:100px;background-image: url('+ imageSrc(result.recipeThumbnailSrc)+')'"
+        ></div>-->
+      </div>
     </div>
   </div>
 </template>
@@ -106,7 +113,9 @@ export default {
       selectedMax: 0,
       cur: 0,
       selectedRecipes: [],
+      recipesAll: [],
       recipes: [],
+      versusResult: [],
       possibleLength: [],
       recipeDetail: {},
     };
@@ -138,8 +147,8 @@ export default {
         this.recipes = _.shuffle(this.selectedRecipes);
         this.selectedRecipes = [];
       }
-      if (this.selectedMax == 2) {
-        console.log(this.selectedRecipes[0]);
+      if (this.selectedMax == 1) {
+        this.submitWinner();
       }
     },
     showDetail(recipe_id) {
@@ -160,6 +169,41 @@ export default {
     imageSrc(recipeSrc) {
       return SERVER.IMAGE_URL + recipeSrc;
     },
+    submitWinner() {
+      let versusResult = {
+        recipeId: this.recipes[0].recipeId,
+        versusId: this.$route.params.versus_id,
+      };
+      axios
+        .post(SERVER.URL + SERVER.ROUTES.versusWin, versusResult)
+        .then((res) => {
+          if (res.status === 200) {
+            this.getVersusTotal();
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+    getVersusTotal() {
+      axios
+        .get(
+          SERVER.URL + SERVER.ROUTES.versusResult + this.$route.params.versus_id
+        )
+        .then((res) => {
+          this.versusResult = this.recipesAll
+            .map((recipe) => {
+              return Object.assign(
+                recipe,
+                res.data.versus.find((cntWinner) => {
+                  return cntWinner && recipe.recipeId === cntWinner.recipeId;
+                })
+              );
+            })
+            .sort((recipe1, recipe2) => {
+              return recipe2.count - recipe1.count;
+            });
+        })
+        .catch((err) => console.log(err));
+    },
   },
   created() {
     // this.recipes = _.shuffle(this.recipes.slice(0, this.maxNow))
@@ -169,7 +213,7 @@ export default {
       )
       .then((res) => {
         this.recipes = res.data.versus.recipeList;
-
+        this.recipesAll = res.data.versus.recipeList;
         const recipeLength = res.data.versus.recipeList.length;
         while (this.TempMax <= recipeLength) {
           this.possibleLength.push(this.TempMax);

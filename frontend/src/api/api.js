@@ -46,6 +46,8 @@ export default {
     versusRegister: "/versus/register/", // POST / 요리대전 생성
     versusList: "/versus/all/", // GET / 요리대전 목록 (6개씩)
     versusDetail: "/versus/view/", // GET / 요리대전 상세보기
+    versusWin: "/versus/win/", // POST / 요리대전 결과
+    versusResult: "/versus/result/", // GET / 요리대전 결과 받기
 
     // Blog ROUTES
     blog: "/blog/",
