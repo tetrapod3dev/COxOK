@@ -486,7 +486,7 @@ public class RecipeController {
 	}
 	
 	@ApiOperation("업데이트가 필요한 재료 목록")
-	@GetMapping("/admin/ingredientRequest/{startIndex}")
+	@GetMapping("/admin/modify-ingredient/{startIndex}")
 	public Object getIngredientToBeUpdated(@PathVariable int startIndex, HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();

@@ -34,6 +34,11 @@ public class UserDaoImpl implements UserDao{
 	}
 	
 	@Override
+	public UserDto selectUserId(long userId) {
+		return session.selectOne("user.selectUserId",userId);
+	}
+	
+	@Override
 	public List<UserDto> selectAll() {
 		return session.selectList("user.selectAll");
 	}

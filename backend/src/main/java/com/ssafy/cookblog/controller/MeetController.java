@@ -71,11 +71,15 @@ public class MeetController {
 		Map<String,Object> map = new HashMap<String, Object>();
 
 		MeetViewResponseDto meet = meetService.getOneMeet(meetId);
+		long userId = meet.getUserId();
+		String email = userService.findUserByUserId(userId).getEmail();
+		
 		
 		if(meet != null) {
 			map.put("msg", "소모임 조회를 성공했습니다.");
 			map.put("status", "success");
 			map.put("meet", meet);
+			map.put("email",email);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "소모임을 찾지 못했습니다.");

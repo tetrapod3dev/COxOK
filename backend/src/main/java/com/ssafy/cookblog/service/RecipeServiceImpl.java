@@ -401,7 +401,7 @@ public class RecipeServiceImpl implements RecipeService {
 		//재료가 포함된 레시피 리스트
 		List<Long> recipeList = recipeDao.selectRecipeIdByIngredientId(ingredientId);
 
-		//재료 내부 업데이트
+		//재료 삭제
 		recipeDao.deleteIngredientAdmin(ingredientId);
 		
 		if(recipeList!=null) {
