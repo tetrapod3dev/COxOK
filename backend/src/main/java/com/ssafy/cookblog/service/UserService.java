@@ -15,6 +15,7 @@ public interface UserService {
 	//회원목록
 	public UserDto findUserByEmail(String email);
 	public UserDto findUserByNickname(String nickname);
+	public UserDto findUserByUserId(long userId);
 	public List<UserDto> findAllUser();
 	public UserDto login(UserDto user);
 	public long userIdByEmail(String email);

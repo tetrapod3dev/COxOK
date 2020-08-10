@@ -35,6 +35,9 @@ public class UserServiceImpl implements UserService{
 	public UserDto findUserByNickname(String nickname) {
 		return userDao.selectNickname(nickname);
 	}
+	public UserDto findUserByUserId(long userId) {
+		return userDao.selectUserId(userId);
+	}
 	public List<UserDto> findAllUser() {
 		return userDao.selectAll();
 	}
