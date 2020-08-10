@@ -247,6 +247,11 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<IngredientDto> selectAllIngredientAdmin(int startIndex) {
 		return recipeDao.selectAllIngredientAdmin(startIndex);
 	}
+	
+	@Override
+	public int registerIngredientAdmin(IngredientDto ingredient) {
+		return recipeDao.insertIngredientAdmin(ingredient);
+	}
 
 	@Override
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId) {

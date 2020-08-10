@@ -214,5 +214,10 @@
 		order by recipe_id desc
 		limit 18;
 	</select>
+	
+	<insert id="registerIngredientAdmin">
+		insert into ingredient(name, detail, base_amount, unit, calorie, carbon, fat, protein, natrium, sugar)
+		values(#{name}, #{detail}, #{baseAmoun}, #{unit}, #{calorie}, #{carbon}, #{fat}, #{protein}, #{natrium}, #{sugar})
+	</insert>
    	
 </mapper>

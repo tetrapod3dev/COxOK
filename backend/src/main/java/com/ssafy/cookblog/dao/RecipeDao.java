@@ -21,6 +21,7 @@ public interface RecipeDao {
 	public List<FoodCategoryDto> selectAllFoodCategory();
 	public List<IngredientDto> selectAllIngredient();
 	public List<IngredientDto> selectAllIngredientAdmin(int startIndex);
+	public int insertIngredientAdmin(IngredientDto ingredient);
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId);
 	public IngredientDto selectIngredientById(long ingredientId);
 	public int insertRecipeIngredient(RecipeIngredientDto recipeIngredient);
