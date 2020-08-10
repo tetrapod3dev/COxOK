@@ -10,7 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportRecipeDto {
+	private long reportRecipeId;
 	private long recipeId;
 	private long userId;
+	private String nickname;
 	private String reason;
 }
