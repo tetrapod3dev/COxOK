@@ -66,20 +66,20 @@ public class MeetController {
 	
 	@ApiOperation("소모임 상세 조회")
 	@GetMapping("/view/{meetId}")
-	public Object getOneMeet(@PathVariable("meetId") long meetId) {
+	public Object getOneMeet(@PathVariable("meetId") long meetId, HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
 		MeetViewResponseDto meet = meetService.getOneMeet(meetId);
-		long userId = meet.getUserId();
-		String email = userService.findUserByUserId(userId).getEmail();
 		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
 		
 		if(meet != null) {
 			map.put("msg", "소모임 조회를 성공했습니다.");
 			map.put("status", "success");
 			map.put("meet", meet);
-			map.put("email",email);
+			map.put("userId",userId);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "소모임을 찾지 못했습니다.");
