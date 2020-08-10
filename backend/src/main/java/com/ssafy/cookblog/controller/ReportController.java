@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.ReportRecipeDto;
+import com.ssafy.cookblog.dto.UserDto;
 import com.ssafy.cookblog.service.ReportService;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.JwtService;
@@ -61,22 +62,25 @@ public class ReportController {
 	}
 	
 	@ApiOperation("신고 레시피 전체 조회")
-	@GetMapping("")
-	public Object getAllReport() {
+	@GetMapping("/admin")
+	public Object getAllReport(HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
 
-		List<ReportRecipeDto> list = reportService.getAllReport();
-		if(list!=null) {
+		if(!email.equals("admin@co-ok.com")) {	//관리자인 경우
+			List<UserDto> list = userService.findAllUser();
 			map.put("msg", "신고 레시피 조회에 성공했습니다.");
 			map.put("status", "success");
 			map.put("list",list);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
-			map.put("msg", "신고 레시피 조회에 실패했습니다.");
+			map.put("msg", "관리자가 아닙니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
+		
 		return response;
 	}
 	
