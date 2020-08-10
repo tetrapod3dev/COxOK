@@ -66,6 +66,7 @@ public class MeetServiceImpl implements MeetService {
 		meetDto.setAddress(meetRegisterReqeustDto.getAddress());
 		meetDto.setLat(meetRegisterReqeustDto.getLat());
 		meetDto.setLng(meetRegisterReqeustDto.getLng());
+		meetDto.setDate(meetRegisterReqeustDto.getDate());
 
 		//insert
 		return meetDao.insert(meetDto);
