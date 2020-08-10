@@ -45,6 +45,11 @@ public class RecipeDaoImpl implements RecipeDao{
 	public List<IngredientDto> selectAllIngredient() {
 		return session.selectList("recipe.selectAllIngredient");
 	}
+	
+	@Override
+	public List<IngredientDto> selectAllIngredientAdmin(int startIndex) {
+		return session.selectList("recipe.selectAllIngredientAdmin", startIndex);
+	}
 
 	@Override
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId) {

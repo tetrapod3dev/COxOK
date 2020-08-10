@@ -242,6 +242,11 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<IngredientDto> selectAllIngredient() {
 		return recipeDao.selectAllIngredient();
 	}
+	
+	@Override
+	public List<IngredientDto> selectAllIngredientAdmin(int startIndex) {
+		return recipeDao.selectAllIngredientAdmin(startIndex);
+	}
 
 	@Override
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId) {
@@ -341,4 +346,5 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<RecipeDto> getRecipeListByCategoryId(long foodCategoryId) {
 		return recipeDao.selectRecipeListByCategoryId(foodCategoryId);
 	}
+
 }

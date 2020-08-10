@@ -62,8 +62,14 @@
    	</select>
    
    	<select id="selectAllIngredient" resultType="IngredientDto">
-      	select ingredient_id as ingredientId, name, detail, unit
+      	select ingredient_id as ingredientId, base_amount as baseAmount, name, detail, unit, calorie, carbon, fat, protein, natrium, sugar
       	from ingredient 
+   	</select>
+   	
+   	<select id="selectAllIngredientAdmin" resultType="IngredientDto">
+      	select ingredient_id as ingredientId, base_amount as baseAmount, name, detail, unit, calorie, carbon, fat, protein, natrium, sugar
+      	from ingredient
+      	LIMIT #{startIndex}, 20
    	</select>
    	
    	<delete id="deleteRecipeIngredient">

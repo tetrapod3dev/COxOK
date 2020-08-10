@@ -20,6 +20,7 @@ public interface RecipeService {
 	public int deleteRecipe(long recipeId);
 	public List<FoodCategoryDto> selectAllFoodCategory();
 	public List<IngredientDto> selectAllIngredient();
+	public List<IngredientDto> selectAllIngredientAdmin(int startIndex);
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId);
 	public long getRecipeId();
 	public long getTotalRecipeNum();
