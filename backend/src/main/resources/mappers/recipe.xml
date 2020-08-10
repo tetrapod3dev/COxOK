@@ -219,5 +219,15 @@
 		insert into ingredient(name, detail, base_amount, unit, calorie, carbon, fat, protein, natrium, sugar)
 		values(#{name}, #{detail}, #{baseAmoun}, #{unit}, #{calorie}, #{carbon}, #{fat}, #{protein}, #{natrium}, #{sugar})
 	</insert>
+	
+	<update id="modifyIngredientAdmin">
+		update
+			ingredient
+		 set
+		 	name = #{name}, detail = #{detail}, base_amount = #{baseAmount}, unit = #{unit}, calorie = #{calorie},
+		 	carbon = #{carbon}, fat = #{fat}, protein = #{protein}, natrium = #{natrium}, sugar = #{sugar}
+		 where
+		 	ingredient_id = #{ingredientId}
+	</update>
    	
 </mapper>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -392,6 +393,34 @@ public class RecipeController {
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "재료 등록에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("(관리자) 재료 수정")
+	@PutMapping("/admin/ingredient")
+	public Object modifyIngredient(@RequestBody IngredientDto dto, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		int count = recipeService.modifyIngredientAdmin(dto);
+		
+		if(count != 0) {
+			map.put("msg", "재료 수정에 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "재료 수정에 실패했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}

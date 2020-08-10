@@ -22,6 +22,7 @@ public interface RecipeService {
 	public List<IngredientDto> selectAllIngredient();
 	public List<IngredientDto> selectAllIngredientAdmin(int startIndex);
 	public int registerIngredientAdmin(IngredientDto ingredient);
+	public int modifyIngredientAdmin(IngredientDto ingredient);
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId);
 	public long getRecipeId();
 	public long getTotalRecipeNum();

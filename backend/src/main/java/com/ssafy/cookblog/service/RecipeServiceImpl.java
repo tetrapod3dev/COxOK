@@ -352,4 +352,9 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDao.selectRecipeListByCategoryId(foodCategoryId);
 	}
 
+	@Override
+	public int modifyIngredientAdmin(IngredientDto ingredient) {
+		return recipeDao.updateIngredientAdmin(ingredient);
+	}
+
 }

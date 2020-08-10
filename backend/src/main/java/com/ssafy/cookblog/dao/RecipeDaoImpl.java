@@ -55,6 +55,11 @@ public class RecipeDaoImpl implements RecipeDao{
 	public int insertIngredientAdmin(IngredientDto ingredient) {
 		return session.insert("recipe.registerIngredientAdmin", ingredient);
 	}
+	
+	@Override
+	public int updateIngredientAdmin(IngredientDto ingredient) {
+		return session.update("recipe.modifyIngredientAdmin", ingredient);
+	}
 
 	@Override
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId) {
@@ -138,7 +143,7 @@ public class RecipeDaoImpl implements RecipeDao{
 	
 	@Override
 	public List<RecipeDto> selectRecipeListByCategoryId(long foodCategoryId) {
-		return session.selectList("recipe.selectRecipeListByCategoryId",foodCategoryId);
+		return session.selectList("recipe.selectRecipeListByCategoryId", foodCategoryId);
 	}
 
 }
