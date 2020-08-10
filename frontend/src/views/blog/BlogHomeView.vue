@@ -30,7 +30,7 @@
                 <div class="icon icon-success icon-circle">
                   <i class="now-ui-icons education_paper"></i>
                 </div>
-                <h4 class="info-title">13</h4>
+                <h4 class="info-title">{{userTotal.recipe}}</h4>
                 <p class="description">작성 레시피</p>
               </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="icon icon-primary icon-circle">
                   <i class="fa fa-heart"></i>
                 </div>
-                <h4 class="info-title">4</h4>
+                <h4 class="info-title">{{userTotal.like}}</h4>
                 <p class="description">좋아하는 레시피</p>
               </div>
             </div>
@@ -48,7 +48,7 @@
                 <div class="icon icon-info icon-circle">
                   <i class="fa fa-group"></i>
                 </div>
-                <h4 class="info-title">0</h4>
+                <h4 class="info-title">{{userTotal.meet}}</h4>
                 <p class="description">소모임 활동</p>
               </div>
             </div>
@@ -77,6 +77,11 @@ export default {
         nickname: "",
         detail: "",
       },
+      userTotal: {
+        like: 0,
+        meet: 0,
+        recipe: 0,
+      },
       foodCategories: [],
       selectedCategory: [],
       tags: [],
@@ -90,38 +95,57 @@ export default {
     ...mapGetters(["config"]),
   },
   created() {
-    let configs = {
-      headers: {
-        Authorization: this.config,
-      },
-    };
-    axios
-      .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
-      .then((res) => {
-        this.user = res.data.user;
-        this.foodCategories = res.data.categories;
-        this.selectedCategory = res.data.userFavoriteCategories;
-        this.selectedCategory.sort((a, b) => a - b);
-
-        console.log(this.selectedCategory);
-        for (
-          let indexSelectedCategory = 0, indexFoodCategories = 0;
-          indexSelectedCategory < this.selectedCategory.length;
-          indexSelectedCategory++
-        ) {
-          while (
-            this.foodCategories[indexFoodCategories]["foodCategoryId"] <
-            this.selectedCategory[indexSelectedCategory]
+    this.getSelectedCategory();
+    this.getUserTotal();
+  },
+  methods: {
+    getUserTotal() {
+      let configs = {
+        headers: {
+          Authorization: this.config,
+        },
+      };
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.userTotal, configs)
+        .then((res) => {
+          this.userTotal.like = res.data.like;
+          this.userTotal.meet = res.data.meet;
+          this.userTotal.recipe = res.data.recipe;
+        })
+        .catch((err) => console.log(err.response));
+    },
+    getSelectedCategory() {
+      let configs = {
+        headers: {
+          Authorization: this.config,
+        },
+      };
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
+        .then((res) => {
+          this.user = res.data.user;
+          this.foodCategories = res.data.categories;
+          this.selectedCategory = res.data.userFavoriteCategories;
+          this.selectedCategory.sort((a, b) => a - b);
+          for (
+            let indexSelectedCategory = 0, indexFoodCategories = 0;
+            indexSelectedCategory < this.selectedCategory.length;
+            indexSelectedCategory++
           ) {
+            while (
+              this.foodCategories[indexFoodCategories]["foodCategoryId"] <
+              this.selectedCategory[indexSelectedCategory]
+            ) {
+              indexFoodCategories++;
+            }
+            this.tags.push(
+              this.foodCategories[indexFoodCategories]["foodCategoryName"]
+            );
             indexFoodCategories++;
           }
-          this.tags.push(
-            this.foodCategories[indexFoodCategories]["foodCategoryName"]
-          );
-          indexFoodCategories++;
-        }
-      })
-      .catch((err) => console.log(err.response));
+        })
+        .catch((err) => console.log(err.response));
+    },
   },
 };
 </script>
