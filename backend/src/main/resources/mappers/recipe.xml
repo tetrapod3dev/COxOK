@@ -235,6 +235,16 @@
 		 	ingredient_id = #{ingredientId}
 	</update>
 	
+	<select id="allIngredientToBeUpdated" resultType="IngredientDto">
+		select 
+			ingredient_id as ingredientId, name, detail, base_amount as baseAmount, unit, calorie, carbon, fat, protein, natrium, sugar
+		from
+			ingredient
+		where
+			calorie = -1 or carbon = -1 or fat = -1 or protein = -1 or natrium = -1 or sugar = -1
+		limit {startIndex}, 20
+	</select>
+	
 	<delete id="removeIngredientAdmin">
 		delete from ingredient
 		where ingredient_id = #{ingredientId}

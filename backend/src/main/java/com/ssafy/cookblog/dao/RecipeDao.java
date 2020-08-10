@@ -21,6 +21,7 @@ public interface RecipeDao {
 	public List<FoodCategoryDto> selectAllFoodCategory();
 	public List<IngredientDto> selectAllIngredient();
 	public List<IngredientDto> selectAllIngredientAdmin(int startIndex);
+	public List<IngredientDto> selectAllIngredientToBeUpdated(int startIndex);
 	public int insertIngredientUser(IngredientDto ingredient);
 	public int insertIngredientAdmin(IngredientDto ingredient);
 	public int updateIngredientAdmin(IngredientDto ingredient);

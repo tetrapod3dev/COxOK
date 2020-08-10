@@ -484,4 +484,33 @@ public class RecipeController {
 		
 		return response;
 	}
+	
+	@ApiOperation("업데이트가 필요한 재료 목록")
+	@GetMapping("/admin/ingredientRequest/{startIndex}")
+	public Object getIngredientToBeUpdated(@PathVariable int startIndex, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		List<IngredientDto> ingredient = recipeService.readAllIngredientToBeUpdated(startIndex);
+		
+		if(ingredient != null) {
+			map.put("msg", "업데이트가 필요한 재료 목록 불러오기에 성공했습니다.");
+			map.put("status", "success");
+			map.put("ingredient", ingredient);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "업데이트가 필요한 재료 목록 불러오기에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
 }

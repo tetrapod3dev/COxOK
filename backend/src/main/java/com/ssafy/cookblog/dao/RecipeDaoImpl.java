@@ -156,4 +156,9 @@ public class RecipeDaoImpl implements RecipeDao{
 		return session.insert("recipe.registerIngredientUser", ingredient);
 	}
 
+	@Override
+	public List<IngredientDto> selectAllIngredientToBeUpdated(int startIndex) {
+		return session.selectList("recipe.allIngredientToBeUpdated", startIndex);
+	}
+
 }

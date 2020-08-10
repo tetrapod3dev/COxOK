@@ -378,4 +378,9 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDao.insertIngredientUser(dto);
 	}
 
+	@Override
+	public List<IngredientDto> readAllIngredientToBeUpdated(int startIndex) {
+		return recipeDao.selectAllIngredientToBeUpdated(startIndex);
+	}
+
 }
