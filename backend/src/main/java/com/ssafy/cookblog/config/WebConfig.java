@@ -15,7 +15,8 @@ public class WebConfig implements WebMvcConfigurer {
 			"/review/**",
 			"/versus/**",
 			"/photo/**",
-			"/meet/**"
+			"/meet/**",
+			"/report/**"
 //			"/**"
 	};
 	private static final String[] EXCLUDE_PATHS = {
