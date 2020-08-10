@@ -102,13 +102,7 @@ export default {
   },
   created: function () {
     this.getVersus();
-  },
-  mounted: function () {
-    this.addScrollWatcher();
-  },
-  updated: function () {
-    this.loadUntilViewportIsFull();
-  },
+  }
 };
 </script>
 
