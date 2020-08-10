@@ -87,7 +87,7 @@
    	</select>
    	
    	<select id="selectIngredientById" resultType="IngredientDto">
-      	select ingredient_id as ingredientId, calorie, carbon, protein, fat, sugar, natrium, unit, base_amount as baseAmount
+      	select ingredient_id as ingredientId, calorie, carbon, protein, fat, sugar, natrium, unit, base_amount as baseAmount, name, detail
       	from ingredient
       	where ingredient_id = #{ingredientId}
    	</select>
@@ -234,5 +234,6 @@
 		delete from ingredient
 		where ingredient_id = #{ingredientId}
 	</delete>
+	
    	
 </mapper>

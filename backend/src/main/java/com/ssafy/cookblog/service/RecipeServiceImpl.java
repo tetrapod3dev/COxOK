@@ -362,4 +362,9 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipeDao.deleteIngredientAdmin(ingredientId);
 	}
 
+	@Override
+	public IngredientDto readIngredientAdmin(long ingredientId) {
+		return recipeDao.selectIngredientById(ingredientId);
+	}
+
 }

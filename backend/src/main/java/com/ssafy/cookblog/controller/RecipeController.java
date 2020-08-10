@@ -372,6 +372,35 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("(관리자) 재료 상세 보기")
+	@GetMapping("/admin/ingredient/{id}")
+	public Object readIngredient(@PathVariable long ingredientId, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		IngredientDto ingredient = recipeService.readIngredientAdmin(ingredientId);
+		
+		if(ingredient != null) {
+			map.put("msg", "재료 불러오기에 성공했습니다.");
+			map.put("status", "success");
+			map.put("ingredient", ingredient);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "재료 불러오기에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
 	@ApiOperation("(관리자) 재료 추가")
 	@PostMapping("/admin/ingredient")
 	public Object addIngredient(@RequestBody IngredientDto dto, HttpServletRequest request) {
