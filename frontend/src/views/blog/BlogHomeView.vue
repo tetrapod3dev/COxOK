@@ -101,6 +101,9 @@ export default {
         this.user = res.data.user;
         this.foodCategories = res.data.categories;
         this.selectedCategory = res.data.userFavoriteCategories;
+        this.selectedCategory.sort((a, b) => a - b);
+
+        console.log(this.selectedCategory);
         for (
           let indexSelectedCategory = 0, indexFoodCategories = 0;
           indexSelectedCategory < this.selectedCategory.length;

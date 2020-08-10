@@ -1,7 +1,7 @@
 export default {
   // URL: 'http://localhost:8080',
-  URL: 'http://i3a104.p.ssafy.io',
-  IMAGE_URL: 'http://i3a104.p.ssafy.io/img/',
+  URL: "http://i3a104.p.ssafy.io",
+  IMAGE_URL: "http://i3a104.p.ssafy.io/img/",
   // IMAGE_URL: '/img/',
   ROUTES: {
     // Accounts ROUTES
@@ -13,6 +13,7 @@ export default {
     update: "/user/modify/", // 회원 정보 수정
     withdrawal: "/user/withdrawal/", // 회원 탈퇴
     userLikeRecipe: "/user/likeRecipe", // 좋아요 레시피 목록 받기
+    userMyRecipe: "/user/myrecipe", // 좋아요 레시피 목록 받기
 
     // Recipes ROUTES
     recipeList: "/recipe/all/", // 모든 레시피 리스트를 받기 위한 주소(뒤에 페이지 주소 0부터 시작 / 6개씩 전달)
