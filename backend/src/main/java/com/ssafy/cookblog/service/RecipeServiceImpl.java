@@ -21,6 +21,7 @@ import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.RecipeFoodCategoryDto;
 import com.ssafy.cookblog.dto.RecipeIngredientDto;
 import com.ssafy.cookblog.dto.RecipePhotoDto;
+import com.ssafy.cookblog.dto.request.IngredientRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
@@ -242,6 +243,16 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<IngredientDto> selectAllIngredient() {
 		return recipeDao.selectAllIngredient();
 	}
+	
+	@Override
+	public List<IngredientDto> selectAllIngredientAdmin(int startIndex) {
+		return recipeDao.selectAllIngredientAdmin(startIndex);
+	}
+	
+	@Override
+	public int registerIngredientAdmin(IngredientDto ingredient) {
+		return recipeDao.insertIngredientAdmin(ingredient);
+	}
 
 	@Override
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId) {
@@ -341,4 +352,110 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<RecipeDto> getRecipeListByCategoryId(long foodCategoryId) {
 		return recipeDao.selectRecipeListByCategoryId(foodCategoryId);
 	}
+
+	@Override
+	public int modifyIngredientAdmin(IngredientDto ingredient) {
+		//재료가 포함된 레시피 리스트
+		List<Long> recipeList = recipeDao.selectRecipeIdByIngredientId(ingredient.getIngredientId());
+
+		//재료 내부 업데이트
+		recipeDao.updateIngredientAdmin(ingredient);
+		
+		if(recipeList!=null) {
+			for(long recipeId : recipeList) {	//레시피 하나당
+				List<RecipeIngredientResponseDto> recipeIngredient = recipeDao.selectRecipeIngredient(recipeId);
+				int len =recipeIngredient.size();
+				
+				RecipeDto recipeDto = new RecipeDto();
+				
+				int sumCalorie=0, sumCarbon=0, sumProtein=0, sumFat=0, sumSugar=0, sumNatrium=0;
+				
+				for(int i=0; i < len; i++) {
+					IngredientDto ingredientDto = recipeDao.selectIngredientById(recipeIngredient.get(i).getIngredientId());
+					double per = (double) recipeIngredient.get(i).getAmount() / ingredientDto.getBaseAmount();
+					sumCalorie += (int) (ingredientDto.getCalorie() * per);
+					sumCarbon += (int) (ingredientDto.getCarbon() * per);
+					sumProtein += (int) (ingredientDto.getProtein() * per);
+					sumFat += (int) (ingredientDto.getFat() * per);
+					sumSugar += (int) (ingredientDto.getSugar() * per);
+					sumNatrium += (int) (ingredientDto.getNatrium() * per);
+				}
+
+				recipeDto.setRecipeId(recipeId);
+				recipeDto.setCalorie(sumCalorie);
+				recipeDto.setCarbon(sumCarbon);
+				recipeDto.setProtein(sumProtein);
+				recipeDto.setFat(sumFat);
+				recipeDto.setSugar(sumSugar);
+				recipeDto.setNatrium(sumNatrium);
+						
+				recipeDao.updateNutrient(recipeDto);
+			}
+		}
+		return 1;
+	}
+
+	@Override
+	public int removeIngredientAdmin(long ingredientId) {
+		
+		//재료가 포함된 레시피 리스트
+		List<Long> recipeList = recipeDao.selectRecipeIdByIngredientId(ingredientId);
+
+		//재료 내부 업데이트
+		recipeDao.deleteIngredientAdmin(ingredientId);
+		
+		if(recipeList!=null) {
+			for(long recipeId : recipeList) {	//레시피 하나당
+				List<RecipeIngredientResponseDto> recipeIngredient = recipeDao.selectRecipeIngredient(recipeId);
+				int len =recipeIngredient.size();
+				
+				RecipeDto recipeDto = new RecipeDto();
+				
+				int sumCalorie=0, sumCarbon=0, sumProtein=0, sumFat=0, sumSugar=0, sumNatrium=0;
+				
+				for(int i=0; i < len; i++) {
+					IngredientDto ingredientDto = recipeDao.selectIngredientById(recipeIngredient.get(i).getIngredientId());
+					double per = (double) recipeIngredient.get(i).getAmount() / ingredientDto.getBaseAmount();
+					sumCalorie += (int) (ingredientDto.getCalorie() * per);
+					sumCarbon += (int) (ingredientDto.getCarbon() * per);
+					sumProtein += (int) (ingredientDto.getProtein() * per);
+					sumFat += (int) (ingredientDto.getFat() * per);
+					sumSugar += (int) (ingredientDto.getSugar() * per);
+					sumNatrium += (int) (ingredientDto.getNatrium() * per);
+				}
+
+				recipeDto.setRecipeId(recipeId);
+				recipeDto.setCalorie(sumCalorie);
+				recipeDto.setCarbon(sumCarbon);
+				recipeDto.setProtein(sumProtein);
+				recipeDto.setFat(sumFat);
+				recipeDto.setSugar(sumSugar);
+				recipeDto.setNatrium(sumNatrium);
+						
+				recipeDao.updateNutrient(recipeDto);
+			}
+		}
+		return 1;
+	}
+
+	@Override
+	public IngredientDto readIngredientAdmin(long ingredientId) {
+		return recipeDao.selectIngredientById(ingredientId);
+	}
+
+	@Override
+	public int registerIngredientUser(IngredientRequestDto ingredient) {
+		IngredientDto dto = new IngredientDto();
+		
+		dto.setName(ingredient.getName());
+		dto.setUnit(ingredient.getUnit());
+		
+		return recipeDao.insertIngredientUser(dto);
+	}
+
+	@Override
+	public List<IngredientDto> readAllIngredientToBeUpdated(int startIndex) {
+		return recipeDao.selectAllIngredientToBeUpdated(startIndex);
+	}
+
 }

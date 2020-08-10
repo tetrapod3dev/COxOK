@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.cookblog.dto.FoodCategoryDto;
+import com.ssafy.cookblog.dto.IngredientDto;
 import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
+import com.ssafy.cookblog.dto.request.IngredientRequestDto;
 import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 import com.ssafy.cookblog.service.RecipeService;
 import com.ssafy.cookblog.service.UserService;
