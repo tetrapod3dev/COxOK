@@ -94,6 +94,8 @@
 
 <script>
 import CONFIG from "./cxkeditor.config.js";
+import SERVER from "@/api/api";
+import axios from "axios";
 
 export default {
   data() {
@@ -184,30 +186,19 @@ export default {
       document.execCommand("insertImage", false, event.target.value);
     },
     loadImageFileAsURL: () => {
-      // console.log(event.target.files)
-      // let frm = FormData()
-      // event.target.files.forEach(function(file) {
-      //   frm.append('photo', file)
-      // })
+      let frm = new FormData();
+      document.getElementById("inputFileToLoad").files.forEach(function (file) {
+        frm.append("photo", file);
+      });
 
-      // axios.post(SERVER.URL + SERVER.ROUTES.photoResgister, frm)
-      //   .then(res => console.log(res))
-      //   .catch(err => console.log(err))
-      var filesSelected = document.getElementById("inputFileToLoad").files;
-      if (filesSelected.length > 0) {
-        var fileToLoad = filesSelected[0];
-
-        if (fileToLoad.type.match("image")) {
-          var fileReader = new FileReader();
-          fileReader.onload = function (fileLoadedEvent) {
-            var imageLoaded = document.createElement("img");
-            imageLoaded.src = fileLoadedEvent.target.result;
-            console.log(document.getSelection());
-            document.getSelection()["focusNode"].appendChild(imageLoaded);
-          };
-          fileReader.readAsDataURL(fileToLoad);
-        }
-      }
+      axios
+        .post(SERVER.URL + SERVER.ROUTES.photoRegister, frm)
+        .then((res) => {
+          var imageLoaded = document.createElement("img");
+          imageLoaded.src = SERVER.IMAGE_URL + res.data.photo;
+          document.getSelection()["focusNode"].appendChild(imageLoaded);
+        })
+        .catch((err) => console.log(err));
     },
     update(event) {
       this.localValue = event.target.innerHTML;
