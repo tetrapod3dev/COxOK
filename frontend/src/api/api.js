@@ -1,7 +1,7 @@
 export default {
   // URL: 'http://localhost:8080',
-  URL: 'http://i3a104.p.ssafy.io',
-  IMAGE_URL: 'http://i3a104.p.ssafy.io/img/',
+  URL: "http://i3a104.p.ssafy.io",
+  IMAGE_URL: "http://i3a104.p.ssafy.io/img/",
   // IMAGE_URL: '/img/',
   ROUTES: {
     // Accounts ROUTES
@@ -44,6 +44,15 @@ export default {
     versusRegister: "/versus/register/", // POST / 요리대전 생성
     versusList: "/versus/all/", // GET / 요리대전 목록 (6개씩)
     versusDetail: "/versus/view/", // GET / 요리대전 상세보기
+
+    // Club ROUTES
+    clubRegister: "/meet/", // POST / 소모임 생성
+    clubUpdate: "/meet/", // PUT / 소모임 수정
+    clubList: "/meet/all/", // GET / 소모임 리스트
+    clubDetail: "/meet/view/", // GET / 소모임 상세보기
+    clubDelete: "/meet/delete/", // DELETE / 소모임 삭제
+    joinClub: "/meet/meetjoin/", // POST / 소모임 참가
+    cancelClub: "/meet/meetjoin/", // POST / 소모임 참가
 
     // Blog ROUTES
     blog: "/blog/",

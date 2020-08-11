@@ -19,7 +19,7 @@
     <div class="container">
       <div class="row">
         <router-link
-          class="col-4"
+          class="col-12 col-lg-4 col-md-6"
           v-for="versus in versusList"
           :key="versus.versusId"
           :to="{name: 'VersusDetailView', params: {versus_id: versus.versusId} }"
@@ -38,7 +38,6 @@
     </div>
 
     <div id="bottomSensor"></div>
-    <button @click="scrollToTop" class="button-bottom">^</button>
   </div>
 </template>
 
@@ -88,9 +87,6 @@ export default {
           this.getVersus();
         }, 1000);
       });
-    },
-    scrollToTop: function () {
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     },
     loadUntilViewportIsFull: function () {
       const bottomSensor = document.querySelector("#bottomSensor");
