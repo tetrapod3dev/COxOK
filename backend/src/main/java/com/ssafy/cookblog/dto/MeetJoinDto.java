@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class MeetJoinDto {
 	private long meetJoinId;
-	private long meedId;
+	private long meetId;
 	private long userId;
 	private String nickname;
 }
