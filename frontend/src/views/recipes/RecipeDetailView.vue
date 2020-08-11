@@ -168,6 +168,16 @@
         </div>
       </div>
     </div>
+    <div class="container">
+      <!-- 관련 유튜브 영상 위치입니다!! -->
+      <h2>관련 유튜브 영상 보기</h2>
+      <div class="row">
+        <a v-for="video in videos" :key="video.id.videoId" :href="youtubeLink(video)" class="col-3">
+          <img :src="video.snippet.thumbnails.default.url">
+          <p>{{ video.snippet.title }}</p>
+        </a>
+      </div>
+    </div>
     <button @click="scrollDoc('top')" id="scroll-top-btn" class="btn btn-outline-primary">
       <i class="fas fa-angle-up"></i>
     </button>
@@ -184,6 +194,9 @@ import { Popover } from "element-ui";
 import SERVER from "@/api/api";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+
+const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
+const API_URL = 'https://www.googleapis.com/youtube/v3/search'
 
 export default {
   name: "RecipeItemView",
@@ -206,7 +219,13 @@ export default {
       },
       unitList: ["kcal", "g", "g", "mg", "g", "g"],
       tempUserId: [],
+      videos: [],
     };
+  },
+  created() {
+    this.getInitRecipe();
+  },
+  mounted() {
   },
   computed: {
     ...mapGetters(["config", "isLoggedIn"]),
@@ -385,6 +404,11 @@ export default {
             this.logout()
           }});
     },
+
+    youtubeLink(video) {
+      return 'https://www.youtube.com/watch?v=' + video.id.videoId
+    },
+
     getRecipe() {
       let config = (this.config == "Bearer null") ? null : { headers: {Authorization: this.config} }
 
@@ -417,11 +441,52 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
-  },
-  created() {
-    this.getRecipe();
-  },
-  mounted() {
+    getInitRecipe() {
+      let config = (this.config == "Bearer null") ? null : { headers: {Authorization: this.config} }
+
+      axios
+        .get(
+          SERVER.URL +
+            SERVER.ROUTES.recipeDetail +
+            this.$route.params.recipe_id, config
+        )
+        .then((res) => {
+          this.recipe = res.data.recipe
+          this.recipeDataSet = {
+            'calorie': res.data.recipe.calorie,
+            'carbon': res.data.recipe.carbon,
+            'fat': res.data.recipe.fat,
+            'natrium': res.data.recipe.natrium,
+            'protein': res.data.recipe.protein,
+            'sugar': res.data.recipe.sugar,
+          };
+
+          this.likeCnt = res.data.likeCnt;
+          this.isLiked = res.data.userLike;
+          this.loginUserId = res.data.loginUserId
+
+          this.recipe.reviewDtoList.forEach(function (review) {
+            review['changing'] = false
+          })
+
+          axios.get(API_URL, {
+            params: {
+              key: API_KEY,
+              part: 'snippet',
+              type: 'video',
+              q: res.data.recipe.recipeName
+            }
+          })
+            .then(response => {
+              this.videos = response.data.items.slice(0,4)
+            })
+            .catch(error => {
+              console.log(error)
+            })
+
+        })
+        .catch((err) => console.log(err.response));
+    },
   },
 };
 </script>
