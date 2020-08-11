@@ -4,7 +4,7 @@
 
 	<insert id="insert">
 		insert into 
-			online (user_id, title, content, date 
+			online (user_id, title, content, date ,type
 				<if test='link != "null"'>
 				, link
 				</if>
@@ -16,7 +16,7 @@
 				</if>
 			 )
 		values
-			(#{userId}, #{title}, #{content}, #{date}
+			(#{userId}, #{title}, #{content}, #{date}, #{type}
 				<if test='link != "null"'>
 				, #{link}
 				</if>
@@ -33,7 +33,7 @@
 		update 
 			meet
 		set
-			title=#{title}, content=#{content}, date=#{date}
+			title=#{title}, content=#{content}, date=#{date}, type=#{type}
 			<if test='link != "null"'>
 			, link = #{link}
 			</if>
@@ -49,7 +49,7 @@
 
 	<select id="selectAll" resultType="OnlineDto">
 		select 
-			online_id as onlineId, user_id as userId, title, content, date,
+			online_id as onlineId, user_id as userId, title, content, date, type
 			 thumbnail_src as thumbnailSrc, link, video 
 		FROM
 			online
@@ -58,56 +58,48 @@
 	</select>
 	
 	
-	
-	
-	
-	
-	
-	
-	<select id="selectMeet" resultType="MeetViewResponseDto">
+	<select id="selectOnline" resultType="OnlineDto">
 		select 
-			meet_id as meetId, user_id as userId, nickname as writerNickname, recipe_id as recipeId,
-			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
-			title, content, date, address, lat, lng
-		FROM meet join user using(user_id) 
-		where meet_id = #{meetId}
-	</select>
-	
-	<select id="selectMeetJoinList" resultType="MeetJoinDto">
-		select 
-			meet_join_id as meetJoinId, meet_id as meetId, user_id as userId, nickname
-		FROM
-			meet_join join user using(user_id)
-		where meet_id = #{meetId}
+			online_id as onlineId, user_id as userId, title,content, type, date,
+			link, thumbnail_src as thumbnailSrc, video
+		from 
+			online 
+		where 
+			online_id = #{onlineId}
 	</select>
 	
 	<delete id="delete">
-		delete from meet where meet_id = #{meetId}
+		delete from online where meet_id = #{onlineId}
 	</delete>
 	
-	<select id="selectMeetByUserid" resultType="MeetDto">
+	
+	
+	
+	<select id="selectOnlineByUserid" resultType="OnlineDto">
 		select 
-			meet_id as meetId, user_id as userId, thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, title
-		FROM
-			meet
+			online_id as onlineId, user_id as userId, title,content, type, date,
+			link, thumbnail_src as thumbnailSrc, video
+		from
+			online
 		where
 			user_id = #{userId}
-		order by meet_id desc
+		order by 
+			online_id desc
 	</select>
 	
-	<select id="selectMeetByType" resultType="MeetDto">
+	<select id="selectOnlineByType" resultType="OnlineDto">
 		select 
-			meet_id as meetId, user_id as userId, 
-			thumbnail_src as thumbnailSrc, type, 
-			join_limit as joinLimit, price, title
+			online_id as onlineId, user_id as userId, title,content, type, date,
+			link, thumbnail_src as thumbnailSrc, video
 		FROM
-			meet
+			online
 		where
 			type = #{type}
-		order by meet_id desc
+		order by 
+			online_id desc
 	</select>
 	
-	<select id="selectMeetJoinByUserid" resultType="MeetDto">
+	<!-- <select id="selectMeetJoinByUserid" resultType="MeetDto">
 		select 
 			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, type, m.join_limit as joinLimit, price, title
 		FROM
@@ -115,19 +107,22 @@
 		where
 			mj.user_id = #{userId}
 		order BY m.meet_id desc
-	</select>
+	</select> -->
 	
 	
 	
 	
-	<insert id="insertMeetJoin">
+	<insert id="insertOnlineJoin">
 		insert into 
-			meet_join (meet_id, user_id)
+			meet_join (online_id, user_id)
 		values 
-			(#{meetId}, #{userId})
+			(#{onlineId}, #{userId})
 	</insert>
 	
 	<delete id="deleteMeetJoin">
-		delete from meet_join where meet_join_id = #{meetJoinId}
+		delete from 
+			meet_join 
+		where 
+			online_id = #{onlineId} and user_id =#{userId}
 	</delete>
 </mapper>
