@@ -1,10 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="page-header page-header-mini">
-      <parallax
-        class="page-header-image"
-        style="background-image: url('https://cdn.pixabay.com/photo/2017/07/28/13/29/spices-2548653_960_720.jpg') ;"
-      ></parallax>
+      <h2 class="my-5">Test2</h2>
 
       <div class="content-center">
         <h1 class="title">요리대전</h1>
@@ -38,6 +35,7 @@
     </div>
 
     <div id="bottomSensor"></div>
+    <button @click="scrollToTop" class="button-bottom">^</button>
   </div>
 </template>
 
@@ -88,6 +86,9 @@ export default {
         }, 1000);
       });
     },
+    scrollToTop: function () { 
+      window.scrollTo({top: 0, left: 0, behavior: "smooth" });
+    },
     loadUntilViewportIsFull: function () {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollmonitor.create(bottomSensor);
@@ -98,7 +99,13 @@ export default {
   },
   created: function () {
     this.getVersus();
-  }
+  }, 
+  mounted: function () {    
+    this.addScrollWatcher();
+  },  
+  updated: function () {    
+    this.loadUntilViewportIsFull();  
+  },
 };
 </script>
 
