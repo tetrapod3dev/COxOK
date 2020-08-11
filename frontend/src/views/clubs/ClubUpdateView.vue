@@ -26,7 +26,7 @@
         </div>
 
         <!-- 제목 입력 -->
-        <input class="w-50" type="text" v-model="meet.title">
+        <input class="w-50" type="text" v-model="meet.title" readonly>
       </div>
     </div>
 
@@ -128,16 +128,6 @@ export default {
     datetime: Datetime,
   },
   created() {
-    axios
-      .get(SERVER.URL + SERVER.ROUTES.clubDetail + this.$route.params.club_id, {
-        headers: {
-          "Authorization": this.config,
-        },
-      })
-      .then(res => {
-        this.meet = res.data.meet
-      })
-      .catch(err => console.log(err))
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -156,21 +146,36 @@ export default {
       this.meet.thumbnailSrc = URL.createObjectURL(file)
       this.meet.thumbnail = file
     },
-    initMap() {
-      var container = document.getElementById('map');
-      var options = {
-        center: new kakao.maps.LatLng(this.meet.lat, this.meet.lng),
-        level: 3
-      };
 
-      var map = new kakao.maps.Map(container, options);
-      
-      var geocoder = new daum.maps.services.Geocoder();
-      
-      var marker = new daum.maps.Marker({
-        position: new daum.maps.LatLng(this.meet.lat, this.meet.lng),
-        map: map
-      });
+    initMap() {
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.clubDetail + this.$route.params.club_id, {
+          headers: {
+            "Authorization": this.config,
+          },
+        })
+        .then(res => {
+          this.user = res.data.userId
+          this.meet = res.data.meet
+          this.isIn = (res.data.meet.meetJoinList.map(user => user.userId).indexOf(res.data.userId) >= 0) ? true : false 
+
+          var container = document.getElementById('map');
+          var options = {
+            center: new kakao.maps.LatLng(res.data.meet.lat, res.data.meet.lng),
+            level: 3
+          };
+
+          var map = new kakao.maps.Map(container, options);
+          
+          var geocoder = new daum.maps.services.Geocoder();
+          
+          var marker = new daum.maps.Marker({
+            position: new daum.maps.LatLng(res.data.meet.lat, res.data.meet.lng),
+            map: map
+          });
+        })
+        .catch(err => console.log(err))
+
     },
 
     onClickAddr() {
@@ -264,6 +269,7 @@ export default {
         "title": this.meet.title,
         "type": this.meet.type,
       }
+
       console.log(body)
 
       axios
@@ -273,7 +279,9 @@ export default {
           },
         })
         .then(res => {
-          console.log(res)
+          if (res.status == 200) {
+            this.$router.push({ name: "ClubDetailView", params: { club_id: this.$route.params.club_id } });
+          }
         })
         .catch((err) => {
           console.log(err.response)
