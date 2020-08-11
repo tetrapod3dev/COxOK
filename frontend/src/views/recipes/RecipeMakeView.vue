@@ -24,22 +24,22 @@
                 @change="onChangeThumbnail"
               />
               <div class="row">
-                <div class="col-4">
+                <div class="col-12">
                   <img id="recipe-preview" :src="recipePreview" class="w-100" />
                   <a @click="onClickThumbnailUpload" class="w-100">
                     <n-button type="primary" round block>업로드</n-button>
                   </a>
                 </div>
-
-                <div class="col-8">
-                  <div class="row">
-                    <p>레시피 제목</p>
-                    <input class="col-8" type="text" v-model="recipeName" />
-                  </div>
-                  <div class="row">
-                    <p>레시피 설명</p>
-                    <input class="col-8" type="text" v-model="recipeDetail" />
-                  </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="row">
+                <div class="col-12 detail-input">
+                  <input type="text" name="name" class="question" id="nme" required autocomplete="off"/>
+                  <label for="nme"><span>레시피 제목</span></label>
+                  <br><br>
+                  <textarea name="message" rows="2" class="question" id="msg" required autocomplete="off"></textarea>
+                  <label for="msg"><span>레시피 내용</span></label>
                 </div>
               </div>
             </div>
@@ -59,6 +59,10 @@
             <input type="number" id="cookTime" v-model="cookTime" /> 분
           </div>
         </div>
+
+
+        
+
 
         <hr class="my-5" />
 
@@ -397,4 +401,144 @@ export default {
 .imgUpBtn {
   height: 50px;
 }
+
+/*
+Basic input element using psuedo classes
+*/
+
+
+.detail-input input,
+.detail-input span,
+.detail-input label,
+.detail-input textarea {
+  font-family: "Ubuntu", sans-serif;
+  display: block;
+  margin: 10px;
+  padding: 5px;
+  border: none;
+  font-size: 22px;
+}
+
+textarea:focus,
+input:focus {
+  outline: 0;
+}
+/* Question */
+
+textarea.question{
+  resize: none;
+}
+
+input.question,
+textarea.question {
+  font-size: 30px;
+  font-weight: 300;
+  border-radius: 2px;
+  margin: 0;
+  border: none;
+  width: 200%;
+  background: rgba(0, 0, 0, 0);
+  transition: padding-top 0.2s ease, margin-top 0.2s ease;
+  overflow-x: hidden; /* Hack to make "rows" attribute apply in Firefox. */
+}
+/* Underline and Placeholder */
+
+input.question + label,
+textarea.question + label {
+  display: block;
+  position: relative;
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  width: 10%;
+  border-top: 1px solid red;
+  -webkit-transition: width 0.4s ease;
+  transition: width 0.4s ease;
+  height: 0px;
+}
+
+input.question:focus + label,
+textarea.question:focus + label {
+  width: 200%;
+}
+
+input.question:focus,
+input.question:valid {
+  padding-top: 35px;
+}
+
+textarea.question:valid,
+textarea.question:focus {
+  margin-top: 35px;
+}
+
+input.question:focus + label > span,
+input.question:valid + label > span {
+  top: -100px;
+  font-size: 22px;
+  color: #333;
+}
+
+textarea.question:focus + label > span,
+textarea.question:valid + label > span {
+  top: -150px;
+  font-size: 22px;
+  color: #333;
+}
+
+input.question:valid + label,
+textarea.question:valid + label {
+  border-color: green;
+}
+
+input.question:invalid,
+textarea.question:invalid {
+  box-shadow: none;
+}
+
+input.question + label > span,
+textarea.question + label > span {
+  font-weight: 300;
+  margin: 0;
+  position: absolute;
+  color: #8f8f8f;
+  font-size: 48px;
+  top: -66px;
+  left: 0px;
+  z-index: 0;
+  -webkit-transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+  transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+input[type="submit"] {
+  -webkit-transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  display: block;
+  opacity: 0;
+  margin: 10px 0 0 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background: #eee;
+}
+
+input[type="submit"]:active {
+  background: #999;
+}
+
+@-webkit-keyframes appear {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes appear {
+  100% {
+    opacity: 1;
+  }
+}
+
+
 </style>
