@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
+        style="background-image: url('https://c1.wallpaperflare.com/preview/657/480/36/cup-cake-food-muffins.jpg') ;"
       ></parallax>
     </div>
     <div class="subscribe-line subscribe-line-white">

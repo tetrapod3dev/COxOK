@@ -1,74 +1,39 @@
 <template>
   <div class="wrapper">
     <section id="top">
-
-      <card type="background" :style="'background-image: url(' + recipeThumbnailSrc + ')'">
+      <card type="background" style="background-image: url('https://previews.123rf.com/images/seamartini/seamartini1609/seamartini160900068/62637928-cooking-and-kitchen-utensils-seamless-background-wallpaper-with-vector-pattern-icons-of-pizza-bread-.jpg') ;" >
         <div class="card-title text-left">
-          <h3>{{ recipe.recipeName }}</h3>
+          <h1 style="">{{ recipe.recipeName }}</h1>
         </div>
         <div class="card-footer text-left">
           <div class="stats">
-            <span v-popover:popover-fav>
-              <i class="fa fa-star-o"></i>
-              {{ recipe.avgRating }}
+            <span style="font-size:25px;">
+              <i class="fas fa-edit"></i>
+              {{ recipe.nickname }}
             </span>
-            <el-popover
-              ref="popover-fav"
-              popper-class="popover"
-              placement="bottom"
-              width="200"
-              trigger="hover"
-            >
-              <div class="popover-body">평점(5점 만점)</div>
-            </el-popover>
-            <span v-popover:popover-tim class="col-4">
-              <i class="now-ui-icons ui-2_time-alarm"></i>
-              {{ recipe.cookTime }}
-            </span>
-            <el-popover
-              ref="popover-tim"
-              popper-class="popover"
-              placement="bottom"
-              width="200"
-              trigger="hover"
-            >
-              <div class="popover-body">분</div>
-            </el-popover>
-            <span v-popover:popover-exc class="col-4">
-              <i class="fa fa-exclamation-triangle"></i>
-              {{ recipe.level }}
-            </span>
-            <el-popover
-              ref="popover-exc"
-              popper-class="popover"
-              placement="bottom"
-              width="200"
-              trigger="hover"
-            >
-              <div class="popover-body">난이도(5점 만점)</div>
-            </el-popover>
           </div>
         </div>
       </card>
     </section>
-    
-    <div v-if="loginUserId == recipe.userId">
-      <router-link :to="{ name: 'RecipeUpdateView', params: { recipe_id: recipe.recipeId } }">
-        <button class="btn btn-primary">수정하러 가기</button>
-      </router-link>
-      <button @click="deleteRecipe">삭제</button>
-    </div>
-      
     <!--     *********    TEAM 1     *********      -->
     <div class="team-1" id="recipeInfo">
       <div class="container">
         <div class="row">
-          <div class="col-md-8 ml-auto mr-auto text-left">
-            <h2 class="title">{{ recipe.recipeName }}</h2>
-            <h4 class="description">{{ recipe.recipeDetail }}</h4>
+          <div class="col-md-8 ml-auto mr-auto">
+            <img class="img img-raised mb-5" :src="recipeThumbnailSrc" />
+            <h3 class="description mb-5">{{ recipe.recipeDetail }}</h3>
           </div>
         </div>
-        <div class="row"></div>
+        <div class="row mt-5 ">
+          <div class="col-md-1 offset-5 ml-auto mr-auto" >
+            <i class="now-ui-icons ui-2_time-alarm" style="font-size:60px;"></i><br>
+            {{ recipe.cookTime }}분
+          </div>
+          <div class="col-md-6 ml-auto mr-auto" >
+            <i class="fa fa-exclamation-triangle" style="font-size:60px;"></i><br>
+            {{ recipe.level }}
+          </div>
+        </div>
         <div class="row justify-content-center">
           <div class="col-md-4 ml-1">
             <div class="col-md-8 ml-auto mr-auto">
@@ -154,11 +119,22 @@
         </div>
       </div>
     </div>
+
+    <div v-if="loginUserId == recipe.userId">
+      <router-link :to="{ name: 'RecipeUpdateView', params: { recipe_id: recipe.recipeId } }">
+        <button class="btn btn-primary">수정</button>
+      </router-link>
+      <button class="btn btn-primary" @click="deleteRecipe">삭제</button>
+    </div>
     <div class="section section-comments" id="reviewInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto">
-            <div class="media-area">
+            <h3 class="title text-center mb-3">평점</h3>
+            <div class="avgRating">
+              <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
+            </div>
+            <div class="media-area mt-3">
               <h3 class="title text-center">한줄평</h3>
               <ReviewList :loginUserId="loginUserId" :reviewList="recipe.reviewDtoList" @deleteReview="deleteReview" @modifyMod="modifyMod" @updateReview="updateReview" />
               <p v-if="recipe.reviewDtoList.length == 0">작성된 한줄평이 없습니다.</p>
@@ -419,6 +395,7 @@ export default {
             this.$route.params.recipe_id, config
         )
         .then((res) => {
+          console.log(res)
           this.recipe = res.data.recipe
           this.recipeDataSet = {
             'calorie': res.data.recipe.calorie,
@@ -450,8 +427,13 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 .top {
   background-color: gainsboro;
+}
+
+.wrapper {
+  font-family: 'Nanum Gothic', sans-serif;
 }
 
 #scroll-top-btn {
@@ -462,5 +444,9 @@ export default {
 
 .text-link:hover {
   cursor: pointer;
+}
+
+.avgRating {
+  font-size: 40px;
 }
 </style>
