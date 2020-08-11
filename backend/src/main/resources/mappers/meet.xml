@@ -77,7 +77,7 @@
 		insert into 
 			meet_join (meet_id, user_id)
 		values 
-			(#{meet_id}, #{user_id})
+			(#{meetId}, #{userId})
 	</insert>
 	
 	<delete id="deleteMeetJoin">
