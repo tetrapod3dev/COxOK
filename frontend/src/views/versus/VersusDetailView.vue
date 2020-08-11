@@ -49,11 +49,8 @@
       <div class="row">
         <div v-for="recipe in nowRecipes" :key="recipe.id" class="col-6">
           <card type="profile" style="width:465px;height:400px;">
-            <div
-              class="versus-card-image"
-              @click="selectRecipe(recipe)"
-              :style="'background-image: url('+ imageSrc(recipe.recipeThumbnailSrc)+')'"
-            ></div>
+            <img :src="imageSrc(recipe.recipeThumbnailSrc)" @click="selectRecipe(recipe)" class="versus-card-image">
+
             <h4 class="card-title text-left">{{ recipe.recipeName }}</h4>
             <h6
               v-b-modal.modal-lg

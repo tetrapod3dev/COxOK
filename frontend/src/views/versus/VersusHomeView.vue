@@ -1,7 +1,10 @@
 <template>
   <div class="wrapper">
     <div class="page-header page-header-mini">
-      <h2 class="my-5">Test2</h2>
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://cdn.pixabay.com/photo/2017/07/28/13/29/spices-2548653_960_720.jpg') ;"
+      ></parallax>
 
       <div class="content-center">
         <h1 class="title">요리대전</h1>
@@ -16,7 +19,7 @@
     <div class="container">
       <div class="row">
         <router-link
-          class="col-12 col-lg-4 col-md-6"
+          class="col-4"
           v-for="versus in versusList"
           :key="versus.versusId"
           :to="{name: 'VersusDetailView', params: {versus_id: versus.versusId} }"
@@ -86,8 +89,8 @@ export default {
         }, 1000);
       });
     },
-    scrollToTop: function () { 
-      window.scrollTo({top: 0, left: 0, behavior: "smooth" });
+    scrollToTop: function () {
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     },
     loadUntilViewportIsFull: function () {
       const bottomSensor = document.querySelector("#bottomSensor");
@@ -99,12 +102,12 @@ export default {
   },
   created: function () {
     this.getVersus();
-  }, 
-  mounted: function () {    
+  },
+  mounted: function () {
     this.addScrollWatcher();
-  },  
-  updated: function () {    
-    this.loadUntilViewportIsFull();  
+  },
+  updated: function () {
+    this.loadUntilViewportIsFull();
   },
 };
 </script>
