@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="page-header page-header-mini">
-      <h2 class="my-5">Test</h2>
+      <h2 class="my-5">Test2</h2>
 
       <div class="content-center">
         <h1 class="title">요리대전</h1>
