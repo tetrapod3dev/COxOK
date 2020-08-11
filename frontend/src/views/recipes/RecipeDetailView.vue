@@ -24,17 +24,17 @@
             <h3 class="description mb-5">{{ recipe.recipeDetail }}</h3>
           </div>
         </div>
-        <div class="row mt-5 ">
-          <div class="col-md-1 offset-5 ml-auto mr-auto" >
+        <div class="row mt-5 mb-5">
+          <div class="col-md-3 offset-3" style="font-size:30px;" >
             <i class="now-ui-icons ui-2_time-alarm" style="font-size:60px;"></i><br>
             {{ recipe.cookTime }}분
           </div>
-          <div class="col-md-6 ml-auto mr-auto" >
+          <div class="col-md-3" style="font-size:30px;">
             <i class="fa fa-exclamation-triangle" style="font-size:60px;"></i><br>
             {{ recipe.level }}
           </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-5">
           <div class="col-md-4 ml-1">
             <div class="col-md-8 ml-auto mr-auto">
               <h3 class="text-left mb-3">목차</h3>
