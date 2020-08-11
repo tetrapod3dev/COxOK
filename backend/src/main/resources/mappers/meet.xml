@@ -33,11 +33,10 @@
 	
 	<select id="selectMeet" resultType="MeetViewResponseDto">
 		select 
-			meet_id as meetId, user_id as userId, recipe_id as recipeId,
+			meet_id as meetId, user_id as userId, nickname as writerNickname, recipe_id as recipeId,
 			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
 			title, content, date, address, lat, lng
-		FROM
-			meet
+		FROM meet join user using(user_id) 
 		where meet_id = #{meetId}
 	</select>
 	
