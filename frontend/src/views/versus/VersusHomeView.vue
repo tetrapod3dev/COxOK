@@ -35,6 +35,7 @@
     </div>
 
     <div id="bottomSensor"></div>
+    <button @click="scrollToTop" class="button-bottom">^</button>
   </div>
 </template>
 
@@ -85,6 +86,9 @@ export default {
         }, 1000);
       });
     },
+    scrollToTop: function () { 
+      window.scrollTo({top: 0, left: 0, behavior: "smooth" });
+    },
     loadUntilViewportIsFull: function () {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollmonitor.create(bottomSensor);
@@ -95,7 +99,13 @@ export default {
   },
   created: function () {
     this.getVersus();
-  }
+  }, 
+  mounted: function () {    
+    this.addScrollWatcher();
+  },  
+  updated: function () {    
+    this.loadUntilViewportIsFull();  
+  },
 };
 </script>
 
