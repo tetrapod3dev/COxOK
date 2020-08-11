@@ -55,4 +55,9 @@ public class MeetDaoImpl implements MeetDao {
 	public int deleteMeetJoin(long meetJoinId) {
 		return session.delete("meet.deleteMeetJoin",meetJoinId);
 	}
+	
+	@Override
+	public List<MeetDto> selectMeetByType(String type) {
+		return session.selectList("meet.selectMeetByType",type);
+	}
 }

@@ -90,4 +90,9 @@ public class MeetServiceImpl implements MeetService {
 		return meetDao.deleteMeetJoin(meetJoinId);
 	}
 	
+	@Override
+	public List<MeetDto> getAllMeetByType(String type) {
+		return meetDao.selectMeetByType(type);
+	}
+	
 }
