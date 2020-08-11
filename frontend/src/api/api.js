@@ -44,6 +44,8 @@ export default {
     versusRegister: "/versus/register/", // POST / 요리대전 생성
     versusList: "/versus/all/", // GET / 요리대전 목록 (6개씩)
     versusDetail: "/versus/view/", // GET / 요리대전 상세보기
+    versusWin: "/versus/win/",  // POST / 이긴 결과 보내기
+    versusResult: "/versus/result/",  // GET / 요리대전 결과 받아오기
 
     // Club ROUTES
     clubRegister: "/meet/", // POST / 소모임 생성
