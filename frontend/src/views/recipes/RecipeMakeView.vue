@@ -3,7 +3,8 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
+        style="background-image: url('https://previews.123rf.com/images/seamartini/seamartini1609/seamartini160900068/62637928-cooking-and-kitchen-utensils-seamless-background-wallpaper-with-vector-pattern-icons-of-pizza-bread-.jpg
+') ;"
       ></parallax>
       <div class="content-center">
         <h1>레시피 상세 정보 입력</h1>
