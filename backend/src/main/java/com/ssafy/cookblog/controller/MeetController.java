@@ -198,5 +198,25 @@ public class MeetController {
 		
 		return response;
 	}
+	@ApiOperation("소모임 타입으로 조회하기")
+	@GetMapping("/type/{type}")
+	public Object getType(@PathVariable("type")String type) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		List<MeetDto> list = meetService.getAllMeetByType(type);
+		if(list!=null) {
+			map.put("msg", "소모임 참석 삭제를 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "소모임 참석 삭제를 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
 		
 }

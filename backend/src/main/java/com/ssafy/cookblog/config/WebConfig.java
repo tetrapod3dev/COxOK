@@ -46,6 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
 			"/photo/**",
 			
 			"/meet/all/**",
+			"/meet/type/**",
 			
 			"/error"
 	};

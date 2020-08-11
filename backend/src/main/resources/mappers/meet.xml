@@ -63,6 +63,18 @@
 		order by meet_id desc
 	</select>
 	
+	<select id="selectMeetByType" resultType="MeetDto">
+		select 
+			meet_id as meetId, user_id as userId, 
+			thumbnail_src as thumbnailSrc, type, 
+			join_limit as joinLimit, price, title
+		FROM
+			meet
+		where
+			type = #{type}
+		order by meet_id desc
+	</select>
+	
 	<select id="selectMeetJoinByUserid" resultType="MeetDto">
 		select 
 			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, type, m.join_limit as joinLimit, price, title
@@ -72,6 +84,9 @@
 			mj.user_id = #{userId}
 		order BY m.meet_id desc
 	</select>
+	
+	
+	
 	
 	<insert id="insertMeetJoin">
 		insert into 
