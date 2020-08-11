@@ -1,10 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="page-header page-header-mini">
-      <parallax
-        class="page-header-image"
-        style="background-image: url('https://cdn.pixabay.com/photo/2017/07/28/13/29/spices-2548653_960_720.jpg') ;"
-      ></parallax>
+      <h2 class="my-5">Test</h2>
 
       <div class="content-center">
         <h1 class="title">요리대전</h1>
