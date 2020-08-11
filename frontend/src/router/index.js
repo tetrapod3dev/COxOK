@@ -34,7 +34,9 @@ import VersusDetailView from "../views/versus/VersusDetailView.vue";
 import ClubListView from "../views/clubs/ClubListView.vue";
 import ClubMakeView from "../views/clubs/ClubMakeView.vue";
 import ClubDetailView from "../views/clubs/ClubDetailView.vue";
+import ClubOnlineDetailView from "../views/clubs/ClubOnlineDetailView.vue";
 import ClubUpdateView from "../views/clubs/ClubUpdateView.vue";
+import ClubListTypeView from "../views/clubs/ClubListTypeView.vue";
 
 // Test Router
 import EditorTest from "../views/articles/EditorTest.vue";
@@ -159,6 +161,11 @@ const routes = [
     component: ClubMakeView,
   },
   {
+    path: "/clubs/list/:type",
+    name: "ClubListTypeView",
+    component: ClubListTypeView,
+  },
+  {
     path: "/clubs/:pageNum",
     name: "ClubListView",
     component: ClubListView,
@@ -167,6 +174,11 @@ const routes = [
     path: "/clubs/detail/:club_id",
     name: "ClubDetailView",
     component: ClubDetailView,
+  },
+  {
+    path: "/clubs/online/detail",
+    name: "ClubOnlineDetailView",
+    component: ClubOnlineDetailView,
   },
   {
     path: "/clubs/Update/:club_id",

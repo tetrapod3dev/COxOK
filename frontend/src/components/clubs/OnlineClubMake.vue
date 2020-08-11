@@ -33,6 +33,7 @@ const API_URL = 'https://www.googleapis.com/youtube/v3/videos'
 
 import CxkEditor from "@/components/cxkeditor/cxkeditor.vue";
 import { Datetime } from 'vue-datetime';
+import { mapGetters } from 'vuex'
 
 export default {
   name: "OnlineClubMake",
@@ -53,6 +54,7 @@ export default {
     datetime: Datetime,
   },
   computed: {
+    ...mapGetters(['config']),
     fullTime() {
       return this.date.slice(0, 19)
     },
@@ -118,12 +120,29 @@ export default {
         'title': this.title,
         'content': this.content,
         'date': this.fullTime,
-        'link': this.link,
-        'video': this.video,
+        'link': this.submitLink,
+        'video': this.submitVideo,
         'thumbnailSrc': this.thumbnailSrc
       }
 
-      console.log(body)
+      let configs = {
+        headers: {
+          Authorization: this.config,
+        },
+      };
+
+      axios
+        .post(SERVER.URL + SERVER.ROUTES.onlineRegister, body, configs)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          // if (err.response.status) {
+          //   alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          //   this.logout()
+          // }
+          console.log(err.response)
+        })
     }
   }
 }
