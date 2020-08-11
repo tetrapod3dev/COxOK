@@ -139,7 +139,14 @@ export default {
 
     changeJoinClub() {
       if (this.isIn) {
-        console.log('취소')
+        axios
+          .delete(SERVER.URL + SERVER.ROUTES.cancelClub + this.$route.params.club_id, {
+            headers: {
+              "Authorization": this.config,
+            },
+          })
+          .then(res => console.log(res))
+          .catch(err => console.log(err.response))
       } else {
         axios
           .post(SERVER.URL + SERVER.ROUTES.joinClub, { "meetId": this.$route.params.club_id }, {
@@ -147,7 +154,9 @@ export default {
               "Authorization": this.config,
             },
           })
-          .then(res => console.log(res))
+          .then(() => {
+            console.log('참가 신청에 성공했습니다.')
+          })
           .catch(err => console.log(err.response))
       }
     }
