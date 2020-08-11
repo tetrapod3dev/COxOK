@@ -24,6 +24,8 @@ import com.ssafy.cookblog.service.BlogService;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.JwtService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/blog")
@@ -39,6 +41,7 @@ public class BlogController {
 	UserService userService;
 	
 	// Create
+	@ApiOperation("블로그 포스트 작성")
 	@PostMapping("/")
 	public Object register(@RequestBody BlogDto blog,HttpServletRequest request) {
 		ResponseEntity response = null;
@@ -65,6 +68,7 @@ public class BlogController {
 	}
 	
 	// Read(전체)
+	@ApiOperation("블로그 전체 포스트 조회")
 	@GetMapping("/all/{startIndex}")
 	public Object getAllRecipe(@PathVariable int startIndex) {
 		ResponseEntity response = null;
@@ -87,6 +91,7 @@ public class BlogController {
 	}
 	
 	// Read(상세)
+	@ApiOperation("블로그 포스트 상세 조회")
 	@GetMapping("/{id}")
 	public Object readBlog(@PathVariable long id,HttpServletRequest request) {
 		
@@ -103,7 +108,6 @@ public class BlogController {
 			map.put("msg", "블로그 포스트 읽기에 성공했습니다.");
 			map.put("status", "success");
 			map.put("blog", blog);
-			boolean userLike = false;
 			if(token != null) {
 				email = jwtService.getEmailFromToken(token.substring(7));
 				userId = userService.userIdByEmail(email);
@@ -119,7 +123,39 @@ public class BlogController {
 		return response;
 	}
 	
+	@ApiOperation("내 블로그 글 목록 가져오기")
+	@GetMapping("/my")
+	public Object getMyBlog(HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = null;
+		long userId = -1;
+		List<BlogDto> list = null;
+		
+		if(token != null) {
+			email = jwtService.getEmailFromToken(token.substring(7));
+			userId = userService.userIdByEmail(email);
+			list = blogService.getMyBlog(userId);
+		}
+		
+		if(list != null) {
+			map.put("msg", "내 블로그 글 목록 가져오기에 성공했습니다.");
+			map.put("status", "success");
+			map.put("blog", list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "내 블로그 글 목록 가져오기에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
 	// Update
+	@ApiOperation("블로그 포스트 수정")
 	@PutMapping("/")
 	public Object updateBlog(@RequestBody BlogDto blog) {
 		
@@ -142,6 +178,7 @@ public class BlogController {
 	}
 	
 	// Delete
+	@ApiOperation("블로그 포스트 삭제")
 	@DeleteMapping("/{id}")
 	public Object deleteBlog(@PathVariable long id) {
 		

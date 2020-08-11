@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,8 @@ import com.ssafy.cookblog.service.RecipeService;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.JwtService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/recipe")
@@ -45,7 +48,7 @@ public class RecipeController {
 	@Autowired
 	UserService userService;
 	
-	// 레시피 상세 조회
+	@ApiOperation("레시피 상세 조회")
 	@GetMapping("/view/{id}")
 	public Object getOneRecipe(@PathVariable("id")int id, HttpServletRequest request ) throws Exception {
 		ResponseEntity response = null;
@@ -85,7 +88,35 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("선호하는 카테고리중 18개 뽑기")
+	@GetMapping("/my")
+	public Object getMyRecommand(HttpServletRequest request ) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		FoodCategoryDto category = recipeService.getRandomCategoryByUserId(userId) ;
+		List<RecipeDto> recipe= recipeService.getRecipeListByCategoryId(category.getFoodCategoryId());
+		
+		if(recipe!=null) {
+			map.put("msg", "레시피 조회를 성공했습니다.");
+			map.put("status", "success");
+			map.put("category",category);
+			map.put("recipe", recipe);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "레시피를 찾지 못했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
 	// 레시피 전체 조회
+	@ApiOperation("레시피 전체 조회")
 	@GetMapping("/all/{startIndex}")
 	public Object getAllRecipe(@PathVariable("startIndex") int startIndex) {
 		ResponseEntity response = null;
@@ -106,7 +137,8 @@ public class RecipeController {
 		return response;
 	}
 	
-	@GetMapping("/goRegister")		//모든 재료 받기
+	@ApiOperation("모든 재료 받기 (레시피 등록 과정)")
+	@GetMapping("/goRegister")		
 	public Object getAllIngredient() {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -123,7 +155,8 @@ public class RecipeController {
 		return response;
 	}
 	
-	@GetMapping("/get")		//모든 재료 받기
+	@ApiOperation("모든 재료 받기 (레시피 검색 과정)")
+	@GetMapping("/get")
 	public Object getAllIngredient2() {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -140,7 +173,7 @@ public class RecipeController {
 		return response;
 	}
 	
-	// 레시피 등록
+	@ApiOperation("레시피 등록")
 	@PostMapping("/register")
 	public Object registerRecipe(@ModelAttribute RecipeRegisterRequestDto recipe, HttpServletRequest request) {
 	
@@ -164,7 +197,7 @@ public class RecipeController {
 		return response;
 	}
 	
-	// 레시피 수정 버튼 클릭 시 기존 정보
+	@ApiOperation("레시피 수정 버튼 클릭 시 기존 정보 불러오기")
 	@GetMapping("/modifyInfo/{id}")
 	public Object modifyInfoRecipe(@PathVariable int id) {
 		
@@ -189,7 +222,7 @@ public class RecipeController {
 		
 	}
 	
-	// 레시피 수정
+	@ApiOperation("레시피 수정")
 	@PostMapping("/modify")
 	public Object modifyRecipe(@RequestBody RecipeUpdateRequestDto recipe, HttpServletRequest request) {
 		
@@ -214,7 +247,7 @@ public class RecipeController {
 		return response;
 	}
 	
-	// 레시피 삭제
+	@ApiOperation("레시피 삭제")
 	@DeleteMapping("/delete/{id}")
 	public Object deleteRecipe(@PathVariable long id) {
 		
@@ -234,6 +267,7 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("레시피 검색")
 	@PostMapping("/search/{startIndex}")
 	public Object search(@ModelAttribute RecipeSearchRequestDto recipeSearchRequestDto,
 			@PathVariable("startIndex")int startIndex) {
@@ -257,6 +291,7 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("좋아요 반영")
 	@PostMapping("/like")
 	public Object like(@RequestBody LikeDto like, HttpServletRequest request) {
 		ResponseEntity response = null;
@@ -282,6 +317,7 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("좋아요 취소")
 	@DeleteMapping("/likeCancel")
 	public Object likeCancel(@RequestBody LikeDto like, HttpServletRequest request) {
 		ResponseEntity response = null;
@@ -300,6 +336,177 @@ public class RecipeController {
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "좋아요 취소에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("(관리자) 재료 전체 목록")
+	@GetMapping("/admin/ingredient/{startIndex}")
+	public Object getIngredient(HttpServletRequest request, @PathVariable("startIndex")int startIndex) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		List<IngredientDto> dto = recipeService.selectAllIngredientAdmin(startIndex);
+		
+		if(dto != null) {
+			map.put("msg", "재료 불러오기에 성공했습니다.");
+			map.put("status", "success");
+			map.put("ingredient", dto);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "재료 불러오기에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("(관리자) 재료 상세 보기")
+	@GetMapping("/admin/ingredient/{id}")
+	public Object readIngredient(@PathVariable long ingredientId, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		IngredientDto ingredient = recipeService.readIngredientAdmin(ingredientId);
+		
+		if(ingredient != null) {
+			map.put("msg", "재료 불러오기에 성공했습니다.");
+			map.put("status", "success");
+			map.put("ingredient", ingredient);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "재료 불러오기에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("(관리자) 재료 추가")
+	@PostMapping("/admin/ingredient")
+	public Object addIngredient(@RequestBody IngredientDto dto, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		int count = recipeService.registerIngredientAdmin(dto);
+		
+		if(count != 0) {
+			map.put("msg", "재료 등록에 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "재료 등록에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("(관리자) 재료 수정")
+	@PutMapping("/admin/ingredient")
+	public Object modifyIngredient(@RequestBody IngredientDto dto, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		int count = recipeService.modifyIngredientAdmin(dto);
+		
+		if(count != 0) {
+			map.put("msg", "재료 수정에 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "재료 수정에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("재료 삭제")
+	@DeleteMapping("/admin/ingredient/{id}")
+	public Object deleteIngredient(HttpServletRequest request, @PathVariable long ingredientId) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		int count = recipeService.removeIngredientAdmin(ingredientId);
+		
+		if(count != 0) {
+			map.put("msg", "재료 삭제에 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "재료 삭제에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("업데이트가 필요한 재료 목록")
+	@GetMapping("/admin/modify-ingredient/{startIndex}")
+	public Object getIngredientToBeUpdated(@PathVariable int startIndex, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		List<IngredientDto> ingredient = recipeService.readAllIngredientToBeUpdated(startIndex);
+		
+		if(ingredient != null) {
+			map.put("msg", "업데이트가 필요한 재료 목록 불러오기에 성공했습니다.");
+			map.put("status", "success");
+			map.put("ingredient", ingredient);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "업데이트가 필요한 재료 목록 불러오기에 실패했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}

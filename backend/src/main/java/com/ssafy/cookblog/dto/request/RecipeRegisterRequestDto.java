@@ -1,8 +1,5 @@
 package com.ssafy.cookblog.dto.request;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;

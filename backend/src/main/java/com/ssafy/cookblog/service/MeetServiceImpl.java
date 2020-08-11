@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.cookblog.dao.MeetDao;
 import com.ssafy.cookblog.dto.MeetDto;
@@ -33,11 +34,13 @@ public class MeetServiceImpl implements MeetService {
 	}
 
 	@Override
+	@Transactional 
 	public int deleteMeet(long meetId) {
 		return meetDao.delete(meetId);
 	}
 	
 	@Override
+	@Transactional 
 	public int register(MeetRegisterRequestDto meetRegisterReqeustDto) {
 		
 		//썸네일 ec2에 등록
@@ -63,22 +66,26 @@ public class MeetServiceImpl implements MeetService {
 		meetDto.setAddress(meetRegisterReqeustDto.getAddress());
 		meetDto.setLat(meetRegisterReqeustDto.getLat());
 		meetDto.setLng(meetRegisterReqeustDto.getLng());
+		meetDto.setDate(meetRegisterReqeustDto.getDate());
 
 		//insert
 		return meetDao.insert(meetDto);
 	}
 	
 	@Override
+	@Transactional 
 	public int modify(MeetDto meetDto) {
 		return meetDao.update(meetDto);
 	}
 	
 	@Override
+	@Transactional 
 	public int registerMeetJoin(MeetJoinDto meetJoinDto) {
 		return meetDao.insertMeetJoin(meetJoinDto);
 	}
 	
 	@Override
+	@Transactional 
 	public int removeMeetJoin(long meetJoinId) {
 		return meetDao.deleteMeetJoin(meetJoinId);
 	}

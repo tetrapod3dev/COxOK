@@ -13,6 +13,7 @@ public interface UserDao {
 	//Read
 	public UserDto select(String email);
 	public UserDto selectNickname(String nickname);
+	public UserDto selectUserId(long userId);
 	public List<UserDto> selectAll();
 	public UserDto login(UserDto user);
 	public long userIdByEmail(String email);
@@ -25,9 +26,11 @@ public interface UserDao {
 	//Update
 	public int update(UserModifyRequestDto userModifyRequestDto);
 	public int updateEmail(UserDto user);
+	public int updateByAdmin(UserDto user);
 	
 	//Delete
 	public int delete(String email);
+	public int deleteByUserId(long userId);
 
 	public List<RecipeDto> selectRecipeListByUserId(Long userId);
 	

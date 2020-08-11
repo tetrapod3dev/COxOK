@@ -35,6 +35,9 @@ public class UserServiceImpl implements UserService{
 	public UserDto findUserByNickname(String nickname) {
 		return userDao.selectNickname(nickname);
 	}
+	public UserDto findUserByUserId(long userId) {
+		return userDao.selectUserId(userId);
+	}
 	public List<UserDto> findAllUser() {
 		return userDao.selectAll();
 	}
@@ -72,6 +75,11 @@ public class UserServiceImpl implements UserService{
 		}
 		return userDao.update(userModifyRequestDto);
 	}
+
+	@Transactional
+	public int modifyByAdmin(UserDto userDto) {
+		return userDao.updateByAdmin(userDto);
+	}
 	
 	@Transactional
 	public int authEmail(UserDto user) {
@@ -82,6 +90,11 @@ public class UserServiceImpl implements UserService{
 	@Transactional
 	public int remove(String email) {
 		return userDao.delete(email);
+	}
+
+	@Transactional
+	public int removeByUserId(long userId) {
+		return userDao.deleteByUserId(userId);
 	}
 
 	@Override

@@ -32,6 +32,16 @@
 			blog_id = #{blogId}
 	</select>
 	
+	<select id="selectMyBlog" resultType="BlogDto">
+		select 
+			blog_id as blogId, user_id as userId, recipe_id as recipeId, title, content,
+			reg_time as regTime, tag1, tag2, tag3
+		from 
+			blog 		
+		where 
+			user_id = #{userId}
+	</select>
+	
 	<insert id ="insert">
 		insert into blog (user_id, recipe_id, title, content, tag1, tag2, tag3)
 		values (
@@ -55,5 +65,5 @@
 		where blog_id = #{blogId}
 	</update>
 	
-	   	
+	 
 </mapper>

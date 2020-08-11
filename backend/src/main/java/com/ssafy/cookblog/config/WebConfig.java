@@ -15,7 +15,8 @@ public class WebConfig implements WebMvcConfigurer {
 			"/review/**",
 			"/versus/**",
 			"/photo/**",
-			"/meet/**"
+			"/meet/**",
+			"/report/**"
 //			"/**"
 	};
 	private static final String[] EXCLUDE_PATHS = {
@@ -44,7 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
 			
 			"/photo/**",
 			
-			"/meet/all/**",
+			"/meet/all/**"
 	};
 
 	@Autowired

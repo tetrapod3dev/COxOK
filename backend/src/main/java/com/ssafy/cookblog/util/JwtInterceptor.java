@@ -6,10 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor{
@@ -26,7 +24,7 @@ public class JwtInterceptor implements HandlerInterceptor{
 		if(token != null && jwtService.isValid(token)){
 			return true;
 		}else{
-			response.setStatus(403);
+			response.setStatus(401);
 			return false;
 		}
 

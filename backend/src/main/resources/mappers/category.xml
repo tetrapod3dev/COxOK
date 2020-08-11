@@ -59,4 +59,10 @@
    			recipe_id = #{recipeId}
    	</delete>
    	
+   	<select id="selectRandomCategoryByUserId" resultType="FoodCategoryDto">
+   		select food_category_id AS foodCategoryId, food_category_name AS foodCategoryName
+		from favorite_category JOIN food_category using(food_category_id)
+		where user_id = #{userId} order by rand() limit 1
+	</select>
+   	
 </mapper>
