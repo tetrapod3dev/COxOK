@@ -52,8 +52,8 @@ public class MeetDaoImpl implements MeetDao {
 	}
 	
 	@Override
-	public int deleteMeetJoin(long meetJoinId) {
-		return session.delete("meet.deleteMeetJoin",meetJoinId);
+	public int deleteMeetJoin(MeetJoinDto meetJoinDto) {
+		return session.delete("meet.deleteMeetJoin",meetJoinDto);
 	}
 	
 	@Override

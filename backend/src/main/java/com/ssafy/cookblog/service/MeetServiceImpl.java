@@ -86,8 +86,8 @@ public class MeetServiceImpl implements MeetService {
 	
 	@Override
 	@Transactional 
-	public int removeMeetJoin(long meetJoinId) {
-		return meetDao.deleteMeetJoin(meetJoinId);
+	public int removeMeetJoin(MeetJoinDto meetJoinDto) {
+		return meetDao.deleteMeetJoin(meetJoinDto);
 	}
 	
 	@Override

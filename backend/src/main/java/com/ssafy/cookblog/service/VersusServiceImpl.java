@@ -39,7 +39,6 @@ public class VersusServiceImpl implements VersusService {
 	public VersusViewResponseDto getOneVersus(long versusId) {
 		VersusViewResponseDto versusView = versusDao.selectVersus(versusId);
 		versusView.changeList();
-		System.out.println(versusView.getRecipeIdList());
 		versusView.setRecipeList(versusDao.selectVersusRecipe(versusView));
 		return versusView;
 	}

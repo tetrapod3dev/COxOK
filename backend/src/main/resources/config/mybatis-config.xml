@@ -18,5 +18,6 @@
 		<mapper resource="mappers/versus.xml" />
 		<mapper resource="mappers/meet.xml" />
 		<mapper resource="mappers/report.xml" />
+		<mapper resource="mappers/online.xml" />
 	</mappers>
 </configuration>

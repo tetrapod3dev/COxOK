@@ -52,8 +52,6 @@ public class VersusController {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		System.out.println(versusDto.getRecipeIdList());
-
 		int count = versusService.registerVersus(versusDto);
 		if(count!=0) {
 			map.put("msg", "요리대전 작성에 성공했습니다.");

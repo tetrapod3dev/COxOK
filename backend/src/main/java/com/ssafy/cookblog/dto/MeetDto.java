@@ -26,7 +26,8 @@ public class MeetDto {
 	private String title;
 	private String content;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern ="yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime date;
 	
 	private String address;

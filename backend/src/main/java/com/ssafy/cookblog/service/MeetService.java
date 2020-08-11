@@ -15,7 +15,7 @@ public interface MeetService {
 	public int deleteMeet(long meetId);
 
 	public int registerMeetJoin(MeetJoinDto meetJoinDto);
-	public int removeMeetJoin(long meetJoinId);
+	public int removeMeetJoin(MeetJoinDto meetJoinDto);
 	
 	public List<MeetDto> getAllMeetByType(String type);
 	

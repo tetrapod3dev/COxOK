@@ -182,8 +182,6 @@ public class UserController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		String email = base64Service.decode(code);
-		System.out.println("code : " + code);
-		System.out.println("email : " + email);
 
 		UserDto user = new UserDto();
 		user.setEmail(email);

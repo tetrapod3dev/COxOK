@@ -91,7 +91,7 @@ public class MeetController {
 	
 	@ApiOperation("소모임 삭제")
 	@DeleteMapping("/delete/{meetId}")
-	public Object deleteMeet(@PathVariable long meetId) {
+	public Object deleteMeet(@PathVariable("meetId") long meetId) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
@@ -155,7 +155,7 @@ public class MeetController {
 	}
 	
 	@ApiOperation("소모임 참석하기")
-	@PostMapping("/meetjoin")
+	@PostMapping("/join")
 	public Object registerMeetJoin(@RequestBody MeetJoinDto meetJoinDto,HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -180,12 +180,20 @@ public class MeetController {
 	}
 	
 	@ApiOperation("소모임 참석 취소하기")
-	@DeleteMapping("/meetjoin/{meetJoinId}")
-	public Object deleteMeetJoin(@PathVariable("meetJoinId") long meetJoinId) {
+	@DeleteMapping("/join/{meetId}")
+	public Object deleteMeetJoin(@PathVariable("meetId") long meetId,HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		int count = meetService.removeMeetJoin(meetJoinId);
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		MeetJoinDto meetJoinDto =new MeetJoinDto();
+		meetJoinDto.setMeetId(meetId);
+		meetJoinDto.setUserId(userId);
+		
+		int count = meetService.removeMeetJoin(meetJoinDto);
 		if(count!=0) {
 			map.put("msg", "소모임 참석 삭제를 성공했습니다.");
 			map.put("status", "success");
