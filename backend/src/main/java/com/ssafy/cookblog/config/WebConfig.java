@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
 			"/user/**",
 			"/recipe/**",
 			"/review/**",
-			"/versus/**",
+			"/versus/register/**",
 			"/photo/**",
 			"/meet/**",
 			"/report/**"
@@ -33,10 +33,10 @@ public class WebConfig implements WebMvcConfigurer {
 			
 			"/review/view/**",
 			
-			"/versus/all/**",
-			"/versus/win/**",
-			"/versus/view/**",
-			"/versus/result/**",
+//			"/versus/all/**",
+//			"/versus/win/**",
+//			"/versus/view/**",
+//			"/versus/result/**",
 			
 			"/swagger-ui.html",
 			"/swagger-resources/**",
