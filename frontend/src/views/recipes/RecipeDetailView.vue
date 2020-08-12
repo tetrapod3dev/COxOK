@@ -7,70 +7,88 @@
         </div>
         <div class="card-footer text-left">
           <div class="stats">
-            <span style="font-size:25px;">
-              <i class="fas fa-edit"></i>
-              {{ recipe.nickname }}
-            </span>
+            <i class="fas fa-edit"></i>
+            {{ recipe.nickname }}
           </div>
         </div>
       </card>
     </section>
     <!--     *********    TEAM 1     *********      -->
-    <div class="team-1" id="recipeInfo">
+     <div class="team-1" id="recipeInfo">
       <div class="container">
-        <div class="row">
+        <div class="row ">
           <div class="col-md-8 ml-auto mr-auto">
             <img class="img img-raised mb-5" :src="recipeThumbnailSrc" />
             <h3 class="description mb-5">{{ recipe.recipeDetail }}</h3>
           </div>
         </div>
-        <div class="row mt-5 mb-5">
-          <div class="col-md-3 offset-3" style="font-size:30px;" >
-            <i class="now-ui-icons ui-2_time-alarm" style="font-size:60px;"></i><br>
+        <div class="recipinfo row mt-2 justify-content-center" >
+          <div class="col-md-2">
+            <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
             {{ recipe.cookTime }}분
           </div>
-          <div class="col-md-3" style="font-size:30px;">
-            <i class="fa fa-exclamation-triangle" style="font-size:60px;"></i><br>
+          <div class="col-md-2">
+            <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
             {{ recipe.level }}
           </div>
+        </div>  
+        <div>
+          <h3 class="title text-center mb-3">평점</h3>
+          <div class="avgRating">
+            <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
+          </div>
         </div>
+
+<!--
         <div class="row justify-content-center mt-5">
-          <div class="col-md-4 ml-1">
+          <div class="col-md-4 mt ml-1">
             <div class="col-md-8 ml-auto mr-auto">
-              <h3 class="text-left mb-3">목차</h3>
+              <h3 class="text-left mb-3">바로 가기</h3>
               <p @click="scrollDoc('recipeInfo')" class="text-left text-link">1. 레시피 설명</p>
-              <p @click="scrollDoc('nutrientInfo')" class="text-left text-link">2. 영양소 정보</p>
+              <p @click="scrollDoc('ingredientInfo')" class="text-left text-link">2. 재료, 영양소 정보</p>
               <p @click="scrollDoc('detailInfo')" class="text-left text-link">3. 상세 요리 과정</p>
               <p @click="scrollDoc('reviewInfo')" class="text-left text-link">4. 한줄평 보기</p>
             </div>
           </div>
-          <div class="col-md-4 mr-1">
-            <div class="col-md-12 ml-auto mr-auto">
-              <h3 class="text-left mb-3">재료 정보</h3>
-              <div class="row">
-                <div
-                  v-for="(ingredient, index) in recipe.ingredientList"
-                  :key="ingredient.name"
-                  class="col-6 my-3"
-                >
-                  <div class="row">
-                    <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/>
-                    <p :id="makeId(index)" class="mb-0">{{ ingredient.name }} {{ ingredient.amount }} {{ingredient.unit}}</p>
-                  </div>
+        </div>
+-->
+
+      </div>
+    </div>
+    <!--     *********    END TEAM 1      *********      -->
+    <section id="ingredientInfo">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 ml-auto mr-auto">
+            <h3 class="text-left pt-5 mb-3">
+              <i class="fas fa-angle-double-right mr-1"></i>
+              재료 리스트 (2인 기준)
+            </h3>
+            <div class="row col-md-8 ">
+              <div
+                v-for="(ingredient, index) in recipe.ingredientList"
+                :key="ingredient.name"
+                class="col-6 my-3"
+              >
+                <div class="row">
+                  <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/>
+                  <p :id="makeId(index)" class="mb-0">{{ ingredient.name }} {{ ingredient.amount }}{{ingredient.unit}}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <!--     *********    END TEAM 1      *********      -->
+    </section>
 
     <section id="nutrientInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-10 ml-auto mr-auto">
-            <h3 class="text-left pt-5 mb-3">영양소 정보</h3>
+            <h3 class="text-left pt-5 mb-3">
+              <i class="fas fa-angle-double-right mr-1"></i>
+              영양소 정보
+            </h3>
             <div class="row">
               <RadarGraph :recipeDataSet="recipeDataSet" class="col-4" />
               <div class="col-8 row p-4">
@@ -130,10 +148,6 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto">
-            <h3 class="title text-center mb-3">평점</h3>
-            <div class="avgRating">
-              <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
-            </div>
             <div class="media-area mt-3">
               <h3 class="title text-center">한줄평</h3>
               <ReviewList :loginUserId="loginUserId" :reviewList="recipe.reviewDtoList" @deleteReview="deleteReview" @modifyMod="modifyMod" @updateReview="updateReview" />
@@ -148,16 +162,22 @@
                 <ReviewMake v-if="(loginUserId > 0) && !isReviewed" @submitReview="submitReview" />
                 <h3 v-else>한줄평을 작성하기 위해서는 로그인을 해주세요.</h3>
 
-                <div class="media-footer">
+                <div class="media-footer justify-content-right">
+                  <span @click="changeLike" class="pull-left">
+                    <n-button v-show="(loginUserId > 0)" type="success" round block>
+                      <i :class="isLiked ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
+                      {{ likeCnt }}
+                    </n-button>
+                  </span>
                   <span @click="copyRecipe" class="pull-left">
                     <n-button type="info" round block>
                       <i class="fas fa-share-alt"></i> 공유
                     </n-button>
                   </span>
-                  <span @click="changeLike" class="pull-left">
-                    <n-button v-show="(loginUserId > 0)" type="danger" round block>
-                      <i :class="isLiked ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
-                      {{ likeCnt }}
+                  <!-- 수정해야함 신고 -->
+                  <span @click="copyRecipe" class="pull-left">
+                    <n-button type="danger" round block>
+                      <i class="fas fa-bullhorn"></i> 신고
                     </n-button>
                   </span>
                 </div>
@@ -171,7 +191,7 @@
     <div class="container">
       <!-- 관련 유튜브 영상 위치입니다!! -->
       <h2>관련 유튜브 영상 보기</h2>
-      <div class="row">
+      <div class="youtube row">
         <a v-for="video in videos" :key="video.id.videoId" :href="youtubeLink(video)" class="col-3">
           <img :src="video.snippet.thumbnails.default.url">
           <p>{{ video.snippet.title }}</p>
@@ -513,5 +533,25 @@ export default {
 
 .avgRating {
   font-size: 40px;
+}
+
+.stats {
+  font-size: 25px;
+}
+
+.recipinfo {
+  font-size: 20px;
+}
+
+.recipinfo i {
+  font-size: 50px;
+}
+
+.youtube img {
+  width: 250px;
+}
+
+.youtube p {
+  font-size: 18px;
 }
 </style>

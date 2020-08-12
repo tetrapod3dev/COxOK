@@ -7,8 +7,7 @@
         <div class="review-content col-6 text-left">
           <p>{{ review.content }}</p>
         </div>
-
-        <i class="review-rating now-ui-icons ui-2_favourite-28 col-1">{{ review.rating }}</i>
+        <i class="review-rating fas fa-star col-1">{{ review.rating }}</i>
         <div v-if="review.userId == loginUserId" class="col-2">
           <button @click="updateComment(review)">수정</button>
           <button @click="deleteComment(review.reviewId)">삭제</button>
@@ -83,5 +82,8 @@ export default {
 .review-content {
   font-size: 20px;
   color: #000000;
+}
+.row i {
+   color:gold;
 }
 </style>
