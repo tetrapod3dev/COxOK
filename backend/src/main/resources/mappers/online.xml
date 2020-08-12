@@ -69,7 +69,7 @@
 	</select>
 	
 	<delete id="delete">
-		delete from online where meet_id = #{onlineId}
+		delete from online where online_id = #{onlineId}
 	</delete>
 	
 	
