@@ -17,4 +17,9 @@ public interface OnlineDao {
 	
 	public List<OnlineDto> selectOnlineByType(OnlineDto onlineDto);
 	public long selectOnlineTotalByType(String type);
+	
+	public List<Long> selectOnlineJoinList(long onlineId);
+	
+	public List<OnlineDto> selectOnlineByUserid(long userId);
+	public List<OnlineDto> selectOnlineByMeetJoinUserid(long userId);
 }

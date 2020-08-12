@@ -87,15 +87,16 @@
 			online_id desc
 	</select>
 	
-	<!-- <select id="selectMeetJoinByUserid" resultType="MeetDto">
+	<select id="selectOnlineByMeetJoinUserid" resultType="OnlineDto">
 		select 
-			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, type, m.join_limit as joinLimit, price, title
+			online_id as onlineId, user_id as userId, title,content, type, date,
+			link, thumbnail_src as thumbnailSrc, video
 		FROM
-			meet_join mj join meet m on mj.meet_id = m.meet_id
+			online
 		where
-			mj.user_id = #{userId}
-		order BY m.meet_id desc
-	</select> -->
+			online_id in(select online_id from meet_join where user_id=#{user_id} ) 
+		order by online_id desc
+	</select>
 	
 	
 	<insert id="insertOnlineJoin">
@@ -131,6 +132,12 @@
 			online
 		where
 			type = #{type}
+	</select>
+	
+	<select id="selectOnlineJoinList" resultType="Long">
+		select user_id as userId
+		from meet_join
+		where online_id = #{onlineId}
 	</select>
 	
 	

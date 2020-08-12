@@ -70,4 +70,8 @@ public class MeetDaoImpl implements MeetDao {
 	public List<MeetDto> selectMeetByUserid(long userId) {
 		return session.selectList("meet.selectMeetByUserid",userId);
 	}
+	@Override
+	public List<MeetDto> selectMeetByMeetJoinUserid(long userId) {
+		return session.selectList("meet.selectMeetByMeetJoinUserid",userId);
+	}
 }

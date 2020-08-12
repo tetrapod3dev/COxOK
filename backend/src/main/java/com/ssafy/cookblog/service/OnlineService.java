@@ -17,4 +17,9 @@ public interface OnlineService {
 	
 	public List<OnlineDto> getOnlineByType(OnlineDto onlineDto);
 	public long getOnlineTotalByType(String type);
+	
+	public List<Long> getOnlineJoinList(long onlineId);
+	
+	public List<OnlineDto> getOnlineByUserid(long userId);
+	public List<OnlineDto> getOnlineByMeetJoinUserid(long userId);
 }

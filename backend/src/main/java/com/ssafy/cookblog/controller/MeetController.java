@@ -245,12 +245,37 @@ public class MeetController {
 		
 		List<MeetDto> list = meetService.getMeetByUserId(userId);
 		if(list!=null) {
-			map.put("msg", "소모임 참석을 성공했습니다.");
+			map.put("msg", "내가 작성한 목록을 조회 성공했습니다.");
 			map.put("status", "success");
 			map.put("list",list);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
-			map.put("msg", "소모임 참석을 실패했습니다.");
+			map.put("msg", "내가 작성한 목록을 조회 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("내가 등록한 meet목록")
+	@GetMapping("/myjoin")
+	public Object getMyMeetJoin(HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		List<MeetDto> list = meetService.getMeetByMeetJoinUserid(userId);
+		if(list!=null) {
+			map.put("msg", "내가 참석한 목록을 조회 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "내가 참석한 목록을 조회 실패했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}

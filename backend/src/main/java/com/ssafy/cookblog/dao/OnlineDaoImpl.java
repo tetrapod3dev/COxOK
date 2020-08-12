@@ -58,4 +58,19 @@ public class OnlineDaoImpl implements OnlineDao {
 	public long selectOnlineTotalByType(String type) {
 		return session.selectOne("online.selectOnlineTotalByType",type);
 	}
+	
+	@Override
+	public List<Long> selectOnlineJoinList(long onlineId) {
+		return session.selectList("online.selectOnlineJoinList",onlineId);
+	}
+	
+	@Override
+	public List<OnlineDto> selectOnlineByUserid(long userId) {
+		return session.selectList("online.selectOnlineByUserid",userId);
+	}
+	
+	@Override
+	public List<OnlineDto> selectOnlineByMeetJoinUserid(long userId) {
+		return session.selectList("online.selectOnlineByMeetJoinUserid",userId);
+	}
 }

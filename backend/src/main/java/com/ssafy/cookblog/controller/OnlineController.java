@@ -126,6 +126,7 @@ public class OnlineController {
 			map.put("status", "success");
 			map.put("online",onlineDto);
 			map.put("userId",userId);
+			map.put("joinList",onlineService.getOnlineJoinList(onlineId));
 			map.put("writerNickname", userService.findUserByUserId(onlineDto.getUserId()).getNickname());
 			
 			response = new ResponseEntity(map, HttpStatus.OK);
@@ -184,7 +185,7 @@ public class OnlineController {
 	
 	@ApiOperation("온라인 모임 참석 취소하기")
 	@DeleteMapping("/join/{onlineId}")
-	public Object deleteOnlineJoin(@PathVariable("onlineId") long meetId,HttpServletRequest request) {
+	public Object deleteOnlineJoin(@PathVariable("onlineId") long onlineId,HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
@@ -193,7 +194,7 @@ public class OnlineController {
 		long userId = userService.userIdByEmail(email);
 		
 		MeetJoinDto meetJoinDto =new MeetJoinDto();
-		meetJoinDto.setMeetId(meetId);
+		meetJoinDto.setOnlineId(onlineId);
 		meetJoinDto.setUserId(userId);
 		
 		int count = onlineService.removeOnlineJoin(meetJoinDto);
@@ -229,6 +230,56 @@ public class OnlineController {
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "온라인으로 타입 조회 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("내가 등록한 online목록")
+	@GetMapping("/my")
+	public Object getMyMeet(HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		List<OnlineDto> list = onlineService.getOnlineByUserid(userId);
+		if(list!=null) {
+			map.put("msg", "내가 작성한 목록을 조회 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "내가 작성한 목록을 조회 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("내가 등록한 meet목록")
+	@GetMapping("/myjoin")
+	public Object getMyMeetJoin(HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		List<OnlineDto> list = onlineService.getOnlineByMeetJoinUserid(userId);
+		if(list!=null) {
+			map.put("msg", "내가 참석한 목록을 조회 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "내가 참석한 목록을 조회 실패했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}

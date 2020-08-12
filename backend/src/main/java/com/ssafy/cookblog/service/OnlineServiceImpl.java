@@ -61,4 +61,19 @@ public class OnlineServiceImpl implements OnlineService {
 	public long getOnlineTotalByType(String type) {
 		return onlineDao.selectOnlineTotalByType(type);
 	}
+	
+	@Override
+	public List<Long> getOnlineJoinList(long onlineId) {
+		return onlineDao.selectOnlineJoinList(onlineId);
+	}
+	
+	@Override
+	public List<OnlineDto> getOnlineByUserid(long userId) {
+		return onlineDao.selectOnlineByUserid(userId);
+	}
+	
+	@Override
+	public List<OnlineDto> getOnlineByMeetJoinUserid(long userId) {
+		return onlineDao.selectOnlineByMeetJoinUserid(userId);
+	}
 }
