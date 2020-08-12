@@ -53,7 +53,7 @@ export default {
         nickname: null,
       },
       userId: null,
-      isIn: true,
+      isIn: false,
     }
   },
   computed: {
@@ -76,8 +76,7 @@ export default {
         this.online = res.data.online
         this.author = { id: res.data.online.userId , nickname: res.data.writerNickname}
         this.userId = res.data.userId
-        console.log(res.data)
-        // this.isIn = (res.data.online.meetJoinList.map(user => user.userId).indexOf(res.data.userId) >= 0) ? true : false 
+        this.isIn = (res.data.joinList.indexOf(res.data.userId) >= 0) ? true : false 
       })
       .catch(err => console.log(err.response))
   },
