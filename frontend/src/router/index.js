@@ -36,6 +36,9 @@ import ClubMakeView from "../views/clubs/ClubMakeView.vue";
 import ClubDetailView from "../views/clubs/ClubDetailView.vue";
 import ClubUpdateView from "../views/clubs/ClubUpdateView.vue";
 
+// Admin Router
+import AdminMainView from "../views/admin/AdminMainView.vue"
+
 // Test Router
 import EditorTest from "../views/articles/EditorTest.vue";
 import About from "../views/About.vue";
@@ -172,6 +175,12 @@ const routes = [
     path: "/clubs/Update/:club_id",
     name: "ClubUpdateView",
     component: ClubUpdateView,
+  },
+  // Admin Router
+  {
+    path: "/admin",
+    name: "AdminMainView",
+    component: AdminMainView
   },
   // Test Router
   {
