@@ -28,7 +28,7 @@
 		FROM
 			meet
 		order by meet_id desc
-		LIMIT #{startIndex}, 6
+		LIMIT #{startIndex}, 12
 	</select>
 	
 	<select id="selectMeet" resultType="MeetViewResponseDto">
@@ -72,6 +72,7 @@
 		where
 			type = #{type}
 		order by meet_id desc
+		LIMIT #{startIndex}, 12
 	</select>
 	
 	<select id="selectMeetJoinByUserid" resultType="MeetDto">

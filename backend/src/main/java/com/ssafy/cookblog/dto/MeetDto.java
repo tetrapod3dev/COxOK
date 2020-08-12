@@ -33,4 +33,6 @@ public class MeetDto {
 	private String address;
 	private double lat;
 	private double lng;
+	
+	private int startIndex;
 }

@@ -50,7 +50,7 @@ public class MeetController {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
-		List<MeetDto> list = meetService.getAllMeet(6*startIndex);
+		List<MeetDto> list = meetService.getAllMeet(12*startIndex);
 		if(list!=null) {
 			map.put("msg", "소모임 조회를 성공했습니다.");
 			map.put("status", "success");
@@ -206,13 +206,18 @@ public class MeetController {
 		
 		return response;
 	}
+	
 	@ApiOperation("소모임 타입으로 조회하기")
-	@GetMapping("/type/{type}")
-	public Object getType(@PathVariable("type")String type) {
+	@GetMapping("/type/{type}/{startIndex}")
+	public Object getType(@PathVariable("type")String type,@PathVariable("startIndex")int startIndex) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		List<MeetDto> list = meetService.getAllMeetByType(type);
+		MeetDto meetDto =new MeetDto();
+		meetDto.setType(type); 
+		meetDto.setStartIndex(startIndex*12);
+		
+		List<MeetDto> list = meetService.getAllMeetByType(meetDto);
 		if(list!=null) {
 			map.put("msg", "소모임 참석 삭제를 성공했습니다.");
 			map.put("status", "success");

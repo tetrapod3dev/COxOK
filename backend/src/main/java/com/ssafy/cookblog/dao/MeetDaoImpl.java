@@ -57,7 +57,7 @@ public class MeetDaoImpl implements MeetDao {
 	}
 	
 	@Override
-	public List<MeetDto> selectMeetByType(String type) {
-		return session.selectList("meet.selectMeetByType",type);
+	public List<MeetDto> selectMeetByType(MeetDto meetDto) {
+		return session.selectList("meet.selectMeetByType",meetDto);
 	}
 }

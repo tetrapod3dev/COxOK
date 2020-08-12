@@ -49,4 +49,8 @@ public class OnlineDaoImpl implements OnlineDao {
 		return session.delete("online.deleteOnlineJoin",meetJoinDto);
 	}
 	
+	@Override
+	public List<OnlineDto> selectOnlineByType(OnlineDto onlineDto) {
+		return session.selectList("online.selectOnlineByType",onlineDto);
+	}
 }

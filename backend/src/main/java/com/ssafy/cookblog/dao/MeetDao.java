@@ -17,6 +17,6 @@ public interface MeetDao {
 	public int insertMeetJoin(MeetJoinDto meetJoinDto);
 	public int deleteMeetJoin(MeetJoinDto meetJoinDto);
 
-	public List<MeetDto> selectMeetByType(String type);
+	public List<MeetDto> selectMeetByType(MeetDto meetDto);
 	
 }

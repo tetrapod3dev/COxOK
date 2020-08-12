@@ -16,6 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
 			"/versus/register/**",
 			"/photo/**",
 			"/meet/**",
+			"/online/**",
 			"/report/**"
 //			"/**"
 	};
@@ -47,6 +48,9 @@ public class WebConfig implements WebMvcConfigurer {
 			
 			"/meet/all/**",
 			"/meet/type/**",
+			
+			"/online/all/**",
+			"/online/type/**",
 			
 			"/error"
 	};

@@ -26,4 +26,6 @@ public class OnlineDto {
 	private String link;
 	private String thumbnailSrc;
 	private String video;
+	
+	private int startIndex;
 }

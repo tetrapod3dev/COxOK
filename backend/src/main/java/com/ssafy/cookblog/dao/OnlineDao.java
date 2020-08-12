@@ -14,4 +14,6 @@ public interface OnlineDao {
 	
 	public int insertOnlineJoin(MeetJoinDto meetJoinDto);
 	public int deleteOnlineJoin(MeetJoinDto meetJoinDto);
+	
+	public List<OnlineDto> selectOnlineByType(OnlineDto onlineDto);
 }

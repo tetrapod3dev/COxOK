@@ -14,4 +14,6 @@ public interface OnlineService {
 	
 	public int registerOnlineJoin(MeetJoinDto meetJoinDto);
 	public int removeOnlineJoin(MeetJoinDto meetJoinDto);
+	
+	public List<OnlineDto> getOnlineByType(OnlineDto onlineDto);
 }

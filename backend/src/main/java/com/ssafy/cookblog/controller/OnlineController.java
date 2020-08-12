@@ -209,4 +209,29 @@ public class OnlineController {
 		
 		return response;
 	}
+	
+	@ApiOperation("온라인 타입으로 조회하기")
+	@GetMapping("/type/{type}/{startIndex}")
+	public Object getType(@PathVariable("type")String type,@PathVariable("startIndex")int startIndex) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		OnlineDto onlineDto=new OnlineDto();
+		onlineDto.setType(type); 
+		onlineDto.setStartIndex(startIndex*12);
+		
+		List<OnlineDto> list = onlineService.getOnlineByType(onlineDto);
+		if(list!=null) {
+			map.put("msg", "온라인으로 타입 조회 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "온라인으로 타입 조회 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
 }

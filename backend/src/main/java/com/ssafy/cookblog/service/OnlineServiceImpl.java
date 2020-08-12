@@ -44,4 +44,9 @@ public class OnlineServiceImpl implements OnlineService {
 	public int removeOnlineJoin(MeetJoinDto meetJoinDto) {
 		return onlineDao.deleteOnlineJoin(meetJoinDto);
 	}
+	
+	@Override
+	public List<OnlineDto> getOnlineByType(OnlineDto onlineDto) {
+		return onlineDao.selectOnlineByType(onlineDto);
+	}
 }

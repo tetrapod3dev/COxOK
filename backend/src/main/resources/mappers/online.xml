@@ -49,7 +49,7 @@
 
 	<select id="selectAll" resultType="OnlineDto">
 		select 
-			online_id as onlineId, user_id as userId, title, content, date, type
+			online_id as onlineId, user_id as userId, title, content, date, type,
 			 thumbnail_src as thumbnailSrc, link, video 
 		FROM
 			online
@@ -119,10 +119,22 @@
 			(#{onlineId}, #{userId})
 	</insert>
 	
-	<delete id="deleteMeetJoin">
+	<delete id="deleteOnlineJoin">
 		delete from 
 			meet_join 
 		where 
 			online_id = #{onlineId} and user_id =#{userId}
 	</delete>
+	
+	<select id="selectOnlineByType" resultType="OnlineDto">
+		select 
+			online_id as onlineId, user_id as userId, title,content, type, date,
+			link, thumbnail_src as thumbnailSrc, video
+		FROM
+			online
+		where
+			type = #{type}
+		order by online_id desc
+		LIMIT #{startIndex}, 12
+	</select>
 </mapper>
