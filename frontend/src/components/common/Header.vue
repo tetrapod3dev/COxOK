@@ -12,7 +12,7 @@
           v-popover:popover1
           class="navbar-brand"
           :to="isLoggedIn ? '/main/' : '/'"
-          >CO×OK</router-link
+          ><img src="CO_OK-logo.png" width="70px"></router-link
         >
         <el-popover
           ref="popover1"
