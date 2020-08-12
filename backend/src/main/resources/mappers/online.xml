@@ -38,7 +38,7 @@
 			, link = #{link}
 			</if>
 			<if test='thumbnailSrc != "null"'>
-			,  thunmbnail_src = #{thumbnailSrc}
+			,  thumbnail_src = #{thumbnailSrc}
 			</if>
 			<if test='video != "null"'>
 			,video =  #{video}
