@@ -47,5 +47,11 @@ public interface RecipeDao {
 	
 	public int updateNutrient(RecipeDto recipeDto);
 	
+	public List<RecipeDto> selectRecipeListByCookTime(RecipeDto recipeDto);
+	public long selectRecipeTotalByCookTime(int cookTime);
+	
+	
+	public List<RecipeDto> selectRecipeListByLevel(RecipeDto recipeDto);
+	public long selectRecipeTotalByLevel(int level);
 	
 }

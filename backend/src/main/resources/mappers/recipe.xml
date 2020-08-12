@@ -217,6 +217,8 @@
 			user_id = #{userId}
 	</select>
 	
+	
+	
 	<select id="selectRecipeListByCategoryId" resultType="RecipeDto">
 		SELECT recipe_id as recipeId, recipe_thumbnail_src as recipeThumbnailSrc
 		FROM recipe_food_category JOIN recipe USING(recipe_id)
@@ -265,5 +267,52 @@
 		FROM recipe JOIN recipe_ingredient USING(recipe_id)
 		WHERE ingredient_id = #{ingredientId}
 	</select>
+	
+	<select id="selectRecipeListByCookTime" resultType="RecipeDto">
+		<![CDATA[
+		SELECT 
+			recipe_id, recipe_name as recipeName, recipe_thumbnail_src as recipeThumbnailSrc, avg_rating as avgRating,
+			reg_time as regTime, recipe_id as recipeId, cook_time as cookTime, level, recipe_detail as recipeDetail
+		FROM 
+			recipe
+		WHERE
+			cook_time <= #{cookTime}
+		limit {startIndex}, 6
+		]]>
+	</select>
+	
+	<select id="selectRecipeTotalByCookTime" resultType="Long">
+		<![CDATA[
+		SELECT 
+			count(recipe_id)
+		FROM 
+			recipe
+		WHERE
+			cook_time <= #{cookTime}
+		]]>
+	</select>
+	
+	<select id="selectRecipeListByLevel" resultType="RecipeDto">
+		<![CDATA[
+		SELECT 
+			recipe_id, recipe_name as recipeName, recipe_thumbnail_src as recipeThumbnailSrc, avg_rating as avgRating,
+			reg_time as regTime, recipe_id as recipeId, cook_time as cookTime, level, recipe_detail as recipeDetail
+		FROM 
+			recipe
+		WHERE
+			level <= #{level}
+		limit {startIndex}, 6	
+		]]>
+	</select>
    	
+	<select id="selectRecipeTotalByLevel" resultType="Long">
+		<![CDATA[
+		SELECT 
+			count(recipe_id)
+		FROM 
+			recipe
+		WHERE
+			level <= #{level}
+		]]>
+	</select>
 </mapper>

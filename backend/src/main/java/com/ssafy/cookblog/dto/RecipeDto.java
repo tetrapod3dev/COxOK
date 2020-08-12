@@ -27,6 +27,8 @@ public class RecipeDto {
 	private int sugar;
 	private int natrium;
 	private double avgRating;
+
+	private int startIndex;
 	
 	@Override
 	public String toString() {

@@ -170,5 +170,24 @@ public class RecipeDaoImpl implements RecipeDao{
 	public List<IngredientDto> selectAllIngredientToBeUpdated(int startIndex) {
 		return session.selectList("recipe.allIngredientToBeUpdated", startIndex);
 	}
+	
+	@Override
+	public List<RecipeDto> selectRecipeListByCookTime(RecipeDto recipeDto) {
+		return session.selectList("recipe.selectRecipeListByCookTime",recipeDto);
+	}
+	@Override
+	public long selectRecipeTotalByCookTime(int cookTime) {
+		return session.selectOne("recipe.selectRecipeTotalByCookTime",cookTime);
+	}
+	
+	@Override
+	public List<RecipeDto> selectRecipeListByLevel(RecipeDto recipeDto) {
+		return session.selectList("recipe.selectRecipeListByLevel",recipeDto);
+	}
+	
+	@Override
+	public long selectRecipeTotalByLevel(int level) {
+		return session.selectOne("recipe.selectRecipeTotalByLevel",level);
+	}
 
 }

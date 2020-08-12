@@ -467,5 +467,25 @@ public class RecipeServiceImpl implements RecipeService {
 	public List<IngredientDto> readAllIngredientToBeUpdated(int startIndex) {
 		return recipeDao.selectAllIngredientToBeUpdated(startIndex);
 	}
+	
+	@Override
+	public List<RecipeDto> getRecipeListByCookTime(RecipeDto recipeDto) {
+		return recipeDao.selectRecipeListByCookTime(recipeDto);
+	}
+	
+	@Override
+	public long getRecipeTotalByCookTime(int cookTime) {
+		return recipeDao.selectRecipeTotalByCookTime(cookTime);
+	}
+	
+	@Override
+	public List<RecipeDto> getRecipeListByLevel(RecipeDto recipeDto) {
+		return recipeDao.selectRecipeListByLevel(recipeDto);
+	}
+	
+	@Override
+	public long getRecipeTotalByLevel(int level) {
+		return recipeDao.selectRecipeTotalByLevel(level);
+	}
 
 }

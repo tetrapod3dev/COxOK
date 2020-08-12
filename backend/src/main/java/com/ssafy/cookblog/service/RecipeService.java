@@ -41,4 +41,10 @@ public interface RecipeService {
 	
 	public FoodCategoryDto getRandomCategoryByUserId(long userId);
 	public List<RecipeDto> getRecipeListByCategoryId(long foodCategoryId);
+	
+	public List<RecipeDto> getRecipeListByCookTime(RecipeDto recipeDto);
+	public long getRecipeTotalByCookTime(int cookTime);
+	
+	public List<RecipeDto> getRecipeListByLevel(RecipeDto recipeDto);
+	public long getRecipeTotalByLevel(int level);
 }
