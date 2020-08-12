@@ -28,11 +28,12 @@
                 <div class="col-12">
                   <img id="recipe-preview" :src="recipePreview" class="w-100" />
                   <a @click="onClickThumbnailUpload" class="w-100">
-                    <n-button type="primary" round block>업로드</n-button>
+                    <n-button type="primary" round block>메인 사진 업로드</n-button>
                   </a>
                 </div>
               </div>
             </div>
+            <br><br>
             <div class="row">
                 <div class="col-12 detail-input">
                   <input type="text" name="name" class="question" id="nme" required autocomplete="off" v-model="recipeName"/>
@@ -169,29 +170,37 @@
             />
             <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
             <div v-if="selectedIngredient.unit == null" class="col-2 offset-1">
-              <i class="fas fa-exclamation-triangle fa-2x" style="color: red;"></i>
+              <i class="fas fa-exclamation-triangle fa-2x" style="color: green;" id="no-ingredient"></i>
             </div>
+            
             <div v-else class="col-3 m-0 row">
               <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
               <p class="col-2">{{ selectedIngredient.unit }}</p>
             </div>
             <a @click="removeIngredient(index)">
-              <n-button type="primary" round icon>
-                <i class="now-ui-icons ui-1_simple-delete"></i>
-              </n-button>
+              <b-button variant="danger">재료 삭제</b-button>
             </a>
           </div>
 
-          <div class="row" @click="addIngredient">
-            <n-button type="secondary">
+          <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-1" @click="addIngredient">
+            <n-button type="secondary" class="btn-info">
               <i class="now-ui-icons ui-1_simple-add"></i>
             </n-button>
+            </div>
+            <div class="col-3">
+              <n-button type="secondary" round class="btn-warning">
+                재료가 없어요!
+              </n-button>
+            </div>
           </div>
         </div>
 
         <hr class="my-5" />
 
-        <h2>상세 과정 입력</h2>
+        <h3 class="text-left">상세 과정 입력</h3>
 
         <div v-show="tempInputs.length > 0" class="upload-image">
           <draggable v-model="tempInputs" group="recipeDetail" @start="drag=true" @end="drag=false">
@@ -203,24 +212,28 @@
           </draggable>
         </div>
 
-        <div class="input-group">
+        <div class="row">
+          <div class="col-3">
+          </div>
+        <div class="input-group col-9">
           <input
             type="text"
-            class="form-control"
-            placeholder="드래그 & 드랍하거나 인풋을 클릭하세용"
+            class="form-control-file detail-image-upload"
+            placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
             v-model="filename"
             @dragover.prevent
             @drop.prevent="onDrop"
             multiple>
           <div class="input-group-append">
             <span class="input-group-text" @click="onClickFile">
-              <i class="fa fa-paperclip" />
+              <i class="fa fa-cloud" />
             </span>
           </div>
           <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
         </div>
-
-        <button class="btn btn-danger" @click="preTest">제출</button>
+        </div>
+        <hr class="my-5" />
+        <button class="btn btn-success" @click="preTest">등록</button>
       </div>
     </div>
   </div>
@@ -575,8 +588,10 @@ onResize() {
 </script>
 
 <style scoped>
-.imgUpBtn {
-  height: 50px;
+
+.detail-image-upload{
+  text-align: center;
+  width: 60%
 }
 
 /*
