@@ -13,36 +13,9 @@
         </div>
       </card>
     </section>
-    
-    <!--     *********    TEAM 1     *********      -->
-     <div class="team-1" id="recipeInfo">
-      <div class="container">
-        <div class="row ">
-          <div class="col-md-8 ml-auto mr-auto">
-            <img class="img img-raised mb-5" :src="recipeThumbnailSrc" />
-            <h3 class="description mb-5">{{ recipe.recipeDetail }}</h3>
-          </div>
-        </div>
-        <div class="recipinfo row mt-2 justify-content-center" >
-          <div class="col-md-2">
-            <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
-            {{ recipe.cookTime }}분
-          </div>
-          <div class="col-md-2">
-            <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
-            {{ recipe.level }}
-          </div>
-        </div>  
-        <div>
-          <h3 class="title text-center mb-3">평점</h3>
-          <div class="avgRating">
-            <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div id="idx-btn" class="row mt-5 text-left">
+    
+    <div id="idx-btn" class="row mt-5 text-left" > 
       <!--<b-button v-b-toggle.collapse-1 variant="primary">레시피 목차 바로가기</b-button>
       <b-collapse id="collapse-1" class="mt-2">
         <b-card>
@@ -53,40 +26,69 @@
         </b-card>
       </b-collapse>
       -->
-      <b-container fluid>
-        <b-row>
           <b-col col="5">
-            <h4><i class="far fa-list-alt ml-3 mr-1"></i>목차</h4>
+            <h4><i class="far fa-list-alt ml-3 mr-2"></i>목차</h4>
             <b-list-group v-b-scrollspy:listgroup-ex >
-              <b-list-group-item @click="scrollDoc('recipeInfo')" >1. 레시피 설명</b-list-group-item>
-              <b-list-group-item @click="scrollDoc('ingredientInfo')">2. 재료 리스트</b-list-group-item>
-              <b-list-group-item @click="scrollDoc('nutrientInfo')">3. 영양소 정보</b-list-group-item>
-              <b-list-group-item @click="scrollDoc('detailInfo')">4. 상세 요리 과정</b-list-group-item>
-              <b-list-group-item @click="scrollDoc('reviewInfo')">5. 한줄평 보기</b-list-group-item>
+              <b-list-group-item href="#" @click="scrollDoc('recipeInfo')" >1. 레시피 설명</b-list-group-item>
+              <b-list-group-item href="#"  @click="scrollDoc('ingredientInfo')">2. 재료 리스트</b-list-group-item>
+              <b-list-group-item href="#"  @click="scrollDoc('nutrientInfo')">3. 영양소 정보</b-list-group-item>
+              <b-list-group-item href="#"  @click="scrollDoc('detailInfo')">4. 상세 요리 과정</b-list-group-item>
+              <b-list-group-item href="#"  @click="scrollDoc('reviewInfo')">5. 한줄평 보기</b-list-group-item>
             </b-list-group>
           </b-col>
-        </b-row>
-      </b-container>
     </div>
+    
+    <!--     *********    TEAM 1     *********      -->
+     <div class="team-1" id="recipeInfo">
+      <div class="container">
+        <div class="recipe-info row">
+          <div class="col-md-8 ml-auto mr-auto">
+            <img class="img img-raised mb-5" :src="recipeThumbnailSrc" />
+            <h3 class="description mb-5">{{ recipe.recipeDetail }}</h3>
+          </div>
+        </div>
+        <div class="additinal-info row mt-2 justify-content-center" >
+          <div class="col-md-2">
+            <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
+            {{ recipe.cookTime }}분
+          </div>
+          <div class="col-md-2">
+            <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
+            {{ recipe.level }}
+          </div>
+        </div>  
+        <div>
+          <h3 class="title text-center mt-5 mb-1">레시피 점수</h3>
+          <div class="avgRating">
+            <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!--     *********    END TEAM 1      *********      -->
     <section id="ingredientInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-10 ml-auto mr-auto">
             <br>
-            <h3 class="text-left pt-5 mb-3">
+            <h3 class="ingre-title text-left pt-5 mb-3">
               <i class="fas fa-angle-double-right mr-1"></i>
-              재료 리스트 (2인 기준)
+              재료 리스트 
+              <span>(2인 기준)</span>
             </h3>
-            <div class="row col-md-8 mr-auto ml-auto">
+            <div class="row col-md-10 ml-auto">
               <div
                 v-for="(ingredient, index) in recipe.ingredientList"
                 :key="ingredient.name"
                 class="col-12 col-md-6 my-3"
               >
-                <div class="row">
-                  <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/>
-                  <p :id="makeId(index)" class="mb-0">{{ ingredient.name }} {{ ingredient.amount }}{{ingredient.unit}}</p>
+                <div class="ingre-list row">
+                  <!-- <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/> -->
+                  <p :id="makeId(index)" class="mb-0">
+                    <i class="far fa-check-circle"></i>
+                    {{ ingredient.name }} {{ ingredient.amount }}{{ingredient.unit}}
+                  </p>
                 </div>
               </div>
             </div>
@@ -104,21 +106,21 @@
               <i class="fas fa-angle-double-right mr-1"></i>
               영양소 정보
             </h3>
-            <div class="row">
-              <RadarGraph :recipeDataSet="recipeDataSet" class="col-4" />
-              <div class="col-8 row p-4">
+            <div class="nutri-list row ml-auto ">
+              <RadarGraph :recipeDataSet="recipeDataSet" class="col-8 col-lg-4 my-auto"/>
+              <div class="col-12 col-lg-8 row p-4 ml-2">
                 <div
                   v-for="(amount, nutrient, index) in recipeDataSet"
                   :key="nutrient"
                   class="col-6 row my-4"
                 >
-                  <button class="btn btn-outline-primary col-4 offset-2">{{ nutrient }}</button>
-                  <p class="col-4 align-self-center m-0">{{ amount }} {{ unitList[index] }}</p>
+                  <b-button variant="info col-5 col-lg-4">{{nutrient}}</b-button>
+                  <p class="col-4 align-self-center m-0 text-left">{{ amount }}{{ unitList[index] }}</p>
                 </div>
               </div>
             </div>
             <p class="text-left">
-              <i class="fas fa-exclamation-triangle fa-1x" style="color: red;"></i>영양소 정보는 실제와 차이가 있을 수 있습니다.
+              <i class="fas fa-exclamation-triangle fa-1x mr-1" style="color: red;"></i>영양소 정보는 실제와 차이가 있을 수 있습니다.
             </p>
           </div>
         </div>
@@ -127,7 +129,7 @@
     <div class="blogs-3" id="detailInfo">
       <div class="container">
         <div class="row">
-          <div class="col-md-10 ml-auto mr-auto">
+          <div class="cook-detail col-md-10 ml-auto mr-auto" >
             <h2 class="title">상세 요리 과정</h2>
             <br />
             <card
@@ -143,7 +145,7 @@
                   </div>
                 </div>
                 <div class="col-md-8 text-left">
-                  <h3 class="card-title">{{index + 1}}</h3>
+                  <h2 class="card-title">#{{index + 1}}</h2>
                   <h4 class="card-description" style="color:#000000">{{recipePhoto.photoDetail }}</h4>
                 </div>
               </div>
@@ -152,7 +154,6 @@
         </div>
       </div>
     </div>
-
     <div v-if="loginUserId == recipe.userId">
       <router-link :to="{ name: 'RecipeUpdateView', params: { recipe_id: recipe.recipeId } }">
         <button class="btn btn-primary">수정</button>
@@ -258,6 +259,11 @@ export default {
     this.getInitRecipe();
   },
   mounted() {
+    window.addEventListener("scroll", this.indexScrollFuncion);
+    this.winWidth();
+  },
+  beforeDestory() {
+    window.removeEventListener('scroll', this.indexScrollFuncion)
   },
   computed: {
     ...mapGetters(["config", "isLoggedIn"]),
@@ -290,6 +296,26 @@ export default {
       } else {
         checkedIngredient.style.setProperty("text-decoration", "none");
       }
+    },
+    indexScrollFuncion() {
+      if(window.innerWidth > 1440) {
+        if (
+          document.body.scrollTop > 400 ||
+          document.documentElement.scrollTop > 400
+        ) {
+          document.getElementById("idx-btn").style.display = "block";
+        } else {
+          document.getElementById("idx-btn").style.display = "none";
+        }
+      }
+    },
+    winWidth: function () {
+        setInterval(() => {
+            var w = window.innerWidth;
+            if (w < 1440) {
+              document.getElementById("idx-btn").style.display = "none";
+            }
+        }, 100);
     },
     scrollDoc(id) {
       if (id != "top") {
@@ -519,6 +545,8 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+
+
   },
 };
 </script>
@@ -536,8 +564,9 @@ export default {
 #idx-btn {
   position: fixed;
   left: 40px;
-  bottom: 230px;
-  height:100px;
+  top: 30px;
+  z-index: 99999;
+  display:none;  
 }
 
 .text-link:hover {
@@ -552,13 +581,34 @@ export default {
   font-size: 25px;
 }
 
-.recipinfo {
+.additinal-info {
   font-size: 20px;
 }
 
-.recipinfo i {
+.additinal-info i {
   font-size: 50px;
 }
+
+.ingre-title span {
+  color: darkgray;
+}
+
+.ingre-list {
+  font-size: 17px;
+}
+
+.ingre-list i {
+   color:red;
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.cook-detail {
+  box-shadow: 1px 1px 2px 6px lightgray;
+}
+
 
 .youtube img {
   width: 250px;
