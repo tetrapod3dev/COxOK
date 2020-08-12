@@ -19,5 +19,6 @@
 		<mapper resource="mappers/meet.xml" />
 		<mapper resource="mappers/report.xml" />
 		<mapper resource="mappers/online.xml" />
+		<mapper resource="mappers/youtube.xml" />
 	</mappers>
 </configuration>

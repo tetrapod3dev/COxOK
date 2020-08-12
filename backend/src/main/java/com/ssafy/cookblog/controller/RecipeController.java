@@ -372,7 +372,7 @@ public class RecipeController {
 	}
 	
 	@ApiOperation("(관리자) 재료 상세 보기")
-	@GetMapping("/admin/ingredient/{id}")
+	@GetMapping("/admin/ingredient/detail/{id}")
 	public Object readIngredient(@PathVariable long ingredientId, HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
