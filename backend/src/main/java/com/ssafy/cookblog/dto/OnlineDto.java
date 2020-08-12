@@ -21,6 +21,7 @@ public class OnlineDto {
 	private String title;
 	private String content;
 	private String type;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime date;
 	private String link;
