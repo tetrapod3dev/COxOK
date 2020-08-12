@@ -100,4 +100,9 @@ public class MeetServiceImpl implements MeetService {
 		return meetDao.selectMeetTotalByType(type);
 	}
 	
+	@Override
+	public List<MeetDto> getMeetByUserId(long userId) {
+		return meetDao.selectMeetByUserid(userId);
+	}
+	
 }

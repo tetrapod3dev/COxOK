@@ -104,4 +104,5 @@
 	<delete id="deleteMeetJoin">
 		delete from meet_join where meet_id = #{meetId} and user_id =#{userId}
 	</delete>
+	
 </mapper>

@@ -19,4 +19,5 @@ public interface MeetService {
 	
 	public List<MeetDto> getMeetByType(MeetDto meetDto);
 	public long getMeetTotalByType(String type);
+	public List<MeetDto> getMeetByUserId(long userId);
 }

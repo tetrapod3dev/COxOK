@@ -65,4 +65,9 @@ public class MeetDaoImpl implements MeetDao {
 	public long selectMeetTotalByType(String type) {
 		return session.selectOne("meet.selectMeetTotalByType",type);
 	}
+	
+	@Override
+	public List<MeetDto> selectMeetByUserid(long userId) {
+		return session.selectList("meet.selectMeetByUserid",userId);
+	}
 }

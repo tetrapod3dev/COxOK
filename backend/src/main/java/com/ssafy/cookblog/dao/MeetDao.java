@@ -19,4 +19,6 @@ public interface MeetDao {
 
 	public List<MeetDto> selectMeetByType(MeetDto meetDto);
 	public long selectMeetTotalByType(String type);
+	
+	public List<MeetDto> selectMeetByUserid(long userId);
 }
