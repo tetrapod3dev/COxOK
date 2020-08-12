@@ -87,18 +87,6 @@
 			online_id desc
 	</select>
 	
-	<select id="selectOnlineByType" resultType="OnlineDto">
-		select 
-			online_id as onlineId, user_id as userId, title,content, type, date,
-			link, thumbnail_src as thumbnailSrc, video
-		FROM
-			online
-		where
-			type = #{type}
-		order by 
-			online_id desc
-	</select>
-	
 	<!-- <select id="selectMeetJoinByUserid" resultType="MeetDto">
 		select 
 			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, type, m.join_limit as joinLimit, price, title
@@ -108,8 +96,6 @@
 			mj.user_id = #{userId}
 		order BY m.meet_id desc
 	</select> -->
-	
-	
 	
 	
 	<insert id="insertOnlineJoin">

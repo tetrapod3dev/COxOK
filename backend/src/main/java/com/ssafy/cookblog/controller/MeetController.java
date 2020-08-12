@@ -219,12 +219,12 @@ public class MeetController {
 		
 		List<MeetDto> list = meetService.getAllMeetByType(meetDto);
 		if(list!=null) {
-			map.put("msg", "소모임 참석 삭제를 성공했습니다.");
+			map.put("msg", "소모임 타입 조회를 성공했습니다.");
 			map.put("status", "success");
 			map.put("list",list);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
-			map.put("msg", "소모임 참석 삭제를 실패했습니다.");
+			map.put("msg", "소모임 타입 조회를 실패했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
