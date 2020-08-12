@@ -8,9 +8,9 @@
           <p>{{ review.content }}</p>
         </div>
         <i class="review-rating fas fa-star col-1">{{ review.rating }}</i>
-        <div v-if="review.userId == loginUserId" class="col-2">
-          <button @click="updateComment(review)">수정</button>
-          <button @click="deleteComment(review.reviewId)">삭제</button>
+        <div v-if="review.userId == loginUserId" class="upd-del-btn col-2">
+          <b-button @click="updateComment(review)">수정</b-button>
+          <b-button @click="deleteComment(review.reviewId)">삭제</b-button>
         </div>
       </div>
 
@@ -84,6 +84,10 @@ export default {
   color: #000000;
 }
 .row i {
-   color:gold;
+  color:gold;
+}
+
+.upd-del-btn button {
+  width: 70px;
 }
 </style>

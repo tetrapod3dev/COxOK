@@ -13,6 +13,7 @@
         </div>
       </card>
     </section>
+    
     <!--     *********    TEAM 1     *********      -->
      <div class="team-1" id="recipeInfo">
       <div class="container">
@@ -38,37 +39,50 @@
             <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
           </div>
         </div>
-
-<!--
-        <div class="row justify-content-center mt-5">
-          <div class="col-md-4 mt ml-1">
-            <div class="col-md-8 ml-auto mr-auto">
-              <h3 class="text-left mb-3">바로 가기</h3>
-              <p @click="scrollDoc('recipeInfo')" class="text-left text-link">1. 레시피 설명</p>
-              <p @click="scrollDoc('ingredientInfo')" class="text-left text-link">2. 재료, 영양소 정보</p>
-              <p @click="scrollDoc('detailInfo')" class="text-left text-link">3. 상세 요리 과정</p>
-              <p @click="scrollDoc('reviewInfo')" class="text-left text-link">4. 한줄평 보기</p>
-            </div>
-          </div>
-        </div>
--->
-
       </div>
+    </div>
+
+    <div id="idx-btn" class="row mt-5 text-left">
+      <!--<b-button v-b-toggle.collapse-1 variant="primary">레시피 목차 바로가기</b-button>
+      <b-collapse id="collapse-1" class="mt-2">
+        <b-card>
+          <p @click="scrollDoc('ingredientInfo')" class="text-left text-link">1. 재료 리스트</p>
+          <p @click="scrollDoc('nutrientInfo')" class="text-left text-link">2. 영양소 정보</p>
+          <p @click="scrollDoc('detailInfo')" class="text-left text-link">3. 상세 요리 과정</p>
+          <p @click="scrollDoc('reviewInfo')" class="text-left text-link">4. 한줄평 보기</p>
+        </b-card>
+      </b-collapse>
+      -->
+      <b-container fluid>
+        <b-row>
+          <b-col col="5">
+            <h4><i class="far fa-list-alt ml-3 mr-1"></i>목차</h4>
+            <b-list-group v-b-scrollspy:listgroup-ex >
+              <b-list-group-item @click="scrollDoc('recipeInfo')" >1. 레시피 설명</b-list-group-item>
+              <b-list-group-item @click="scrollDoc('ingredientInfo')">2. 재료 리스트</b-list-group-item>
+              <b-list-group-item @click="scrollDoc('nutrientInfo')">3. 영양소 정보</b-list-group-item>
+              <b-list-group-item @click="scrollDoc('detailInfo')">4. 상세 요리 과정</b-list-group-item>
+              <b-list-group-item @click="scrollDoc('reviewInfo')">5. 한줄평 보기</b-list-group-item>
+            </b-list-group>
+          </b-col>
+        </b-row>
+      </b-container>
     </div>
     <!--     *********    END TEAM 1      *********      -->
     <section id="ingredientInfo">
       <div class="container">
         <div class="row">
           <div class="col-md-10 ml-auto mr-auto">
+            <br>
             <h3 class="text-left pt-5 mb-3">
               <i class="fas fa-angle-double-right mr-1"></i>
               재료 리스트 (2인 기준)
             </h3>
-            <div class="row col-md-8 ">
+            <div class="row col-md-8 mr-auto ml-auto">
               <div
                 v-for="(ingredient, index) in recipe.ingredientList"
                 :key="ingredient.name"
-                class="col-6 my-3"
+                class="col-12 col-md-6 my-3"
               >
                 <div class="row">
                   <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/>
@@ -85,6 +99,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-10 ml-auto mr-auto">
+            <br>
             <h3 class="text-left pt-5 mb-3">
               <i class="fas fa-angle-double-right mr-1"></i>
               영양소 정보
@@ -198,9 +213,6 @@
         </a>
       </div>
     </div>
-    <button @click="scrollDoc('top')" id="scroll-top-btn" class="btn btn-outline-primary">
-      <i class="fas fa-angle-up"></i>
-    </button>
   </div>
 </template>
 
@@ -215,8 +227,8 @@ import SERVER from "@/api/api";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
 
-const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
-const API_URL = 'https://www.googleapis.com/youtube/v3/search'
+// const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
+// const API_URL = 'https://www.googleapis.com/youtube/v3/search'
 
 export default {
   name: "RecipeItemView",
@@ -489,20 +501,20 @@ export default {
             review['changing'] = false
           })
 
-          axios.get(API_URL, {
-            params: {
-              key: API_KEY,
-              part: 'snippet',
-              type: 'video',
-              q: res.data.recipe.recipeName
-            }
-          })
-            .then(response => {
-              this.videos = response.data.items.slice(0,4)
-            })
-            .catch(error => {
-              console.log(error)
-            })
+          // axios.get(API_URL, {
+          //   params: {
+          //     key: API_KEY,
+          //     part: 'snippet',
+          //     type: 'video',
+          //     q: res.data.recipe.recipeName
+          //   }
+          // })
+          //   .then(response => {
+          //     this.videos = response.data.items.slice(0,4)
+          //   })
+          //   .catch(error => {
+          //     console.log(error)
+          //   })
 
         })
         .catch((err) => console.log(err.response));
@@ -521,10 +533,11 @@ export default {
   font-family: 'Nanum Gothic', sans-serif;
 }
 
-#scroll-top-btn {
+#idx-btn {
   position: fixed;
-  bottom: 100px;
-  right: 100px;
+  left: 40px;
+  bottom: 230px;
+  height:100px;
 }
 
 .text-link:hover {
