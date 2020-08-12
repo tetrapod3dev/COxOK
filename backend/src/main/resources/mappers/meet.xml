@@ -5,19 +5,19 @@
 	<insert id="insert">
 		insert into 
 			meet (user_id, recipe_id, thumbnail_src, type, join_limit, price, title,
-			content, address, lat, lng )
+			content, address, lat, lng, date)
 		values
 			(#{userId}, #{recipeId}, #{thumbnailSrc}, #{type}, #{joinLimit}, 
-			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng} )
+			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng}, #{date})
 	</insert>
 	
 	<update id="update">
 		update 
 			meet
 		set
-			recipe_id = #{recipeId}, thumbnail_src = #{thumbnaulSrc},
+			recipe_id = #{recipeId}, thumbnail_src = #{thumbnailSrc},
 			type = #{type}, join_limit = #{joinLimit}, price = #{price},
-			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}
+			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}, date=#{date}
 		where
 			meet_id = #{meetId}
 	</update>
@@ -31,13 +31,12 @@
 		LIMIT #{startIndex}, 6
 	</select>
 	
-	<select id="selectMeet" resultType="MeetDto">
+	<select id="selectMeet" resultType="MeetViewResponseDto">
 		select 
-			meet_id as meetId, user_id as userId, recipe_id as recipeId,
+			meet_id as meetId, user_id as userId, nickname as writerNickname, recipe_id as recipeId,
 			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
 			title, content, date, address, lat, lng
-		FROM
-			meet
+		FROM meet join user using(user_id) 
 		where meet_id = #{meetId}
 	</select>
 	
@@ -63,6 +62,18 @@
 		order by meet_id desc
 	</select>
 	
+	<select id="selectMeetByType" resultType="MeetDto">
+		select 
+			meet_id as meetId, user_id as userId, 
+			thumbnail_src as thumbnailSrc, type, 
+			join_limit as joinLimit, price, title
+		FROM
+			meet
+		where
+			type = #{type}
+		order by meet_id desc
+	</select>
+	
 	<select id="selectMeetJoinByUserid" resultType="MeetDto">
 		select 
 			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, type, m.join_limit as joinLimit, price, title
@@ -73,11 +84,14 @@
 		order BY m.meet_id desc
 	</select>
 	
+	
+	
+	
 	<insert id="insertMeetJoin">
 		insert into 
 			meet_join (meet_id, user_id)
 		values 
-			(#{meet_id}, #{user_id})
+			(#{meetId}, #{userId})
 	</insert>
 	
 	<delete id="deleteMeetJoin">

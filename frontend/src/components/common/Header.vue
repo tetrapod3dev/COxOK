@@ -38,7 +38,7 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/">
+          <router-link class="nav-link" :to="{ name: 'ClubListView', params: {pageNum: 1} }">
             <i class="now-ui-icons users_circle-08"></i>
             <p>소모임</p>
           </router-link>

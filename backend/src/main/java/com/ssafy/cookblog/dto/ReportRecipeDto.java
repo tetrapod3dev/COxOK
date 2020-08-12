@@ -9,16 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VersusPointDto {
-	private long versusPointId;
-	private long versusId;
+public class ReportRecipeDto {
+	private long reportRecipeId;
 	private long recipeId;
-	private int count;
-	private String recipeName;
-	private String recipeThumbnailSrc;
+	private long userId;
+	private String nickname;
+	private String reason;
 }
-
-	
-
-
-	

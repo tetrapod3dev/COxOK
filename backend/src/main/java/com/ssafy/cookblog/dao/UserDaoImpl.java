@@ -34,6 +34,11 @@ public class UserDaoImpl implements UserDao{
 	}
 	
 	@Override
+	public UserDto selectUserId(long userId) {
+		return session.selectOne("user.selectUserId",userId);
+	}
+	
+	@Override
 	public List<UserDto> selectAll() {
 		return session.selectList("user.selectAll");
 	}
@@ -67,10 +72,20 @@ public class UserDaoImpl implements UserDao{
 		return session.update("user.updateAuth",user);
 	}
 	
+	@Override
+	public int updateByAdmin(UserDto user) {
+		return session.update("user.updateByAdmin",user);
+	}
+	
 	//Delete
 	@Override
 	public int delete(String email) {
 		return session.delete("user.delete",email);
+	}
+	
+	@Override
+	public int deleteByUserId(long userId) {
+		return session.delete("user.deleteByUserId",userId);
 	}
 
 	@Override

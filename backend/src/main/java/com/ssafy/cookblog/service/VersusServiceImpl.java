@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.cookblog.dao.VersusDao;
 import com.ssafy.cookblog.dto.VersusDto;
@@ -18,11 +19,13 @@ public class VersusServiceImpl implements VersusService {
 	VersusDao versusDao;
 
 	@Override
+	@Transactional 
 	public int registerVersus(VersusDto versusDto) {
 		return versusDao.registerVersus(versusDto);
 	}
 
 	@Override
+	@Transactional 
 	public int winVersus(VersusPointDto versusPoint) {
 		return versusDao.winVersus(versusPoint);
 	}
@@ -42,6 +45,7 @@ public class VersusServiceImpl implements VersusService {
 	}
 
 	@Override
+	@Transactional 
 	public int removeVersus(long versusId) {
 		return versusDao.delete(versusId);
 	}

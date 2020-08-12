@@ -66,16 +66,20 @@ public class MeetController {
 	
 	@ApiOperation("소모임 상세 조회")
 	@GetMapping("/view/{meetId}")
-	public Object getOneMeet(@PathVariable("meetId") long meetId) {
+	public Object getOneMeet(@PathVariable("meetId") long meetId, HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
 		MeetViewResponseDto meet = meetService.getOneMeet(meetId);
 		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
+		
 		if(meet != null) {
 			map.put("msg", "소모임 조회를 성공했습니다.");
 			map.put("status", "success");
 			map.put("meet", meet);
+			map.put("userId",userId);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "소모임을 찾지 못했습니다.");
@@ -136,7 +140,6 @@ public class MeetController {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		
 		int count = meetService.modify(meetDto);
 		if(count!=0) {
 			map.put("msg", "소모임 수정에 성공했습니다.");
@@ -186,6 +189,26 @@ public class MeetController {
 		if(count!=0) {
 			map.put("msg", "소모임 참석 삭제를 성공했습니다.");
 			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "소모임 참석 삭제를 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	@ApiOperation("소모임 타입으로 조회하기")
+	@GetMapping("/type/{type}")
+	public Object getType(@PathVariable("type")String type) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		List<MeetDto> list = meetService.getAllMeetByType(type);
+		if(list!=null) {
+			map.put("msg", "소모임 참석 삭제를 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "소모임 참석 삭제를 실패했습니다.");

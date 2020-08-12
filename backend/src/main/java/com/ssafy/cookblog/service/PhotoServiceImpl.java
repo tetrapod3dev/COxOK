@@ -7,11 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.cookblog.dto.request.PhotoRegisterRequestDto;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
+	
 	public List<String> registerPhoto(PhotoRegisterRequestDto photo) {
 		List<String> result=new ArrayList<String>();
 		

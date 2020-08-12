@@ -51,6 +51,16 @@
 			recipe_id = #{recipeId}
 	</update>
 	
+	<update id="updateNutrient">
+		update	
+			recipe
+		set
+			calorie = #{calorie}, carbon = #{carbon},
+			protein = #{protein}, fat = #{fat}, sugar = #{sugar}, natrium = #{natrium}
+		where
+			recipe_id = #{recipeId}
+	</update>
+	
 	<delete id="delete">
 		delete from recipe
 		where recipe_id = #{recipeId}
@@ -62,8 +72,14 @@
    	</select>
    
    	<select id="selectAllIngredient" resultType="IngredientDto">
-      	select ingredient_id as ingredientId, name, detail, unit
+      	select ingredient_id as ingredientId, base_amount as baseAmount, name, detail, unit, calorie, carbon, fat, protein, natrium, sugar
       	from ingredient 
+   	</select>
+   	
+   	<select id="selectAllIngredientAdmin" resultType="IngredientDto">
+      	select ingredient_id as ingredientId, base_amount as baseAmount, name, detail, unit, calorie, carbon, fat, protein, natrium, sugar
+      	from ingredient
+      	LIMIT #{startIndex}, 20
    	</select>
    	
    	<delete id="deleteRecipeIngredient">
@@ -81,7 +97,7 @@
    	</select>
    	
    	<select id="selectIngredientById" resultType="IngredientDto">
-      	select ingredient_id as ingredientId, calorie, carbon, protein, fat, sugar, natrium, unit, base_amount as baseAmount
+      	select ingredient_id as ingredientId, calorie, carbon, protein, fat, sugar, natrium, unit, base_amount as baseAmount, name, detail
       	from ingredient
       	where ingredient_id = #{ingredientId}
    	</select>
@@ -207,6 +223,47 @@
 		WHERE food_category_id = #{foodCategoryId}
 		order by recipe_id desc
 		limit 18;
+	</select>
+	
+	<insert id="registerIngredientAdmin">
+		insert into ingredient(name, detail, base_amount, unit, calorie, carbon, fat, protein, natrium, sugar)
+		values(#{name}, #{detail}, #{baseAmount}, #{unit}, #{calorie}, #{carbon}, #{fat}, #{protein}, #{natrium}, #{sugar})
+	</insert>
+	
+	<insert id="registerIngredientUser">
+		insert into ingredient(name, unit, calorie, carbon, fat, protein, natrium, sugar)
+		values(#{name}, #{unit}, -1, -1, -1, -1, -1, -1)
+	</insert>
+	
+	<update id="modifyIngredientAdmin">
+		update
+			ingredient
+		 set
+		 	name = #{name}, detail = #{detail}, base_amount = #{baseAmount}, unit = #{unit}, calorie = #{calorie},
+		 	carbon = #{carbon}, fat = #{fat}, protein = #{protein}, natrium = #{natrium}, sugar = #{sugar}
+		 where
+		 	ingredient_id = #{ingredientId}
+	</update>
+	
+	<select id="allIngredientToBeUpdated" resultType="IngredientDto">
+		select 
+			ingredient_id as ingredientId, name, detail, base_amount as baseAmount, unit, calorie, carbon, fat, protein, natrium, sugar
+		from
+			ingredient
+		where
+			calorie = -1 or carbon = -1 or fat = -1 or protein = -1 or natrium = -1 or sugar = -1
+		limit {startIndex}, 20
+	</select>
+	
+	<delete id="removeIngredientAdmin">
+		delete from ingredient
+		where ingredient_id = #{ingredientId}
+	</delete>
+	
+	<select id="selectRecipeIdByIngredientId" resultType="Long">
+		select distinct(recipe_id) as recipeId
+		FROM recipe JOIN recipe_ingredient USING(recipe_id)
+		WHERE ingredient_id = #{ingredientId}
 	</select>
    	
 </mapper>
