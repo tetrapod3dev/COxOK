@@ -123,4 +123,13 @@
 		order by online_id desc
 		LIMIT #{startIndex}, 12
 	</select>
+	
+	<select id="selectOnlineTotalByType" resultType="Long">
+		select 
+			count(online_id)
+		FROM
+			online
+		where
+			type = #{type}
+	</select>
 </mapper>

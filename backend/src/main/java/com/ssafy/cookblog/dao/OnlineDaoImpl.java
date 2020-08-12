@@ -53,4 +53,9 @@ public class OnlineDaoImpl implements OnlineDao {
 	public List<OnlineDto> selectOnlineByType(OnlineDto onlineDto) {
 		return session.selectList("online.selectOnlineByType",onlineDto);
 	}
+	
+	@Override
+	public long selectOnlineTotalByType(String type) {
+		return session.selectOne("online.selectOnlineTotalByType",type);
+	}
 }

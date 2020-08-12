@@ -225,6 +225,7 @@ public class OnlineController {
 			map.put("msg", "온라인으로 타입 조회 성공했습니다.");
 			map.put("status", "success");
 			map.put("list",list);
+			map.put("total",onlineService.getOnlineTotalByType(type));
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "온라인으로 타입 조회 실패했습니다.");

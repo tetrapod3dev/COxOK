@@ -91,8 +91,13 @@ public class MeetServiceImpl implements MeetService {
 	}
 	
 	@Override
-	public List<MeetDto> getAllMeetByType(MeetDto meetDto) {
+	public List<MeetDto> getMeetByType(MeetDto meetDto) {
 		return meetDao.selectMeetByType(meetDto);
+	}
+	
+	@Override
+	public long getMeetTotalByType(String type) {
+		return meetDao.selectMeetTotalByType(type);
 	}
 	
 }

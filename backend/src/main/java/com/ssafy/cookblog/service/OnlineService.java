@@ -16,4 +16,5 @@ public interface OnlineService {
 	public int removeOnlineJoin(MeetJoinDto meetJoinDto);
 	
 	public List<OnlineDto> getOnlineByType(OnlineDto onlineDto);
+	public long getOnlineTotalByType(String type);
 }

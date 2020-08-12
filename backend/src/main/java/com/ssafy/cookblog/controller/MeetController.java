@@ -217,11 +217,12 @@ public class MeetController {
 		meetDto.setType(type); 
 		meetDto.setStartIndex(startIndex*12);
 		
-		List<MeetDto> list = meetService.getAllMeetByType(meetDto);
+		List<MeetDto> list = meetService.getMeetByType(meetDto);
 		if(list!=null) {
 			map.put("msg", "소모임 타입 조회를 성공했습니다.");
 			map.put("status", "success");
 			map.put("list",list);
+			map.put("total",meetService.getMeetTotalByType(type));
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "소모임 타입 조회를 실패했습니다.");

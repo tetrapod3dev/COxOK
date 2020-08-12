@@ -16,4 +16,5 @@ public interface OnlineDao {
 	public int deleteOnlineJoin(MeetJoinDto meetJoinDto);
 	
 	public List<OnlineDto> selectOnlineByType(OnlineDto onlineDto);
+	public long selectOnlineTotalByType(String type);
 }
