@@ -1,6 +1,17 @@
 <template>
   <div class="container">
     온라인 상세보기
+    <h2>작성자: {{ author }}</h2>
+    <h2>현재 접속자: {{ userId }}</h2>
+
+    <div v-if="author.id == userId">
+      <router-link :to="{ name: 'ClubOnlineUpdateView', params: { club_id: online.onlineId } }"><button>수정</button></router-link>
+      <button @click="deleteClub">삭제</button>
+    </div>
+    <div v-else>
+      <button @click="changeJoinClub">{{ joinMent }}</button>
+    </div>
+    
     <h3>{{ online.title }}</h3>
     
     <div v-html="online.content"></div>
@@ -19,36 +30,98 @@
 </template>
 
 <script>
+import SERVER from '@/api/api'
+import axios from 'axios'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'ClubOnlineDetailView',
   data() {
     return {
-      online: 
-        {
-          onlineId: 2,
-          title: '유튜브 테스트',
-          content: 'ㅎ<font size="7">ㅎ</font>ㅎ',
-          type: '유튜브강의',
-          date: '2020-08-27T02:04:00',
-          link: null,
-          thumbnailSrc: 'https://i.ytimg.com/vi/PVcpF7J2oXs/default.jpg',
-          video: 'PVcpF7J2oXs',
-        },
-        // {
-        //   onlineId: 4,
-        //   title: '실시간 강의 예시입니다.',
-        //   content: 'ㅎㅎㅎ<font size="7">ㅎㅎ</font>ㅎㅎㅎㅎㅎ',
-        //   type: '실시간강의',
-        //   date: '2020-08-26T02:05:00',
-        //   link: 'http://i3a104.p.ssafy.io/',
-        //   thumbnailSrc: '2020081117554132_1234.png',
-        //   video: null,
-        // }
+      online:  {
+        onlineId: null,
+        title: null,
+        content: null,
+        type: null,
+        date: null,
+        link: null,
+        thumbnailSrc: null,
+        video: null,
+      },
+      author: {
+        id: null,
+        nickname: null,
+      },
+      userId: null,
+      isIn: true,
     }
   },
   computed: {
+    ...mapGetters(['config']),
     videoUrl() {
       return `https://youtube.com/embed/${this.online.video}`
+    },
+    joinMent() {
+      return (this.isIn) ? "취소" : "참가"
+    }
+  },
+  created() {
+    axios
+      .get(SERVER.URL + SERVER.ROUTES.onlineDetail + this.$route.params.club_id, {
+          headers: {
+            "Authorization": this.config,
+          },
+        })
+      .then(res => {
+        this.online = res.data.online
+        this.author = { id: res.data.online.userId , nickname: res.data.writerNickname}
+        this.userId = res.data.userId
+        console.log(res.data)
+        // this.isIn = (res.data.online.meetJoinList.map(user => user.userId).indexOf(res.data.userId) >= 0) ? true : false 
+      })
+      .catch(err => console.log(err.response))
+  },
+  methods: {
+    deleteClub() {
+      let response = confirm('삭제하실 건가요?')
+      if (response) {
+        axios
+          .delete(SERVER.URL + SERVER.ROUTES.onlineDelete + this.$route.params.club_id, {
+            headers: {
+              "Authorization": this.config,
+            },
+          })
+        .then(res => console.log(res))
+        .catch(err => console.log(err.response))
+      }
+    },
+
+    changeJoinClub() {
+      if (this.isIn) {
+        axios
+          .delete(SERVER.URL + SERVER.ROUTES.cancelOnline + this.$route.params.club_id, {
+            headers: {
+              "Authorization": this.config,
+            },
+          })
+          .then(() => {
+            alert('참가를 취소하셨습니다.')
+            this.isIn = false
+          })
+          .catch(err => console.log(err.response))
+      } else {
+        axios
+          .post(SERVER.URL + SERVER.ROUTES.joinOnline, { "onlineId": this.$route.params.club_id }, {
+            headers: {
+              "Authorization": this.config,
+            },
+          })
+          .then(() => {
+            alert('참가 신청에 성공했습니다.')
+            this.isIn = true
+          })
+          .catch(err => console.log(err.response))
+      }
     }
   }
 }

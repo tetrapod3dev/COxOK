@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'ClubDetailView', params: {club_id: club.meetId} }">
+  <router-link :to="{ name: 'ClubOfflineDetailView', params: {club_id: club.meetId} }">
     <img :src="imageSrc(club.thumbnailSrc)">
   </router-link>
 </template>

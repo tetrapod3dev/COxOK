@@ -87,7 +87,7 @@ import { Datetime } from 'vue-datetime';
 const API_KEY = process.env.VUE_APP_KAKAO_API_KEY
 
 export default {
-  name: 'ClubUpdateView',
+  name: 'OfflineClubUpdate',
   data() {
     return {
       meet: {
@@ -269,8 +269,6 @@ export default {
         "title": this.meet.title,
         "type": this.meet.type,
       }
-
-      console.log(body)
 
       axios
         .put(SERVER.URL + SERVER.ROUTES.clubUpdate, body, {

@@ -1,7 +1,7 @@
 <template>
-  <router-link :to="{ name: 'ClubOnlineDetailView' }">
+  <router-link :to="{ name: 'ClubOnlineDetailView', params: { club_id: online.onlineId } }">
     <img :src="imageSrc(online)">
-    <p>???</p>
+    <p>{{ online.title }}</p>
   </router-link>
 </template>
 

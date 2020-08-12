@@ -17,7 +17,7 @@
     </div>
     
     <div v-if="user == meet.userId">
-      <router-link :to="{ name: 'ClubUpdateView', params: { club_id: meet.meetId } }"><button>수정</button></router-link>
+      <router-link :to="{ name: 'ClubOfflineUpdateView', params: { club_id: meet.meetId } }"><button>수정</button></router-link>
       <button @click="deleteClub">삭제</button>
     </div>
     
@@ -145,7 +145,10 @@ export default {
               "Authorization": this.config,
             },
           })
-          .then(res => console.log(res))
+          .then(() => {
+            alert('참가를 취소하셨습니다.')
+            this.isIn = false
+          })
           .catch(err => console.log(err.response))
       } else {
         axios
@@ -155,7 +158,8 @@ export default {
             },
           })
           .then(() => {
-            console.log('참가 신청에 성공했습니다.')
+            alert('참가 신청에 성공했습니다.')
+            this.isIn = true
           })
           .catch(err => console.log(err.response))
       }

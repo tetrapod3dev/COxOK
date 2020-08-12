@@ -60,7 +60,11 @@ export default {
     // Online ROUTES
     onlineRegister: "/online/", // POST / 온라인 소모임 생성
     onlineList: "/online/all/", // GET / 온라인 소모임 리스트
+    onlineListType: "/online/type/", // GET / 온라인 소모임 타입별 리스트
     onlineDetail: "/online/", // GET / 뒤에 id붙여서 소모임 상세정보
+    onlineDelete: "/online/", // DELELT / 소모임 삭제, 뒤에 onlineId
+    joinOnline: "/online/join/", // POST / 소모임 참가
+    cancelOnline: "/online/join/", // DELETE / 소모임 참가 취소
 
     // Blog ROUTES
     blog: "/blog/",

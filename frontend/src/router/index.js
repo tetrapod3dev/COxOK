@@ -33,10 +33,12 @@ import VersusDetailView from "../views/versus/VersusDetailView.vue";
 // Club Router
 import ClubListView from "../views/clubs/ClubListView.vue";
 import ClubMakeView from "../views/clubs/ClubMakeView.vue";
-import ClubDetailView from "../views/clubs/ClubDetailView.vue";
+import ClubOfflineDetailView from "../views/clubs/ClubOfflineDetailView.vue";
 import ClubOnlineDetailView from "../views/clubs/ClubOnlineDetailView.vue";
-import ClubUpdateView from "../views/clubs/ClubUpdateView.vue";
-import ClubListTypeView from "../views/clubs/ClubListTypeView.vue";
+import ClubOfflineUpdateView from "../views/clubs/ClubOfflineUpdateView.vue";
+import ClubOnlineUpdateView from "../views/clubs/ClubOnlineUpdateView.vue";
+import ClubOfflineListTypeView from "../views/clubs/ClubOfflineListTypeView.vue";
+import ClubOnlineListTypeView from "../views/clubs/ClubOnlineListTypeView.vue";
 
 // Test Router
 import EditorTest from "../views/articles/EditorTest.vue";
@@ -156,34 +158,44 @@ const routes = [
   },
   // Clubs Router
   {
-    path: "/clubs/make",
-    name: "ClubMakeView",
-    component: ClubMakeView,
-  },
-  {
-    path: "/clubs/list/:type",
-    name: "ClubListTypeView",
-    component: ClubListTypeView,
-  },
-  {
     path: "/clubs/:pageNum",
     name: "ClubListView",
     component: ClubListView,
   },
   {
-    path: "/clubs/detail/:club_id",
-    name: "ClubDetailView",
-    component: ClubDetailView,
+    path: "/clubs/make",
+    name: "ClubMakeView",
+    component: ClubMakeView,
   },
   {
-    path: "/clubs/online/detail",
+    path: "/clubs/list/:type/:pageNum",
+    name: "ClubOfflineListTypeView",
+    component: ClubOfflineListTypeView,
+  },
+  {
+    path: "/clubs/online/list/:type/:pageNum",
+    name: "ClubOnlineListTypeView",
+    component: ClubOnlineListTypeView,
+  },
+  {
+    path: "/clubs/detail/:club_id",
+    name: "ClubOfflineDetailView",
+    component: ClubOfflineDetailView,
+  },
+  {
+    path: "/clubs/online/detail/:club_id",
     name: "ClubOnlineDetailView",
     component: ClubOnlineDetailView,
   },
   {
     path: "/clubs/Update/:club_id",
-    name: "ClubUpdateView",
-    component: ClubUpdateView,
+    name: "ClubOfflineUpdateView",
+    component: ClubOfflineUpdateView,
+  },
+  {
+    path: "/clubs/online/Update/:club_id",
+    name: "ClubOnlineUpdateView",
+    component: ClubOnlineUpdateView,
   },
   // Test Router
   {
