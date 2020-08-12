@@ -2,22 +2,31 @@
   <div class="review">
     <div v-for="review in reviewList" :key="review.reviewId" class="my-3">
       <!-- <ReviewDetail :review="review" :loginUserId="loginUserId" @deleteReview="deleteComment" @modifyMod="updateComment"/> -->
-      <div :id="reviewId(review.reviewId)" class="row">
-        <div class="review-nickname col-3">{{ review.nickname }}</div>
-        <div class="review-content col-6 text-left">
-          <p>{{ review.content }}</p>
-        </div>
-        <i class="review-rating fas fa-star col-1">{{ review.rating }}</i>
-        <div v-if="review.userId == loginUserId" class="upd-del-btn col-2">
-          <b-button @click="updateComment(review)">수정</b-button>
-          <b-button @click="deleteComment(review.reviewId)">삭제</b-button>
-        </div>
+      <div :id="reviewId(review.reviewId)" class="col-8 ml-auto mr-auto">
+        <hr>
+        <div class="row">
+          <div class="col-8 ml-auto mr-auto">
+            <div class="review-nickname col-10 col-md-6 col-lg-4 text-left">
+              {{ review.nickname }}
+              <i class="review-rating fas fa-star ml-2">{{ review.rating }}</i>
+            </div>
+            <div class="review-content text-left ml-3">
+              <p>{{ review.content }}</p>
+            </div>
+          </div>
+          <div class="col-3 ml-auto mr-auto">
+            <div v-if="review.userId == loginUserId" class="upd-del-btn col-12 text-right">
+              <b-button @click="updateComment(review)">수정</b-button>
+              <b-button @click="deleteComment(review.reviewId)">삭제</b-button>
+            </div>
+          </div>
+        </div>   
       </div>
 
-      <div :id="modifyReviewId(review.reviewId)" style="display:none;">
+      <div :id="modifyReviewId(review.reviewId)" style="display:none;" class="ml-auto mr-auto">
         <b-form-rating size="lg" variant="warning" v-model="review.rating" inline></b-form-rating>
         <input type="text" v-model="review.content">
-        <button @click="updateComment(review)">수정 완료</button>
+        <b-button @click="updateComment(review)">수정 완료</b-button>
       </div>
       
     </div>
@@ -73,14 +82,11 @@ export default {
 <style scoped>
 .review-nickname {
   font-size: 20px;
-  color: #000000;
-}
-.review-rating {
-  font-size: 20px;
+  font-weight: bold;
   color: #000000;
 }
 .review-content {
-  font-size: 20px;
+  font-size: 15px;
   color: #000000;
 }
 .row i {
@@ -88,6 +94,7 @@ export default {
 }
 
 .upd-del-btn button {
-  width: 70px;
+  padding: 10px 10px;
+  width: 50px;
 }
 </style>

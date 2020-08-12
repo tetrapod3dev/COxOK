@@ -163,35 +163,38 @@
     <div class="section section-comments" id="reviewInfo">
       <div class="container">
         <div class="row">
-          <div class="col-md-8 ml-auto mr-auto">
-            <div class="media-area mt-3">
-              <h3 class="title text-center">한줄평</h3>
+          <div class="col-md-12 ml-auto mr-auto">
+            <div class="media-area">
+              <h3 class="title">
+                요리 한줄평
+                <span style="color:gray;">({{recipe.reviewDtoList.length}})</span>
+              </h3>
               <ReviewList :loginUserId="loginUserId" :reviewList="recipe.reviewDtoList" @deleteReview="deleteReview" @modifyMod="modifyMod" @updateReview="updateReview" />
               <p v-if="recipe.reviewDtoList.length == 0">작성된 한줄평이 없습니다.</p>
             </div>
 
-            <div class="media media-post">
+            <div class="media media-post mt-5">
               <div class="media-body">
                 <!-- 
                 v-model="form.comment"-->
 
                 <ReviewMake v-if="(loginUserId > 0) && !isReviewed" @submitReview="submitReview" />
-                <h3 v-else>한줄평을 작성하기 위해서는 로그인을 해주세요.</h3>
+                <h5 v-else-if="(loginUserId < 0)"><i class="fas fa-exclamation-circle mr-2"></i>한줄평을 작성하기 위해서는 로그인을 해주세요.</h5>
 
-                <div class="media-footer justify-content-right">
-                  <span @click="changeLike" class="pull-left">
+                <div class="media-footer col-10 mt-5">
+                  <span @click="changeLike" class="pull-right ml-2">
                     <n-button v-show="(loginUserId > 0)" type="success" round block>
                       <i :class="isLiked ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
                       {{ likeCnt }}
                     </n-button>
                   </span>
-                  <span @click="copyRecipe" class="pull-left">
+                  <span @click="copyRecipe" class="pull-right ml-2">
                     <n-button type="info" round block>
                       <i class="fas fa-share-alt"></i> 공유
                     </n-button>
                   </span>
                   <!-- 수정해야함 신고 -->
-                  <span @click="copyRecipe" class="pull-left">
+                  <span @click="copyRecipe" class="pull-right">
                     <n-button type="danger" round block>
                       <i class="fas fa-bullhorn"></i> 신고
                     </n-button>
@@ -300,7 +303,6 @@ export default {
     indexScrollFuncion() {
       if(window.innerWidth > 1440) {
         if (
-          document.body.scrollTop > 400 ||
           document.documentElement.scrollTop > 400
         ) {
           document.getElementById("idx-btn").style.display = "block";
