@@ -31,7 +31,7 @@
 	
 	<update id="update">
 		update 
-			meet
+			online
 		set
 			title=#{title}, content=#{content}, date=#{date}, type=#{type}
 			<if test='link != "null"'>
