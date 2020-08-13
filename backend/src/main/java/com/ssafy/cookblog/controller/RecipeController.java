@@ -356,12 +356,13 @@ public class RecipeController {
 			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
 		
-		List<IngredientDto> dto = recipeService.selectAllIngredientAdmin(startIndex);
+		List<IngredientDto> dto = recipeService.selectAllIngredientAdmin(startIndex*20);
 		
 		if(dto != null) {
 			map.put("msg", "재료 불러오기에 성공했습니다.");
 			map.put("status", "success");
 			map.put("ingredient", dto);
+			map.put("total",recipeService.selectAllIngredient().size());
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "재료 불러오기에 실패했습니다.");
@@ -498,7 +499,7 @@ public class RecipeController {
 			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
 		
-		List<IngredientDto> ingredient = recipeService.readAllIngredientToBeUpdated(startIndex);
+		List<IngredientDto> ingredient = recipeService.readAllIngredientToBeUpdated(startIndex*20);
 		
 		if(ingredient != null) {
 			map.put("msg", "업데이트가 필요한 재료 목록 불러오기에 성공했습니다.");
