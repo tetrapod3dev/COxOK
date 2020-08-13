@@ -231,6 +231,7 @@ export default {
   },
   data() {
     return {
+      widthInterval:'',
       recipeDataSet: {},
       likeCnt: null,
       isLiked: null,
@@ -251,7 +252,8 @@ export default {
     this.winWidth();
   },
   beforeDestory() {
-    window.removeEventListener('scroll', this.indexScrollFuncion)
+    window.removeEventListener('scroll', this.indexScrollFuncion);
+    clearInterval(this.widthInterval);
   },
   computed: {
     ...mapGetters(["config", "isLoggedIn"]),
@@ -297,8 +299,8 @@ export default {
         }
       }
     },
-    winWidth: function () {
-        setInterval(() => {
+    winWidth: function () { //다시짜야해
+        this.widthInterval = setInterval(() => {
             var w = window.innerWidth;
             if (w < 1440) {
               document.getElementById("idx-btn").style.display = "none";

@@ -4,21 +4,31 @@
       class="card-link"
       :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
     >
-      <card type="profile" style="width:300px;height:300px;">
-        <div class="versus-card-image" :style="'background-image: url('+ imgSrc+')'" alt="레시피 사진"></div>
-        <!-- <card class="card" style="width: 20rem;">
-        <img slot="image" :src="imgSrc" class="card-img-top" alt="레시피 사진" />-->
-        <div>
-          <p class="card-text">{{ recipe.recipeName }}</p>
+      <b-card
+        :img-src=imgSrc
+        img-alt="레시피 사진"
+        img-width="350px"
+        img-height="250px"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="recipe-card mb-2"
+      >
+        <div style="height:110px">
+        <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
+        <div class="mt-auto mb-auto">
+        <b-card-text class="recipe-card-text">
+          {{recipe.recipeName}}
+        </b-card-text>
         </div>
-      </card>
+        </div>
+      </b-card>
     </router-link>
   </div>
 </template>
 
 <script>
 import SERVER from "@/api/api";
-import { Card } from "@/components/global";
 
 export default {
   name: "RecipeListItem",
@@ -26,7 +36,6 @@ export default {
     recipe: Object,
   },
   components: {
-    Card,
   },
   computed: {
     imgSrc() {
@@ -37,10 +46,16 @@ export default {
 </script>
 
 <style scoped>
-.versus-card-image {
-  width: 260px;
-  height: 200px;
-  background-size: cover;
-  background-position: center;
+.recipe-card {
+  width: 350px;
+  height: 420px;
 }
+.recipe-card-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+.list-rating {
+  font-size: 20px;
+}
+
 </style>

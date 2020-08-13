@@ -9,12 +9,7 @@
     <div class="subscribe-line subscribe-line-white">
       <div class="container">
         <div class="row">
-          <div class="col-md-2">
-            <router-link to="/recipes/make">
-              <n-button type="primary" round block>레시피 작성</n-button>
-            </router-link>
-          </div>
-          <div class="col-md-2 offset-md-8" @click="changeShow">
+          <div class="col-md-2" @click="changeShow">
             <n-button type="primary" round block>레시피 검색</n-button>
           </div>
         </div>
@@ -22,15 +17,13 @@
     </div>
     <div class="container">
       <div class="row"></div>
-
       <CategorySelector
         v-show="categoryShow"
         @searchRecipe="categorySubmit"
         @removeSelect="removeSelect"
-        class="mt-5"
       />
 
-      <div v-if="recipes.length > 0" class="row mt-4">
+      <div v-if="recipes.length > 0" class="row">
         <div
           v-for="recipe in recipes"
           :key="recipe.recipeId"
@@ -43,6 +36,12 @@
       <div v-else class="mt-4">
         <h2>선택하신 조건에 맞는 레시피가 없습니다.</h2>
       </div>
+
+      <div class="col-md-2">
+            <router-link to="/recipes/make">
+              <n-button type="primary" round block>레시피 작성</n-button>
+            </router-link>
+          </div>
 
       <PageButton
         v-if="recipes.length > 0"
