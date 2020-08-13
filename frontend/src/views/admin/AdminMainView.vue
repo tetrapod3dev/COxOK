@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="my-5">Test</h1>
-    <select v-model="type" @change="typeChange">
+    <select v-model="type">
       <!-- <option disabled selected>{{ type }}</option> -->
       <option>유저</option>
       <option>재료</option>
@@ -54,16 +54,11 @@ export default {
         if ((res.data.user.email != 'admin@co-ok.com') || (res.data.user.nickname != 'admin')) {
           alert('관리자가 아닙니다! 장난 ㄴㄴ요')
           this.$router.push({ name: "Main" });
-        } else {
-          alert('관리자입니다! 환영해요')
         }
       })
       .catch(err => console.log(err.response))
   },
   methods: {
-    typeChange() {
-      console.log('ㅇㅋ')
-    }
   }
 }
 </script>
