@@ -9,7 +9,9 @@
     <button @click="movePage($event)" v-if="curPage+2 < maxPage">마지막</button>
 
   </div> -->
-  <nav aria-label="Page navigation example">
+
+
+  <nav aria-label="Page navigation">
     <ul class="pagination">
       <li class="page-item">
         <p @click="movePage($event)" class="page-link" aria-label="Previous">&laquo;</p>
@@ -22,7 +24,8 @@
       </li>
     </ul>
   </nav>
-  
+
+
 </template>
 
 <script>

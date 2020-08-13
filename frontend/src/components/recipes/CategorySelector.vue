@@ -138,6 +138,8 @@ export default {
       selectedIngredientsName: [],
       selectedIngredients: [],
       textInput: null,
+      level: 3,
+      cookTime: 60,
     };
   },
   components: {
