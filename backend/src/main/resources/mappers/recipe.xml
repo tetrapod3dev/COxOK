@@ -254,7 +254,7 @@
 			ingredient
 		where
 			calorie = -1 or carbon = -1 or fat = -1 or protein = -1 or natrium = -1 or sugar = -1
-		limit {startIndex}, 20
+		limit #{startIndex}, 20
 	</select>
 	
 	<delete id="removeIngredientAdmin">
