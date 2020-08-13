@@ -355,7 +355,7 @@ export default {
 
   --slider-handle-size: 14px;
   --slider-handle-border-radius: 2px;
-  --slider-handle-margin-top: -4px;
+  --slider-handle-margin-top: 8px;
   --slider-track-height: 6px;
   --slider-track-border-radius: 4px;
 }
