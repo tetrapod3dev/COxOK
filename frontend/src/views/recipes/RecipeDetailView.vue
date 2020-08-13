@@ -14,28 +14,14 @@
       </card>
     </section>
 
-    
-    <div id="idx-btn" class="row mt-5 text-left" > 
-      <!--<b-button v-b-toggle.collapse-1 variant="primary">레시피 목차 바로가기</b-button>
-      <b-collapse id="collapse-1" class="mt-2">
-        <b-card>
-          <p @click="scrollDoc('ingredientInfo')" class="text-left text-link">1. 재료 리스트</p>
-          <p @click="scrollDoc('nutrientInfo')" class="text-left text-link">2. 영양소 정보</p>
-          <p @click="scrollDoc('detailInfo')" class="text-left text-link">3. 상세 요리 과정</p>
-          <p @click="scrollDoc('reviewInfo')" class="text-left text-link">4. 한줄평 보기</p>
-        </b-card>
-      </b-collapse>
-      -->
-          <b-col>
-            <h4><i class="far fa-list-alt ml-3 mr-2"></i>목차</h4>
-            <b-list-group v-b-scrollspy:listgroup-ex >
-              <b-list-group-item href="#" @click="scrollDoc('recipeInfo')" >1. 레시피 설명</b-list-group-item>
-              <b-list-group-item href="#"  @click="scrollDoc('ingredientInfo')">2. 재료 리스트</b-list-group-item>
-              <b-list-group-item href="#"  @click="scrollDoc('nutrientInfo')">3. 영양소 정보</b-list-group-item>
-              <b-list-group-item href="#"  @click="scrollDoc('detailInfo')">4. 상세 요리 과정</b-list-group-item>
-              <b-list-group-item href="#"  @click="scrollDoc('reviewInfo')">5. 한줄평 보기</b-list-group-item>
-            </b-list-group>
-          </b-col>
+    <div id="idx-btn" class="row mt-5 text-left"> 
+      <h4><i class="far fa-list-alt ml-3 mr-2"></i>목차</h4>
+      <div>
+        <p @click="scrollDoc('ingredientInfo')" class="text-left text-link">1. 재료 리스트</p>
+        <p @click="scrollDoc('nutrientInfo')" class="text-left text-link">2. 영양소 정보</p>
+        <p @click="scrollDoc('detailInfo')" class="text-left text-link">3. 상세 요리 과정</p>
+        <p @click="scrollDoc('reviewInfo')" class="text-left text-link">4. 한줄평 보기</p>
+      </div>
     </div>
     
     <!--     *********    TEAM 1     *********      -->
