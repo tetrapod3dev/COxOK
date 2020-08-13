@@ -15,7 +15,7 @@
 	<update id="updateByAdmin">
 		update user set
 		nickname=#{nickname},detail = #{detail}, profile_photo = #{profilePhoto}
-		where user_id = {userId}
+		where user_id = #{userId}
 	</update>
 	
 	<update id="updateAuth">
