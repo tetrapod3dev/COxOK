@@ -1,41 +1,49 @@
 <template>
   <div class="container">
     <h2>소모임 리스트 페이지(메인)입니당.</h2>
-    
-    <router-link :to="{ name: 'ClubMakeView' }"><button class="btn btn-outline-secondary mx-2">소모임 만들기</button></router-link>
 
-    <div class="row">
-      <router-link v-for="club in curClubs" :key="club.meetId" :to="{ name: 'ClubDetailView', params: { club_id: club.meetId } }" class="col-4">
-        <img :src="imageSrc(club)">
-      </router-link>
-    </div>
+    <select @change="changeMainType">
+      <option disabled selected>{{ mainClubType }}</option>
+      <option>오프라인</option>
+      <option>온라인</option>
+    </select>
+
+    <router-link :to="{ name: 'ClubMakeView' }"><button class="btn btn-outline-secondary mx-2">소모임 만들기</button></router-link>
+    
+    <OfflineClubList v-if="isOffline" />
+    <OnlineClubList v-else />
   </div>
 </template>
 
 <script>
-import SERVER from '@/api/api'
-import axios from 'axios'
+import OfflineClubList from '@/components/clubs/OfflineClubList.vue'
+import OnlineClubList from '@/components/clubs/OnlineClubList.vue'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'ClubListView',
   data() {
     return {
-      curPage: 1,
-      curClubs: [],
+    }
+  },
+  components: {
+    OfflineClubList,
+    OnlineClubList
+  },
+  computed: {
+    ...mapGetters(['mainClubType']),
+    isOffline() {
+      return (this.mainClubType == '오프라인') ? true : false
     }
   },
   created() {
-    axios
-      .get(SERVER.URL + SERVER.ROUTES.clubList + (this.curPage-1))
-      .then(res => {
-        this.curClubs = res.data.list
-      })
-      .catch(err => console.log(err))
   },
   methods: {
-    imageSrc(club) {
-      return SERVER.IMAGE_URL + club.thumbnailSrc
-    }
+    ...mapActions(['changeClubMainType']),
+    changeMainType(event) {
+      this.changeClubMainType(event.target.value)
+    },
+
   }
 }
 </script>

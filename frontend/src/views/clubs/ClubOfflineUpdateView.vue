@@ -3,7 +3,7 @@
 
     <p class="my-5">Temp</p>
     
-    <h2 class="my-5">소모임 작성 페이지입니당.</h2>
+    <h2 class="my-5">소모임 수정 페이지입니당.</h2>
 
     <div class="row">
       <!-- 사진 입력 및 미리보기 -->
@@ -87,7 +87,7 @@ import { Datetime } from 'vue-datetime';
 const API_KEY = process.env.VUE_APP_KAKAO_API_KEY
 
 export default {
-  name: 'ClubUpdateView',
+  name: 'OfflineClubUpdate',
   data() {
     return {
       meet: {
@@ -120,7 +120,7 @@ export default {
       return (this.meet.detailAddress == null) ? this.meet.address + ' ' + this.detailAddress : this.meet.address
     },
     fullTime() {
-      return this.meet.date.slice(0, 10) + ' ' + this.meet.date.slice(11, 19)
+      return this.meet.date.slice(0, 19)
     }
   },
   components: {
@@ -269,8 +269,6 @@ export default {
         "title": this.meet.title,
         "type": this.meet.type,
       }
-
-      console.log(body)
 
       axios
         .put(SERVER.URL + SERVER.ROUTES.clubUpdate, body, {

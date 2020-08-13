@@ -13,12 +13,13 @@ export default new Vuex.Store({
   state: {
     // authToken: localStorage.getItem("auth-token"),
     authToken: cookies.get('auth-token'),
+    // 레시피 검색 시 사용하는 searchData입니다.
     searchData: {
       selectedCategory: [],
       selectedIngredients: [],
       selectedIngredientsName: [],
     },
-    // 레시피 검색 시 사용하는 searchData입니다.
+    mainType: '오프라인',
   },
   getters: {
     isLoggedIn(state) {
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     },
     config: (state) => `Bearer ${state.authToken}`,
     searchingData: (state) => state.searchData,
+    mainClubType: (state) => state.mainType,
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -38,6 +40,9 @@ export default new Vuex.Store({
       state.searchData = searchData;
       // 레시피 검색에서 사용하는 searchData를 변경합니다..
     },
+    setMainClubType(state, mainType) {
+      state.mainType = mainType
+    }
   },
   actions: {
     // 회원 관리 개념
@@ -95,6 +100,10 @@ export default new Vuex.Store({
     changeSearchData({ commit }, searchData) {
       commit("setSearchData", searchData);
     },
+
+    changeClubMainType({ commit }, mainType) {
+      commit("setMainClubType", mainType)
+    }
   },
 
   modules: {},
