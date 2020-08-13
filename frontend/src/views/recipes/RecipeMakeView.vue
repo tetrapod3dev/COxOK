@@ -52,78 +52,78 @@
 
         <div class="row">
           <div class="col-12">
-          <div id="slider">
-        <div id="sliderContainer">
-        <div class="tick-slider">
-            <div class="tick-slider-header">
-                <h5><label for="weightSlider">난이도</label></h5>
-                <h5>level</h5>
+            <div id="slider">
+              <div id="sliderContainer">
+                <div class="tick-slider">
+                  <div class="tick-slider-header">
+                    <h5><label for="weightSlider">난이도</label></h5>
+                    <h5>level</h5>
+                  </div>
+                  <div class="tick-slider-value-container">
+                    <div id="weightLabelMin" class="tick-slider-label">1</div>
+                    <div id="weightLabelMax" class="tick-slider-label">5</div>
+                    <div id="weightValue" class="tick-slider-value"></div>
+                  </div>
+                  <div class="tick-slider-background"></div>
+                  <div id="weightProgress" class="tick-slider-progress"></div>
+                  <div id="weightTicks" class="tick-slider-tick-container"></div>
+                  <input
+                      id="weightSlider"
+                      class="tick-slider-input"
+                      type="range"
+                      min="1"
+                      max="5"
+                      step="1"
+                      value="3"
+                      v-model="level"
+                      data-tick-step="5"
+                      data-tick-id="weightTicks"
+                      data-value-id="weightValue"
+                      data-progress-id="weightProgress"
+                      data-handle-size="18"
+                      data-min-label-id="weightLabelMin"
+                      data-max-label-id="weightLabelMax"
+                    />
+                </div>
+                <div class="tick-slider">
+                  <div class="tick-slider-header">
+                  <h5><label for="sizeSlider">소요 시간</label></h5>
+                  <h5>분</h5>
+                </div>
+                <div class="tick-slider-value-container">
+                  <div id="sizeLabelMin" class="tick-slider-label">0</div>
+                  <div id="sizeLabelMax" class="tick-slider-label">120</div>
+                  <div id="sizeValue" class="tick-slider-value"></div>
+                </div>
+                <div class="tick-slider-background"></div>
+                <div id="sizeProgress" class="tick-slider-progress"></div>
+                <div id="sizeTicks" class="tick-slider-tick-container"></div>
+                <input
+                    id="sizeSlider"
+                    class="tick-slider-input"
+                    type="range"
+                    min="0"
+                    max="120"
+                    step="5"
+                    value="0"
+                    v-model="cookTime"
+                    data-tick-step="5"
+                    data-tick-id="sizeTicks"
+                    data-value-id="sizeValue"
+                    data-progress-id="sizeProgress"
+                    data-handle-size="18"
+                    data-min-label-id="sizeLabelMin"
+                    data-max-label-id="sizeLabelMax"
+                  />
+                </div>
+              </div>
             </div>
-            <div class="tick-slider-value-container">
-                <div id="weightLabelMin" class="tick-slider-label">1</div>
-                <div id="weightLabelMax" class="tick-slider-label">5</div>
-                <div id="weightValue" class="tick-slider-value"></div>
-            </div>
-            <div class="tick-slider-background"></div>
-            <div id="weightProgress" class="tick-slider-progress"></div>
-            <div id="weightTicks" class="tick-slider-tick-container"></div>
-            <input
-                id="weightSlider"
-                class="tick-slider-input"
-                type="range"
-                min="1"
-                max="5"
-                step="1"
-                value="3"
-                v-model="level"
-                data-tick-step="5"
-                data-tick-id="weightTicks"
-                data-value-id="weightValue"
-                data-progress-id="weightProgress"
-                data-handle-size="18"
-                data-min-label-id="weightLabelMin"
-                data-max-label-id="weightLabelMax"
-            />
-        </div>
-        <div class="tick-slider">
-            <div class="tick-slider-header">
-                <h5><label for="sizeSlider">소요 시간</label></h5>
-                <h5>분</h5>
-            </div>
-            <div class="tick-slider-value-container">
-                <div id="sizeLabelMin" class="tick-slider-label">0</div>
-                <div id="sizeLabelMax" class="tick-slider-label">120</div>
-                <div id="sizeValue" class="tick-slider-value"></div>
-            </div>
-            <div class="tick-slider-background"></div>
-            <div id="sizeProgress" class="tick-slider-progress"></div>
-            <div id="sizeTicks" class="tick-slider-tick-container"></div>
-            <input
-                id="sizeSlider"
-                class="tick-slider-input"
-                type="range"
-                min="0"
-                max="120"
-                step="5"
-                value="0"
-                v-model="cookTime"
-                data-tick-step="5"
-                data-tick-id="sizeTicks"
-                data-value-id="sizeValue"
-                data-progress-id="sizeProgress"
-                data-handle-size="18"
-                data-min-label-id="sizeLabelMin"
-                data-max-label-id="sizeLabelMax"
-            />
-        </div>
-    </div>
-</div>
           </div>
         </div>
 
 
         
-      <br><br><br><br><br><br><br><br> 
+        <br><br><br><br><br><br><br><br> 
 
         <hr class="my-5" />
 
@@ -463,9 +463,9 @@ export default {
 
     // 난이도, 소요시간
     init() {
-    const sliders = document.getElementsByClassName("tick-slider-input");
+      const sliders = document.getElementsByClassName("tick-slider-input");
 
-    for (let slider of sliders) {
+      for (let slider of sliders) {
         slider.oninput = this.onSliderInput;
 
         this.updateValue(slider);
@@ -474,95 +474,95 @@ export default {
         this.updateProgress(slider);
 
         this.setTicks(slider);
+      }
+    },
+
+    onSliderInput(event) {
+        this.updateValue(event.target);
+        this.updateValuePosition(event.target);
+        this.updateLabels(event.target);
+        this.updateProgress(event.target);
+    },
+
+    updateValue(slider) {
+        let value = document.getElementById(slider.dataset.valueId);
+
+        value.innerHTML = "<div>" + slider.value + "</div>";
+    },
+
+    updateValuePosition(slider) {
+        let value = document.getElementById(slider.dataset.valueId);
+
+        const percent = this.getSliderPercent(slider);
+        const sliderWidth = slider.getBoundingClientRect().width;
+        const valueWidth = value.getBoundingClientRect().width;
+        const handleSize = slider.dataset.handleSize;
+
+        let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
+
+        left = Math.min(left, sliderWidth - valueWidth);
+        left = slider.value === slider.min ? 0 : left;
+
+        value.style.left = left + "px";
+    },
+
+    updateLabels(slider) {
+        const value = document.getElementById(slider.dataset.valueId);
+        const minLabel = document.getElementById(slider.dataset.minLabelId);
+        const maxLabel = document.getElementById(slider.dataset.maxLabelId);
+
+        const valueRect = value.getBoundingClientRect();
+        const minLabelRect = minLabel.getBoundingClientRect();
+        const maxLabelRect = maxLabel.getBoundingClientRect();
+
+        const minLabelDelta = valueRect.left - (minLabelRect.left);
+        const maxLabelDelta = maxLabelRect.left - valueRect.left;
+
+        const deltaThreshold = 32;
+
+        if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
+        else minLabel.classList.remove("hidden");
+
+        if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
+        else maxLabel.classList.remove("hidden");
+    },
+
+    updateProgress(slider) {
+        let progress = document.getElementById(slider.dataset.progressId);
+        const percent = this.getSliderPercent(slider);
+
+        progress.style.width = percent * 100 + "%";
+    },
+
+    getSliderPercent(slider) {
+        const range = slider.max - slider.min;
+        const absValue = slider.value - slider.min;
+
+        return absValue / range;
+    },
+
+    setTicks(slider) {
+        let container = document.getElementById(slider.dataset.tickId);
+        const spacing = parseFloat(slider.dataset.tickStep);
+        const sliderRange = slider.max - slider.min;
+        const tickCount = sliderRange / spacing + 1; // +1 to account for 0
+
+        for (let ii = 0; ii < tickCount; ii++) {
+            let tick = document.createElement("span");
+
+            tick.className = "tick-slider-tick";
+
+            container.appendChild(tick);
+        }
+    },
+
+    onResize() {
+        const sliders = document.getElementsByClassName("tick-slider-input");
+
+        for (let slider of sliders) {
+            this.updateValuePosition(slider);
+        }
     }
-},
-
-onSliderInput(event) {
-    this.updateValue(event.target);
-    this.updateValuePosition(event.target);
-    this.updateLabels(event.target);
-    this.updateProgress(event.target);
-},
-
-updateValue(slider) {
-    let value = document.getElementById(slider.dataset.valueId);
-
-    value.innerHTML = "<div>" + slider.value + "</div>";
-},
-
-updateValuePosition(slider) {
-    let value = document.getElementById(slider.dataset.valueId);
-
-    const percent = this.getSliderPercent(slider);
-    const sliderWidth = slider.getBoundingClientRect().width;
-    const valueWidth = value.getBoundingClientRect().width;
-    const handleSize = slider.dataset.handleSize;
-
-    let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
-
-    left = Math.min(left, sliderWidth - valueWidth);
-    left = slider.value === slider.min ? 0 : left;
-
-    value.style.left = left + "px";
-},
-
-updateLabels(slider) {
-    const value = document.getElementById(slider.dataset.valueId);
-    const minLabel = document.getElementById(slider.dataset.minLabelId);
-    const maxLabel = document.getElementById(slider.dataset.maxLabelId);
-
-    const valueRect = value.getBoundingClientRect();
-    const minLabelRect = minLabel.getBoundingClientRect();
-    const maxLabelRect = maxLabel.getBoundingClientRect();
-
-    const minLabelDelta = valueRect.left - (minLabelRect.left);
-    const maxLabelDelta = maxLabelRect.left - valueRect.left;
-
-    const deltaThreshold = 32;
-
-    if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
-    else minLabel.classList.remove("hidden");
-
-    if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
-    else maxLabel.classList.remove("hidden");
-},
-
-updateProgress(slider) {
-    let progress = document.getElementById(slider.dataset.progressId);
-    const percent = this.getSliderPercent(slider);
-
-    progress.style.width = percent * 100 + "%";
-},
-
-getSliderPercent(slider) {
-    const range = slider.max - slider.min;
-    const absValue = slider.value - slider.min;
-
-    return absValue / range;
-},
-
-setTicks(slider) {
-    let container = document.getElementById(slider.dataset.tickId);
-    const spacing = parseFloat(slider.dataset.tickStep);
-    const sliderRange = slider.max - slider.min;
-    const tickCount = sliderRange / spacing + 1; // +1 to account for 0
-
-    for (let ii = 0; ii < tickCount; ii++) {
-        let tick = document.createElement("span");
-
-        tick.className = "tick-slider-tick";
-
-        container.appendChild(tick);
-    }
-},
-
-onResize() {
-    const sliders = document.getElementsByClassName("tick-slider-input");
-
-    for (let slider of sliders) {
-        this.updateValuePosition(slider);
-    }
-}
   },
   computed: {
     ...mapGetters(["config"]),
