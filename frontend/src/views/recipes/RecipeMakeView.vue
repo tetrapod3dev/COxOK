@@ -51,18 +51,9 @@
         <br><br><br><br><br><br><br><br> 
 
         <div class="row">
-          <!-- <div class="col-6">
-            <h4>난이도</h4>
-            <b-form-rating v-model="level" inline></b-form-rating>
-          </div>
-
-          <div class="col-6">
-            <h4>소요 시간</h4>
-            <input type="number" id="cookTime" v-model="cookTime" /> 분
-          </div> -->
           <div class="col-12">
           <div id="slider">
-    <div id="sliderContainer">
+        <div id="sliderContainer">
         <div class="tick-slider">
             <div class="tick-slider-header">
                 <h5><label for="weightSlider">난이도</label></h5>
@@ -170,7 +161,7 @@
             />
             <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
             <div v-if="selectedIngredient.unit == null" class="col-2 offset-1">
-              <i class="fas fa-exclamation-triangle fa-2x" style="color: green;" id="no-ingredient"></i>
+              <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
             </div>
             
             <div v-else class="col-3 m-0 row">
@@ -186,12 +177,12 @@
             <div class="col-4">
             </div>
             <div class="col-1" @click="addIngredient">
-            <n-button type="secondary" class="btn-info">
+            <n-button type="secondary" class="btn">
               <i class="now-ui-icons ui-1_simple-add"></i>
             </n-button>
             </div>
             <div class="col-3">
-              <n-button type="secondary" round class="btn-warning">
+              <n-button type="secondary" round class="btn">
                 재료가 없어요!
               </n-button>
             </div>
