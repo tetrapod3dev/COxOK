@@ -153,6 +153,7 @@
             </n-button>
             </div>
             <div class="col-3">
+              <!-- 재료 추가 모달창 필요 -->
               <n-button type="secondary" round class="btn">
                 재료가 없어요!
               </n-button>
