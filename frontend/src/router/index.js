@@ -24,6 +24,7 @@ import BlogPostDetailView from "../views/blog/BlogPostDetailView.vue";
 import BlogRecipeListView from "../views/blog/BlogRecipeListView.vue";
 import BlogMarkedRecipeListView from "../views/blog/BlogMarkedRecipeListView.vue";
 import BlogGraphView from "../views/blog/BlogGraphView.vue";
+import BlogCalendarView from "../views/blog/BlogCalendarView.vue";
 
 // Versus Router
 import VersusHomeView from "../views/versus/VersusHomeView.vue";
@@ -142,6 +143,11 @@ const routes = [
     path: "/blog/posts/update/:blogId",
     name: "BlogPostUpdateView",
     component: BlogPostUpdateView,
+  },
+  {
+    path: "/blog/calendar",
+    name: "BlogCalendarView",
+    component: BlogCalendarView,
   },
   // Versus Router
   {
