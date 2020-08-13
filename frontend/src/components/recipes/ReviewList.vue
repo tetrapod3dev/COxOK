@@ -2,7 +2,7 @@
   <div class="review">
     <div v-for="review in reviewList" :key="review.reviewId" class="my-3">
       <!-- <ReviewDetail :review="review" :loginUserId="loginUserId" @deleteReview="deleteComment" @modifyMod="updateComment"/> -->
-      <div :id="reviewId(review.reviewId)" class="col-8 ml-auto mr-auto">
+      <div :id="reviewId(review.reviewId)" class="col-10 ml-auto mr-auto">
         <hr>
         <div class="row">
           <div class="col-8 ml-auto mr-auto">
@@ -23,7 +23,7 @@
         </div>   
       </div>
 
-      <div :id="modifyReviewId(review.reviewId)" style="display:none; font-size:17px;" class="row col-8 ml-auto mr-auto">
+      <div :id="modifyReviewId(review.reviewId)" style="display:none; font-size:17px;" class="row col-10 ml-auto mr-auto">
         <div class="row ml-auto mr-auto">
             <b-form-rating size="lg" variant="warning" class="ml-auto" v-model="review.rating" inline></b-form-rating>    
             <b-form-input v-model="review.content" class="col-6 ml-2"></b-form-input>

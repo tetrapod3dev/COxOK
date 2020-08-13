@@ -51,65 +51,66 @@
         </div>
       </div>
     </div>
-
     <!--     *********    END TEAM 1      *********      -->
-    <section id="ingredientInfo">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-10 ml-auto mr-auto">
-            <h3 class="ingre-title text-left pt-5 mb-3">
-              <i class="fas fa-angle-double-right mr-1"></i>
-              재료 리스트 
-              <span>(2인 기준)</span>
-            </h3>
-            <div class="row col-md-10 ml-auto">
-              <div
-                v-for="(ingredient, index) in recipe.ingredientList"
-                :key="ingredient.name"
-                class="col-12 col-md-6 my-3"
-              >
-                <div class="ingre-list row">
-                  <!-- <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/> -->
-                  <p :id="makeId(index)" class="mb-0">
-                    <i class="far fa-check-circle"></i>
-                    {{ ingredient.name }} {{ ingredient.amount }}{{ingredient.unit}}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="nutrientInfo">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-10 ml-auto mr-auto">
-            <h3 class="text-left pt-5 mb-3">
-              <i class="fas fa-angle-double-right mr-1"></i>
-              영양소 정보
-            </h3>
-            <div class="nutri-list row ml-auto ">
-              <RadarGraph :recipeDataSet="recipeDataSet" class="col-8 col-lg-4 my-auto"/>
-              <div class="col-12 col-lg-8 row p-4 ml-2">
+      <section id="ingredientInfo" >
+        <div class="container">
+          <div class="row">
+            <div class="col-md-10 ml-auto mr-auto">
+              <h3 class="ingre-title text-left pt-5 mb-3">
+                <i class="fas fa-angle-double-right mr-1"></i>
+                재료 리스트 
+                <span>(2인 기준)</span>
+              </h3>
+              <div class="row col-md-10 ml-auto">
                 <div
-                  v-for="(amount, nutrient, index) in recipeDataSet"
-                  :key="nutrient"
-                  class="col-6 row my-4"
+                  v-for="(ingredient, index) in recipe.ingredientList"
+                  :key="ingredient.name"
+                  class="col-12 col-md-6 my-3"
                 >
-                  <b-button variant="info col-5 col-lg-4">{{nutrient}}</b-button>
-                  <p class="col-4 align-self-center m-0 text-left">{{ amount }}{{ unitList[index] }}</p>
+                  <div class="ingre-list row">
+                    <!-- <input @click="checkIngredient(index, $event)" type="checkbox" class="align-self-center mr-2"/> -->
+                    <p :id="makeId(index)" class="mb-0">
+                      <i class="far fa-check-circle"></i>
+                      {{ ingredient.name }} {{ ingredient.amount }}{{ingredient.unit}}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-            <p class="text-left">
-              <i class="fas fa-exclamation-triangle fa-1x mr-1" style="color: red;"></i>영양소 정보는 실제와 차이가 있을 수 있습니다.
-            </p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section id="nutrientInfo">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-10 ml-auto mr-auto">
+              <h3 class="text-left pt-5 mb-3">
+                <i class="fas fa-angle-double-right mr-1"></i>
+                영양소 정보
+              </h3>
+              <div class="nutri-list row ml-auto ">
+                <RadarGraph :recipeDataSet="recipeDataSet" class="col-8 col-lg-4 my-auto"/>
+                <div class="col-12 col-lg-8 row p-4 ml-2">
+                  <div
+                    v-for="(amount, nutrient, index) in recipeDataSet"
+                    :key="nutrient"
+                    class="col-6 row my-4"
+                  >
+                    <b-button variant="info col-5 col-lg-4">{{nutrient}}</b-button>
+                    <p class="col-4 align-self-center m-0 text-left">{{ amount }}{{ unitList[index] }}</p>
+                  </div>
+                </div>
+              </div>
+              <p class="text-left">
+                <i class="fas fa-exclamation-triangle fa-1x mr-1" style="color: red;"></i>영양소 정보는 실제와 차이가 있을 수 있습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    
     <div class="blogs-3" id="detailInfo">
       <div class="container">
         <div class="row">
@@ -144,12 +145,12 @@
       </router-link>
       <button class="btn btn-primary" @click="deleteRecipe">삭제</button>
     </div>
-    <div class="section section-comments" id="reviewInfo">
+    <div class="section section-comments" id="reviewInfo" >
       <div class="container">
         <div class="row">
-          <div class="col-md-12 ml-auto mr-auto">
+          <div class="review-sec col-md-10 ml-auto mr-auto">
             <div class="media-area">
-              <h3 class="title">
+              <h3 class="title mb-5">
                 요리 한줄평
                 <span style="color:gray;">({{recipe.reviewDtoList.length}})</span>
               </h3>
@@ -551,9 +552,12 @@ export default {
 #idx-btn {
   position: fixed;
   left: 50px;
-  top: 70px;
+  top: 90px;
   z-index: 99999;
   display:none;  
+  padding: 0px 20px 20px 30px;
+  border-radius: 20px;
+  border: solid 1px lightgray;
 }
 
 .text-link:hover {
@@ -593,7 +597,15 @@ export default {
 }
 
 .cook-detail {
-  box-shadow: 1px 1px 2px 6px lightgray;
+  padding: 30px 60px 30px 60px;
+  border-radius: 40px;
+  box-shadow: 0px 8px 40px rgba(128, 128, 128, 0.15);
+}
+
+.review-sec {
+  padding: 30px 60px 30px 60px;
+  border-radius: 40px;
+  box-shadow: 0px 8px 40px rgba(128, 128, 128, 0.15);
 }
 
 

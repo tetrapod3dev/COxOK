@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="search-form">
     <div class="row px-5">
       <div class="col-6 row">
         <div v-for="(categoryGroup, index) in categoryGroups" :key="index" class="col-4">
@@ -47,8 +47,75 @@
           </div>
         </div>
       </div>
-      <div class="row">
-          난이도<b-form-input type="range"></b-form-input>
+      <div class="row col-12 mt-5 mb-5">
+        <div class="col-4">
+                <div class="tick-slider mb-3">
+                    <div class="tick-slider-header">
+                        <h5><label for="weightSlider">난이도</label></h5>
+                        <h5>level</h5>
+                    </div>
+                    <div class="tick-slider-value-container">
+                        <div id="weightLabelMin" class="tick-slider-label">1</div>
+                        <div id="weightLabelMax" class="tick-slider-label">5</div>
+                        <div id="weightValue" class="tick-slider-value"></div>
+                    </div>
+                    <div class="tick-slider-background"></div>
+                    <div id="weightProgress" class="tick-slider-progress"></div>
+                    <div id="weightTicks" class="tick-slider-tick-container"></div>
+                    <input
+                        id="weightSlider"
+                        class="tick-slider-input"
+                        type="range"
+                        min="1"
+                        max="5"
+                        step="1"
+                        value="3"
+                        v-model="level"
+                        data-tick-step="5"
+                        data-tick-id="weightTicks"
+                        data-value-id="weightValue"
+                        data-progress-id="weightProgress"
+                        data-handle-size="18"
+                        data-min-label-id="weightLabelMin"
+                        data-max-label-id="weightLabelMax"
+                    />
+         
+                <div class="tick-slider">
+            <div class="tick-slider-header">
+                <h5><label for="sizeSlider">소요 시간</label></h5>
+                <h5>분</h5>
+            </div>
+            <div class="tick-slider-value-container">
+                <div id="sizeLabelMin" class="tick-slider-label">0</div>
+                <div id="sizeLabelMax" class="tick-slider-label">120</div>
+                <div id="sizeValue" class="tick-slider-value"></div>
+            </div>
+            <div class="tick-slider-background"></div>
+            <div id="sizeProgress" class="tick-slider-progress"></div>
+            <div id="sizeTicks" class="tick-slider-tick-container"></div>
+            <input
+                id="sizeSlider"
+                class="tick-slider-input"
+                type="range"
+                min="0"
+                max="120"
+                step="5"
+                value="0"
+                v-model="cookTime"
+                data-tick-step="5"
+                data-tick-id="sizeTicks"
+                data-value-id="sizeValue"
+                data-progress-id="sizeProgress"
+                data-handle-size="18"
+                data-min-label-id="sizeLabelMin"
+                data-max-label-id="sizeLabelMax"
+            />
+        </div>
+  
+        </div>
+      </div>
+          
+
 
       </div>
     </div>
@@ -290,8 +357,6 @@ export default {
 
 <style>
 /* 난이도, 소요시간 */
-@import url("https://fonts.googleapis.com/css?family=Hind+Madurai:300,600|Poppins:300&display=swap");
-
 .wrapper {
   --yellow: #ffd049;
   --light-yellow: #fdf2d2;
@@ -318,19 +383,10 @@ export default {
   align-items: center;
 }
 
-#sliderContainer {
-  width: 100%;
-  max-width: 440px;
-
+.search-form {
   padding: 56px 40px;
-
   border-radius: 40px;
-
   box-shadow: 0px 8px 40px rgba(128, 128, 128, 0.15);
-}
-
-#sliderContainer > div:first-child {
-  margin-bottom: 48px;
 }
 
 .tick-slider-header {
