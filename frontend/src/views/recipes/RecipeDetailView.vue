@@ -158,7 +158,7 @@
               <p v-if="recipe.reviewDtoList.length == 0">작성된 한줄평이 없습니다.</p>
             </div>
 
-            <div class="media media-post mt-5">
+            <div class="media media-post mt-2">
               <div class="media-body">
                 <!-- 
                 v-model="form.comment"-->
@@ -166,7 +166,7 @@
                 <ReviewMake v-if="(loginUserId > 0) && !isReviewed" @submitReview="submitReview" />
                 <h5 v-else-if="(loginUserId < 0)"><i class="fas fa-exclamation-circle mr-2"></i>한줄평을 작성하기 위해서는 로그인을 해주세요.</h5>
 
-                <div class="media-footer col-10 mt-5">
+                <div class="media-footer col-10">
                   <span @click="changeLike" class="pull-right ml-2">
                     <n-button v-show="(loginUserId > 0)" type="success" round block>
                       <i :class="isLiked ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
@@ -299,7 +299,7 @@ export default {
         }
       }
     },
-    winWidth: function () { //다시짜야해
+    winWidth: function () { 
         this.widthInterval = setInterval(() => {
             var w = window.innerWidth;
             if (w < 1440 && document.getElementById("idx-btn") != null) {
