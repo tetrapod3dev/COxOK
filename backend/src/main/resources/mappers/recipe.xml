@@ -158,7 +158,11 @@
 		   			
 	   			</foreach>
 	   		</if>
-   		) selected order by recipeId desc
+   		) selected 
+   		<![CDATA[
+   			where cookTime <= #{cookTime} and level <= #{level}
+   		 ]]>
+   		order by recipeId desc
    		limit #{startIndex}, 6
    	</select>
    	
@@ -205,6 +209,9 @@
 	   			</foreach>
 	   		</if>
    		) selected
+   		<![CDATA[
+   			where cookTime <= #{cookTime} and level <= #{level}
+   		 ]]>
    	</select>
    	
    	<select id="selectRecipeListByUserId" resultType="RecipeDto">
@@ -293,7 +300,7 @@
 	</select>
 	
 	<select id="selectRecipeListByLevel" resultType="RecipeDto">
-		<![CDATA[
+		<![CDATA[ 
 		SELECT 
 			recipe_id, recipe_name as recipeName, recipe_thumbnail_src as recipeThumbnailSrc, avg_rating as avgRating,
 			reg_time as regTime, recipe_id as recipeId, cook_time as cookTime, level, recipe_detail as recipeDetail
