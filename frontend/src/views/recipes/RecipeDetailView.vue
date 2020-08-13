@@ -26,7 +26,7 @@
         </b-card>
       </b-collapse>
       -->
-          <b-col col="5">
+          <b-col>
             <h4><i class="far fa-list-alt ml-3 mr-2"></i>목차</h4>
             <b-list-group v-b-scrollspy:listgroup-ex >
               <b-list-group-item href="#" @click="scrollDoc('recipeInfo')" >1. 레시피 설명</b-list-group-item>
@@ -209,7 +209,7 @@
     </div>
     <div class="container">
       <!-- 관련 유튜브 영상 위치입니다!! -->
-      <h2>관련 유튜브 영상 보기</h2>
+      <h3 class="title">관련 유튜브 영상 보기</h3>
       <div class="youtube row">
         <a v-for="video in videos" :key="video.id.videoId" :href="youtubeLink(video)" class="col-3">
           <img :src="video.snippet.thumbnails.default.url">
@@ -303,6 +303,7 @@ export default {
     indexScrollFuncion() {
       if(window.innerWidth > 1440) {
         if (
+          document.body.scrollTop > 400 ||
           document.documentElement.scrollTop > 400
         ) {
           document.getElementById("idx-btn").style.display = "block";

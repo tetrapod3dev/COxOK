@@ -23,10 +23,14 @@
         </div>   
       </div>
 
-      <div :id="modifyReviewId(review.reviewId)" style="display:none;" class="ml-auto mr-auto">
-        <b-form-rating size="lg" variant="warning" v-model="review.rating" inline></b-form-rating>
-        <input type="text" v-model="review.content">
-        <b-button @click="updateComment(review)">수정 완료</b-button>
+      <div :id="modifyReviewId(review.reviewId)" style="display:none; font-size:17px;" class="row col-8 ml-auto mr-auto">
+        <div class="row ml-auto mr-auto">
+            <b-form-rating size="lg" variant="warning" class="ml-auto" v-model="review.rating" inline></b-form-rating>    
+            <b-form-input v-model="review.content" class="col-6 ml-2"></b-form-input>
+            <b-button @click="updateComment(review)" class="mt-auto mb-auto ml-2 mr-auto">수정완료</b-button>
+            
+        
+        </div>
       </div>
       
     </div>
@@ -68,9 +72,9 @@ export default {
       const modifyReviewForm = document.getElementById(this.modifyReviewId(review.reviewId))
       if (review.changing) {
         reviewForm.style.setProperty('display', 'none')
-        modifyReviewForm.style.setProperty('display', 'flex')
+        modifyReviewForm.style.setProperty('display', 'block')
       } else {
-        reviewForm.style.setProperty('display', 'flex')
+        reviewForm.style.setProperty('display', 'block')
         modifyReviewForm.style.setProperty('display', 'none')
         this.$emit('updateReview', review)
       }

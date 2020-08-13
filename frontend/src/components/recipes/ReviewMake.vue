@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row col-12 col-md-8 ml-auto mr-auto" >
-      <div class="mt-auto mb-auto">
+      <div class="mt-auto mb-auto ml-auto">
         <b-form-rating size="lg" variant="warning" v-model="reviewData.rating" inline></b-form-rating>
       </div>
-      <div class="mt-auto mb-4">
+      <div class="col-8 mt-auto mb-4">
         <fg-input
           class="no-border form-control-lg"
           id="review-input"
