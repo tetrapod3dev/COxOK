@@ -170,9 +170,9 @@
         <div v-for="(recipePhoto, index) in recipe.recipePhotoList" :key="index" class="row my-3">
 
           <div class="col-4 offset-1 row">
-            <img v-if="recipePhoto.rawFile" :src="recipePhoto.photoSrc">
-            <img v-else :src="imageSrc(recipePhoto.photoSrc) ">
-            <input ref="recipe" type="file" @change="changeFile(index, $event)">
+            <img v-if="recipePhoto.rawFile" :src="recipePhoto.photoSrc" @click="clickTest(index)" >
+            <img v-else :src="imageSrc(recipePhoto.photoSrc)" @click="clickTest(index)" >
+            <input type="file" @change="changeFile(index, $event)" hidden ref="recipeDetail">
           </div>
 
           <textarea type="text" v-model="recipePhoto.photoDetail" class="col-5"></textarea>
@@ -284,13 +284,16 @@ export default {
         )
       .then((res) => {
         this.recipe = res.data.recipe
-        window.onload = this.init;
+        window.addEventListener('load', this.init);
       })
       .catch((err) => console.log(err.response));
       
     this.getCategory()
   },
   methods: {
+    clickTest(index) {
+      this.$refs.recipeDetail[index].click()
+    },
     ...mapActions(['logout']),
     onClickThumbnailUpload() {
       this.$refs.thumbnailInput.click();
@@ -486,9 +489,9 @@ export default {
     },
     // 난이도, 소요시간
     init() {
-    const sliders = document.getElementsByClassName("tick-slider-input");
-    
-    for (let slider of sliders) {
+      const sliders = document.getElementsByClassName("tick-slider-input");
+      
+      for (let slider of sliders) {
         slider.oninput = this.onSliderInput;
 
         this.updateValue(slider);
@@ -497,99 +500,99 @@ export default {
         this.updateProgress(slider);
 
         this.setTicks(slider);
+      }
+    },
 
+    onSliderInput(event) {
+        this.updateValue(event.target);
+        this.updateValuePosition(event.target);
+        this.updateLabels(event.target);
+        this.updateProgress(event.target);
+    },
+
+    updateValue(slider) {
+        let value = document.getElementById(slider.dataset.valueId);
+
+        value.innerHTML = "<div>" + slider.value + "</div>";
+    },
+
+    updateValuePosition(slider) {
+        let value = document.getElementById(slider.dataset.valueId);
+
+        const percent = this.getSliderPercent(slider);
+        const sliderWidth = slider.getBoundingClientRect().width;
+        const valueWidth = value.getBoundingClientRect().width;
+        const handleSize = slider.dataset.handleSize;
+
+        let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
+
+        left = Math.min(left, sliderWidth - valueWidth);
+        left = slider.value === slider.min ? 0 : left;
+
+        value.style.left = left + "px";
+    },
+
+    updateLabels(slider) {
+        const value = document.getElementById(slider.dataset.valueId);
+        const minLabel = document.getElementById(slider.dataset.minLabelId);
+        const maxLabel = document.getElementById(slider.dataset.maxLabelId);
+
+        const valueRect = value.getBoundingClientRect();
+        const minLabelRect = minLabel.getBoundingClientRect();
+        const maxLabelRect = maxLabel.getBoundingClientRect();
+
+        const minLabelDelta = valueRect.left - (minLabelRect.left);
+        const maxLabelDelta = maxLabelRect.left - valueRect.left;
+
+        const deltaThreshold = 32;
+
+        if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
+        else minLabel.classList.remove("hidden");
+
+        if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
+        else maxLabel.classList.remove("hidden");
+    },
+
+    updateProgress(slider) {
+        let progress = document.getElementById(slider.dataset.progressId);
+        const percent = this.getSliderPercent(slider);
+
+        progress.style.width = percent * 100 + "%";
+    },
+
+    getSliderPercent(slider) {
+        const range = slider.max - slider.min;
+        const absValue = slider.value - slider.min;
+
+        return absValue / range;
+    },
+
+    setTicks(slider) {
+        let container = document.getElementById(slider.dataset.tickId);
+        const spacing = parseFloat(slider.dataset.tickStep);
+        const sliderRange = slider.max - slider.min;
+        const tickCount = sliderRange / spacing + 1; // +1 to account for 0
+
+        for (let ii = 0; ii < tickCount; ii++) {
+            let tick = document.createElement("span");
+
+            tick.className = "tick-slider-tick";
+
+            container.appendChild(tick);
+        }
+    },
+
+    onResize() {
+        const sliders = document.getElementsByClassName("tick-slider-input");
+
+        for (let slider of sliders) {
+            this.updateValuePosition(slider);
+        }
     }
-},
-
-onSliderInput(event) {
-    this.updateValue(event.target);
-    this.updateValuePosition(event.target);
-    this.updateLabels(event.target);
-    this.updateProgress(event.target);
-},
-
-updateValue(slider) {
-    let value = document.getElementById(slider.dataset.valueId);
-
-    value.innerHTML = "<div>" + slider.value + "</div>";
-},
-
-updateValuePosition(slider) {
-    let value = document.getElementById(slider.dataset.valueId);
-
-    const percent = this.getSliderPercent(slider);
-    const sliderWidth = slider.getBoundingClientRect().width;
-    const valueWidth = value.getBoundingClientRect().width;
-    const handleSize = slider.dataset.handleSize;
-
-    let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
-
-    left = Math.min(left, sliderWidth - valueWidth);
-    left = slider.value === slider.min ? 0 : left;
-
-    value.style.left = left + "px";
-},
-
-updateLabels(slider) {
-    const value = document.getElementById(slider.dataset.valueId);
-    const minLabel = document.getElementById(slider.dataset.minLabelId);
-    const maxLabel = document.getElementById(slider.dataset.maxLabelId);
-
-    const valueRect = value.getBoundingClientRect();
-    const minLabelRect = minLabel.getBoundingClientRect();
-    const maxLabelRect = maxLabel.getBoundingClientRect();
-
-    const minLabelDelta = valueRect.left - (minLabelRect.left);
-    const maxLabelDelta = maxLabelRect.left - valueRect.left;
-
-    const deltaThreshold = 32;
-
-    if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
-    else minLabel.classList.remove("hidden");
-
-    if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
-    else maxLabel.classList.remove("hidden");
-},
-
-updateProgress(slider) {
-    let progress = document.getElementById(slider.dataset.progressId);
-    const percent = this.getSliderPercent(slider);
-
-    progress.style.width = percent * 100 + "%";
-},
-
-getSliderPercent(slider) {
-    const range = slider.max - slider.min;
-    const absValue = slider.value - slider.min;
-
-    return absValue / range;
-},
-
-setTicks(slider) {
-    let container = document.getElementById(slider.dataset.tickId);
-    const spacing = parseFloat(slider.dataset.tickStep);
-    const sliderRange = slider.max - slider.min;
-    const tickCount = sliderRange / spacing + 1; // +1 to account for 0
-
-    for (let ii = 0; ii < tickCount; ii++) {
-        let tick = document.createElement("span");
-
-        tick.className = "tick-slider-tick";
-
-        container.appendChild(tick);
-    }
-},
-
-onResize() {
-    const sliders = document.getElementsByClassName("tick-slider-input");
-
-    for (let slider of sliders) {
-        this.updateValuePosition(slider);
-    }
-}
   },
   mounted:function(){
-    window.onload(this.init)
+    
+    window.addEventListener('load', this.init);
     window.addEventListener('resize', this.onResize)
   }
 }

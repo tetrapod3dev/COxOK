@@ -73,6 +73,13 @@ export default {
     blog: "/blog/",
     blogList: "/blog/all/", // 모든 블로그 게시글을 받기 위한 주소
 
+    // Calendar
+    meetMy: "/meet/my/",
+    meetMyjoin: "/meet/myjoin/",
+    meetJoin: "/meet/join/",
+    onlineMy: "/online/my/",
+    onlineMyjoin: "/online/myjoin/",
+    onlineJoin: "/online/join/",
 
     //Admin ROUTES
     adminGetUser: "/user/admin/list/", // Get / 토큰 전달
