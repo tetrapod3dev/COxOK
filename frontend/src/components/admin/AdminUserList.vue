@@ -5,8 +5,10 @@
     <div v-for="user in users" :key="user.userId" class="row">
       <p class="col-1"> {{ user.userId }} </p>
       <img :src="imageSrc(user.profilePhoto)" class="col-3">
-      <p class="col-2"> {{ user.email }} </p>
-      <p class="col-1"> {{ user.nickname }} </p>
+      <div class="col-3">
+        <p> {{ user.email }} </p>
+        <p> {{ user.nickname }} </p>
+      </div>
       <p class="col-3"> {{ user.detail }} </p>
       <p class="col-1"> {{ user.auth }}</p>
       <div class="col-1">
@@ -17,16 +19,22 @@
     </div>
     <b-modal hide-footer id="modal" ref="modal" size="md" title="유저 정보 수정">
       <h3>{{ selectedUser.email }}님의 정보</h3>
-      <img :src="imageSrc(selectedUser.profilePhoto)">
-      <button @click="clearPhoto">사진 초기화</button>
+      <div class="row">
+        <div class="col-6">
+          <img :src="imageSrc(selectedUser.profilePhoto)">
+          <button @click="clearPhoto">사진 초기화</button>
+        </div>
+        <div class="col-6">
+          <input type="text" v-model="selectedUser.nickname">
+          <button @click="clearNickname">닉네임 초기화</button>
 
-      <input type="text" v-model="selectedUser.nickname">
-      <button @click="clearNickname">닉네임 초기화</button>
+          <input type="text" v-model="selectedUser.detail">
+          <button @click="clearDetail">자기소개 초기화</button>
+        </div>
 
-      <input type="text" v-model="selectedUser.detail">
-      <button @click="clearDetail">자기소개 초기화</button>
 
-      <b-button @click="sendData(selectedUser.userId)">적용</b-button>
+        <b-button @click="sendData(selectedUser.userId)">적용</b-button>
+      </div>
     </b-modal>
 
   </div>
