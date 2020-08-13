@@ -288,7 +288,7 @@ export default {
       }
     },
     indexScrollFuncion() {
-      if(window.innerWidth > 1440) {
+      if(window.innerWidth > 1440 && document.getElementById("idx-btn") != null) {
         if (
           document.body.scrollTop > 400 ||
           document.documentElement.scrollTop > 400
@@ -302,7 +302,7 @@ export default {
     winWidth: function () { //다시짜야해
         this.widthInterval = setInterval(() => {
             var w = window.innerWidth;
-            if (w < 1440) {
+            if (w < 1440 && document.getElementById("idx-btn") != null) {
               document.getElementById("idx-btn").style.display = "none";
             }
         }, 100);
