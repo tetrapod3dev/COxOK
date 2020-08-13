@@ -34,6 +34,8 @@ export default {
     recipeLike: "/recipe/like/",
     recipeDislike: "/recipe/likeCancel/",
 
+    reportRecipe: "/report/", // POST 신고하기
+
     // Review Routes
     recipeReview: "/review/view/", // GET / 레시피 아이디를 보내면 레시피의 리뷰들이 반환되는 것같아요.
     reviewRegister: "/review/", // POST / 리뷰 작성을 위한 데이터를 전달할 주소
@@ -69,5 +71,18 @@ export default {
     // Blog ROUTES
     blog: "/blog/",
     blogList: "/blog/all/", // 모든 블로그 게시글을 받기 위한 주소
+
+
+    //Admin ROUTES
+    adminGetUser: "/user/admin/list/", // Get / 토큰 전달
+    adminUpdateUser: "/user/admin/", // PUT / 뭐 전달하는지 추가 필요
+    adminDeleteUser: "/user/admin/", // DELETE / 뒤에 userId
+
+    adminAllIngredients: "/recipe/admin/ingredient/", // GET / 뒤에 startIndex
+    adminDetailIngredient: "/recipe/admin/ingredient/detail/", // GET / 뒤에 id
+    adminModiIngredients: "/recipe/admin/modify-ingredient/", // GET / 뒤에 startIndex
+    adminIngredient: "/recipe/admin/ingredient/", // POST : 재료 추가, PUT : 재료 수정
+    
+    adminGetReportedRecipes: "/report/admin/", // GET / 신고받은 레시피 전체 다 옴
   },
 };
