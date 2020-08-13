@@ -69,7 +69,7 @@ public class ReportController {
 		Map<String,Object> map = new HashMap<String, Object>();
 		
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
-		
+		System.out.println(">>>>>>>>>>>>>>"+email);
 		if(!email.equals("admin@co-ok.com")) {	//관리자인 경우
 			List<ReportRecipeResponseDto> list = reportService.getAllReport();
 			map.put("msg", "신고 레시피 조회에 성공했습니다.");
