@@ -49,8 +49,8 @@
       </div>
     </div>  
     <div class="mt-5 mb-5">
-      <div id="sliderContainer row">
-        <div class="tick-slider col-8 col-md-4 ml-auto mr-auto">
+      <div id="sliderContainer" class="row">
+        <div class="tick-slider col-8 col-md-4 ml-auto mr-auto mb-0 align-self-center">
           <div class="tick-slider-header">
             <h5><label for="weightSlider">난이도</label></h5>
             <h5>level</h5>
@@ -81,7 +81,7 @@
               data-max-label-id="weightLabelMax"
           />
         </div>
-        <div class="tick-slider col-8 col-md-4  ml-auto mr-auto">
+        <div class="tick-slider col-8 col-md-4  ml-auto mr-auto align-self-center">
           <div class="tick-slider-header">
             <h5><label for="sizeSlider">소요 시간</label></h5>
             <h5>분</h5>
