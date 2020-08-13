@@ -186,6 +186,7 @@ public class RecipeController {
 		if(count!=0) {
 			map.put("msg", "레시피 등록에 성공했습니다.");
 			map.put("status", "success");
+			map.put("recipeId",recipeService.getRecipeId());
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "레시피 등록에 실패했습니다.");

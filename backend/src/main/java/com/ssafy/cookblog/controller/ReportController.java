@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.ReportRecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
+import com.ssafy.cookblog.dto.response.ReportRecipeResponseDto;
 import com.ssafy.cookblog.service.ReportService;
 import com.ssafy.cookblog.service.UserService;
 import com.ssafy.cookblog.util.JwtService;
@@ -68,9 +69,9 @@ public class ReportController {
 		Map<String,Object> map = new HashMap<String, Object>();
 		
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
-
+		
 		if(!email.equals("admin@co-ok.com")) {	//관리자인 경우
-			List<UserDto> list = userService.findAllUser();
+			List<ReportRecipeResponseDto> list = reportService.getAllReport();
 			map.put("msg", "신고 레시피 조회에 성공했습니다.");
 			map.put("status", "success");
 			map.put("list",list);

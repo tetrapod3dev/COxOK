@@ -3,10 +3,11 @@ package com.ssafy.cookblog.service;
 import java.util.List;
 
 import com.ssafy.cookblog.dto.ReportRecipeDto;
+import com.ssafy.cookblog.dto.response.ReportRecipeResponseDto;
 
 public interface ReportService {
 
 	public int reportRecipe(ReportRecipeDto reportDto);
-	public List<ReportRecipeDto> getAllReport();
+	public List<ReportRecipeResponseDto> getAllReport();
 
 }

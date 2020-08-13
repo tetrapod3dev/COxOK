@@ -52,6 +52,7 @@ public interface RecipeDao {
 	
 	
 	public List<RecipeDto> selectRecipeListByLevel(RecipeDto recipeDto);
+
 	public long selectRecipeTotalByLevel(int level);
-	
+
 }
