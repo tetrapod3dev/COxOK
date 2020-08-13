@@ -9,7 +9,7 @@
     <div class="subscribe-line subscribe-line-white">
       <div class="container">
         <div class="row">
-          <div class="col-md-2" @click="changeShow">
+          <div class="col-md-2 ml-auto" @click="changeShow">
             <n-button type="primary" round block>레시피 검색</n-button>
           </div>
         </div>
@@ -37,7 +37,7 @@
         <h2>선택하신 조건에 맞는 레시피가 없습니다.</h2>
       </div>
 
-      <div class="col-md-2">
+      <div class="col-md-2 ml-auto">
             <router-link to="/recipes/make">
               <n-button type="primary" round block>레시피 작성</n-button>
             </router-link>
