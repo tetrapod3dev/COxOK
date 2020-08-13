@@ -57,7 +57,6 @@
       <div class="container">
         <div class="row">
           <div class="col-md-10 ml-auto mr-auto">
-            <br>
             <h3 class="ingre-title text-left pt-5 mb-3">
               <i class="fas fa-angle-double-right mr-1"></i>
               재료 리스트 
@@ -87,7 +86,6 @@
       <div class="container">
         <div class="row">
           <div class="col-md-10 ml-auto mr-auto">
-            <br>
             <h3 class="text-left pt-5 mb-3">
               <i class="fas fa-angle-double-right mr-1"></i>
               영양소 정보
@@ -308,7 +306,7 @@ export default {
     },
     scrollDoc(id) {
       if (id != "top") {
-        var location = document.querySelector("#" + id).offsetTop;
+        var location = document.querySelector("#" + id).offsetTop-100;
 
         window.scrollTo({ top: location, behavior: "smooth" });
       } else {
@@ -552,14 +550,14 @@ export default {
 
 #idx-btn {
   position: fixed;
-  left: 40px;
-  top: 30px;
+  left: 50px;
+  top: 70px;
   z-index: 99999;
   display:none;  
 }
 
 .text-link:hover {
-  cursor: pointer;
+  color:orangered;
 }
 
 .avgRating {
