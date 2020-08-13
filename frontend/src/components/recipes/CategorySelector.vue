@@ -8,13 +8,13 @@
             :key="category['category_id']"
             class="d-flex justify-content-start my-2"
           >
-            <input
-              type="checkbox"
+            <b-form-checkbox
               v-model="checker[category.category_id]"
-              class="mr-2 mt-1"
+              class="mt-1"
               @click="selectCategory(category.category_id)"
-            />
-            {{ category['category_name']}}
+            >
+              {{ category['category_name']}}
+            </b-form-checkbox>
           </div>
         </div>
       </div>
@@ -340,6 +340,7 @@ export default {
 </script>
 
 <style>
+
 /* 난이도, 소요시간 */
 .wrapper {
   --yellow: #ffd049;
