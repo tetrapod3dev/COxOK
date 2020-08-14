@@ -54,5 +54,10 @@ public class VersusServiceImpl implements VersusService {
 		return versusDao.selectVersusResult(versusId);
 	}
 
+	@Override
+	public List<VersusPointDto> getTop3VersusResult() {
+		return versusDao.selectTop3VersusResult();
+	}
+
 
 }

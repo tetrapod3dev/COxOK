@@ -67,4 +67,14 @@
 		ORDER BY COUNT(*) desc
 	</select>
 	
+	<select id="selectTop3VersusResult" resultType="VersusPointDto"> 
+		SELECT recipe_id AS recipeId, COUNT(*) AS count, 
+			recipe_name AS recipeName, recipe_thumbnail_src AS recipeThumbnailSrc
+		FROM versus_point JOIN recipe USING(recipe_id)
+		GROUP BY recipe_id 
+		ORDER BY COUNT(*) desc
+		LIMIT 3
+	</select>
+	
+	
 </mapper>

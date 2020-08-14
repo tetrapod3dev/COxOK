@@ -17,5 +17,5 @@ public interface VersusDao {
 	public List<RecipeDto> selectVersusRecipe(VersusViewResponseDto versusView);
 	public int delete(long versusId);
 	public List<VersusPointDto> selectVersusResult(long versusId);
-
+	public List<VersusPointDto> selectTop3VersusResult();
 }
