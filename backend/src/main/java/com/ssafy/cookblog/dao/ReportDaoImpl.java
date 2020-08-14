@@ -29,4 +29,9 @@ public class ReportDaoImpl implements ReportDao {
 		return session.delete("report.delete", reportDto);
 	}
 
+	@Override
+	public boolean selectReportRecipe(ReportRecipeDto reportDto) {
+		return session.selectOne("report.selectReportRecipe", reportDto);
+	}
+
 }

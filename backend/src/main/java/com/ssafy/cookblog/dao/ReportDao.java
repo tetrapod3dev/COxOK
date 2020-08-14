@@ -9,5 +9,6 @@ public interface ReportDao {
 	public int insertReportRecipe(ReportRecipeDto reportDto);
 	public List<ReportRecipeDto> selectAllReport();
 	public int deleteReportRecipe(ReportRecipeDto reportDto);
+	public boolean selectReportRecipe(ReportRecipeDto reportDto);
 
 }

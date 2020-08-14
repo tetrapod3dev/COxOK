@@ -52,4 +52,13 @@ public class ReportServiceImpl implements ReportService {
 		return reportDao.deleteReportRecipe(reportDto);
 	}
 
+	@Override
+	@Transactional 
+	public boolean getReportRecipe(long recipeId, long userId) {
+		ReportRecipeDto reportDto = new ReportRecipeDto();
+		reportDto.setUserId(userId);
+		reportDto.setRecipeId(recipeId);
+		return reportDao.selectReportRecipe(reportDto);
+	}
+
 }

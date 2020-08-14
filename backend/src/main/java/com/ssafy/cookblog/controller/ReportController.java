@@ -108,7 +108,22 @@ public class ReportController {
 		return response;
 	}
 	
+	@ApiOperation("해당 레시피 신고했는지 조회")
+	@GetMapping("/{recipeId}")
+	public Object getReportRecipe(@PathVariable long recipeId, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		long userId = userService.findUserByEmail(email).getUserId();
+		
+		boolean isReport = reportService.getReportRecipe(recipeId, userId);
+		map.put("msg", "레시피 신고 조회에 성공했습니다.");
+		map.put("status", "success");
+		map.put("isReport", isReport);
+		response = new ResponseEntity(map, HttpStatus.OK);
+		
+		return response;
+	}
 	
-	
-
 }

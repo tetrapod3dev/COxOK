@@ -16,4 +16,10 @@
 		where recipe_id = #{recipeId} and user_id = #{userId}
 	</delete>
 	
+	<select id="selectReportRecipe" resultType="Boolean">
+		select COUNT(*) > 0 from report_recipe
+		where recipe_id = #{recipeId} and user_id = #{userId}
+	</select>
+	
+	
 </mapper>

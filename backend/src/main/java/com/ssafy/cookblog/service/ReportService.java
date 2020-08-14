@@ -10,5 +10,6 @@ public interface ReportService {
 	public int reportRecipe(ReportRecipeDto reportDto);
 	public List<ReportRecipeResponseDto> getAllReport();
 	public int cancelReportRecipe(long recipeId, long userId);
+	public boolean getReportRecipe(long recipeId, long userId);
 
 }
