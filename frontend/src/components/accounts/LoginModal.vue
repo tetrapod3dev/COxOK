@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p @click="showModal">로그인</p>
+    <p id="modal-btn" @click="showModal">로그인</p>
 
     <div class="modal" id="login-modal">
       <div class="modal-dialog modal-login">
@@ -97,6 +97,10 @@ export default {
 </script>
 
 <style scoped>
+#modal-btn:hover {
+  cursor: pointer;
+}
+
 /* modal background */
 #login-modal {
   background-color: rgb(0, 0, 0);
