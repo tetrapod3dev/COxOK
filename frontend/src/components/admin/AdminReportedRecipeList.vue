@@ -20,7 +20,7 @@
         <p>신고사유 : {{ recipe.reportRecipeDto.reason }}</p>
       </div>
       <div class="col-2">
-        <button>상세 보기</button>
+        <router-link :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.reportRecipeDto.recipeId} }"><button>상세 보기</button></router-link>
         <button>삭제</button>
       </div>
     </div>
