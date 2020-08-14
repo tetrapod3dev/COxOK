@@ -515,6 +515,31 @@ public class RecipeController {
 		return response;
 	}
 	
+	@ApiOperation("관리자가 레시피 삭제")
+	@DeleteMapping("/admin/{id}")
+	public Object adminDeleteRecipe(HttpServletRequest request, @PathVariable long id) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		if(!email.equals("admin@co-ok.com")) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		int count = recipeService.deleteRecipe(id);
+		if(count != 0) {
+			map.put("msg", "레시피가 삭제되었습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "레시피를 삭제하지 못했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
 	
 	@ApiOperation("레시피 검색(요리시간)")
 	@GetMapping("/cooktime/{cookTime}/{startIndex}")
