@@ -16,7 +16,7 @@
         <div v-if="selectedMax == 0" class="button-container">
           <b-form-select class="btn btn-primary btn-round btn-lg" id="round">
             <template v-slot:first>
-              <b-form-select-option :value="null" selected disabled>--선택--</b-form-select-option>
+              <b-form-select-option :value="0" selected disabled>--선택--</b-form-select-option>
             </template>
 
             <b-form-select-option
@@ -49,7 +49,11 @@
       <div class="row">
         <div v-for="recipe in nowRecipes" :key="recipe.id" class="col-6">
           <card type="profile" style="width:465px;height:400px;">
-            <img :src="imageSrc(recipe.recipeThumbnailSrc)" @click="selectRecipe(recipe)" class="versus-card-image">
+            <img
+              :src="imageSrc(recipe.recipeThumbnailSrc)"
+              @click="selectRecipe(recipe)"
+              class="versus-card-image"
+            />
 
             <h4 class="card-title text-left">{{ recipe.recipeName }}</h4>
             <h6
@@ -192,18 +196,9 @@ export default {
           SERVER.URL + SERVER.ROUTES.versusResult + this.$route.params.versus_id
         )
         .then((res) => {
-          this.versusResult = this.recipesAll
-            .map((recipe) => {
-              return Object.assign(
-                recipe,
-                res.data.versus.find((cntWinner) => {
-                  return cntWinner && recipe.recipeId === cntWinner.recipeId;
-                })
-              );
-            })
-            .sort((recipe1, recipe2) => {
-              return recipe2.count - recipe1.count;
-            });
+          this.versusResult = res.data.versus.sort((recipe1, recipe2) => {
+            return recipe2.count - recipe1.count;
+          });
         })
         .catch((err) => console.log(err));
     },
