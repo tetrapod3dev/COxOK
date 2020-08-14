@@ -154,9 +154,18 @@
             </div>
             <div class="col-3">
               <!-- 재료 추가 모달창 필요 -->
-              <n-button type="secondary" round class="btn">
+              <n-button @click.native="showModal" type="secondary" round class="btn">
                 재료가 없어요!
               </n-button>
+              
+              <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
+                <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
+
+                <b-form-input v-model="newIngredient" placeholder="재료명을 적어주세요"></b-form-input>
+                <b-form-select v-model="newIngredientUnit" :options="units"></b-form-select>
+
+                <n-button type="danger" round block @click.native="sendData">제출</n-button>
+              </b-modal>
             </div>
           </div>
 
@@ -234,6 +243,9 @@ export default {
       recipeThumbnail: null,
       recipePhotos: null,
       ingredientsName: [],
+      units: ['g', '큰술', '작은술', '꼬집', '봉', '개', 'ml', '장'],
+      newIngredient: null,
+      newIngredientUnit: null,
     }
   },
   computed: {
@@ -504,90 +516,124 @@ export default {
     },
 
     onSliderInput(event) {
-        this.updateValue(event.target);
-        this.updateValuePosition(event.target);
-        this.updateLabels(event.target);
-        this.updateProgress(event.target);
+      this.updateValue(event.target);
+      this.updateValuePosition(event.target);
+      this.updateLabels(event.target);
+      this.updateProgress(event.target);
     },
 
     updateValue(slider) {
-        let value = document.getElementById(slider.dataset.valueId);
+      let value = document.getElementById(slider.dataset.valueId);
 
-        value.innerHTML = "<div>" + slider.value + "</div>";
+      value.innerHTML = "<div>" + slider.value + "</div>";
     },
 
     updateValuePosition(slider) {
-        let value = document.getElementById(slider.dataset.valueId);
+      let value = document.getElementById(slider.dataset.valueId);
 
-        const percent = this.getSliderPercent(slider);
-        const sliderWidth = slider.getBoundingClientRect().width;
-        const valueWidth = value.getBoundingClientRect().width;
-        const handleSize = slider.dataset.handleSize;
+      const percent = this.getSliderPercent(slider);
+      const sliderWidth = slider.getBoundingClientRect().width;
+      const valueWidth = value.getBoundingClientRect().width;
+      const handleSize = slider.dataset.handleSize;
 
-        let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
+      let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
 
-        left = Math.min(left, sliderWidth - valueWidth);
-        left = slider.value === slider.min ? 0 : left;
+      left = Math.min(left, sliderWidth - valueWidth);
+      left = slider.value === slider.min ? 0 : left;
 
-        value.style.left = left + "px";
+      value.style.left = left + "px";
     },
 
     updateLabels(slider) {
-        const value = document.getElementById(slider.dataset.valueId);
-        const minLabel = document.getElementById(slider.dataset.minLabelId);
-        const maxLabel = document.getElementById(slider.dataset.maxLabelId);
+      const value = document.getElementById(slider.dataset.valueId);
+      const minLabel = document.getElementById(slider.dataset.minLabelId);
+      const maxLabel = document.getElementById(slider.dataset.maxLabelId);
 
-        const valueRect = value.getBoundingClientRect();
-        const minLabelRect = minLabel.getBoundingClientRect();
-        const maxLabelRect = maxLabel.getBoundingClientRect();
+      const valueRect = value.getBoundingClientRect();
+      const minLabelRect = minLabel.getBoundingClientRect();
+      const maxLabelRect = maxLabel.getBoundingClientRect();
 
-        const minLabelDelta = valueRect.left - (minLabelRect.left);
-        const maxLabelDelta = maxLabelRect.left - valueRect.left;
+      const minLabelDelta = valueRect.left - (minLabelRect.left);
+      const maxLabelDelta = maxLabelRect.left - valueRect.left;
 
-        const deltaThreshold = 32;
+      const deltaThreshold = 32;
 
-        if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
-        else minLabel.classList.remove("hidden");
+      if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
+      else minLabel.classList.remove("hidden");
 
-        if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
-        else maxLabel.classList.remove("hidden");
+      if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
+      else maxLabel.classList.remove("hidden");
     },
 
     updateProgress(slider) {
-        let progress = document.getElementById(slider.dataset.progressId);
-        const percent = this.getSliderPercent(slider);
+      let progress = document.getElementById(slider.dataset.progressId);
+      const percent = this.getSliderPercent(slider);
 
-        progress.style.width = percent * 100 + "%";
+      progress.style.width = percent * 100 + "%";
     },
 
     getSliderPercent(slider) {
-        const range = slider.max - slider.min;
-        const absValue = slider.value - slider.min;
+      const range = slider.max - slider.min;
+      const absValue = slider.value - slider.min;
 
-        return absValue / range;
+      return absValue / range;
     },
 
     setTicks(slider) {
-        let container = document.getElementById(slider.dataset.tickId);
-        const spacing = parseFloat(slider.dataset.tickStep);
-        const sliderRange = slider.max - slider.min;
-        const tickCount = sliderRange / spacing + 1; // +1 to account for 0
+      let container = document.getElementById(slider.dataset.tickId);
+      const spacing = parseFloat(slider.dataset.tickStep);
+      const sliderRange = slider.max - slider.min;
+      const tickCount = sliderRange / spacing + 1; // +1 to account for 0
 
-        for (let ii = 0; ii < tickCount; ii++) {
-            let tick = document.createElement("span");
+      for (let ii = 0; ii < tickCount; ii++) {
+        let tick = document.createElement("span");
 
-            tick.className = "tick-slider-tick";
+        tick.className = "tick-slider-tick";
 
-            container.appendChild(tick);
-        }
+        container.appendChild(tick);
+      }
     },
 
     onResize() {
-        const sliders = document.getElementsByClassName("tick-slider-input");
+      const sliders = document.getElementsByClassName("tick-slider-input");
 
-        for (let slider of sliders) {
-            this.updateValuePosition(slider);
+      for (let slider of sliders) {
+        this.updateValuePosition(slider);
+      }
+    },
+    
+    showModal() {
+      this.$refs['ingredient-modal'].show()
+    },
+    hideModal() {
+      this.$refs['ingredient-modal'].hide()
+    },
+    sendData() {
+      if (this.ingredientsName.indexOf(this.newIngredient) >= 0) {
+        alert('이미 존재하는 재료입니다!!')
+      } else {
+        let body = {
+          name: this.newIngredient,
+          unit: this.newIngredientUnit
         }
+
+        let configs = {
+          headers: {
+            Authorization: this.config,
+          },
+        }
+
+        axios
+          .post(SERVER.URL + SERVER.ROUTES.userAddIngredient, body, configs)
+          .then(() => {
+            alert('재료 추가 요청에 성공했습니다!')
+            this.hideModal()
+            this.getCategory()
+            this.newIngredient = null
+            this.newIngredientUnit = null
+          })
+          .catch(err => console.log(err.response))
+      }
     }
   },
   mounted:function(){

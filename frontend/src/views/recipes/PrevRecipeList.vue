@@ -17,6 +17,8 @@ export default {
       'selectedCategory': [],
       'selectedIngredients': [],
       'selectedIngredientsName': [],
+      'level': 5,
+      'cookTime': 120,
     })
     this.$router.push({ name: 'RecipeListView', params: { pageNum: 1} })
   }
