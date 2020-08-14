@@ -21,7 +21,14 @@
     </div>
     
     <div class="container">
-      <p class="selected-recipe-list-title">선택한 레시피 목록</p>
+      <!-- <p class="selected-recipe-list-title">선택한 레시피 목록</p> -->
+      <div class="paragraph">
+        <div class="RecipeVersus">[요리대전]</div> 
+        <div class="VersusList"> 
+          <span>선택된 레시피 </span>
+        </div>
+      </div>
+      <br>
       <div class="selected-recipe-list row">
         <div class="ml-auto mr-auto align-self-center">
           <b-button variant="primary" class="btn-circle" pill @click="movePrev">
@@ -119,12 +126,6 @@
             </div>
             <input type="checkbox" class="plus-minus" v-model="checker[recipe.recipeId]" @click="checkRecipe(recipe)">
 
-            <!-- <input
-              type="checkbox"
-              v-model="checker[recipe.recipeId]"
-              class="col-1"
-              @click="checkRecipe(recipe)"
-            /> -->
           </div>
           <div id="bottomSensor"></div>
         </tab-pane>
@@ -486,8 +487,66 @@ export default {
 }
 
 
+/* 선택한 레시피 목록 */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300');
 
-/* 레시피 추가 버튼 */
+.paragraph {
+  text-align:center;
+  color:rgb(56, 9, 25);
+  font-family:'Roboto';
+  font-weight:500;
+  font-size:30px;
+  overflow:hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0,0,0);
+}
+
+
+.RecipeVersus .VersusList {
+  display:inline-block;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.RecipeVersus {    /* For increasing performance 
+                       ID/Class should've been used. 
+                       For a small demo 
+                       it's okaish for now */
+  animation: showup 7s infinite;
+}
+
+.VersusList {
+  width:0px;
+  animation: reveal 7s infinite;
+}
+
+.VersusList span {
+  margin-left:-100px;
+  animation: slidein 7s infinite;
+}
+
+@keyframes showup {
+    0% {opacity:0;}
+    20% {opacity:1;}
+    80% {opacity:1;}
+    100% {opacity:0;}
+}
+
+@keyframes slidein {
+    0% { margin-left:-800px; }
+    20% { margin-left:-800px; }
+    35% { margin-left:0px; }
+    100% { margin-left:0px; }
+}
+
+@keyframes reveal {
+    0% {opacity:0;width:0px;}
+    20% {opacity:1;width:0px;}
+    30% {width:100%;}
+    80% {opacity:1;}
+    100% {opacity:0;width:100%;}
+}
 
 
 </style>
