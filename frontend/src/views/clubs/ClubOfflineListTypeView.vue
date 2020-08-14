@@ -46,7 +46,7 @@ export default {
         .get(SERVER.URL + SERVER.ROUTES.clubListType + this.$route.params.type + '/' + (this.$route.params.pageNum-1))
         .then(res => {
           this.curPage = parseInt(this.$route.params.pageNum)
-          this.maxPage = parseInt((res.data.total - 1) / 6) + 1
+          this.maxPage = parseInt((res.data.total - 1) / 12) + 1
           this.clubs = res.data.list
         })
         .catch(err => console.log(err))
@@ -60,6 +60,7 @@ export default {
       } else if (page != this.curPage) {
         this.$router.push({ params: { type: this.type, pageNum: parseInt(page) } });
       }
+      this.getClubs();
       scroll(0, 0);
     },
   }

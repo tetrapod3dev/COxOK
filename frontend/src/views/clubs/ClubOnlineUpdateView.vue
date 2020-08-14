@@ -57,13 +57,13 @@
       <div v-if="online.type == '유튜브강의'" class="row">
         <b-col sm="3">비디오 ID:</b-col>
         <b-col sm="6">
-          <b-form-input type="text" v-model="video" />
+          <b-form-input type="text" v-model="online.video" />
         </b-col>
       </div>
       <div v-if="online.type != '유튜브강의'" class="row">
         <b-col sm="3">실시간 강의 링크:</b-col>
         <b-col sm="6">
-          <b-form-input type="text" v-model="link" />
+          <b-form-input type="text" v-model="online.link" />
         </b-col>
       </div>
       <div v-if="online.type != '유튜브강의'" class="row">
@@ -146,9 +146,9 @@ export default {
       this.rawFile = event.target.files[0];
     },
     initData() {
-      (this.online.video = null),
-        (this.online.link = null),
-        (this.online.rawFile = null);
+      this.online.video = null;
+      this.online.link = null;
+      this.online.rawFile = null;
     },
 
     makeOnlineClub: async function () {
@@ -212,8 +212,11 @@ export default {
 
       axios
         .put(SERVER.URL + SERVER.ROUTES.onlineRegister, body, configs)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          this.$router.push({
+            name: "ClubOnlineDetailView",
+            params: { club_id: this.$route.params.club_id },
+          });
         })
         .catch((err) => {
           // if (err.response.status) {
