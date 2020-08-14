@@ -12,8 +12,10 @@ export default {
     myPage: "/user/mypage/", // 회원 정보 리턴 페이지..?
     update: "/user/modify/", // 회원 정보 수정
     withdrawal: "/user/withdrawal/", // 회원 탈퇴
-    userLikeRecipe: "/user/likeRecipe", // 좋아요 레시피 목록 받기
-    userMyRecipe: "/user/myrecipe", // 작성한 레시피 목록 받기
+    userLikeRecipe: "/user/likeRecipe/", // 좋아요 레시피 목록 받기
+    userMyRecipe: "/user/myrecipe/", // 작성한 레시피 목록 받기
+
+    userAddIngredient: "/user/ingredient/", // POST / 유저 재료 추가 요청
 
     // Recipes ROUTES
     recipeList: "/recipe/all/", // 모든 레시피 리스트를 받기 위한 주소(뒤에 페이지 주소 0부터 시작 / 6개씩 전달)
@@ -36,6 +38,9 @@ export default {
     recipeDislike: "/recipe/likeCancel/",
 
     reportRecipe: "/report/", // POST 신고하기
+
+    addYoutube: "/youtube/", // POST 유튜브 아이디, 링크 추가하기
+    getYoutube: "/youtube/", // GET 레시피 아이디 붙이기.
 
     // Review Routes
     recipeReview: "/review/view/", // GET / 레시피 아이디를 보내면 레시피의 리뷰들이 반환되는 것같아요.

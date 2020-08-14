@@ -183,9 +183,18 @@
             </div>
             <div class="col-3">
               <!-- 재료 추가 모달창 필요 -->
-              <n-button type="secondary" round class="btn">
+              <n-button @click.native="showModal" type="secondary" round class="btn">
                 재료가 없어요!
               </n-button>
+              
+              <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
+                <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
+
+                <b-form-input v-model="newIngredient" placeholder="재료명을 적어주세요"></b-form-input>
+                <b-form-select v-model="newIngredientUnit" :options="units"></b-form-select>
+
+                <n-button type="danger" round block @click.native="sendData">제출</n-button>
+              </b-modal>
             </div>
           </div>
         </div>
@@ -241,6 +250,9 @@ import axios from "axios";
 import draggable from 'vuedraggable'
 import { Button, FormGroupInput as FgInput } from "@/components/global";
 
+const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
+const API_URL = 'https://www.googleapis.com/youtube/v3/search'
+
 export default {
   name: "RecipeMakeView",
   data() {
@@ -259,12 +271,26 @@ export default {
       addingFiles: [],
       fileList: [],
       tempInputs: [],
+      units: ['g', '큰술', '작은술', '꼬집', '봉', '개', 'ml', '장'],
+      newIngredient: null,
+      newIngredientUnit: null,
     };
   },
   components: {
     FgInput,
     [Button.name]: Button,
     draggable,
+  },
+  computed: {
+    ...mapGetters(["config"]),
+  },
+  mounted:function(){
+    window.onload(this.init),
+    window.addEventListener('resize', this.onResize)
+  },
+  created() {
+    this.getCategory(),
+    window.onload = this.init
   },
   methods: {
     ...mapActions(['logout']),
@@ -413,7 +439,6 @@ export default {
         frm.append("photo", tempInput.rawFile);
       });
 
-
       let configs = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -423,7 +448,36 @@ export default {
 
       axios
         .post(SERVER.URL + SERVER.ROUTES.recipeRegister, frm, configs)
-        .then(() => {
+        .then((res) => {
+          const curRecipeId = res.data.recipeId
+
+          axios
+            .get(API_URL, {
+              params: {
+                key: API_KEY,
+                part: 'snippet',
+                type: 'video',
+                q: self.recipeName
+              }
+            })
+            .then(response => {
+              let videoIds = response.data.items.slice(0,3).map(video => video.id.videoId)
+              let videoUrls = response.data.items.slice(0,3).map(video => video.snippet.thumbnails.default.url)
+              let body = {
+                'videoId': videoIds,
+                'thumbnailSrc': videoUrls,
+                'recipeId': curRecipeId
+              }
+              axios
+                .post(SERVER.URL + SERVER.ROUTES.addYoutube, body)
+                .then(() => {
+                  alert('영상 등록에 성공했습니다!')
+                })
+                .catch(err => console.log(err))
+            })
+            .catch(() => {
+              alert('영상 등록에는 성공했으나, 관련 유튜브 등록에 문제가 있었습니다.')
+            })
           router.push({ name: "RecipeListView", params: { pageNum: 1 } });
         })
         .catch((err) => {
@@ -563,18 +617,40 @@ export default {
         for (let slider of sliders) {
             this.updateValuePosition(slider);
         }
+    },
+    showModal() {
+      this.$refs['ingredient-modal'].show()
+    },
+    hideModal() {
+      this.$refs['ingredient-modal'].hide()
+    },
+    sendData() {
+      if (this.ingredientsName.indexOf(this.newIngredient) >= 0) {
+        alert('이미 존재하는 재료입니다!!')
+      } else {
+        let body = {
+          name: this.newIngredient,
+          unit: this.newIngredientUnit
+        }
+
+        let configs = {
+          headers: {
+            Authorization: this.config,
+          },
+        }
+
+        axios
+          .post(SERVER.URL + SERVER.ROUTES.userAddIngredient, body, configs)
+          .then(() => {
+            alert('재료 추가 요청에 성공했습니다!')
+            this.hideModal()
+            this.getCategory()
+            this.newIngredient = null
+            this.newIngredientUnit = null
+          })
+          .catch(err => console.log(err.response))
+      }
     }
-  },
-  computed: {
-    ...mapGetters(["config"]),
-  },
-  mounted:function(){
-    window.onload(this.init),
-    window.addEventListener('resize', this.onResize)
-  },
-  created() {
-    this.getCategory(),
-    window.onload = this.init
   },
 };
 </script>

@@ -18,6 +18,8 @@ export default new Vuex.Store({
       selectedCategory: [],
       selectedIngredients: [],
       selectedIngredientsName: [],
+      level: 5,
+      cookTime: 120,
     },
     mainType: '오프라인',
   },

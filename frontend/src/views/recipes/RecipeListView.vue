@@ -73,10 +73,6 @@ export default {
       recipes: [],
       curPage: this.$route.params.pageNum * 1,
       maxPage: 10,
-      searchData: {
-        selectedCategory: [],
-        selectedIngredients: [],
-      },
     };
   },
   components: {
@@ -91,17 +87,17 @@ export default {
     },
     categorySubmit() {
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
+        alert("검색 항목을 입력해주세요!");
+      } else {
         if (this.$route.params.pageNum != 1) {
           this.$router.push({ params: { pageNum: 1 } });
         } else {
           this.changePage(1);
         }
-      } else {
-        alert("검색 항목을 입력해주세요!");
       }
     },
     removeSelect() {
@@ -124,13 +120,13 @@ export default {
     },
     changePage(page) {
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
-        this.searchRecipe(page);
-      } else {
         this.allRecipe(page);
+      } else {
+        this.searchRecipe(page);
       }
     },
     allRecipe(page) {
@@ -155,6 +151,10 @@ export default {
       ) {
         frm.append("selectedIngredients", selectedIngredient);
       });
+
+      frm.append("level", this.searchingData.level)
+
+      frm.append("cookTime", this.searchingData.cookTime)
 
       // recipe/search/{{page}} 라는 주소로 selectedCategory(선택된 카테고리의 id들) / selectedIngredients(선택된 재료들의 id)를 전달합니다.
       axios

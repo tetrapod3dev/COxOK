@@ -11,7 +11,7 @@
             <b-form-checkbox
               v-model="checker[category.category_id]"
               class="mt-1"
-              @click="selectCategory(category.category_id)"
+              @click.native.prevent="selectCategory(category.category_id)"
             >
               {{ category['category_name']}}
             </b-form-checkbox>
@@ -70,7 +70,7 @@
               min="1"
               max="5"
               step="1"
-              value="3"
+              value="5"
               v-model="level"
               data-tick-step="5"
               data-tick-id="weightTicks"
@@ -101,7 +101,7 @@
               min="0"
               max="120"
               step="5"
-              value="0"
+              value="120"
               v-model="cookTime"
               data-tick-step="5"
               data-tick-id="sizeTicks"
@@ -138,8 +138,8 @@ export default {
       selectedIngredientsName: [],
       selectedIngredients: [],
       textInput: null,
-      level: 3,
-      cookTime: 60,
+      level: 5,
+      cookTime: 120,
     };
   },
   components: {
@@ -158,6 +158,8 @@ export default {
         selectedCategory: this.selectedCategory,
         selectedIngredients: this.selectedIngredients,
         selectedIngredientsName: this.selectedIngredientsName,
+        level: this.level,
+        cookTime: this.cookTime,
       };
     },
     ...mapGetters(["searchingData"]),
@@ -193,9 +195,13 @@ export default {
     },
     addIngredient() {
       if (this.ingredientsName.indexOf(this.textInput) >= 0) {
-        this.selectedIngredients.push(this.ingredients[this.textInput]);
-        this.selectedIngredientsName.push(this.textInput);
-        this.textInput = "";
+        if (this.selectedIngredients.indexOf(this.ingredients[this.textInput]) < 0) {
+          this.selectedIngredients.push(this.ingredients[this.textInput]);
+          this.selectedIngredientsName.push(this.textInput);
+          this.textInput = "";
+        } else {
+          alert('이미 입력한 재료입니다.')
+        }
       } else {
         alert("재료 목록에 존재하는 재료를 입력해주세요!");
       }
@@ -213,104 +219,110 @@ export default {
         selectedCategory: [],
         selectedIngredients: [],
         selectedIngredientsName: [],
+        level: 5,
+        cookTime: 120,
       });
       this.selectedCategory = [];
       this.selectedIngredients = [];
       this.selectedIngredientsName = [];
+      this.level = 5;
+      document.getElementById("weightSlider").value = 5
+      this.cookTime = 120;
+      document.getElementById("sizeSlider").value = 120
+      this.init()
       this.$emit("removeSelect");
     },
     init() {
-        const sliders = document.getElementsByClassName("tick-slider-input");
+      const sliders = document.getElementsByClassName("tick-slider-input");
 
-        for (let slider of sliders) {
-            slider.oninput = this.onSliderInput;
+      for (let slider of sliders) {
+        slider.oninput = this.onSliderInput;
+        this.updateValue(slider);
+        this.updateValuePosition(slider);
+        this.updateLabels(slider);
+        this.updateProgress(slider);
 
-            this.updateValue(slider);
-            this.updateValuePosition(slider);
-            this.updateLabels(slider);
-            this.updateProgress(slider);
-
-            this.setTicks(slider);
-        }
+        this.setTicks(slider);
+      }
     },
     onSliderInput(event) {
-    this.updateValue(event.target);
-    this.updateValuePosition(event.target);
-    this.updateLabels(event.target);
-    this.updateProgress(event.target);
+      this.updateValue(event.target);
+      this.updateValuePosition(event.target);
+      this.updateLabels(event.target);
+      this.updateProgress(event.target);
     },
     updateValue(slider) {
-        let value = document.getElementById(slider.dataset.valueId);
+      let value = document.getElementById(slider.dataset.valueId);
 
-        value.innerHTML = "<div>" + slider.value + "</div>";
+      value.innerHTML = "<div>" + slider.value + "</div>";
     },
     updateValuePosition(slider) {
-        let value = document.getElementById(slider.dataset.valueId);
+      let value = document.getElementById(slider.dataset.valueId);
 
-        const percent = this.getSliderPercent(slider);
-        const sliderWidth = slider.getBoundingClientRect().width;
-        const valueWidth = value.getBoundingClientRect().width;
-        const handleSize = slider.dataset.handleSize;
+      const percent = this.getSliderPercent(slider);
+      const sliderWidth = slider.getBoundingClientRect().width;
+      const valueWidth = value.getBoundingClientRect().width;
+      const handleSize = slider.dataset.handleSize;
 
-        let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
+      let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
 
-        left = Math.min(left, sliderWidth - valueWidth);
-        left = slider.value === slider.min ? 0 : left;
+      left = Math.min(left, sliderWidth - valueWidth);
+      left = slider.value === slider.min ? 0 : left;
 
-        value.style.left = left + "px";
+      value.style.left = left + "px";
     },
     updateLabels(slider) {
-        const value = document.getElementById(slider.dataset.valueId);
-        const minLabel = document.getElementById(slider.dataset.minLabelId);
-        const maxLabel = document.getElementById(slider.dataset.maxLabelId);
+      const value = document.getElementById(slider.dataset.valueId);
+      const minLabel = document.getElementById(slider.dataset.minLabelId);
+      const maxLabel = document.getElementById(slider.dataset.maxLabelId);
 
-        const valueRect = value.getBoundingClientRect();
-        const minLabelRect = minLabel.getBoundingClientRect();
-        const maxLabelRect = maxLabel.getBoundingClientRect();
+      const valueRect = value.getBoundingClientRect();
+      const minLabelRect = minLabel.getBoundingClientRect();
+      const maxLabelRect = maxLabel.getBoundingClientRect();
 
-        const minLabelDelta = valueRect.left - (minLabelRect.left);
-        const maxLabelDelta = maxLabelRect.left - valueRect.left;
+      const minLabelDelta = valueRect.left - (minLabelRect.left);
+      const maxLabelDelta = maxLabelRect.left - valueRect.left;
 
-        const deltaThreshold = 32;
+      const deltaThreshold = 32;
 
-        if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
-        else minLabel.classList.remove("hidden");
+      if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
+      else minLabel.classList.remove("hidden");
 
-        if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
-        else maxLabel.classList.remove("hidden");
+      if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
+      else maxLabel.classList.remove("hidden");
     },
     updateProgress(slider) {
-        let progress = document.getElementById(slider.dataset.progressId);
-        const percent = this.getSliderPercent(slider);
+      let progress = document.getElementById(slider.dataset.progressId);
+      const percent = this.getSliderPercent(slider);
 
-        progress.style.width = percent * 100 + "%";
+      progress.style.width = percent * 100 + "%";
     },
     getSliderPercent(slider) {
-        const range = slider.max - slider.min;
-        const absValue = slider.value - slider.min;
+      const range = slider.max - slider.min;
+      const absValue = slider.value - slider.min;
 
-        return absValue / range;
+      return absValue / range;
     },
     setTicks(slider) {
-        let container = document.getElementById(slider.dataset.tickId);
-        const spacing = parseFloat(slider.dataset.tickStep);
-        const sliderRange = slider.max - slider.min;
-        const tickCount = sliderRange / spacing + 1; // +1 to account for 0
+      let container = document.getElementById(slider.dataset.tickId);
+      const spacing = parseFloat(slider.dataset.tickStep);
+      const sliderRange = slider.max - slider.min;
+      const tickCount = sliderRange / spacing + 1; // +1 to account for 0
 
-        for (let ii = 0; ii < tickCount; ii++) {
-            let tick = document.createElement("span");
+      for (let ii = 0; ii < tickCount; ii++) {
+        let tick = document.createElement("span");
 
-            tick.className = "tick-slider-tick";
+        tick.className = "tick-slider-tick";
 
-            container.appendChild(tick);
-        }
+        container.appendChild(tick);
+      }
     },
     onResize() {
-        const sliders = document.getElementsByClassName("tick-slider-input");
+      const sliders = document.getElementsByClassName("tick-slider-input");
 
-        for (let slider of sliders) {
-            this.updateValuePosition(slider);
-        }
+      for (let slider of sliders) {
+        this.updateValuePosition(slider);
+      }
     }
   },
   created() {
@@ -336,8 +348,12 @@ export default {
     this.selectedCategory = this.searchingData.selectedCategory;
     this.selectedIngredients = this.searchingData.selectedIngredients;
     this.selectedIngredientsName = this.searchingData.selectedIngredientsName;
-    window.onload = this.init;
+    this.level = this.searchingData.level;
+    this.cookTime = this.searchingData.cookTime;
   },
+  mounted() {
+    this.init()
+  }
 };
 </script>
 

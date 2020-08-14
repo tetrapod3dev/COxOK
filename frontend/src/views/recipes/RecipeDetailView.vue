@@ -17,10 +17,10 @@
     <div id="idx-btn" class="row mt-5 text-left"> 
       <h4><i class="far fa-list-alt ml-3 mr-2"></i>목차</h4>
       <div>
-        <p @click="scrollDoc('ingredientInfo')" class="text-left text-link">1. 재료 리스트</p>
-        <p @click="scrollDoc('nutrientInfo')" class="text-left text-link">2. 영양소 정보</p>
-        <p @click="scrollDoc('detailInfo')" class="text-left text-link">3. 상세 요리 과정</p>
-        <p @click="scrollDoc('reviewInfo')" class="text-left text-link">4. 한줄평 보기</p>
+        <p @click="scrollDoc('ingredientInfo')" class="text-left text-link idx-obj">1. 재료 리스트</p>
+        <p @click="scrollDoc('nutrientInfo')" class="text-left text-link idx-obj">2. 영양소 정보</p>
+        <p @click="scrollDoc('detailInfo')" class="text-left text-link idx-obj">3. 상세 요리 과정</p>
+        <p @click="scrollDoc('reviewInfo')" class="text-left text-link idx-obj">4. 한줄평 보기</p>
       </div>
     </div>
     
@@ -179,11 +179,21 @@
                     </n-button>
                   </span>
                   <!-- 수정해야함 신고 -->
-                  <span @click="copyRecipe" class="pull-right">
+                  <span @click="showModal" class="pull-right">
                     <n-button type="danger" round block>
                       <i class="fas fa-bullhorn"></i> 신고
                     </n-button>
                   </span>
+
+                  <b-modal hide-footer ref="report-modal" title="신고하기">
+                    <p class="my-4">신고 사유를 선택해주세요.</p>
+
+                    <b-form-select v-model="reportReason" :options="sampleReasons"></b-form-select>
+
+                    <b-form-input v-model="detailReason" placeholder="상세 사유를 적어주세요 (선택 사항)"></b-form-input>
+
+                    <n-button type="danger" round block @click.native="reportRecipe">신고</n-button>
+                  </b-modal>
                 </div>
               </div>
             </div>
@@ -195,12 +205,17 @@
     <div class="container">
       <!-- 관련 유튜브 영상 위치입니다!! -->
       <h3 class="title">관련 유튜브 영상 보기</h3>
-      <div class="youtube row">
-        <a v-for="video in videos" :key="video.id.videoId" :href="youtubeLink(video)" class="col-3">
-          <img :src="video.snippet.thumbnails.default.url">
-          <p>{{ video.snippet.title }}</p>
+
+      <div v-if="videoIds.length > 0" class="youtube row">
+        <a v-for="(video, index) in videoIds" :key="index" :href="youtubeLink(video)" class="col-4">
+          <img :src="videoUrls[index]">
         </a>
       </div>
+      
+      <div v-if="videoIds.length <= 0">
+        <h3>관련 유튜브가 등록되지 않은 레시피입니다. (추후 추가 예정입니다.)</h3>
+      </div>
+
     </div>
   </div>
 </template>
@@ -215,9 +230,6 @@ import { Popover } from "element-ui";
 import SERVER from "@/api/api";
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
-
-// const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
-// const API_URL = 'https://www.googleapis.com/youtube/v3/search'
 
 export default {
   name: "RecipeItemView",
@@ -242,10 +254,16 @@ export default {
       unitList: ["kcal", "g", "g", "mg", "g", "g"],
       tempUserId: [],
       videos: [],
+      reportReason: null,
+      sampleReasons: ['기타', '부적절한 사진', '올바르지 않은 정보'],
+      detailReason: null,
+      videoIds: [],
+      videoUrls: [],
     };
   },
   created() {
     this.getInitRecipe();
+    this.getYoutube();
   },
   mounted() {
     window.addEventListener("scroll", this.indexScrollFuncion);
@@ -257,6 +275,11 @@ export default {
   },
   computed: {
     ...mapGetters(["config", "isLoggedIn"]),
+    configs() {
+      return {headers: {
+        Authorization: this.config,
+      }}
+    },
     likeMent() {
       return this.isLiked ? "좋아요 취소" : "좋아요";
     },
@@ -277,6 +300,9 @@ export default {
     ...mapActions(['logout']),
     makeId(index) {
       return "ingredient-" + index;
+    },
+    youtubeLink(video) {
+      return "https://www.youtube.com/watch?v=" + video
     },
     checkIngredient(index, event) {
       const checkedIngredient = document.querySelector("#ingredient-" + index);
@@ -412,16 +438,31 @@ export default {
       alert("레시피 제목 / 주소 복사 성공!\n\n" + tempCopyEl.innerHTML);
       document.body.removeChild(tempCopyEl);
     },
+
+    reportRecipe() {
+      console.log(1)
+      let body = {
+        recipeId: this.$route.params.recipe_id,
+        reason: this.reportReason + '/' + this.detailReason
+      }
+
+      axios
+        .post(SERVER.URL + SERVER.ROUTES.reportRecipe, body, this.configs)
+        .then(res => {
+          if(res.status == 200) {
+            alert('레시피를 성공적으로 신고했습니다.')
+            this.hideModal()
+          }
+        })
+        .catch(err => console.log(err.response))
+
+    },
     likeRecipe() {
       const data = {
         recipeId: this.$route.params.recipe_id,
       };
       axios
-        .post(SERVER.URL + SERVER.ROUTES.recipeLike, data, {
-          headers: {
-            Authorization: this.config,
-          },
-        })
+        .post(SERVER.URL + SERVER.ROUTES.recipeLike, data, this.configs)
         .then((res) => {
           this.likeCnt = res.data.likeCnt;
           this.isLiked = !this.isLiked;
@@ -451,10 +492,6 @@ export default {
             alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
-    },
-
-    youtubeLink(video) {
-      return 'https://www.youtube.com/watch?v=' + video.id.videoId
     },
 
     getRecipe() {
@@ -516,24 +553,25 @@ export default {
           this.recipe.reviewDtoList.forEach(function (review) {
             review['changing'] = false
           })
-
-          // axios.get(API_URL, {
-          //   params: {
-          //     key: API_KEY,
-          //     part: 'snippet',
-          //     type: 'video',
-          //     q: res.data.recipe.recipeName
-          //   }
-          // })
-          //   .then(response => {
-          //     this.videos = response.data.items.slice(0,4)
-          //   })
-          //   .catch(error => {
-          //     console.log(error)
-          //   })
-
         })
         .catch((err) => console.log(err.response));
+    },
+    getYoutube() {
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.getYoutube + this.$route.params.recipe_id)
+        .then(res => {
+          this.videoIds = res.data.list.map(video => video.videoId)
+          this.videoUrls = res.data.list.map(video => video.thumbnailSrc)
+        })
+        .catch(err => console.log(err.response))
+    },
+
+    
+    showModal() {
+      this.$refs['report-modal'].show()
+    },
+    hideModal() {
+      this.$refs['report-modal'].hide()
     },
 
 
@@ -617,5 +655,9 @@ export default {
 
 .youtube p {
   font-size: 18px;
+}
+
+.idx-obj:hover {
+  cursor: pointer;
 }
 </style>
