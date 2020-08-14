@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <button class="btn" @click="sendData">제출하기</button>
 
     <div class="row">
@@ -30,8 +30,10 @@
       <b-col sm="3">
         <label for="meet-date">날짜 :</label>
       </b-col>
-      <b-col sm="6" @click="clickDateForm">
+      <b-col sm="6">
         <datetime
+          @click.native.self="clickDateForm"
+          ref="datetimePicker"
           class="meet-date"
           type="datetime"
           v-model="date"
