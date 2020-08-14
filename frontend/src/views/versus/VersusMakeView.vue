@@ -19,6 +19,7 @@
         </div>
       </div>
     </div>
+    
     <div class="container">
       <p class="selected-recipe-list-title">선택한 레시피 목록</p>
       <div class="selected-recipe-list row">
@@ -60,7 +61,7 @@
       </div>
     </div>
     <hr />
-
+    
     <div class="container">
       <tabs
         class="row"
@@ -113,17 +114,18 @@
           <div v-for="recipe in recipes" :key="recipe.id" class="row">
             <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="col-4" />
             <div class="col-7">
-              <h3 class="row">{{ recipe.recipeName }} ({{ recipe.recipeId }})</h3>
+              <h3 class="row">{{ recipe.recipeName }}</h3>
               <p class="row">{{ recipe.recipeDetail }}</p>
             </div>
-            <input
+            <input type="checkbox" class="plus-minus" v-model="checker[recipe.recipeId]" @click="checkRecipe(recipe)">
+
+            <!-- <input
               type="checkbox"
               v-model="checker[recipe.recipeId]"
               class="col-1"
               @click="checkRecipe(recipe)"
-            />
+            /> -->
           </div>
-
           <div id="bottomSensor"></div>
         </tab-pane>
       </tabs>
@@ -403,10 +405,6 @@ export default {
   -webkit-font-smoothing: antialiased;
 }
 
-/* * {
-  box-sizing: border-box;
-} */
-
 .inp {
   position: relative;
   margin: auto;
@@ -486,5 +484,10 @@ export default {
   -webkit-transition: all 0.1s ease;
   transition: all 0.1s ease;
 }
+
+
+
+/* 레시피 추가 버튼 */
+
 
 </style>
