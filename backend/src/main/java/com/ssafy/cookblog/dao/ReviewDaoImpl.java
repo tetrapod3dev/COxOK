@@ -31,11 +31,26 @@ public class ReviewDaoImpl implements ReviewDao {
 	public List<ReviewResponseDto> selectAll(long recipeId) {
 		return session.selectList("review.selectAll", recipeId);
 	}
+	
+	@Override
+	public int reviewCount(long recipeId) {
+		return session.selectOne("review.reviewCount", recipeId);
+	}
+	
+	@Override
+	public long recipeIdByrevieId(long reviewId) {
+		return session.selectOne("review.recipeIdByrevieId", reviewId);
+	}
 
 	//Update
 	@Override
 	public int update(ReviewDto review) {
 		return session.update("review.update",review);
+	}
+	
+	@Override
+	public int updateRecipeRatingZero(long recipeId) {
+		return session.update("review.updateRecipeRatingZero", recipeId);
 	}
 
 	//Delete
@@ -53,6 +68,5 @@ public class ReviewDaoImpl implements ReviewDao {
 	public int updateRecipeRating(ReviewDto review) {
 		return session.update("review.updateRecipeRating", review);
 	}
-
 
 }

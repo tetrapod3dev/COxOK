@@ -44,13 +44,17 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	@Transactional 
 	public int remove(int reviewId) {
-		int count = reviewDao.delete(reviewId);
-		
 		ReviewDto reviewDto = new ReviewDto();
 		reviewDto.setReviewId(reviewId);
-
+		long recipeId = reviewDao.recipeIdByrevieId(reviewId);
+		int count = reviewDao.delete(reviewId);
+		
+		int cnt = reviewDao.reviewCount(recipeId);
 		if(count == 1) {
-			reviewDao.updateRecipeRating(reviewDto);
+			if(cnt == 0)
+				reviewDao.updateRecipeRatingZero(recipeId);
+			else	
+				reviewDao.updateRecipeRating(reviewDto);
 		}
 		
 		return count;

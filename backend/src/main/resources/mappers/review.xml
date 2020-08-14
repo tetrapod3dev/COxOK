@@ -46,4 +46,22 @@
 		delete from review where recipe_id = #{recipeId}
 	</delete>
 	
+	<select id="reviewCount" resultType="Integer">
+		select COUNT(*)
+		from review
+		where recipe_id = #{recipeId}
+	</select>
+	
+	<select id="recipeIdByrevieId" resultType="Long">
+		select recipe_id as recipeId
+		from review
+		where review_id = #{reviewId}
+	</select>
+	
+	<update id="updateRecipeRatingZero">
+		update recipe
+		set avg_rating = 0
+		where recipe_id = #{recipeId}
+	</update>
+	
 </mapper>
