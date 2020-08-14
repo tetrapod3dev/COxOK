@@ -49,6 +49,11 @@ export default {
 .recipe-card {
   width: 350px;
   height: 420px;
+  display:inline-block;
+  transition: all 0.8s;
+}
+.recipe-card:hover {
+  transform:scale(1.1);
 }
 .recipe-card-text {
   font-size: 20px;
