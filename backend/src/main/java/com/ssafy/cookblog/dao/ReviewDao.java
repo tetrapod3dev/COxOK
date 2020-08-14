@@ -12,10 +12,13 @@ public interface ReviewDao {
 	//Read
 	public ReviewResponseDto select(long reviewId);
 	public List<ReviewResponseDto> selectAll(long recipeId);
+	public int reviewCount(long recipeId);
+	public long recipeIdByrevieId(long reviewId);
 	
 	//Update
 	public int update(ReviewDto review);
 	public int updateRecipeRating(ReviewDto review);
+	public int updateRecipeRatingZero(long recipeId);
 	
 	//Delete
 	public int delete(long reviewId);
