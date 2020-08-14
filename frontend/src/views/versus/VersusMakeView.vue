@@ -77,15 +77,29 @@
           </template>
 
           <div class="container">
-            <div>
+            <!-- <div>
               <label for="title">대회 이름</label>
               <b-form-input type="text" id="title" v-model="versusTitle" />
+            </div> -->
+            <div class="versus-name">
+              <label for="name" class="inp">
+                <input type="text" id="name" placeholder=" " v-model="versusTitle">
+                <span class="label">대회 이름</span>
+                <span class="focus-bg"></span>
+              </label>
             </div>
             <br />
             <br />
-            <div>
+            <!-- <div>
               <label for="content">대회 개요</label>
               <b-form-textarea rows="6" type="text" id="content" v-model="versusContent" />
+            </div> -->
+            <div class="versus-name">
+              <label for="detail" class="inp">
+                <input type="text" id="detail" placeholder=" " v-model="versusContent">
+                <span class="label">대회 개요</span>
+                <span class="focus-bg"></span>
+              </label>
             </div>
           </div>
           <div style="height:300px"></div>
@@ -379,4 +393,98 @@ export default {
   width: 8rem;
   height: 12rem;
 }
+
+
+
+/* 대회 이름, 대회 개요 */
+.versus-name {
+  font-family: Roboto;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* * {
+  box-sizing: border-box;
+} */
+
+.inp {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  max-width: 700px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.inp .label {
+  position: absolute;
+  top: 20px;
+  left: 12px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+.inp .focus-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: -1;
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
+  -webkit-transform-origin: left;
+          transform-origin: left;
+}
+.inp input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  padding: 16px 12px 0 12px;
+  height: 56px;
+  font-size: 16px;
+  font-weight: 400;
+  background: white;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  color: #000;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+.inp input:hover {
+  background: white;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+.inp input:not(:placeholder-shown) + .label {
+  color: rgba(0, 0, 0, 0.5);
+  -webkit-transform: translate3d(0, -12px, 0) scale(0.75);
+          transform: translate3d(0, -12px, 0) scale(0.75);
+}
+.inp input:focus {
+  background: white;
+  outline: none;
+  box-shadow: inset 0 -2px 0 #0077FF;
+}
+.inp input:focus + .label {
+  color: #0077FF;
+  -webkit-transform: translate3d(0, -12px, 0) scale(0.75);
+          transform: translate3d(0, -12px, 0) scale(0.75);
+}
+.inp input:focus + .label + .focus-bg {
+  -webkit-transform: scaleX(1);
+          transform: scaleX(1);
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+}
+
 </style>
