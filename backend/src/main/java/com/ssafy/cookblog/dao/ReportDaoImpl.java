@@ -23,5 +23,10 @@ public class ReportDaoImpl implements ReportDao {
 	public List<ReportRecipeDto> selectAllReport() {
 		return session.selectList("report.selectAll");
 	}
+	
+	@Override
+	public int deleteReportRecipe(ReportRecipeDto reportDto) {
+		return session.delete("report.delete", reportDto);
+	}
 
 }

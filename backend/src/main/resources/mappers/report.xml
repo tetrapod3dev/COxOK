@@ -11,4 +11,9 @@
 		from report_recipe join user using(user_id)
 	</select>
 	
+	<delete id="delete">
+		delete from report_recipe
+		where recipe_id = #{recipeId} and user_id = #{userId}
+	</delete>
+	
 </mapper>
