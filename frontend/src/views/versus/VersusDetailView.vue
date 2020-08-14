@@ -49,7 +49,11 @@
       <div class="row">
         <div v-for="recipe in nowRecipes" :key="recipe.id" class="versus-card col-6">
           <card type="profile" style="width:465px;height:400px;">
-            <img :src="imageSrc(recipe.recipeThumbnailSrc)" @click="selectRecipe(recipe)" class="versus-card-image">
+            <img
+              :src="imageSrc(recipe.recipeThumbnailSrc)"
+              @click="selectRecipe(recipe)"
+              class="versus-card-image"
+            />
 
             <h4 class="card-title text-left versus-card-text">{{ recipe.recipeName }}</h4>
             <h6
