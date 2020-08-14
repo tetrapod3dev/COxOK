@@ -19,11 +19,18 @@
         </div>
       </div>
     </div>
-    
+
     <div class="container">
       <!-- <p class="selected-recipe-list-title">선택한 레시피 목록</p> -->
       <div class="paragraph">
-        <div class="RecipeVersus">[요리대전]</div> 
+        <div class="RecipeVersus">
+            <div v-if="versusTitle === null">
+              [대회 이름을 입력하세요]
+            </div>
+            <div v-else>
+              [{{versusTitle}}]
+            </div>
+        </div> 
         <div class="VersusList"> 
           <span>선택된 레시피 </span>
         </div>
@@ -125,7 +132,6 @@
               <p class="row">{{ recipe.recipeDetail }}</p>
             </div>
             <input type="checkbox" class="plus-minus" v-model="checker[recipe.recipeId]" @click="checkRecipe(recipe)">
-
           </div>
           <div id="bottomSensor"></div>
         </tab-pane>
