@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button class="btn" @click="makeMeet">제출</button>
     <div class="row">
       <!-- 사진 입력 및 미리보기 -->
       <div class="col-4 offset-1 align-self-end">
@@ -25,8 +26,8 @@
           <b-col sm="6">
             <b-form-select v-model="clubPost.type">
               <b-form-select-option :value="null">--선택--</b-form-select-option>
-              <b-form-select-option value="쿠킹 클래스">쿠킹 클래스</b-form-select-option>
-              <b-form-select-option value="공유 키친">공유 키친</b-form-select-option>
+              <b-form-select-option value="쿠킹클래스">쿠킹 클래스</b-form-select-option>
+              <b-form-select-option value="공유키친">공유 키친</b-form-select-option>
               <b-form-select-option value="홈파티">홈파티</b-form-select-option>
             </b-form-select>
           </b-col>
@@ -169,8 +170,6 @@
       id="map"
       style="width:500px;height:400px;"
     ></div>
-
-    <button @click="makeMeet">제출</button>
   </div>
 </template>
 
