@@ -12,19 +12,42 @@
       <div class="container">
         <blog-menu />
 
-        <div class="row">
-          <div class="col-md-12">
-            <h2>작성한 레시피를 모아서 보여주는 페이지</h2>
+        <tabs
+          class="row"
+          pills
+          type="primary"
+          icons
+          tab-nav-wrapper-classes="col-md-2"
+          tab-content-classes="col-md-10"
+          vertical
+        >
+          <tab-pane label="myrecipe">
+            <template slot="label">
+              <i class="now-ui-icons design-2_ruler-pencil"></i> 작성한 레시피
+            </template>
             <div class="row">
               <RecipeListItem
-                v-for="recipe in recipes"
+                v-for="recipe in myrecipes"
                 :key="recipe.recipe_id"
                 :recipe="recipe"
-                class="col-3 mx-3"
+                class="col-12 col-sm-6 col-md-4 mx-2"
               />
             </div>
-          </div>
-        </div>
+          </tab-pane>
+          <tab-pane label="likerecipe">
+            <template slot="label">
+              <i class="now-ui-icons ui-2_favourite-28"></i> 좋아하는 레시피
+            </template>
+            <div class="row">
+              <RecipeListItem
+                v-for="recipe in likerecipes"
+                :key="recipe.recipe_id"
+                :recipe="recipe"
+                class="col-12 col-sm-6 col-md-4 mx-2"
+              />
+            </div>
+          </tab-pane>
+        </tabs>
       </div>
     </div>
   </div>
@@ -35,6 +58,8 @@ import RecipeListItem from "../../components/recipes/RecipeListItem.vue";
 import BlogProfile from "@/components/blog/BlogProfile.vue";
 import BlogMenu from "@/components/blog/BlogMenu.vue";
 
+import { Tabs, TabPane } from "@/components/global";
+
 import axios from "axios";
 import SERVER from "@/api/api";
 import { mapGetters } from "vuex";
@@ -44,7 +69,8 @@ export default {
   bodyClass: "profile-page",
   data() {
     return {
-      recipes: [],
+      myrecipes: [],
+      likerecipes: [],
     };
   },
   computed: {
@@ -54,6 +80,8 @@ export default {
     RecipeListItem,
     BlogProfile,
     BlogMenu,
+    Tabs,
+    TabPane,
   },
   created() {
     this.allRecipe();
@@ -73,8 +101,12 @@ export default {
       axios
         .get(SERVER.URL + SERVER.ROUTES.userMyRecipe, configs)
         .then((res) => {
-          // console.log(res.data);
-          this.recipes = res.data.writeRecipeList;
+          this.myrecipes = res.data.writeRecipeList;
+        });
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.userLikeRecipe, configs)
+        .then((res) => {
+          this.likerecipes = res.data.userLikeRecipe;
         });
     },
   },

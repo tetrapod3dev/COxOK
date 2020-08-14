@@ -3,18 +3,13 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
+        style="background-image: url('https://livwanillustration.com/portfolio/recipe-illustrations/french-food-illustrations.jpg') ;"
       ></parallax>
     </div>
     <div class="subscribe-line subscribe-line-white">
       <div class="container">
         <div class="row">
-          <div class="col-md-2">
-            <router-link to="/recipes/make">
-              <n-button type="primary" round block>레시피 작성</n-button>
-            </router-link>
-          </div>
-          <div class="col-md-2 offset-md-8" @click="changeShow">
+          <div class="col-md-2 ml-auto" @click="changeShow">
             <n-button type="primary" round block>레시피 검색</n-button>
           </div>
         </div>
@@ -22,15 +17,13 @@
     </div>
     <div class="container">
       <div class="row"></div>
-
       <CategorySelector
         v-show="categoryShow"
         @searchRecipe="categorySubmit"
         @removeSelect="removeSelect"
-        class="mt-5"
       />
 
-      <div v-if="recipes.length > 0" class="row mt-4">
+      <div v-if="recipes.length > 0" class="row">
         <div
           v-for="recipe in recipes"
           :key="recipe.recipeId"
@@ -43,6 +36,12 @@
       <div v-else class="mt-4">
         <h2>선택하신 조건에 맞는 레시피가 없습니다.</h2>
       </div>
+
+      <div class="col-md-2 ml-auto mt-4 mb-5">
+            <router-link to="/recipes/make">
+              <n-button type="primary" round block>레시피 작성</n-button>
+            </router-link>
+          </div>
 
       <PageButton
         v-if="recipes.length > 0"
@@ -74,10 +73,6 @@ export default {
       recipes: [],
       curPage: this.$route.params.pageNum * 1,
       maxPage: 10,
-      searchData: {
-        selectedCategory: [],
-        selectedIngredients: [],
-      },
     };
   },
   components: {
@@ -92,17 +87,17 @@ export default {
     },
     categorySubmit() {
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
+        alert("검색 항목을 입력해주세요!");
+      } else {
         if (this.$route.params.pageNum != 1) {
           this.$router.push({ params: { pageNum: 1 } });
         } else {
           this.changePage(1);
         }
-      } else {
-        alert("검색 항목을 입력해주세요!");
       }
     },
     removeSelect() {
@@ -125,13 +120,13 @@ export default {
     },
     changePage(page) {
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
-        this.searchRecipe(page);
-      } else {
         this.allRecipe(page);
+      } else {
+        this.searchRecipe(page);
       }
     },
     allRecipe(page) {
@@ -156,6 +151,10 @@ export default {
       ) {
         frm.append("selectedIngredients", selectedIngredient);
       });
+
+      frm.append("level", this.searchingData.level)
+
+      frm.append("cookTime", this.searchingData.cookTime)
 
       // recipe/search/{{page}} 라는 주소로 selectedCategory(선택된 카테고리의 id들) / selectedIngredients(선택된 재료들의 id)를 전달합니다.
       axios

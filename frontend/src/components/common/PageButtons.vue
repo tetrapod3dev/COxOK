@@ -9,20 +9,23 @@
     <button @click="movePage($event)" v-if="curPage+2 < maxPage">마지막</button>
 
   </div> -->
-  <nav aria-label="Page navigation example">
+
+
+  <nav aria-label="Page navigation">
     <ul class="pagination">
       <li class="page-item">
         <p @click="movePage($event)" class="page-link" aria-label="Previous">&laquo;</p>
       </li>
       <li @click="movePage($event)" v-if="curPage-1 > 0" class="page-item"><p class="page-link">{{ curPage - 1 }}</p></li>
-      <li class="page-item"><p class="page-link">{{ curPage }}</p></li>
+      <li class="page-item active"><p class="page-link" style="background-color:red">{{ curPage }}</p></li>
       <li @click="movePage($event)" v-if="curPage < maxPage" class="page-item"><p class="page-link">{{ curPage + 1 }}</p></li>
       <li class="page-item">
         <p @click="movePage($event)" class="page-link" aria-label="Next">&raquo;</p>
       </li>
     </ul>
   </nav>
-  
+
+
 </template>
 
 <script>
@@ -45,6 +48,11 @@ export default {
 </script>
 
 <style>
+.page-item {
+  text-decoration: none;
+  padding: 8px 6px;
+  margin: 18px 0;
+}
 .page-link:hover {
   cursor: pointer;
 }

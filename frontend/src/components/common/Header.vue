@@ -8,25 +8,13 @@
       menu-classes="ml-auto"
     >
       <template>
-        <router-link
-          v-popover:popover1
-          class="navbar-brand"
-          :to="isLoggedIn ? '/main/' : '/'"
-          >CO×OK</router-link
-        >
-        <el-popover
-          ref="popover1"
-          popper-class="popover"
-          placement="bottom"
-          width="200"
-          trigger="hover"
-        >
-          <div class="popover-body">4팀 씨 없는 수박</div>
-        </el-popover>
+        <router-link class="navbar-brand" :to="isLoggedIn ? '/main/' : '/'">
+          <img src="@/assets/CO_OK-logo.png" width="40px" />
+        </router-link>
       </template>
       <template slot="navbar-menu">
         <li class="nav-item">
-          <router-link class="nav-link" :to="isLoggedIn ? '/main/' : '/'">
+          <router-link class="nav-link" :to="{ name: isLoggedIn ? 'Main' : 'Home'}">
             <i class="now-ui-icons shopping_shop"></i>
             <p>홈</p>
           </router-link>
@@ -50,10 +38,7 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link 
-            class="nav-link"
-            v-if="isLoggedIn"
-            to="/blog/">
+          <router-link class="nav-link" v-if="isLoggedIn" :to="{ name: 'BlogHomeView' }">
             <i class="now-ui-icons users_circle-08"></i>
             <p>블로그</p>
           </router-link>
@@ -76,7 +61,6 @@
 
 <script>
 import { Navbar } from "@/components/global";
-import { Popover } from "element-ui";
 import { mapGetters, mapActions } from "vuex";
 import LoginModal from "../accounts/LoginModal.vue";
 
@@ -88,7 +72,6 @@ export default {
   components: {
     LoginModal,
     Navbar,
-    [Popover.name]: Popover,
   },
   computed: {
     ...mapGetters(["isLoggedIn"]),

@@ -1,8 +1,8 @@
 ﻿<template>
   <div class="__cxk__frame">
     <div class="row">
-      <div class="btn-toolbar __cxk__btn-toolbar" role="toolbar">
-        <div class="btn-group btn-group-sm mr-2" role="group">
+      <div class="btn-toolbar __cxk__btn-toolbar row" role="toolbar">
+        <div class="btn-group btn-group-sm ml-auto" role="group">
           <select
             class="btn __cxk__btn __cxk__selectFontFamily"
             name="cxk-selectFontFamily"
@@ -64,7 +64,7 @@
             hidden
           />
         </div>
-        <div class="btn-group btn-group-sm" role="group">
+        <div class="btn-group btn-group-sm mr-auto" role="group">
           <span
             v-for="command in commandRelation"
             :key="command.cmd"
@@ -80,15 +80,17 @@
         </div>
       </div>
     </div>
-    <div
-      id="__cxk__content"
-      class="__cxk__content"
-      contenteditable="true"
-      @input="update"
-      @focus="focus"
-      @blur="blur"
-      v-html="valueText"
-    ></div>
+    <div class="row">
+      <div
+        id="__cxk__content"
+        class="__cxk__content col-12 ml-auto mr-auto"
+        contenteditable="true"
+        @input="update"
+        @focus="focus"
+        @blur="blur"
+        v-html="valueText"
+      ></div>
+    </div>
   </div>
 </template>
 

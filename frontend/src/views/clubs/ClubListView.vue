@@ -1,45 +1,60 @@
 <template>
-  <div class="container">
-    <h2>소모임 리스트 페이지(메인)입니당.</h2>
-    
-    <router-link :to="{ name: 'ClubMakeView' }"><button class="btn btn-outline-secondary mx-2">소모임 만들기</button></router-link>
+  <div class="wrapper">
+    <div class="page-header page-header-mini">
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://picjumbo.com/wp-content/uploads/new-years-eve-champagne-party-happy-new-year-2210x1473.jpg') ;"
+      ></parallax>
 
-    <div class="row">
-      <router-link v-for="club in curClubs" :key="club.meetId" :to="{ name: 'ClubDetailView', params: { club_id: club.meetId } }" class="col-4">
-        <img :src="imageSrc(club)">
-      </router-link>
+      <div class="container">
+        <h1 class="title">소모임 리스트 페이지(메인)입니당.</h1>
+      </div>
+    </div>
+    <button class="btn" @click="changeMainType('오프라인')">오프라인</button>
+    <button class="btn" @click="changeMainType('온라인')">온라인</button>
+
+    <div class="container">
+      <div class="row">
+        <router-link :to="{ name: 'ClubMakeView' }">
+          <button class="btn btn-outline-secondary mx-2">소모임 만들기</button>
+        </router-link>
+
+        <OfflineClubList v-if="isOffline" />
+        <OnlineClubList v-else />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import SERVER from '@/api/api'
-import axios from 'axios'
+import OfflineClubList from "@/components/clubs/OfflineClubList.vue";
+import OnlineClubList from "@/components/clubs/OnlineClubList.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'ClubListView',
+  name: "ClubListView",
   data() {
-    return {
-      curPage: 1,
-      curClubs: [],
-    }
+    return {};
   },
-  created() {
-    axios
-      .get(SERVER.URL + SERVER.ROUTES.clubList + (this.curPage-1))
-      .then(res => {
-        this.curClubs = res.data.list
-      })
-      .catch(err => console.log(err))
+  components: {
+    OfflineClubList,
+    OnlineClubList,
   },
+  computed: {
+    ...mapGetters(["mainClubType"]),
+    isOffline() {
+      return this.mainClubType == "오프라인" ? true : false;
+    },
+  },
+  created() {},
   methods: {
-    imageSrc(club) {
-      return SERVER.IMAGE_URL + club.thumbnailSrc
-    }
-  }
-}
+    ...mapActions(["changeClubMainType"]),
+    changeMainType(type) {
+      this.changeClubMainType(type);
+    },
+  },
+};
 </script>
 
 <style>
-
 </style>
