@@ -15,6 +15,10 @@
 		delete from report_recipe
 		where recipe_id = #{recipeId} and user_id = #{userId}
 	</delete>
+
+	<delete id="deleteByAdmin">
+		delete from report_recipe where report_recipe_id = #{reportRecipeId};
+	</delete>
 	
 	<select id="selectReportRecipe" resultType="Boolean">
 		select COUNT(*) > 0 from report_recipe

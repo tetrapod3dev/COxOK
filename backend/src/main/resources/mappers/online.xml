@@ -37,11 +37,20 @@
 			<if test='link != "null"'>
 			, link = #{link}
 			</if>
+			<if test='link == "null"'>
+			, link = NULL
+			</if>
 			<if test='thumbnailSrc != "null"'>
 			,  thumbnail_src = #{thumbnailSrc}
 			</if>
+			<if test='thumbnailSrc == "null"'>
+			,  thumbnail_src = NULL
+			</if>
 			<if test='video != "null"'>
 			,video =  #{video}
+			</if>
+			<if test='video == "null"'>
+			,video =  NULL
 			</if>
 		where
 			online_id = #{onlineId}

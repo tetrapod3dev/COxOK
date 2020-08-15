@@ -98,6 +98,13 @@ public class RecipeController {
 		long userId = userService.userIdByEmail(email);
 		
 		FoodCategoryDto category = recipeService.getRandomCategoryByUserId(userId) ;
+		if(category==null) {
+			map.put("msg","선호 카테고리가 없습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+			return response;
+		}
+		
 		List<RecipeDto> recipe= recipeService.getRecipeListByCategoryId(category.getFoodCategoryId());
 		
 		if(recipe!=null) {

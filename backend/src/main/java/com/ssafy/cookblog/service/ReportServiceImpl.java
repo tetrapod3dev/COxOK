@@ -51,6 +51,12 @@ public class ReportServiceImpl implements ReportService {
 		reportDto.setRecipeId(recipeId);
 		return reportDao.deleteReportRecipe(reportDto);
 	}
+	
+	@Override
+	@Transactional
+	public int cancelByAdmin(long reportRecipeId) {
+		return reportDao.deleteByAdmin(reportRecipeId);
+	}
 
 	@Override
 	@Transactional 

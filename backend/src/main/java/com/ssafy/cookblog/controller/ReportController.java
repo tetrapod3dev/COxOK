@@ -86,6 +86,36 @@ public class ReportController {
 		return response;
 	}
 	
+	@ApiOperation("(관리자)레시피 신고 취소")
+	@DeleteMapping("/admin/{reportRecipeId}")
+	public Object cancelReportRecipeByAdmin(@PathVariable("reportRecipeId") long reportRecipeId,HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		long userId = userService.findUserByEmail(email).getUserId();
+		
+		if(userId!=0) {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+			return response;
+		}
+		
+		int count = reportService.cancelByAdmin(reportRecipeId);
+		if(count!=0) {
+			map.put("msg", "레시피 신고 취소에 성공했습니다.");
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "레시피 신고 취소에 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
+	
 	@ApiOperation("신고 레시피 전체 조회")
 	@GetMapping("/admin")
 	public Object getAllReport(HttpServletRequest request) {
@@ -104,7 +134,6 @@ public class ReportController {
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}
-		
 		return response;
 	}
 	

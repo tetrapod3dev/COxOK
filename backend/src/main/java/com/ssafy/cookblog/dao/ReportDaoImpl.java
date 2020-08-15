@@ -28,6 +28,10 @@ public class ReportDaoImpl implements ReportDao {
 	public int deleteReportRecipe(ReportRecipeDto reportDto) {
 		return session.delete("report.delete", reportDto);
 	}
+	@Override
+	public int deleteByAdmin(long reportRecipeId) {
+		return session.delete("report.deleteByAdmin",reportRecipeId);
+	}
 
 	@Override
 	public boolean selectReportRecipe(ReportRecipeDto reportDto) {
