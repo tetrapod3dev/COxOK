@@ -318,24 +318,7 @@ export default {
       let versusData = {
         title: this.versusTitle,
         content: this.versusContent,
-        recipeIdList: [
-          103,
-          92,
-          86,
-          85,
-          84,
-          82,
-          81,
-          80,
-          79,
-          78,
-          77,
-          76,
-          75,
-          74,
-          73,
-          71,
-        ],
+        recipeIdList: this.selectedRecipesId,
       };
 
       axios
@@ -344,14 +327,16 @@ export default {
             Authorization: this.config,
           },
         })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          alert('작성에 성공했습니다!')
           this.$router.push({ name: "VersusHomeView" });
         })
         .catch((err) => {
-          if (err.response.status) {
+          if (err.response.status == 401) {
             alert("세션 정보가 만료되었습니다! 다시 로그인해주세요.");
             this.logout();
+          } else {
+            console.log(err.response)
           }
         });
     },
