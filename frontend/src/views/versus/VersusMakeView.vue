@@ -11,6 +11,13 @@
       </div>
     </div>
 
+    <div id="idx-btn" class="row mt-5 text-left"> 
+      <h4><i class="far fa-list-alt ml-1 mr-2"></i>선택된 레시피</h4>
+      <div>
+        <p @click="scrollDoc('ingredientInfo')" class="text-center idx-obj">{{selectedRecipes.length}} / 16 개</p>
+      </div>
+    </div>
+
     <div class="section make-versus">
       <div class="container">
         <div class="button-container">
@@ -158,6 +165,7 @@ export default {
   name: "VersusMakeView",
   data() {
     return {
+      widthInterval:'',
       versusTitle: null,
       versusContent: null,
       selectedRecipes: [],
@@ -314,12 +322,41 @@ export default {
     scrollToTop() {
       scroll(0, 0);
     },
+    indexScrollFuncion() {
+      if(window.innerWidth > 1440 && document.getElementById("idx-btn") != null) {
+        if (
+          document.body.scrollTop > 400 ||
+          document.documentElement.scrollTop > 400
+        ) {
+          document.getElementById("idx-btn").style.display = "block";
+        } else {
+          document.getElementById("idx-btn").style.display = "none";
+        }
+      }
+    },
+    scrollDoc(id) {
+      if (id != "top") {
+        var location = document.querySelector("#" + id).offsetTop-100;
+
+        window.scrollTo({ top: location, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      }
+    },
+    winWidth: function () { 
+        this.widthInterval = setInterval(() => {
+            var w = window.innerWidth;
+            if (w < 1440 && document.getElementById("idx-btn") != null) {
+              document.getElementById("idx-btn").style.display = "none";
+            }
+        }, 100);
+    },
     submitVersus() {
       let versusData = {
         title: this.versusTitle,
         content: this.versusContent,
         recipeIdList: [
-          103,
+          132,
           92,
           86,
           85,
@@ -363,7 +400,13 @@ export default {
     this.getRecipes();
   },
   mounted() {
+    window.addEventListener("scroll", this.indexScrollFuncion);
     this.addScrollWatcher();
+    this.winWidth();
+  },
+  beforeDestory() {
+    window.removeEventListener('scroll', this.indexScrollFuncion);
+    clearInterval(this.widthInterval);
   },
   updated() {
     if (this.curPage < this.maxPage) {
@@ -679,6 +722,20 @@ button.learn-more:active::before {
 
 button.submit:active::before {
   box-shadow: 0 0 0 2px #77AF9C, 0 0 #cff0da;
+}
+
+
+
+/* 옆에 목차? */
+#idx-btn {
+  position: fixed;
+  left: 50px;
+  top: 90px;
+  z-index: 99999;
+  display:none;  
+  padding: 0px 20px 20px 30px;
+  border-radius: 20px;
+  border: solid 1px lightgray;
 }
 
 </style>
