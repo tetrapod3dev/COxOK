@@ -12,9 +12,13 @@
     </div>
 
     <div id="idx-btn" class="row mt-5 text-left"> 
-      <h4><i class="far fa-list-alt ml-1 mr-2"></i>선택된 레시피</h4>
+      <h4><i class="fas fa-utensils ml-1 mr-2"></i>선택된 레시피</h4>
       <div>
-        <p @click="scrollDoc('ingredientInfo')" class="text-center idx-obj">{{selectedRecipes.length}} / 16 개</p>
+        <span class="idx-obj ml-5">{{selectedRecipes.length}}개 
+          <span v-if="selectedRecipes.length < 16">
+            <i class="fas fa-exclamation-triangle fa-2x" style="color: red;" id="insufficient" v-b-tooltip.hover.bottom="'16개 이상 선택해야 합니다!'" />
+          </span>
+        </span>
       </div>
     </div>
 
@@ -731,7 +735,7 @@ button.submit:active::before {
   position: fixed;
   left: 50px;
   top: 90px;
-  z-index: 99999;
+  z-index: 2;
   display:none;  
   padding: 0px 20px 20px 30px;
   border-radius: 20px;
