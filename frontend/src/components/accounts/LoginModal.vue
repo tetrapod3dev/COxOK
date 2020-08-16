@@ -1,6 +1,7 @@
 <template>
   <div>
-    <p @click="showModal">로그인</p>
+    <i :class="icon"></i>
+    <span class="no-icon" @click="showModal">로그인</span>
 
     <div class="modal" id="login-modal">
       <div class="modal-dialog modal-login">
@@ -79,6 +80,9 @@ export default {
   computed: {},
   created() {},
   components: {},
+  props: {
+    icon: String,
+  },
   methods: {
     ...mapActions(["login"]),
 

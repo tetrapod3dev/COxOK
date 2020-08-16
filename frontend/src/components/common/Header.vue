@@ -13,43 +13,41 @@
         </router-link>
       </template>
       <template slot="navbar-menu">
-        <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: isLoggedIn ? 'Main' : 'Home'}">
-            <i class="now-ui-icons shopping_shop"></i>
-            <p>홈</p>
-          </router-link>
+        <li class="nav-item dropdown">
+          <drop-down class="nav-item" icon="now-ui-icons shopping_shop" title="둘러보기">
+            <router-lilnk class="dropdown-item" :to="{ name: isLoggedIn ? 'Main' : 'Home'}">홈</router-lilnk>
+            <router-lilnk class="dropdown-item" :to="{ name: 'About'}">씨없는수박</router-lilnk>
+          </drop-down>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'PrevRecipeList' }">
             <i class="now-ui-icons education_paper"></i>
-            <p>레시피</p>
+            <p>요리하기</p>
           </router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'ClubListView', params: {pageNum: 1} }">
             <i class="now-ui-icons users_circle-08"></i>
-            <p>소모임</p>
+            <p>코옥하기</p>
           </router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'VersusHomeView' }">
             <i class="now-ui-icons users_circle-08"></i>
-            <p>요리대전</p>
+            <p>대결하기</p>
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link class="nav-link" v-if="isLoggedIn" :to="{ name: 'BlogHomeView' }">
-            <i class="now-ui-icons users_circle-08"></i>
-            <p>블로그</p>
-          </router-link>
+        <li class="nav-item" v-if="isLoggedIn">
+          <drop-down class="nav-item" :image="profileSrc" :title="user.nickname">
+            <router-link class="dropdown-item" :to="{ name: 'BlogHomeView' }">
+              <p>마이페이지</p>
+            </router-link>
+            <a class="dropdown-item" @click="logout">로그아웃</a>
+          </drop-down>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" v-if="isLoggedIn" @click="logout">
-            <p>로그아웃</p>
-            <p></p>
-          </a>
-          <a class="nav-link" v-if="!isLoggedIn">
-            <LoginModal />
+        <li class="nav-item" v-if="!isLoggedIn">
+          <a class="nav-link">
+            <LoginModal icon="now-ui-icons users_circle-08" />
           </a>
         </li>
       </template>
@@ -60,7 +58,10 @@
 </template>
 
 <script>
-import { Navbar } from "@/components/global";
+import SERVER from "@/api/api";
+import axios from "axios";
+
+import { Navbar, DropDown } from "@/components/global";
 import { mapGetters, mapActions } from "vuex";
 import LoginModal from "../accounts/LoginModal.vue";
 
@@ -69,22 +70,43 @@ export default {
   props: {
     transparent: Boolean,
   },
+  data() {
+    return {
+      user: {
+        email: "",
+        nickname: "",
+        profilePhoto: "",
+      },
+      keyword: "",
+    };
+  },
   components: {
     LoginModal,
     Navbar,
+    DropDown,
   },
   computed: {
-    ...mapGetters(["isLoggedIn"]),
+    ...mapGetters(["isLoggedIn", "config"]),
+    profileSrc() {
+      return SERVER.IMAGE_URL + this.user.profilePhoto;
+    },
   },
   watch: {},
-  created() {},
+  created() {
+    let configs = {
+      headers: {
+        Authorization: this.config,
+      },
+    };
+    axios
+      .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
+      .then((res) => {
+        this.user = res.data.user;
+      })
+      .catch((err) => console.log(err.response));
+  },
   methods: {
     ...mapActions(["logout"]),
-  },
-  data() {
-    return {
-      keyword: "",
-    };
   },
 };
 </script>

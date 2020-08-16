@@ -300,7 +300,7 @@ import SERVER from "@/api/api";
 import axios from "axios";
 
 import { Card, Button, FormGroupInput } from "@/components/global";
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   name: "Main",
@@ -317,7 +317,7 @@ export default {
     [FormGroupInput.name]: FormGroupInput,
   },
   computed: {
-    ...mapGetters(['config'])
+    ...mapGetters(["config"]),
   },
   methods: {
     imageSrc(recipePhoto) {
@@ -351,3 +351,5 @@ export default {
   },
 };
 </script>
+
+
