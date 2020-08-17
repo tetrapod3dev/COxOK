@@ -189,7 +189,9 @@ export default {
     datetime: Datetime,
     Card,
   },
-  created() {},
+  created() {
+    
+  },
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
