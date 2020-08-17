@@ -91,22 +91,32 @@ export default {
       return SERVER.IMAGE_URL + this.user.profilePhoto;
     },
   },
-  watch: {},
+  watch: {
+    config() {
+      this.getUserInfo();
+    }
+  },
   created() {
-    let configs = {
-      headers: {
-        Authorization: this.config,
-      },
-    };
-    axios
-      .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
-      .then((res) => {
-        this.user = res.data.user;
-      })
-      .catch((err) => console.log(err.response));
+    this.getUserInfo();
   },
   methods: {
     ...mapActions(["logout"]),
+    getUserInfo() {
+      let configs = {
+        headers: {
+          Authorization: this.config,
+        },
+      };
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
+        .then((res) => {
+          this.user = res.data.user;
+        })
+        .catch((err) => {
+          if (err.response.status != 401) {
+            console.log(err.response)
+        }})
+    }
   },
 };
 </script>
