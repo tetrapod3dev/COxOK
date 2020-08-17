@@ -18,7 +18,7 @@
           <button class="learn-more btn" @click="changeMainType('온라인')">온라인</button> 
         </div>
       </div>
-      <div style="font-size:30px;font-weight:bold">{{this.mainClubType}} CO~OK</div>
+      <div class="Cookie-1" style="font-size:30px;font-weight:bold">{{this.mainClubType}} CO~OK</div>
     </div>
 
     <div class="container">
