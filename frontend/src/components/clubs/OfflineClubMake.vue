@@ -4,8 +4,20 @@
     <div class="row">
       <!-- 사진 입력 및 미리보기 -->
       <div class="col-4 offset-1 align-self-end">
+        <input
+                ref="thumbnailInput"
+                type="file"
+                name="photo"
+                id="recipe_thumbnail"
+                hidden
+                @change="changePhoto"
+        />
         <img :src="clubPreview" />
-        <input type="file" @change="changePhoto" />
+        <a @click="onClickClubImage">
+          <b-button pill style="color:white;background-color:rgb(249,99,50);">메인 사진 업로드</b-button>
+        </a>
+        
+        <!-- <input type="file" @change="changePhoto" /> -->
       </div>
 
       <div class="col-7 text-left">
@@ -209,7 +221,7 @@ export default {
         time: null,
       },
       clubPreview:
-        "https://lh3.googleusercontent.com/proxy/4EV0U03weLUjC6aTleh1X0T7Atmx1r-gvf7gxEepU8MU0Vf524Qq91IsRqLFIfUXUvXTQ47pgBNmwHM-4TQzcX8hpvn54rCv1PzLLgJ3rxMprTQHK3--i3Y_miS84QOU",
+        "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg",
       recipes: [],
       curPage: 1,
       maxPage: null,
@@ -247,6 +259,9 @@ export default {
     this.allRecipe(1);
   },
   methods: {
+    onClickClubImage(){
+      this.$refs.thumbnailInput.click();
+    },
     imageSrc(recipe) {
       return SERVER.IMAGE_URL + recipe.recipeThumbnailSrc;
     },
@@ -453,7 +468,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .meet-date {
   height: 30px;
   color: black;
