@@ -124,7 +124,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .versus-home .button-container {
   margin-top: -112px;
 }

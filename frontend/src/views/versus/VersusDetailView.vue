@@ -136,8 +136,8 @@
           </card>
         </div>
         <!-- <div class="ranking-table versus-card col-md-6"> -->
+            <div>
               <h4><i class="fas fa-utensils ml-3 mr-2"></i>코~옥 랭킹</h4>
-
                 <div class = "col">
                   <div class = "card shadow">
                     <div class="table-responsive">
@@ -187,7 +187,7 @@
                     </div>
                   </div>
                 </div>  
-                
+                </div>
                 <!-- <div v-for="result in versusResult" :key="result.recipeId">
                   <hr>
                   <p class="text-left "> 
