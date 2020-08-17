@@ -369,7 +369,7 @@ import SERVER from "@/api/api";
 import axios from "axios";
 
 import { Card, Button, FormGroupInput } from "@/components/global";
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   name: "Main",
@@ -471,3 +471,5 @@ export default {
   },
 };
 </script>
+
+
