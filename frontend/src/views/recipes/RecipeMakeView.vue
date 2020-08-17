@@ -662,7 +662,8 @@ export default {
 
 .detail-image-upload{
   text-align: center;
-  width: 60%
+  width: 60%;
+  border: solid 1px;
 }
 
 /*
