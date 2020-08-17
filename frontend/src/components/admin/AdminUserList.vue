@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <div class="row border-bottom">
-      <p class="col-1">Id</p>
-      <p class="col-2">프로필</p>
-      <p class="col-3">아이디</p>
-      <p class="col-3">자기소개</p>
-      <p class="col-1">인증</p>
-      <p class="col-2">동작</p>
+    <div class="row border-bottom mb-0">
+      <h3 class="col-1 mb-0">Id</h3>
+      <h3 class="col-2 mb-0">프로필</h3>
+      <h3 class="col-3 mb-0">아이디</h3>
+      <h3 class="col-3 mb-0">자기소개</h3>
+      <h3 class="col-1 mb-0">인증</h3>
+      <h3 class="col-2 mb-0">동작</h3>
     </div>
 
     <div v-for="user in users" :key="user.userId" class="row">
@@ -115,7 +115,6 @@ export default {
         detail: this.tempUser.detail,
         profilePhoto: this.tempUser.profilePhoto,
       }
-      console.log(body)
       axios
         .put(SERVER.URL + SERVER.ROUTES.adminUpdateUser, body, this.configs)
         .then(() => {
