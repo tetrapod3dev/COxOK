@@ -14,7 +14,7 @@ export default {
     withdrawal: "/user/withdrawal/", // 회원 탈퇴
     userLikeRecipe: "/user/likeRecipe/", // 좋아요 레시피 목록 받기
     userMyRecipe: "/user/myrecipe/", // 작성한 레시피 목록 받기
-
+    userTotal: "/user/total/",
     userAddIngredient: "/user/ingredient/", // POST / 유저 재료 추가 요청
 
     favoriteRecipes: "/recipe/my/", // GET / 유저가 좋아하는 카테고리 중 랜덤 선택
@@ -55,8 +55,8 @@ export default {
     versusRegister: "/versus/register/", // POST / 요리대전 생성
     versusList: "/versus/all/", // GET / 요리대전 목록 (6개씩)
     versusDetail: "/versus/view/", // GET / 요리대전 상세보기
-    versusWin: "/versus/win/",  // POST / 이긴 결과 보내기
-    versusResult: "/versus/result/",  // GET / 요리대전 결과 받아오기
+    versusWin: "/versus/win/", // POST / 이긴 결과 보내기
+    versusResult: "/versus/result/", // GET / 요리대전 결과 받아오기
     versusRank: "/versus/all/top3/", // GET / 요리대전 Top3
 
     // Club ROUTES
@@ -80,6 +80,7 @@ export default {
 
     // Blog ROUTES
     blog: "/blog/",
+    blogMy: "/blog/my/", // GET / 내 블로그 게시글을 받기 위한 주소
     blogList: "/blog/all/", // 모든 블로그 게시글을 받기 위한 주소
 
     // Calendar
@@ -99,7 +100,7 @@ export default {
     adminDetailIngredient: "/recipe/admin/ingredient/detail/", // GET / 뒤에 id
     adminModiIngredients: "/recipe/admin/modify-ingredient/", // GET / 뒤에 startIndex
     adminIngredient: "/recipe/admin/ingredient/", // POST : 재료 추가, PUT : 재료 수정
-    
+
     adminGetReportedRecipes: "/report/admin/", // GET / 신고받은 레시피 전체 다 옴
   },
 };

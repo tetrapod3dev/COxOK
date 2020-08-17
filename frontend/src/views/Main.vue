@@ -268,17 +268,17 @@
             :to="{name: 'RecipeDetailView', params: {recipe_id: second.recipeId} }"
           >
             <h3>2등</h3>
-            <img :src="imageSrc(second.recipeThumbnailSrc)">
+            <img :src="imageSrc(second.recipeThumbnailSrc)" />
             <p>{{ second.recipeName }}</p>
             <p>{{ second.count }}회 우승</p>
           </router-link>
-          
+
           <router-link
             class="col-4"
             :to="{name: 'RecipeDetailView', params: {recipe_id: first.recipeId} }"
           >
             <h3>1등</h3>
-            <img :src="imageSrc(first.recipeThumbnailSrc)">
+            <img :src="imageSrc(first.recipeThumbnailSrc)" />
             <p>{{ first.recipeName }}</p>
             <p>{{ first.count }}회 우승</p>
           </router-link>
@@ -288,7 +288,7 @@
             :to="{name: 'RecipeDetailView', params: {recipe_id: third.recipeId} }"
           >
             <h3>3등</h3>
-            <img :src="imageSrc(third.recipeThumbnailSrc)">
+            <img :src="imageSrc(third.recipeThumbnailSrc)" />
             <p>{{ third.recipeName }}</p>
             <p>{{ third.count }}회 우승</p>
           </router-link>
@@ -326,7 +326,6 @@
           </div>
         </div>
       </div>
-
 
       <div class="about-office">
         <div class="container">
@@ -392,13 +391,16 @@ export default {
     [FormGroupInput.name]: FormGroupInput,
   },
   computed: {
-    ...mapGetters(['config']),
+    ...mapGetters(["config"]),
     favoriteMaxPage() {
-      return parseInt((this.favoriteRecipes.length - 1) / 6) + 1
+      return parseInt((this.favoriteRecipes.length - 1) / 6) + 1;
     },
     favoriteCurRecipes() {
-      return this.favoriteRecipes.slice(this.favoriteCurPage * 6, (this.favoriteCurPage+1) * 6)
-    }
+      return this.favoriteRecipes.slice(
+        this.favoriteCurPage * 6,
+        (this.favoriteCurPage + 1) * 6
+      );
+    },
   },
   methods: {
     imageSrc(recipePhoto) {
@@ -443,26 +445,26 @@ export default {
       axios
         .get(SERVER.URL + SERVER.ROUTES.favoriteRecipes, {
           headers: {
-            Authorization: this.config
-          }
+            Authorization: this.config,
+          },
         })
-        .then(res => {
-          this.favoriteCategory = res.data.category.foodCategoryName
-          this.favoriteRecipes = res.data.recipe.slice(0, 18)
+        .then((res) => {
+          this.favoriteCategory = res.data.category.foodCategoryName;
+          this.favoriteRecipes = res.data.recipe.slice(0, 18);
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     },
 
     getVersusRank() {
       axios
         .get(SERVER.URL + SERVER.ROUTES.versusRank)
-        .then(res => {
-          this.first = res.data.versus[0]
-          this.second = res.data.versus[1]
-          this.third = res.data.versus[2]
+        .then((res) => {
+          this.first = res.data.versus[0];
+          this.second = res.data.versus[1];
+          this.third = res.data.versus[2];
         })
-        .catch(err => console.log(err.response))
-    }
+        .catch((err) => console.log(err.response));
+    },
   },
   created() {
     this.getRecipes(0);

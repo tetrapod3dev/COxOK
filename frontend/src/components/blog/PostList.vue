@@ -2,14 +2,14 @@
   <div>
     <table class="table">
       <thead>
-        <tr class="bg-dark text-white">
+        <tr class="bg-primary text-white text-left">
           <th>번호</th>
           <th>제목</th>
           <th>등록일</th>
         </tr>
       </thead>
 
-      <tbody v-for="(post, index) in posts" :key="index">
+      <tbody v-for="(post, index) in posts" :key="index" class="text-left">
         <tr>
           <td>{{ total - (curPage - 1) * 10 - index }}</td>
           <td>
@@ -17,7 +17,7 @@
               :to="{ name: 'BlogPostDetailView', params: { blogId: post.blogId } }"
             >{{ post.title }}</router-link>
           </td>
-          <td>{{ post.regTime }}</td>
+          <td>{{ formattingDate(post.regTime) }}</td>
         </tr>
       </tbody>
     </table>
@@ -36,8 +36,13 @@ export default {
     numPostPerPage: Number,
     total: Number,
   },
+  methods: {
+    formattingDate(regTime) {
+      return regTime.split("T")[0];
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
 </style>
