@@ -61,6 +61,11 @@ const routes = [
     name: "Main",
     component: Main,
   },
+  {
+    path: "/about",
+    name: "About",
+    component: About,
+  },
   // Accounts Router
   {
     path: "/accounts/signup",
@@ -218,14 +223,12 @@ const routes = [
     name: "EditorTest",
     component: EditorTest,
   },
-  {
-    path: "/test2",
-    name: "About",
-    component: About,
-  },
 ];
 
 const router = new VueRouter({
+  scrollBehavior() {
+    return { x: 0, y: 0 }
+  },
   mode: "history",
   base: process.env.BASE_URL,
   routes,

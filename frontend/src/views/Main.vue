@@ -10,353 +10,153 @@
       </div>
     </div>
 
-    <div class="section">
-      <div class="about-description text-center">
-        <div class="features-3">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-8 mr-auto ml-auto">
-                <h2 class="title">코×옥이란?</h2>
-                <h4 class="description">
-                  요리가 쉬워질 수 있게
-                  <br />요리를 따라할 수 있게
-                  <br />혼자서 힘들다면 다른 사람과 함께
-                  <br />만든 음식을 다른 사람과 함께
-                </h4>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="info info-hover">
-                  <div class="icon icon-success icon-circle">
-                    <i class="now-ui-icons education_paper"></i>
-                  </div>
-                  <h4 class="info-title">똑똑하고 쉬운 레시피</h4>
-                  <p class="description">다양한 레시피를 난이도부터 영양소까지</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info info-hover">
-                  <div class="icon icon-info icon-circle">
-                    <i class="now-ui-icons education_atom"></i>
-                  </div>
-                  <h4 class="info-title">다른 사람과 함께</h4>
-                  <p class="description">다른 사람과 함께 해서 요리를 쉽고 즐겁게</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="separator-line separator-primary"></div>
-      <div class="about-team team-4">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-6 col-lg-7 ml-auto mr-auto">
-              <card type="profile" plain>
-                <div slot="raw-content" class="row">
-                  <div class="col-md-5">
-                    <div class="card-image">
-                      <a href="https://lab.ssafy.com/s03-webmobile1-sub2/s03p12a104">
-                        <img
-                          class="img img-raised rounded"
-                          src="https://cdn.crowdpic.net/list-thumb/thumb_l_A09EC75FC9DCB14CF3A23D68C19927CA.jpg"
-                        />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-7">
-                    <div class="card-body">
-                      <h4 class="card-title">씨 없는 수박</h4>
-                      <h6 class="category">요리 블로그 웹 프로젝트</h6>
-                      <p class="card-description">
-                        SSAFY 3기 2학기 1반 4팀
-                        <br />씨 없는 수박입니다
-                      </p>
-                      <div class="card-footer">
-                        <a
-                          href="https://lab.ssafy.com/s03-webmobile1-sub2/s03p12a104"
-                          class="btn btn-icon btn-neutral btn-github"
-                        >
-                          <i class="fab fa-github"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </card>
-            </div>
-            <div class="col-xl-6 col-lg-7 ml-auto mr-auto">
-              <card type="profile" plain>
-                <div slot="raw-content" class="row">
-                  <div class="col-md-5">
-                    <div class="card-image">
-                      <a href="https://lab.ssafy.com/minkwon4">
-                        <img
-                          class="img img-raised rounded"
-                          src="https://image.shutterstock.com/image-vector/continuous-line-drawing-jesus-simple-260nw-1291866469.jpg"
-                        />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-7">
-                    <div class="card-body">
-                      <h4 class="card-title">권민</h4>
-                      <h6 class="category">백엔드 정신적 지주</h6>
-                      <p class="card-description">
-                        그가 손가락을 휘두르니
-                        <br />백엔드에 길이 열리니라
-                      </p>
-                      <div class="card-footer">
-                        <a
-                          href="https://lab.ssafy.com/minkwon4"
-                          class="btn btn-icon btn-neutral btn-github"
-                        >
-                          <i class="fab fa-github"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </card>
-            </div>
-            <div class="col-xl-6 col-lg-7 ml-auto mr-auto">
-              <card type="profile" plain>
-                <div slot="raw-content" class="row">
-                  <div class="col-md-5">
-                    <div class="card-image">
-                      <a href="https://lab.ssafy.com/sdf7575">
-                        <img
-                          class="img img-raised rounded"
-                          src="https://image.shutterstock.com/image-vector/continuous-line-drawing-man-despair-260nw-1127857904.jpg"
-                        />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-7">
-                    <div class="card-body">
-                      <h4 class="card-title">박태록</h4>
-                      <h6 class="category">팀장 프론트엔드</h6>
-                      <p class="card-description">
-                        중대장은...
-                        <br />너희에게 실망했다"
-                      </p>
-                      <div class="card-footer">
-                        <a
-                          href="https://lab.ssafy.com/sdf7575"
-                          class="btn btn-icon btn-neutral btn-github"
-                        >
-                          <i class="fab fa-github"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </card>
-            </div>
-            <div class="col-xl-6 col-lg-7 ml-auto mr-auto">
-              <card type="profile" plain>
-                <div slot="raw-content" class="row">
-                  <div class="col-md-5">
-                    <div class="card-image">
-                      <a href="https://lab.ssafy.com/lee33843">
-                        <img
-                          class="img img-raised rounded"
-                          src="https://image.shutterstock.com/image-vector/businessman-working-on-laptop-computer-260nw-647903758.jpg"
-                        />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-7">
-                    <div class="card-body">
-                      <h4 class="card-title">이동혁</h4>
-                      <h6 class="category">프론트엔드 공장</h6>
-                      <p class="card-description">
-                        개미는(뚠뚠)오늘도(뚠뚠)
-                        <br />열심히 일을 하네(뚠뚠)
-                      </p>
-                      <div class="card-footer">
-                        <a
-                          href="https://lab.ssafy.com/lee33843"
-                          class="btn btn-icon btn-neutral btn-github"
-                        >
-                          <i class="fab fa-github"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </card>
-            </div>
-            <div class="col-xl-6 col-lg-7 ml-auto mr-auto">
-              <card type="profile" plain>
-                <div slot="raw-content" class="row">
-                  <div class="col-md-5">
-                    <div class="card-image">
-                      <a href="https://lab.ssafy.com/wkddbswjd325">
-                        <img
-                          class="img img-raised rounded"
-                          src="https://ak.picdn.net/shutterstock/videos/1018262020/thumb/7.jpg?ip=x480"
-                        />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-7">
-                    <div class="card-body">
-                      <h4 class="card-title">장윤정</h4>
-                      <h6 class="category">백엔드 일꾼</h6>
-                      <p class="card-description">
-                        신에게는
-                        <br />아직 12개의 버그가 남아있사옵니다
-                      </p>
-                      <div class="card-footer">
-                        <a
-                          href="https://lab.ssafy.com/wkddbswjd325"
-                          class="btn btn-icon btn-neutral btn-github"
-                        >
-                          <i class="fab fa-github"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </card>
-            </div>
-            <div class="col-xl-6 col-lg-7 ml-auto mr-auto">
-              <card type="profile" plain>
-                <div slot="raw-content" class="row">
-                  <div class="col-md-5">
-                    <div class="card-image">
-                      <a href="https://lab.ssafy.com/ryunhoo123">
-                        <img
-                          class="img img-raised rounded"
-                          src="https://images.beano.com/store/e33c42fa25f96017b4e1116701f506459c12116a5693856c6fb70ea26959?auto=compress&w=960&fit=max"
-                        />
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-7">
-                    <div class="card-body">
-                      <h4 class="card-title">최원대</h4>
-                      <h6 class="category">그루트</h6>
-                      <p class="card-description">
-                        그루트
-                        <br />I'm 그루트
-                      </p>
-                      <div class="card-footer">
-                        <a
-                          href="https://lab.ssafy.com/ryunhoo123"
-                          class="btn btn-icon btn-neutral btn-github"
-                        >
-                          <i class="fab fa-github"></i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </card>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div class="about-office my-5">
       <div class="container">
-        <h2>코슐랭 가이드</h2>
+        <div class="row text-center">
+          <div class="col-md-8 ml-auto mr-auto">
+            <h2 class="title text-left mb-0">최근에 만들어진 요리들</h2>
+          </div>
+        </div>
         <div class="row">
+          <div class="ml-auto mr-auto align-self-center" @click="movePrev">
+            <n-button type="primary" round icon>
+              <i class="now-ui-icons arrows-1_minimal-left"></i>
+            </n-button>
+          </div>
+          <div class="col-10 row recent-recipes">
+            <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-lg-2 col-4 recipe-item p-0">
+              <router-link
+                class="card-link main-list-recipe"
+                tag="div"
+                :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }">
+                <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="recent-recipe-image">
+              </router-link>
+            </div>
+          </div>
+          <div class="ml-auto mr-auto align-self-center" @click="moveNext">
+            <n-button type="primary" round icon>
+              <i class="now-ui-icons arrows-1_minimal-right"></i>
+            </n-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div v-if="favoriteCategory != null" class="about-office">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-md-8 ml-auto mr-auto">
+            <h2 class="title text-left mb-0">{{ favoriteCategory }} 요리는 어떠세요?</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-1 align-self-center" @click="moveFavoritePrev">
+            <n-button type="primary" round icon>
+              <i class="now-ui-icons arrows-1_minimal-left"></i>
+            </n-button>
+          </div>
+          <div class="col-10 row favortie-recipes">
+            <div v-for="recipe in favoriteCurRecipes" :key="recipe.recipeId" class="col-2">
+              <router-link
+                class="card-link"
+                :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
+              >
+                <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="favorite-recipe-image" />
+              </router-link>
+            </div>
+          </div>
+          <div class="col-1 align-self-center" @click="moveFavoriteNext">
+            <n-button type="primary" round icon>
+              <i class="now-ui-icons arrows-1_minimal-right"></i>
+            </n-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="container">
+        <h2 class="title">코슐랭 가이드</h2>
+        <div class="row top-recipes">
           <router-link
-            class="col-4"
+            class="card-link col-3 mt-4"
             :to="{name: 'RecipeDetailView', params: {recipe_id: second.recipeId} }"
           >
-            <h3>2등</h3>
-            <img :src="imageSrc(second.recipeThumbnailSrc)">
-            <p>{{ second.recipeName }}</p>
-            <p>{{ second.count }}회 우승</p>
+            <h2>2등</h2>
+            <b-card
+              :img-src=imageSrc(second.recipeThumbnailSrc)
+              img-alt="레시피 사진"
+              img-width="350px"
+              img-height="250px"
+              img-top
+              tag="article"
+              style="max-width: 20rem;"
+              class="recipe-card mb-2"
+            >
+              <div style="height:110px">
+              <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="second.avgRating" no-border variant="warning" readonly></b-form-rating>
+              <div class="mt-auto mb-auto">
+              <b-card-text class="recipe-card-text">
+                {{second.recipeName}}
+              </b-card-text>
+              </div>
+              </div>
+            </b-card>
           </router-link>
-          
+
           <router-link
-            class="col-4"
+            class="card-link col-3"
             :to="{name: 'RecipeDetailView', params: {recipe_id: first.recipeId} }"
           >
-            <h3>1등</h3>
-            <img :src="imageSrc(first.recipeThumbnailSrc)">
-            <p>{{ first.recipeName }}</p>
-            <p>{{ first.count }}회 우승</p>
+            <h2>1등</h2>
+            <b-card
+              :img-src=imageSrc(first.recipeThumbnailSrc)
+              img-alt="레시피 사진"
+              img-width="350px"
+              img-height="250px"
+              img-top
+              tag="article"
+              style="max-width: 20rem;"
+              class="recipe-card mb-2"
+            >
+              <div style="height:110px">
+              <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="first.avgRating" no-border variant="warning" readonly></b-form-rating>
+              <div class="mt-auto mb-auto">
+              <b-card-text class="recipe-card-text">
+                {{first.recipeName}}
+              </b-card-text>
+              </div>
+              </div>
+            </b-card>
           </router-link>
 
           <router-link
-            class="col-4"
+            class="card-link col-3 mt-5"
             :to="{name: 'RecipeDetailView', params: {recipe_id: third.recipeId} }"
           >
-            <h3>3등</h3>
-            <img :src="imageSrc(third.recipeThumbnailSrc)">
-            <p>{{ third.recipeName }}</p>
-            <p>{{ third.count }}회 우승</p>
+            <h2>3등</h2>
+            <b-card
+              :img-src=imageSrc(third.recipeThumbnailSrc)
+              img-alt="레시피 사진"
+              img-width="350px"
+              img-height="250px"
+              img-top
+              tag="article"
+              style="max-width: 20rem;"
+              class="recipe-card mb-2"
+            >
+              <div style="height:110px">
+              <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="third.avgRating" no-border variant="warning" readonly></b-form-rating>
+              <div class="mt-auto mb-auto">
+              <b-card-text class="recipe-card-text">
+                {{third.recipeName}}
+              </b-card-text>
+              </div>
+              </div>
+            </b-card>
           </router-link>
-        </div>
-      </div>
 
-      <div class="about-office">
-        <div class="container">
-          <div class="row text-center">
-            <div class="col-md-8 ml-auto mr-auto">
-              <h2 class="title">선호카테고리 : {{ favoriteCategory }}</h2>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-1 align-self-center" @click="moveFavoritePrev">
-              <n-button type="primary" round icon>
-                <i class="now-ui-icons arrows-1_minimal-left"></i>
-              </n-button>
-            </div>
-            <div class="col-10 row">
-              <div v-for="recipe in favoriteCurRecipes" :key="recipe.recipeId" class="col-2">
-                <router-link
-                  class="card-link"
-                  :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
-                >
-                  <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="w-100 h-100" />
-                </router-link>
-              </div>
-            </div>
-            <div class="col-1 align-self-center" @click="moveFavoriteNext">
-              <n-button type="primary" round icon>
-                <i class="now-ui-icons arrows-1_minimal-right"></i>
-              </n-button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="about-office">
-        <div class="container">
-          <div class="row text-center">
-            <div class="col-md-8 ml-auto mr-auto">
-              <h2 class="title">최근에 등록된 레시피</h2>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-1 align-self-center" @click="movePrev">
-              <n-button type="primary" round icon>
-                <i class="now-ui-icons arrows-1_minimal-left"></i>
-              </n-button>
-            </div>
-            <div class="col-10 row">
-              <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-2">
-                <router-link
-                  class="card-link"
-                  :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
-                >
-                  <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="w-100 h-100" />
-                </router-link>
-              </div>
-            </div>
-            <div class="col-1 align-self-center" @click="moveNext">
-              <n-button type="primary" round icon>
-                <i class="now-ui-icons arrows-1_minimal-right"></i>
-              </n-button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -368,26 +168,25 @@
 import SERVER from "@/api/api";
 import axios from "axios";
 
-import { Card, Button, FormGroupInput } from "@/components/global";
 import { mapGetters } from "vuex";
+import { Button, FormGroupInput } from "@/components/global";
 
 export default {
   name: "Main",
   data() {
     return {
-      recipes: [],
+      recipes: [{recipeId: null}],
       maxPage: 3,
       curPage: 0,
       favoriteCategory: null,
-      favoriteRecipes: [],
+      favoriteRecipes: [{recipeId: null}],
       favoriteCurPage: 0,
-      first: {},
-      second: {},
-      third: {},
+      first: {recipeId: null},
+      second: {recipeId: null},
+      third: {recipeId: null},
     };
   },
   components: {
-    Card,
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
   },
@@ -447,8 +246,12 @@ export default {
           }
         })
         .then(res => {
-          this.favoriteCategory = res.data.category.foodCategoryName
-          this.favoriteRecipes = res.data.recipe.slice(0, 18)
+          if (res.data.msg == "선호 카테고리가 없습니다.") {
+            this.favoriteCategory = null
+          } else {
+            this.favoriteCategory = res.data.category.foodCategoryName
+            this.favoriteRecipes = res.data.recipe.slice(0, 18)
+          }
         })
         .catch(err => console.log(err))
     },
@@ -472,4 +275,66 @@ export default {
 };
 </script>
 
+<style scoped>
+.main-list-recipe {
+  width: 120px;
+  height: 100px;
+  background-size: cover;
+  background-position: center;
+}
 
+.recipe-item {
+  cursor: pointer;
+}
+
+.recent-recipe-image {
+  height: 100px;
+}
+
+.favorite-recipe-image {
+  height: 100px;
+}
+
+.top-recipes {
+  display: flex;
+  justify-content:space-around;
+}
+
+.top-recipes > a {
+  border-radius: 50px;
+  transition: all 0.5s ease-in-out;
+}
+
+.top-recipes > a > article > img {
+  height: 200px;
+}
+
+.top-recipes > a:hover {
+  transform: scale(1.2);
+  transition: transform.5s;
+  cursor: pointer;
+}
+
+.favortie-recipes > div {
+  border-radius: 50px;
+  transition: all 0.5s ease-in-out;
+}
+
+.favortie-recipes > div:hover {
+  transform: scale(1.2);
+  transition: transform.5s;
+  cursor: pointer;
+}
+
+
+.recent-recipes > div {
+  border-radius: 50px;
+  transition: all 0.5s ease-in-out;
+}
+
+.recent-recipes > div:hover {
+  transform: scale(1.2);
+  transition: transform.5s;
+  cursor: pointer;
+}
+</style>
