@@ -247,37 +247,45 @@ router.beforeEach(async (to, from, next) => { // 모든 라우터에 대해 입�
   const authRequired = !publicPages.includes(to.name); // 로그인 해야 됨
   const unauthRequired = authPages.includes(to.name); // 로그인 X여야 됨
 
-  axios
-  .get(SERVER.URL + SERVER.ROUTES.myPage, {
-    headers: {
-      Authorization: 'Bearer: ' + cookies.get('auth-token')
-    },
-  })
-  .then(res => {
-    if (res.status == 200) {
-      if (unauthRequired) {
-        if (to.name == 'Home') {
-          next();
+  const isLoggedIn = (cookies.get('auth-token') != null) ? true : false
+
+  if (authRequired && !isLoggedIn) {
+    alert('로그인이 필요합니다!');
+    next('/');
+  } else if (isLoggedIn) {
+    axios
+    .get(SERVER.URL + SERVER.ROUTES.myPage, {
+      headers: {
+        Authorization: 'Bearer: ' + cookies.get('auth-token')
+      },
+    })
+    .then(res => {
+      if (res.status == 200) {
+        if (unauthRequired) {
+          if (to.name == 'Home') {
+            next();
+          } else {
+            alert('로그인한 상태로 접근할 수 없습니다.');
+            next('/main');
+          }
         } else {
-          alert('로그인한 상태로 접근할 수 없습니다.')
-          next('/main');
+          next();
         }
-      } else {
-        next();
       }
-    }
-  })
-  .catch(err => {
-    console.log(err.response)
-    if (err.response.status == 401) {
-      if (authRequired) {
-        alert('로그인이 필요합니다!')
-        next('/');
-      } else {
-        next();
+    })
+    .catch(err => {
+      if (err.response.status == 401) {
+        if (authRequired) {
+          alert('로그인이 필요합니다!');
+          next('/');
+        } else {
+          next();
+        }
       }
-    }
-  })
+    })
+  } else {
+    next();
+  }
 })
 
 export default router;
