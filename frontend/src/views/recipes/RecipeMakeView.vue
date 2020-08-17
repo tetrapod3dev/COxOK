@@ -24,18 +24,19 @@
                 hidden
                 @change="onChangeThumbnail"
               />
-              <div class="row">
-                <div class="col-12">
-                  <img id="recipe-preview" :src="recipePreview" class="w-100" />
+              <!-- <div class="row"> -->
+                <div class="col-5">
+                  <img id="recipe-preview" :src="recipePreview" class="w-100" style="height:200px;"/>
+                  <br><br>
                   <a @click="onClickThumbnailUpload" class="w-100">
                     <n-button type="primary" round block>메인 사진 업로드</n-button>
                   </a>
                 </div>
-              </div>
-            </div>
+              <!-- </div> -->
+            <!-- </div> -->
             <br><br>
-            <div class="row">
-                <div class="col-12 detail-input">
+            <!-- <div class="row"> -->
+                <div class="col-7 detail-input">
                   <input type="text" name="name" class="question" id="nme" required autocomplete="off" v-model="recipeName"/>
                   <label for="nme"><span>레시피 제목</span></label>
                   <br><br>
@@ -150,28 +151,35 @@
         <hr class="my-5" />
 
         <div>
-          <h3 class="text-left">재료 선택</h3>
-          <div class="row" v-for="(selectedIngredient, index) in selectedIngredients" :key="index">
-            <b-form-input
-              :list="getIngredientDatalistId(index)"
-              :id="getIngredientInputId(index)"
-              v-model="selectedIngredient.ingredient"
-              @change="test(selectedIngredient)"
-              class="col-4 text-center"
-              style="margin-top: 24px"
-            />
-            <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
-            <div v-if="selectedIngredient.unit == null" class="col-3 ">
-              <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
+          <h3 class="text-left" style="float:left">재료 선택</h3>
+          <div class="add-btn">
+            <n-button @click.native="showModal" type="secondary" round class="btn">
+                재료가 없어요!
+              </n-button>
+          </div>
+          <div class="ingredient-select">
+            <div class="row" v-for="(selectedIngredient, index) in selectedIngredients" :key="index">
+              <b-form-input
+                :list="getIngredientDatalistId(index)"
+                :id="getIngredientInputId(index)"
+                v-model="selectedIngredient.ingredient"
+                @change="test(selectedIngredient)"
+                class="col-4 text-center"
+                style="margin-top: 24px"
+              />
+              <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
+              <div v-if="selectedIngredient.unit == null" class="col-3" style="margin-top: 16px">
+                <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
+              </div>
+              
+              <div v-else class="col-3 m-0 row">
+                <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
+                <p class="col-4">{{ selectedIngredient.unit }}</p>
+              </div>
+              <a @click="removeIngredient(index)">
+                <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
+              </a>
             </div>
-            
-            <div v-else class="col-3 m-0 row">
-              <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
-              <p class="col-4">{{ selectedIngredient.unit }}</p>
-            </div>
-            <a @click="removeIngredient(index)">
-              <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
-            </a>
           </div>
 
           <div class="row">
@@ -184,9 +192,9 @@
             </div>
             <div class="col-3">
               <!-- 재료 추가 모달창 필요 -->
-              <n-button @click.native="showModal" type="secondary" round class="btn">
+              <!-- <n-button @click.native="showModal" type="secondary" round class="btn">
                 재료가 없어요!
-              </n-button>
+              </n-button> -->
               
               <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
                 <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
@@ -260,7 +268,7 @@ export default {
     return {
       recipeName: null,
       recipeDetail: null,
-      recipePreview: null,
+      recipePreview: "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg",
       level: 1,
       cookTime: 60,
       categories: [],
@@ -363,7 +371,7 @@ export default {
     preTest() {
       let problems = [];
       let photoFile = document.getElementById("recipe_thumbnail");
-      if (photoFile.files.length == 0) {
+      if (photoFile.files.length == 0 || this.recipePreview === "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg") {
         problems.push("레시피 썸네일");
       }
       if (this.recipeName == null) {
@@ -661,7 +669,8 @@ export default {
 
 .detail-image-upload{
   text-align: center;
-  width: 60%
+  width: 60%;
+  border: solid 1px;
 }
 
 /*
@@ -1084,5 +1093,12 @@ input[type="range"]:active::-webkit-slider-runnable-track {
   background: none;
 }
 
+.ingredient-select{
+  padding-left: 280px;
+}
 
+.add-btn{
+  padding-left: 510px;
+  padding-bottom: 0px;
+}
 </style>
