@@ -15,7 +15,7 @@
       <div class="container">
         <div v-if="selectedMax == 0" class="button-container">
           <!-- <b-form-select class="btn btn-primary btn-round btn-lg" id="round"> -->
-            <b-form-select class="learn-more" id="round">
+            <b-form-select style="background-color:#fff0f0;" class="mr-2" id="round">
             <template v-slot:first>
               <b-form-select-option :value="undefined" selected disabled>-- 선택 --</b-form-select-option>
             </template>
@@ -49,7 +49,7 @@
     <div v-if="selectedMax > 1" class="section container">
       <h2 class="versus-title">{{ selectedMax }}강전</h2>
       <div class="row">
-        <div v-for="recipe in nowRecipes" :key="recipe.id" class="versus-card-detail col-6">
+        <div v-for="recipe in nowRecipes" :key="recipe.id" class="versus-card col-6">
           <card type="profile" style="width:465px;height:400px;">
             <img
               :src="imageSrc(recipe.recipeThumbnailSrc)"
@@ -120,7 +120,7 @@
     <div v-if="this.selectedMax == 1" class="section container">
       <h2 class="versus-title">1등</h2>
       <div class="row">
-        <div class="versus-card-detail col-md-6">
+        <div class="versus-card col-md-6">
           <card type="profile" style="width:465px;height:400px;">
             <!-- <div
               class="versus-card-image"
@@ -386,12 +386,12 @@ export default {
 
 }
 
- .versus-card-detail {
+ .versus-card {
   display:inline-block;
   transition: all 0.8s;
 }
 
-.versus-card-detail:hover {
+.versus-card:hover {
   transform:scale(1.1);
 } 
 
