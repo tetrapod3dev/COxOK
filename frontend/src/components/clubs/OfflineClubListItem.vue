@@ -1,20 +1,16 @@
 <template>
-  <div class="wrapper">
-    <router-link :to="{ name: 'ClubOfflineDetailView', params: {club_id: club.meetId} }">
-      <figure class="card card--1">
-        <img :src="imageSrc(club.thumbnailSrc)">
-        <figcaption>
-          <span class="info">
-            <h3>{{club.title}}</h3>
-            <span>날짜: {{simpleDate(club.date)}}</span>
-            <span class="ml-3">금액: {{club.price}}원</span>
-          </span>
-        </figcaption>
-      </figure>
-    </router-link>
-
-    
-  </div>
+  <router-link :to="{ name: 'ClubOfflineDetailView', params: {club_id: club.meetId} }">
+    <figure class="card card--1">
+      <img :src="imageSrc(club.thumbnailSrc)">
+      <figcaption>
+        <span class="info">
+          <h3>{{club.title}}</h3>
+          <span>날짜: {{simpleDate(club.date)}}</span>
+          <span class="ml-3">금액: {{club.price}}원</span>
+        </span>
+      </figcaption>
+    </figure>
+  </router-link>
 </template>
 
 <script>
