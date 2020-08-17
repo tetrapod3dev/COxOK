@@ -44,4 +44,15 @@ public class BlogServiceImpl implements BlogService{
 	public long getTotalNum() {
 		return blogDao.selectTotal();
 	}
+	
+	@Override
+	public List<BlogDto> getByTitle(String title) {
+		return blogDao.selectByTitle(title);
+	}
+	@Override
+	public List<BlogDto> getByTag(String tag) {
+		return blogDao.selectByTag(tag);
+	}
+	
+	
 }

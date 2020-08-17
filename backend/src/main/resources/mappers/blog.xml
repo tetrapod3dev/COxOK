@@ -54,6 +54,30 @@
 			user_id = #{userId}
 	</select>
 	
+	<select id="selectByTitle" resultType="BlogDto">
+		select
+			blog_id as blogId, user_id as userId, recipe_id as recipeId, title, content,
+			reg_time as regTime, tag1, tag2, tag3
+		from 
+			blog
+		where 
+			title like concat('%',#{title},'%')
+		order by blogId desc	
+	</select>
+
+	<select id="selectByTag" resultType="BlogDto">
+		select
+			distinct(blog_id) as blogId, user_id as userId, recipe_id as recipeId, title, content,
+			reg_time as regTime, tag1, tag2, tag3
+		from 
+			blog
+		where 
+			tag1 like concat('%',#{tag},'%') or
+			tag2 like concat('%',#{tag},'%') or
+			tag3 like concat('%',#{tag},'%')
+		order by blogId desc	
+	</select>
+	
 	<insert id ="insert">
 		insert into blog (user_id, recipe_id, title, content, tag1, tag2, tag3)
 		values (

@@ -159,6 +159,51 @@ public class BlogController {
 		return response;
 	}
 	
+	@ApiOperation("블로그 제목으로 검색")
+	@GetMapping("/title/{title}")
+	public Object getByTitle(@PathVariable("title")String title) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		
+		List<BlogDto> list = blogService.getByTitle(title);
+		
+		if(list != null) {
+			map.put("msg", "블로그 제목으로 검색 성공했습니다.");
+			map.put("status", "success");
+			map.put("blog", list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "블로그 제목으로 검색 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("블로그 태그로 검색")
+	@GetMapping("/tag/{tag}")
+	public Object getByTag(@PathVariable("tag")String tag) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		List<BlogDto> list = blogService.getByTag(tag);
+		
+		if(list != null) {
+			map.put("msg", "블로그 태그로 검색 성공했습니다.");
+			map.put("status", "success");
+			map.put("blog", list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "블로그 태그로 검색 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
 	// Update
 	@ApiOperation("블로그 포스트 수정")
 	@PutMapping("/")
