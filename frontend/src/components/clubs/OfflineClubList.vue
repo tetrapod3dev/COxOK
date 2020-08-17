@@ -11,7 +11,7 @@
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
-          <OfflineClubListItem v-for="cookingClass in curCookings" :key="cookingClass.meetId" :club="cookingClass" class="col-4" />
+          <OfflineClubListItem v-for="cookingClass in curCookings" :key="cookingClass.meetId" :club="cookingClass" class="col-12 col-md-4" />
         </div>
         <div class="next-button col-1 mb-auto mt-auto" @click="moveCookingNext">
           <i class="far fa-arrow-alt-circle-right"></i>
@@ -31,7 +31,7 @@
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
-          <OfflineClubListItem v-for="sharedKitchen in curKitchens" :key="sharedKitchen.meetId" :club="sharedKitchen" class="col-4" />
+          <OfflineClubListItem v-for="sharedKitchen in curKitchens" :key="sharedKitchen.meetId" :club="sharedKitchen" class="col-12 col-md-4" />
         </div>
         <div class="next-button col-1 mb-auto mt-auto" @click="moveKitchenNext">
           <i class="far fa-arrow-alt-circle-right"></i>
@@ -50,7 +50,7 @@
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
-          <OfflineClubListItem v-for="party in curParties" :key="party.meetId" :club="party" class="col-4" />
+          <OfflineClubListItem v-for="party in curParties" :key="party.meetId" :club="party" class="col-12 col-md-4" />
         </div>
         <div class="next-button col-1 mb-auto mt-auto" @click="movePartyNext">
           <i class="far fa-arrow-alt-circle-right"></i>
@@ -103,7 +103,7 @@ export default {
       return this.sharedKitchens.slice(this.kitchenCurPage*3, (this.kitchenCurPage+1)*3)
     },
     curParties() {
-      return this.sharedKitchens.slice(this.partyCurPage*3, (this.partyCurPage+1)*3)
+      return this.parties.slice(this.partyCurPage*3, (this.partyCurPage+1)*3)
     },
   },
   methods: {

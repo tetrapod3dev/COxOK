@@ -11,7 +11,7 @@
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
-          <OnlineClubListItem v-for="youtube in curYoutubes" :key="youtube.onlineId" :online="youtube" class="col-4" />
+          <OnlineClubListItem v-for="youtube in curYoutubes" :key="youtube.onlineId" :online="youtube" class="col-12 col-md-4" />
         </div>
         <div class="next-button col-1 mb-auto mt-auto" @click="moveYoutubeNext">
           <i class="far fa-arrow-alt-circle-right"></i>
@@ -30,7 +30,7 @@
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
-          <OnlineClubListItem v-for="meeting in curMeetings" :key="meeting.onlineId" :online="meeting" class="col-4" />
+          <OnlineClubListItem v-for="meeting in curMeetings" :key="meeting.onlineId" :online="meeting" class="col-12 col-md-4" />
         </div>
         <div class="next-button col-1 mb-auto mt-auto" @click="moveMeetingNext">
           <i class="far fa-arrow-alt-circle-right"></i>

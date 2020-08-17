@@ -11,12 +11,19 @@
       </div>
     </div>
 
-  <div class="container">
-    <div class="row">
-      <h3 class="col-12">타입별 모아보기 ({{ type }})</h3>
-
-      <OfflineClubListItem v-for="club in clubs" :key="club.meetId" :club="club" class="col-3" />
+    <div class="section offline-list">
+      <div class="container">
+        <div class="button-container">
+          <button class="learn-more" @click="goBackPage" style="margin-left: 20px;">목록으로</button>
+        </div>
+      </div>
     </div>
+
+    <div class="container">
+      <div class="row">
+        <h2 class="title col-12">{{ type }} 모아보기</h2>
+        <OfflineClubListItem v-for="club in clubs" :key="club.meetId" :club="club" class="col-12 col-md-6 col-lg-3" />
+      </div>
 
     <PageButtons 
       class="d-flex justify-content-center"
@@ -76,10 +83,16 @@ export default {
       this.getClubs();
       scroll(0, 0);
     },
+    goBackPage() {
+      this.$router.go(-1);
+    },
   }
 }
 </script>
 
-<style>
+<style scoped>
+.offline-list .button-container {
+  margin-top: -112px;
+}
 
 </style>

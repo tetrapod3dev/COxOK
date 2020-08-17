@@ -7,14 +7,23 @@
       ></parallax>
 
       <div class="content-center">
-        <h1 class="title">대결하기</h1>
+        <h1 class="title">코~옥하기</h1>
       </div>
     </div>
+
+    <div class="section online-list">
+      <div class="container">
+        <div class="button-container">
+          <button class="learn-more" @click="goBackPage" style="margin-left: 20px;">목록으로</button>
+        </div>
+      </div>
+    </div>
+
+
     <div class="container">
       <div class="row">
-        <h3 class="col-12">타입별 모아보기 ({{ type }})</h3>
-
-        <OnlineClubListItem v-for="club in clubs" :key="club.meetId" :online="club" class="col-3" />
+        <h2 class="title col-12">{{ type }} 모아보기</h2>
+        <OnlineClubListItem v-for="club in clubs" :key="club.meetId" :online="club" class="col-12 col-md-6 col-lg-3" />
       </div>
 
       <PageButtons 
@@ -75,10 +84,15 @@ export default {
       this.getClubs();
       scroll(0, 0);
     },
+    goBackPage() {
+      this.$router.go(-1);
+    },
   }
 }
 </script>
 
 <style>
-
+.online-list .button-container {
+  margin-top: -112px;
+}
 </style>
