@@ -4,7 +4,7 @@
       type="primary"
       position="fixed"
       :transparent="transparent"
-      :color-on-scroll="300"
+      :color-on-scroll="20"
       menu-classes="ml-auto"
     >
       <template>

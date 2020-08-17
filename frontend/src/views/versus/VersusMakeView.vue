@@ -52,11 +52,17 @@
       <br>
       <div class="selected-recipe-list row">
         <div class="ml-auto mr-auto align-self-center">
+         
+
+
           <b-button variant="primary" class="btn-circle" pill @click="movePrev">
             <i class="now-ui-icons arrows-1_minimal-left"></i>
           </b-button>
         </div>
 
+         <div class="select-zero" v-if="selectedRecipes.length == 0">
+             레시피를 선택하세요.
+          </div>
         <!-- <div class="col-10 row p-3">
           <div v-for="(recipe, index) in curRecipes" :key="index" class="card col-3 m-0">
             <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="card-img-top" alt="레시피 사진" />
@@ -725,6 +731,10 @@ button.submit:active::before {
   padding: 0px 20px 20px 30px;
   border-radius: 20px;
   border: solid 1px lightgray;
+}
+
+.select-zero{
+  padding-top: 110px;
 }
 
 </style>

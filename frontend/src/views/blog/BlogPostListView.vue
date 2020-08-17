@@ -20,7 +20,7 @@
                 <button class="btn btn-outline-secondary mx-2">글 작성</button>
               </router-link>
 
-              <form class="form-inline my-2 my-lg-0 bd-highlight" method="GET" action>
+              <!-- <form class="form-inline my-2 my-lg-0 bd-highlight" method="GET" action>
                 <input
                   class="form-control mr-sm-2"
                   type="search"
@@ -30,7 +30,7 @@
                   value
                 />
                 <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">검색</button>
-              </form>
+              </form>-->
             </div>
 
             <PostList
@@ -47,7 +47,6 @@
               :maxPage="maxPage"
               @move-page="movePage"
             />
-
             <!-- blog inner Page end -->
           </div>
         </div>
@@ -115,17 +114,20 @@ export default {
       this.allBlogPost(page);
       // }
     },
-    allBlogPost(page) {
+    allBlogPost() {
       let configs = {
         headers: {
           Authorization: this.config,
         },
       };
       axios
-        .get(SERVER.URL + SERVER.ROUTES.blogList + (page - 1), configs)
+        .get(
+          SERVER.URL + SERVER.ROUTES.blogMy + (this.$route.params.pageNum - 1),
+          configs
+        )
         .then((res) => {
           console.log(res.data);
-          this.posts = res.data.list;
+          this.posts = res.data.blog;
           this.total = res.data.total;
           this.maxPage =
             parseInt((res.data.total - 1) / this.numPostPerPage) + 1;

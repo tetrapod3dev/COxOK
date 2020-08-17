@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1 class="my-5">Test</h1>
-    <select v-model="type">
+  <div class="container">
+    <h1 class="my-5">Header</h1>
+    <select v-model="type" class="border rounded-lg p-2 d-flex justify-content-start">
       <!-- <option disabled selected>{{ type }}</option> -->
       <option>유저</option>
       <option>재료</option>
@@ -9,7 +9,7 @@
       <option>신고당한 레시피</option>
     </select>
 
-    <AdminUserList v-if="type=='유저'" />
+    <AdminUserList class="float-none" v-if="type=='유저'" />
     <AdminIngredientList v-else-if="type=='재료'" />
     <AdminModiIngredientList v-else-if="type=='재료 추가'" />
     <AdminReportedRecipeList v-else />

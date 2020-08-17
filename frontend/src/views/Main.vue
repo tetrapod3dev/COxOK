@@ -191,13 +191,16 @@ export default {
     [FormGroupInput.name]: FormGroupInput,
   },
   computed: {
-    ...mapGetters(['config']),
+    ...mapGetters(["config"]),
     favoriteMaxPage() {
-      return parseInt((this.favoriteRecipes.length - 1) / 6) + 1
+      return parseInt((this.favoriteRecipes.length - 1) / 6) + 1;
     },
     favoriteCurRecipes() {
-      return this.favoriteRecipes.slice(this.favoriteCurPage * 6, (this.favoriteCurPage+1) * 6)
-    }
+      return this.favoriteRecipes.slice(
+        this.favoriteCurPage * 6,
+        (this.favoriteCurPage + 1) * 6
+      );
+    },
   },
   methods: {
     imageSrc(recipePhoto) {
@@ -242,8 +245,8 @@ export default {
       axios
         .get(SERVER.URL + SERVER.ROUTES.favoriteRecipes, {
           headers: {
-            Authorization: this.config
-          }
+            Authorization: this.config,
+          },
         })
         .then(res => {
           if (res.data.msg == "선호 카테고리가 없습니다.") {
@@ -253,19 +256,19 @@ export default {
             this.favoriteRecipes = res.data.recipe.slice(0, 18)
           }
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     },
 
     getVersusRank() {
       axios
         .get(SERVER.URL + SERVER.ROUTES.versusRank)
-        .then(res => {
-          this.first = res.data.versus[0]
-          this.second = res.data.versus[1]
-          this.third = res.data.versus[2]
+        .then((res) => {
+          this.first = res.data.versus[0];
+          this.second = res.data.versus[1];
+          this.third = res.data.versus[2];
         })
-        .catch(err => console.log(err.response))
-    }
+        .catch((err) => console.log(err.response));
+    },
   },
   created() {
     this.getRecipes(0);

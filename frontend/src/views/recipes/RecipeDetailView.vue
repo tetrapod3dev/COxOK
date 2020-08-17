@@ -43,12 +43,25 @@
             {{ recipe.level }}
           </div>
         </div>  
+         <div>
+          <h3 class="title text-center mt-5 mb-1">요리 분류</h3>
+          <div class="category">
+             <span class="categories"
+                v-for="(category) in categories"
+                :key="category"
+              >
+              {{category}}    
+             </span>
+          </div>
+        </div>
+        
         <div>
           <h3 class="title text-center mt-5 mb-1">레시피 점수</h3>
           <div class="avgRating">
             <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
           </div>
         </div>
+        
       </div>
     </div>
     <!--     *********    END TEAM 1      *********      -->
@@ -251,6 +264,7 @@ export default {
       recipe: {
         'reviewDtoList': [],
       },
+      categories:[],
       unitList: ["kcal", "g", "g", "mg", "g", "g"],
       tempUserId: [],
       videos: [],
@@ -514,7 +528,7 @@ export default {
             'protein': res.data.recipe.protein,
             'sugar': res.data.recipe.sugar,
           };
-
+        
           this.likeCnt = res.data.likeCnt;
           this.isLiked = res.data.userLike;
           this.loginUserId = res.data.loginUserId
@@ -545,7 +559,7 @@ export default {
             'protein': res.data.recipe.protein,
             'sugar': res.data.recipe.sugar,
           };
-
+          this.categories = res.data.recipe.foodCategoryName
           this.likeCnt = res.data.likeCnt;
           this.isLiked = res.data.userLike;
           this.loginUserId = res.data.loginUserId
@@ -659,5 +673,14 @@ export default {
 
 .idx-obj:hover {
   cursor: pointer;
+}
+
+.category{
+  padding-top: 40px;
+  font-size: 20px;
+}
+.categories{
+  padding-right: 5px;
+  padding-left:5px;
 }
 </style>
