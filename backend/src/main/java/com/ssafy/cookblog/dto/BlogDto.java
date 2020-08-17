@@ -21,6 +21,8 @@ public class BlogDto {
 	private String tag1;
 	private String tag2;
 	private String tag3;
+	
+	private int startIndex;
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

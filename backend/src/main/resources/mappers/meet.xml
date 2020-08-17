@@ -44,7 +44,7 @@
 	
 	<select id="selectMeetJoinList" resultType="MeetJoinDto">
 		select 
-			meet_join_id as meetJoinId, meet_id as meetId, user_id as userId, nickname
+			meet_join_id as meetJoinId, meet_id as meetId, user_id as userId, nickname, profile_photo as profilePhoto
 		FROM
 			meet_join join user using(user_id)
 		where meet_id = #{meetId}
