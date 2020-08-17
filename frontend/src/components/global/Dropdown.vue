@@ -1,71 +1,84 @@
 <template>
-  <component class="dropdown"
-             :is="tag"
-             :class="[{show: isOpen}, {'dropdown': direction === 'down'}, {'dropup': direction ==='up'}]"
-             aria-haspopup="true"
-             :aria-expanded="isOpen"
-             @click="toggleDropDown"
-             v-click-outside="closeDropDown">
-
+  <component
+    class="dropdown"
+    :is="tag"
+    :class="[{show: isOpen}, {'dropdown': direction === 'down'}, {'dropup': direction ==='up'}]"
+    aria-haspopup="true"
+    :aria-expanded="isOpen"
+    @click="toggleDropDown"
+    v-click-outside="closeDropDown"
+  >
     <slot name="title">
-      <a class="dropdown-toggle nav-link"
-         :class="{'no-caret': hideArrow}"
-         data-toggle="dropdown">
+      <a class="dropdown-toggle nav-link" :class="{'no-caret': hideArrow}" data-toggle="dropdown">
+        <img v-if="image" class="img-icon-size" :src="image" />
         <i :class="icon"></i>
         <span class="no-icon">{{title}}</span>
       </a>
     </slot>
-    <ul class="dropdown-menu"
-        :class="[{'dropdown-menu-right': position === 'right'}, {show: isOpen}]">
+    <ul
+      class="dropdown-menu"
+      :class="[{'dropdown-menu-right': position === 'right'}, {show: isOpen}]"
+    >
       <slot></slot>
     </ul>
   </component>
 </template>
 <script>
-  export default {
-    name: 'drop-down',
-    props: {
-      direction: {
-        type: String,
-        default: 'down'
-      },
-      title: String,
-      icon: String,
-      position: String,
-      hideArrow: Boolean,
-      tag: {
-        type: String,
-        default: 'li'
-      }
+export default {
+  name: "drop-down",
+  props: {
+    direction: {
+      type: String,
+      default: "down",
     },
-    data() {
-      return {
-        isOpen: false
-      }
+    title: String,
+    icon: String,
+    image: {
+      type: String,
+      default: null,
     },
-    provide() {
-      return {
-        closeDropDown: this.closeDropDown
-      }
+    position: String,
+    hideArrow: Boolean,
+    tag: {
+      type: String,
+      default: "li",
     },
-    methods: {
-      toggleDropDown() {
-        this.isOpen = !this.isOpen
-        this.$emit('change', this.isOpen)
-      },
-      closeDropDown() {
-        this.isOpen = false
-        this.$emit('change', this.isOpen)
-      }
-    }
-  }
+  },
+  data() {
+    return {
+      isOpen: false,
+    };
+  },
+  provide() {
+    return {
+      closeDropDown: this.closeDropDown,
+    };
+  },
+  methods: {
+    toggleDropDown() {
+      this.isOpen = !this.isOpen;
+      this.$emit("change", this.isOpen);
+    },
+    closeDropDown() {
+      this.isOpen = false;
+      this.$emit("change", this.isOpen);
+    },
+  },
+};
 </script>
 <style>
-  .dropdown {
-    list-style-type: none;
-  }
+.dropdown {
+  list-style-type: none;
+}
 
-  .dropdown .dropdown-toggle {
-    cursor: pointer;
-  }
+.dropdown .dropdown-toggle {
+  cursor: pointer;
+}
+.img-icon-size {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  border: 1px solid;
+  border-radius: 10px;
+}
 </style>

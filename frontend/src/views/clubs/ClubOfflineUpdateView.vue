@@ -176,7 +176,7 @@ export default {
       return SERVER.IMAGE_URL + this.meet.thumbnailSrc;
     },
     fullAddress() {
-      return this.meet.detailAddress == null
+      return this.meet.detailAddress != null
         ? this.meet.address + " " + this.detailAddress
         : this.meet.address;
     },
@@ -351,7 +351,7 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.$router.push({
-              name: "ClubDetailView",
+              name: "ClubOfflineDetailView",
               params: { club_id: this.$route.params.club_id },
             });
           }

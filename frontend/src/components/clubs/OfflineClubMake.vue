@@ -226,7 +226,9 @@ export default {
   computed: {
     ...mapGetters(["config", "searchingData"]),
     fullAddress() {
-      return this.clubPost.address + " " + this.clubPost.detailAdress;
+      return this.clubPost.detailAddress != null
+        ? this.clubPost.address + " " + this.clubPost.detailAddress
+        : this.clubPost.address;
     },
     fullTime() {
       return this.date.slice(0, 19);
@@ -436,6 +438,7 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             alert("작성에 성공했습니다!");
+            this.$router.push({ name: "ClubListView", params: { pageNum: 1 } });
           }
         })
         .catch((err) => {
