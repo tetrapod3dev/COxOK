@@ -154,7 +154,7 @@
                               <tr >
                                 <th scope="row">
                                   <div class="media align-items-center">
-                                    <router-link :to="{name:'RecipeDetailView', params: { recipe_id: result.recipeId }}">
+                                    <router-link target="_blank" :to="{name:'RecipeDetailView', params: { recipe_id: result.recipeId }}">
                                         <img :src="imageSrc(result.recipeThumbnailSrc)" 
                                     class="avatar rounded-circle mr-3">
                                     </router-link>
