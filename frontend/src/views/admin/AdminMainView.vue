@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 class="my-5">Test</h1>
-    <select v-model="type">
+    <h1 class="my-5">Header</h1>
+    <select v-model="type" class="mr-auto">
       <!-- <option disabled selected>{{ type }}</option> -->
       <option>유저</option>
       <option>재료</option>

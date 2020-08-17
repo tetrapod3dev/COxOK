@@ -97,7 +97,7 @@ export default {
       let response = confirm('신고를 취소하시겠습니까?\n\n레시피 이름: ' + recipe.recipeResponseDto.recipeName)
       if (response) {
         axios
-          .delete(SERVER.URL + SERVER.ROUTES.reportRecipe + recipe.reportRecipeDto.recipeId, this.configs)
+          .delete(SERVER.URL + SERVER.ROUTES.adminReportCancel + recipe.reportRecipeDto.recipeId, this.configs)
           .then(() => {
             alert('신고를 취소했습니다.')
             this.getRecipes();
