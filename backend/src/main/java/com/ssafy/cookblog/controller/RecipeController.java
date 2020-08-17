@@ -548,58 +548,58 @@ public class RecipeController {
 	}
 	
 	
-	@ApiOperation("레시피 검색(요리시간)")
-	@GetMapping("/cooktime/{cookTime}/{startIndex}")
-	public Object searchCookTime(@PathVariable("cookTime")int cookTime,
-			@PathVariable("startIndex")int startIndex) {
-		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();		
-		
-		RecipeDto recipeDto = new RecipeDto();
-		recipeDto.setCookTime(cookTime);
-		recipeDto.setStartIndex(startIndex*6);
-		
-		List<RecipeDto> list = recipeService.getRecipeListByCookTime(recipeDto);
-		
-		if(list!=null) {
-			map.put("msg", "레시피 검색을 성공했습니다.");
-			map.put("status", "success");
-			map.put("list",list);
-			map.put("total",recipeService.getRecipeTotalByCookTime(cookTime));
-			response = new ResponseEntity(map, HttpStatus.OK);
-		}else {
-			map.put("msg", "레시피를 검색을 실패했습니다.");
-			map.put("status", "fail");
-			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
-		}
-		return response;
-	}
-	
-	@ApiOperation("레시피 검색(요리시간)")
-	@GetMapping("/level/{level}/{startIndex}")
-	public Object searchLevel(@PathVariable("level")int level,
-			@PathVariable("startIndex")int startIndex) {
-		ResponseEntity response = null;
-		Map<String,Object> map = new HashMap<String, Object>();		
-		
-		RecipeDto recipeDto = new RecipeDto();
-		recipeDto.setLevel(level);
-		recipeDto.setStartIndex(startIndex*6);
-		
-		List<RecipeDto> list = recipeService.getRecipeListByLevel(recipeDto);
-		
-		if(list!=null) {
-			map.put("msg", "레시피 검색을 성공했습니다.");
-			map.put("status", "success");
-			map.put("list",list);
-			map.put("total",recipeService.getRecipeTotalByLevel(level));
-			response = new ResponseEntity(map, HttpStatus.OK);
-		}else {
-			map.put("msg", "레시피를 검색을 실패했습니다.");
-			map.put("status", "fail");
-			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
-		}
-		return response;
-	}
+//	@ApiOperation("레시피 검색(요리시간)")
+//	@GetMapping("/cooktime/{cookTime}/{startIndex}")
+//	public Object searchCookTime(@PathVariable("cookTime")int cookTime,
+//			@PathVariable("startIndex")int startIndex) {
+//		ResponseEntity response = null;
+//		Map<String,Object> map = new HashMap<String, Object>();		
+//		
+//		RecipeDto recipeDto = new RecipeDto();
+//		recipeDto.setCookTime(cookTime);
+//		recipeDto.setStartIndex(startIndex*6);
+//		
+//		List<RecipeDto> list = recipeService.getRecipeListByCookTime(recipeDto);
+//		
+//		if(list!=null) {
+//			map.put("msg", "레시피 검색을 성공했습니다.");
+//			map.put("status", "success");
+//			map.put("list",list);
+//			map.put("total",recipeService.getRecipeTotalByCookTime(cookTime));
+//			response = new ResponseEntity(map, HttpStatus.OK);
+//		}else {
+//			map.put("msg", "레시피를 검색을 실패했습니다.");
+//			map.put("status", "fail");
+//			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+//		}
+//		return response;
+//	}
+//	
+//	@ApiOperation("레시피 검색(요리시간)")
+//	@GetMapping("/level/{level}/{startIndex}")
+//	public Object searchLevel(@PathVariable("level")int level,
+//			@PathVariable("startIndex")int startIndex) {
+//		ResponseEntity response = null;
+//		Map<String,Object> map = new HashMap<String, Object>();		
+//		
+//		RecipeDto recipeDto = new RecipeDto();
+//		recipeDto.setLevel(level);
+//		recipeDto.setStartIndex(startIndex*6);
+//		
+//		List<RecipeDto> list = recipeService.getRecipeListByLevel(recipeDto);
+//		
+//		if(list!=null) {
+//			map.put("msg", "레시피 검색을 성공했습니다.");
+//			map.put("status", "success");
+//			map.put("list",list);
+//			map.put("total",recipeService.getRecipeTotalByLevel(level));
+//			response = new ResponseEntity(map, HttpStatus.OK);
+//		}else {
+//			map.put("msg", "레시피를 검색을 실패했습니다.");
+//			map.put("status", "fail");
+//			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+//		}
+//		return response;
+//	}
 	
 }
