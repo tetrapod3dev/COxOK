@@ -14,4 +14,7 @@ public interface BlogDao {
 	public int update(BlogDto blogDto);
 	public int delete(long blogId);
 	public long selectTotal();
+	
+	public List<BlogDto> selectByTitle(String title);
+	public List<BlogDto> selectByTag(String tag);
 }

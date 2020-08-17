@@ -46,4 +46,13 @@ public class BlogDaoImpl implements BlogDao{
 	public long selectTotal() {
 		return session.selectOne("blog.selectTotalNum");
 	}
+	
+	@Override
+	public List<BlogDto> selectByTitle(String title) {
+		return session.selectList("blog.selectByTitle",title);
+	}
+	@Override
+	public List<BlogDto> selectByTag(String tag) {
+		return session.selectList("blog.selectByTag",tag);
+	}
 }

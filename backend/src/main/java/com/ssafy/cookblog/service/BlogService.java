@@ -13,4 +13,7 @@ public interface BlogService {
 	public int modify(BlogDto blogDto);
 	public int remove(long blogId);
 	public long getTotalNum();
+	
+	public List<BlogDto> getByTitle(String title);
+	public List<BlogDto> getByTag(String tag);
 }

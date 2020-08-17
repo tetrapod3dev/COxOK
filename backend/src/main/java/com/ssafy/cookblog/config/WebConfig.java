@@ -52,6 +52,9 @@ public class WebConfig implements WebMvcConfigurer {
 			"/online/all/**",
 			"/online/type/**",
 			
+			"/blog/title/**",
+			"/blog/tag/**",
+			
 			"/error"
 	};
 
