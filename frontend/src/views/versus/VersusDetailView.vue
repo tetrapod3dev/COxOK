@@ -15,7 +15,7 @@
       <div class="container">
         <div v-if="selectedMax == 0" class="button-container">
           <!-- <b-form-select class="btn btn-primary btn-round btn-lg" id="round"> -->
-            <b-form-select style="background-color:#fff0f0;" class="mr-2" id="round">
+            <b-form-select class="select-num mr-2" id="round">
             <template v-slot:first>
               <b-form-select-option :value="undefined" selected disabled>-- 선택 --</b-form-select-option>
             </template>
@@ -1909,6 +1909,12 @@ p {
     .btn {
         margin-bottom: 10px;
     }
+}
+
+.select-num {
+    background-color:#fff0f0;
+    border:2px solid #b18597;
+    border-radius: 10px;
 }
 
 button {
