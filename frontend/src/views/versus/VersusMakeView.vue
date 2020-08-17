@@ -152,9 +152,14 @@
               <h3 class="row">{{ recipe.recipeName }}</h3>
               <p class="row">{{ recipe.recipeDetail }}</p>
             </div>
-            <div class="checkbox-plus-minus">
+            <label class="toggle-control">
+              <input type="checkbox" checked="checked" v-model="checker[recipe.recipeId]" @click="checkRecipe(recipe)">
+              <span class="control"></span>
+            </label>
+
+            <!-- <div class="checkbox-plus-minus">
               <input type="checkbox" class="plus-minus" v-model="checker[recipe.recipeId]" @click="checkRecipe(recipe)">
-            </div>
+            </div> -->
           </div>
           <div id="bottomSensor"></div>
         </tab-pane>
@@ -619,6 +624,9 @@ body {
   margin: 0;
   min-height: 100vh;
   background: #fff;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
 }
 
 button {
@@ -741,157 +749,64 @@ button.submit:active::before {
 
 
 /* 체크박스 */
-.plus-minus {
-  --primary: #1E2235;
-  --secondary: #FAFBFF;
-  --duration: .5s;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  outline: none;
-  cursor: pointer;
+.toggle-control {
+  display: block;
   position: relative;
-  overflow: hidden;
-  -webkit-transform-style: preserve-3d;
-          transform-style: preserve-3d;
-  -webkit-perspective: 240px;
-          perspective: 240px;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  border: 4px solid var(--primary);
-  background-size: 300% 300%;
-  -webkit-transition: -webkit-transform .3s;
-  transition: -webkit-transform .3s;
-  transition: transform .3s;
-  transition: transform .3s, -webkit-transform .3s;
-  -webkit-transform: scale(var(--scale, 1)) translateZ(0);
-          transform: scale(var(--scale, 1)) translateZ(0);
-  -webkit-animation: var(--name, unchecked) var(--duration) ease forwards;
-          animation: var(--name, unchecked) var(--duration) ease forwards;
+  padding-left: 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
-.plus-minus:before, .plus-minus:after {
-  content: '';
+.toggle-control input {
   position: absolute;
-  width: 16px;
-  height: var(--height, 16px);
-  left: 6px;
-  top: var(--top, 6px);
-  background: var(--background, var(--primary));
-  -webkit-animation: var(--name-icon-b, var(--name-icon, unchecked-icon)) var(--duration) ease forwards;
-          animation: var(--name-icon-b, var(--name-icon, unchecked-icon)) var(--duration) ease forwards;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
-.plus-minus:before {
-  -webkit-clip-path: polygon(0 6px, 6px 6px, 6px 0, 10px 0, 10px 6px, 16px 6px, 16px 10px, 10px 10px, 10px 16px, 6px 16px, 6px 10px, 0 10px);
-          clip-path: polygon(0 6px, 6px 6px, 6px 0, 10px 0, 10px 6px, 16px 6px, 16px 10px, 10px 10px, 10px 16px, 6px 16px, 6px 10px, 0 10px);
+.toggle-control input:checked ~ .control {
+  background-color: dodgerblue;
 }
-.plus-minus:after {
-  --height: 4px;
-  --top: 12px;
-  --background: var(--secondary);
-  --name-icon-b: var(--name-icon-a, checked-icon);
+.toggle-control input:checked ~ .control:after {
+  left: 55px;
 }
-.plus-minus:active {
-  --scale: .95;
+.toggle-control .control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100px;
+  border-radius: 25px;
+  background-color: darkgray;
+  -webkit-transition: background-color 0.15s ease-in;
+  transition: background-color 0.15s ease-in;
 }
-.plus-minus:checked {
-  --name: checked;
-  --name-icon-b: checked-icon;
-  --name-icon-a: unchecked-icon;
-}
-
-@-webkit-keyframes checked-icon {
-  from {
-    -webkit-transform: translateZ(12px);
-            transform: translateZ(12px);
-  }
-  to {
-    -webkit-transform: translateX(16px) rotateY(90deg) translateZ(12px);
-            transform: translateX(16px) rotateY(90deg) translateZ(12px);
-  }
+.toggle-control .control:after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 25px;
+  background: white;
+  -webkit-transition: left 0.15s ease-in;
+  transition: left 0.15s ease-in;
 }
 
-@keyframes checked-icon {
-  from {
-    -webkit-transform: translateZ(12px);
-            transform: translateZ(12px);
-  }
-  to {
-    -webkit-transform: translateX(16px) rotateY(90deg) translateZ(12px);
-            transform: translateX(16px) rotateY(90deg) translateZ(12px);
-  }
-}
-@-webkit-keyframes unchecked-icon {
-  from {
-    -webkit-transform: translateX(-16px) rotateY(-90deg) translateZ(12px);
-            transform: translateX(-16px) rotateY(-90deg) translateZ(12px);
-  }
-  to {
-    -webkit-transform: translateZ(12px);
-            transform: translateZ(12px);
-  }
-}
-@keyframes unchecked-icon {
-  from {
-    -webkit-transform: translateX(-16px) rotateY(-90deg) translateZ(12px);
-            transform: translateX(-16px) rotateY(-90deg) translateZ(12px);
-  }
-  to {
-    -webkit-transform: translateZ(12px);
-            transform: translateZ(12px);
-  }
-}
-@-webkit-keyframes checked {
-  from {
-    background-image: radial-gradient(ellipse at center, var(--primary) 0%, var(--primary) 25%, var(--secondary) 25.1%, var(--secondary) 100%);
-    background-position: 100% 50%;
-  }
-  to {
-    background-image: radial-gradient(ellipse at center, var(--primary) 0%, var(--primary) 25%, var(--secondary) 25.1%, var(--secondary) 100%);
-    background-position: 50% 50%;
-  }
-}
-@keyframes checked {
-  from {
-    background-image: radial-gradient(ellipse at center, var(--primary) 0%, var(--primary) 25%, var(--secondary) 25.1%, var(--secondary) 100%);
-    background-position: 100% 50%;
-  }
-  to {
-    background-image: radial-gradient(ellipse at center, var(--primary) 0%, var(--primary) 25%, var(--secondary) 25.1%, var(--secondary) 100%);
-    background-position: 50% 50%;
-  }
-}
-@-webkit-keyframes unchecked {
-  from {
-    background-image: radial-gradient(ellipse at center, var(--secondary) 0%, var(--secondary) 25%, var(--primary) 25.1%, var(--primary) 100%);
-    background-position: 100% 50%;
-  }
-  to {
-    background-image: radial-gradient(ellipse at center, var(--secondary) 0%, var(--secondary) 25%, var(--primary) 25.1%, var(--primary) 100%);
-    background-position: 50% 50%;
-  }
-}
-@keyframes unchecked {
-  from {
-    background-image: radial-gradient(ellipse at center, var(--secondary) 0%, var(--secondary) 25%, var(--primary) 25.1%, var(--primary) 100%);
-    background-position: 100% 50%;
-  }
-  to {
-    background-image: radial-gradient(ellipse at center, var(--secondary) 0%, var(--secondary) 25%, var(--primary) 25.1%, var(--primary) 100%);
-    background-position: 50% 50%;
-  }
-}
-.checkbox-plus-minus {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-}
-
-.checkbox-plus-minus {
-  box-sizing: inherit;
-}
-.checkbox-plus-minus:before, .checkbox-plus-minus:after {
-  box-sizing: inherit;
+/* Center the control */
+body {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+  color: white;
 }
 
 </style>
