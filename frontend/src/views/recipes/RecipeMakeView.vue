@@ -24,18 +24,19 @@
                 hidden
                 @change="onChangeThumbnail"
               />
-              <div class="row">
-                <div class="col-12">
-                  <img id="recipe-preview" :src="recipePreview" class="w-100" />
+              <!-- <div class="row"> -->
+                <div class="col-5">
+                  <img id="recipe-preview" :src="recipePreview" class="w-100" style="height:200px;"/>
+                  <br><br>
                   <a @click="onClickThumbnailUpload" class="w-100">
                     <n-button type="primary" round block>메인 사진 업로드</n-button>
                   </a>
                 </div>
-              </div>
-            </div>
+              <!-- </div> -->
+            <!-- </div> -->
             <br><br>
-            <div class="row">
-                <div class="col-12 detail-input">
+            <!-- <div class="row"> -->
+                <div class="col-7 detail-input">
                   <input type="text" name="name" class="question" id="nme" required autocomplete="off" v-model="recipeName"/>
                   <label for="nme"><span>레시피 제목</span></label>
                   <br><br>
@@ -260,7 +261,7 @@ export default {
     return {
       recipeName: null,
       recipeDetail: null,
-      recipePreview: null,
+      recipePreview: "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg",
       level: 1,
       cookTime: 60,
       categories: [],
