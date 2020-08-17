@@ -110,7 +110,7 @@
       </b-col>
       <button class="btn col-2" v-b-modal.modal-lg>레시피 선택</button>
 
-      <b-modal id="modal-lg" ref="my-modal" hide-footer size="lg" title="Test">
+      <b-modal id="modal-lg" ref="my-modal" hide-footer size="xl" title="레시피 검색기">
         <button @click="changeSelectorShow">카테고리 검색기</button>
 
         <CategorySelector
@@ -317,13 +317,13 @@ export default {
 
     changePage() {
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
-        this.searchRecipe(this.curPage);
-      } else {
         this.allRecipe(this.curPage);
+      } else {
+        this.searchRecipe(this.curPage);
       }
       this.showSelector = false;
     },
@@ -350,6 +350,10 @@ export default {
       ) {
         frm.append("selectedIngredients", selectedIngredient);
       });
+
+      frm.append("level", this.searchingData.level)
+
+      frm.append("cookTime", this.searchingData.cookTime)
 
       // recipe/search/{{page}} 라는 주소로 selectedCategory(선택된 카테고리의 id들) / selectedIngredients(선택된 재료들의 id)를 전달합니다.
       axios

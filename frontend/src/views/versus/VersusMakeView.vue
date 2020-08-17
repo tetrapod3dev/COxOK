@@ -253,13 +253,13 @@ export default {
       this.recipes = [];
       this.curPage = 1;
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
-        this.searchRecipe(this.curPage++);
-      } else {
         this.allRecipe(this.curPage++);
+      } else {
+        this.searchRecipe(this.curPage++);
       }
     },
     allRecipe(page) {
@@ -283,6 +283,10 @@ export default {
       ) {
         frm.append("selectedIngredients", selectedIngredient);
       });
+
+      frm.append("level", this.searchingData.level)
+
+      frm.append("cookTime", this.searchingData.cookTime)
 
       // recipe/search/{{page}} 라는 주소로 selectedCategory(선택된 카테고리의 id들) / selectedIngredients(선택된 재료들의 id)를 전달합니다.
       axios
