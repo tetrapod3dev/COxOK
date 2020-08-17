@@ -364,7 +364,7 @@ export default {
     preTest() {
       let problems = [];
       let photoFile = document.getElementById("recipe_thumbnail");
-      if (photoFile.files.length == 0) {
+      if (photoFile.files.length == 0 || this.recipePreview === "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg") {
         problems.push("레시피 썸네일");
       }
       if (this.recipeName == null) {
