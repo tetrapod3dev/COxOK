@@ -5,11 +5,11 @@
         <v-col>
           <v-sheet height="64">
             <v-toolbar flat color="white">
-              <v-btn fab text small color="grey darken-2" @click="prev">
-                <v-icon small>mdi-chevron-left</v-icon>
+              <v-btn fab text small class="mr-4" color="grey darken-2" @click="prev">
+                <v-icon small>fas fa-chevron-left</v-icon>
               </v-btn>
-              <v-btn fab text small color="grey darken-2" @click="next">
-                <v-icon small>mdi-chevron-right</v-icon>
+              <v-btn fab text small class="mr-4" color="grey darken-2" @click="next">
+                <v-icon small>fas fa-chevron-right</v-icon>
               </v-btn>
               <v-toolbar-title v-if="$refs.calendar">{{ $refs.calendar.title }}</v-toolbar-title>
               <v-spacer></v-spacer>
