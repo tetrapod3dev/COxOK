@@ -144,8 +144,8 @@
                       <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                           <tr>
-                            <th scope="col">이름</th>
                             <th scope="col">점수</th>
+                            <th scope="col"> </th>
                           </tr>
                         </thead>
 
@@ -1922,6 +1922,7 @@ button {
   font-size: inherit;
   font-family: inherit;
 }
+
 button.learn-more {
   font-weight: 600;
   color: #382b22;
