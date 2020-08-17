@@ -1,4 +1,16 @@
 <template>
+  <div class="wrapper">
+    <div class="page-header page-header-mini">
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://livwanillustration.com/portfolio/recipe-illustrations/french-food-illustrations.jpg') ;"
+      ></parallax>
+
+      <div class="content-center">
+        <h1 class="title">코~옥하기</h1>
+      </div>
+    </div>
+
   <div class="container">
     <div class="row">
       <h3 class="col-12">타입별 모아보기 ({{ type }})</h3>
@@ -12,6 +24,7 @@
       :maxPage="maxPage"
       @move-page="movePage"/>
     
+  </div>
   </div>
 </template>
 

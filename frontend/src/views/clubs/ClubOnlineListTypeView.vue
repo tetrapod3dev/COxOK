@@ -1,17 +1,29 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <h3 class="col-12">타입별 모아보기 ({{ type }})</h3>
+  <div class="wrapper">
+    <div class="page-header page-header-mini">
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://livwanillustration.com/portfolio/recipe-illustrations/french-food-illustrations.jpg') ;"
+      ></parallax>
 
-      <OnlineClubListItem v-for="club in clubs" :key="club.meetId" :online="club" class="col-3" />
+      <div class="content-center">
+        <h1 class="title">대결하기</h1>
+      </div>
     </div>
+    <div class="container">
+      <div class="row">
+        <h3 class="col-12">타입별 모아보기 ({{ type }})</h3>
 
-    <PageButtons 
-      class="d-flex justify-content-center"
-      :curPage="curPage"
-      :maxPage="maxPage"
-      @move-page="movePage"/>
-    
+        <OnlineClubListItem v-for="club in clubs" :key="club.meetId" :online="club" class="col-3" />
+      </div>
+
+      <PageButtons 
+        class="d-flex justify-content-center"
+        :curPage="curPage"
+        :maxPage="maxPage"
+        @move-page="movePage"/>
+      
+    </div>
   </div>
 </template>
 
