@@ -129,7 +129,8 @@
         :id="getIngredientInputId(index)"
         v-model="selectedIngredient.name"
         @change="test(selectedIngredient)"
-        class="col-5"
+        class="col-4 text-center"
+        style="margin-top: 24px"
       />
       <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
       <div v-if="selectedIngredient.unit == null" class="col-2 offset-1">
@@ -137,10 +138,10 @@
       </div>
       <div v-else class="col-3 m-0 row">
         <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
-        <p class="col-2">{{ selectedIngredient.unit }}</p>
+        <p class="col-4">{{ selectedIngredient.unit }}</p>
       </div>
       <a @click="removeIngredient(index)">
-              <b-button variant="danger">재료 삭제</b-button>
+              <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
       </a>
     </div>
 
