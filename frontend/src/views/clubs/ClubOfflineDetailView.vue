@@ -103,7 +103,46 @@ export default {
   components: {
     Card,
   },
-  created() {},
+  created() {
+    axios
+        .get(
+          SERVER.URL + SERVER.ROUTES.clubDetail + this.$route.params.club_id,
+          {
+            headers: {
+              Authorization: this.config,
+            },
+          }
+        )
+        .then((res) => {
+          this.user = res.data.userId;
+          this.meet = res.data.meet;
+          this.isIn =
+            res.data.meet.meetJoinList
+              .map((user) => user.userId)
+              .indexOf(res.data.userId) >= 0
+              ? true
+              : false;
+
+          var container = document.getElementById("map");
+          var options = {
+            center: new kakao.maps.LatLng(res.data.meet.lat, res.data.meet.lng),
+            level: 3,
+          };
+
+          var map = new kakao.maps.Map(container, options);
+
+          var geocoder = new daum.maps.services.Geocoder();
+
+          var marker = new daum.maps.Marker({
+            position: new daum.maps.LatLng(
+              res.data.meet.lat,
+              res.data.meet.lng
+            ),
+            map: map,
+          });
+        })
+        .catch((err) => console.log(err));
+  },
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();

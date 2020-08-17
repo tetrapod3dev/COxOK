@@ -69,10 +69,10 @@
           <!-- 참가자 -->
 
           <b-col sm="3">
-            <label for="meet-num-people">참가자 :</label>
+            <label for="meet-num-people">정원 :</label>
           </b-col>
           <b-col sm="6">
-            <b-form-input type="number" v-model="clubPost.joinLimit" placeholder="참가자" />
+            <b-form-input type="number" v-model="clubPost.joinLimit" placeholder="정원(명)" />
           </b-col>
         </div>
 
@@ -83,7 +83,7 @@
             <label for="meet-price">가격 :</label>
           </b-col>
           <b-col sm="6">
-            <b-form-input type="number" v-model="clubPost.price" placeholder="가격" />
+            <b-form-input type="number" v-model="clubPost.price" placeholder="가격(원)" />
           </b-col>
         </div>
       </div>
@@ -97,7 +97,17 @@
       <b-col sm="3">
         <span>레시피 :</span>
       </b-col>
-      <b-col sm="6">{{clubPost.selectedRecipe}}</b-col>
+      <b-col sm="6">
+        <div v-if="clubPost.selectedRecipe == null">
+          {{clubPost.selectedRecipe}}
+        </div>
+        <div v-else>
+          <b-col sm="12">
+            <img class="img img-raised mb-5" :src="getThumbnail()" style="height:200px; margin-right:20px;"/>
+            <p>{{clubPost.selectedRecipe.recipeName}}</p>
+          </b-col>
+        </div>
+      </b-col>
       <button class="btn col-2" v-b-modal.modal-lg>레시피 선택</button>
 
       <b-modal id="modal-lg" ref="my-modal" hide-footer size="lg" title="Test">
@@ -265,7 +275,9 @@ export default {
     imageSrc(recipe) {
       return SERVER.IMAGE_URL + recipe.recipeThumbnailSrc;
     },
-
+    getThumbnail(){
+      return SERVER.IMAGE_URL + this.clubPost.selectedRecipe.recipeThumbnailSrc;
+    },
     ...mapActions(["logout"]),
 
     hideModal() {
