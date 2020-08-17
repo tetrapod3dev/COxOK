@@ -51,6 +51,7 @@
       </div>
     </div>
     <div id="bottomSensor" class="mb-2"></div>
+    <h4 v-if="isEnd">- - -  리스트의 마지막입니다  - - -</h4>
   </div>
 </template>
 
@@ -65,6 +66,7 @@ export default {
     return {
       versusList: [],
       curPage: 0,
+      isEnd: false
     };
   },
   methods: {
@@ -82,6 +84,7 @@ export default {
           .then((res) => {
             if (res.data.list.length == 0) {
               self.curPage = -1;
+              this.isEnd = true;
             } else {
               self.curPage += 1;
               self.versusList = [...self.versusList, ...res.data.list];
