@@ -4,7 +4,7 @@
       type="primary"
       position="fixed"
       :transparent="transparent"
-      :color-on-scroll="300"
+      :color-on-scroll="20"
       menu-classes="ml-auto"
     >
       <template>
@@ -15,8 +15,8 @@
       <template slot="navbar-menu">
         <li class="nav-item dropdown">
           <drop-down class="nav-item" icon="now-ui-icons shopping_shop" title="둘러보기">
-            <router-lilnk class="dropdown-item" :to="{ name: isLoggedIn ? 'Main' : 'Home'}">홈</router-lilnk>
-            <router-lilnk class="dropdown-item" :to="{ name: 'About'}">씨없는수박</router-lilnk>
+            <router-link class="dropdown-item" :to="{ name: isLoggedIn ? 'Main' : 'Home'}">홈</router-link>
+            <router-link class="dropdown-item" :to="{ name: 'About'}">씨없는수박</router-link>
           </drop-down>
         </li>
         <li class="nav-item">

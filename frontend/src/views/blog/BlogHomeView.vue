@@ -14,13 +14,20 @@
       <div class="container">
         <!-- 블로그 메뉴 -->
         <blog-menu />
-        <p class="description">좋아하는 카테고리</p>
-        <b-badge v-for="tag in tags" :key="tag" pill variant="dark">{{tag}}</b-badge>
+        <p class="Cookie-2 description">좋아하는 카테고리</p>
+        <p class="sub_description" v-if="tags.length == 0">선호 카테고리를 추가해주세요</p>
+        <b-badge
+          v-for="tag in tags"
+          :key="tag.name"
+          class="Cookie-1"
+          pill
+          :variant="tag.color"
+        >{{tag.name}}</b-badge>
         <!-- 자기 소개 -->
         <h3 class="title">자기 소개</h3>
-        <h5
+        <p
           class="description text-center"
-        >{{user.detail == '' || user.detail == null ? '안녕하세요. ' + user.nickname + '입니다.' : user.detail}}</h5>
+        >{{user.detail == '' || user.detail == null ? '안녕하세요. ' + user.nickname + '입니다.' : user.detail}}</p>
 
         <!-- blog main page start -->
         <div class="container">
@@ -73,6 +80,14 @@ export default {
   bodyClass: "profile-page",
   data() {
     return {
+      color_class: [
+        "primary",
+        "secondary",
+        "success",
+        "danger",
+        "dark",
+        "info",
+      ],
       user: {
         nickname: "",
         detail: "",
@@ -108,6 +123,7 @@ export default {
       axios
         .get(SERVER.URL + SERVER.ROUTES.userTotal, configs)
         .then((res) => {
+          console.log(res);
           this.userTotal.like = res.data.like;
           this.userTotal.meet = res.data.meet;
           this.userTotal.recipe = res.data.recipe;
@@ -138,13 +154,19 @@ export default {
             ) {
               indexFoodCategories++;
             }
-            this.tags.push(
-              this.foodCategories[indexFoodCategories]["foodCategoryName"]
-            );
+            this.tags.push({
+              name: this.foodCategories[indexFoodCategories][
+                "foodCategoryName"
+              ],
+              color: this.color_class[this.getRandomInt(0, 5)],
+            });
             indexFoodCategories++;
           }
         })
         .catch((err) => console.log(err.response));
+    },
+    getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     },
   },
 };
@@ -153,5 +175,11 @@ export default {
 <style scoped>
 .blog-main .description {
   color: #333333;
+}
+.Cookie-1 {
+  font-weight: 100;
+}
+.sub_description {
+  color: #666666;
 }
 </style>

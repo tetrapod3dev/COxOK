@@ -1,84 +1,78 @@
 ﻿<template>
-  <div class="__cxk__frame">
-    <div class="row">
-      <div class="btn-toolbar __cxk__btn-toolbar row" role="toolbar">
-        <div class="btn-group btn-group-sm ml-auto" role="group">
-          <select
-            class="btn __cxk__btn __cxk__selectFontFamily"
-            name="cxk-selectFontFamily"
-            v-model="cxkSelectFontFamily"
-            @change="setCxkSelectFontFamily($event)"
-          >
-            <option
-              v-for="elementFontFamily in listFontFamily"
-              :key="elementFontFamily"
-              v-text="elementFontFamily"
-              :value="elementFontFamily"
-              :style="'font-family:' + elementFontFamily"
-            />
-          </select>
-          <select
-            class="btn __cxk__btn __cxk__selectFontSize"
-            name="cxk-selectFontSize"
-            v-model="cxkSelectFontSize"
-            @change="setCxkSelectFontSize($event)"
-          >
-            <option
-              v-for="elementFontSize in listFontSize"
-              :key="elementFontSize"
-              v-text="elementFontSize"
-              :value="elementFontSize"
-            />
-          </select>
-          <span class="btn __cxk__btn" @click="clickFontColor()">
-            <i class="fa fa-pencil"></i>
-          </span>
-          <input
-            id="__cxk__fontcolor"
-            type="color"
-            v-model="cxkInputFontColor"
-            @change="doFontColor($event)"
-            hidden
-          />
-          <span class="btn __cxk__btn" @click="clickHiliteColor()">
-            <i class="fa fa-paint-brush"></i>
-          </span>
-          <input
-            id="__cxk__hiliteColor"
-            type="color"
-            v-model="cxkInputHiliteColor"
-            @change="doHiliteColor($event)"
-            hidden
-          />
+  <div class="__cxk__frame container">
+    <div class="btn-toolbar __cxk__btn-toolbar row" role="toolbar">
+      <select
+        class="__cxk__btn __cxk__selectFontFamily"
+        name="cxk-selectFontFamily"
+        v-model="cxkSelectFontFamily"
+        @change="setCxkSelectFontFamily($event)"
+      >
+        <option
+          v-for="elementFontFamily in listFontFamily"
+          :key="elementFontFamily"
+          v-text="elementFontFamily"
+          :value="elementFontFamily"
+          :style="'font-family:' + elementFontFamily"
+        />
+      </select>
+      <select
+        class="__cxk__btn __cxk__selectFontSize"
+        name="cxk-selectFontSize"
+        v-model="cxkSelectFontSize"
+        @change="setCxkSelectFontSize($event)"
+      >
+        <option
+          v-for="elementFontSize in listFontSize"
+          :key="elementFontSize"
+          v-text="elementFontSize"
+          :value="elementFontSize"
+        />
+      </select>
+      <span class="__cxk__btn" @click="clickFontColor()">
+        <i class="fa fa-pencil"></i>
+      </span>
+      <input
+        id="__cxk__fontcolor"
+        type="color"
+        v-model="cxkInputFontColor"
+        @change="doFontColor($event)"
+        hidden
+      />
+      <span class="__cxk__btn" @click="clickHiliteColor()">
+        <i class="fa fa-paint-brush"></i>
+      </span>
+      <input
+        id="__cxk__hiliteColor"
+        type="color"
+        v-model="cxkInputHiliteColor"
+        @change="doHiliteColor($event)"
+        hidden
+      />
 
-          <span class="btn __cxk__btn" @click="clickImage()">
-            <i class="fa fa-image"></i>
-          </span>
-          <input
-            type="file"
-            class="item-file-image"
-            id="inputFileToLoad"
-            ref="inputFileToLoad"
-            @change="loadImageFileAsURL"
-            multiple
-            hidden
-          />
-        </div>
-        <div class="btn-group btn-group-sm mr-auto" role="group">
-          <span
-            v-for="command in commandRelation"
-            :key="command.cmd"
-            class="btn __cxk__btn"
-            :title="command.desc"
-            onmousedown="event.preventDefault();"
-            @click="doCommand(command)"
-            v-show="!command.noIcon"
-          >
-            <i v-if="command.icon" :class="'fa fa-' + command.icon"></i>
-            {{ showOnlyIcon(command) }}
-          </span>
-        </div>
-      </div>
+      <span class="__cxk__btn" @click="clickImage()">
+        <i class="fa fa-image"></i>
+      </span>
+      <input
+        type="file"
+        class="item-file-image"
+        id="inputFileToLoad"
+        ref="inputFileToLoad"
+        @change="loadImageFileAsURL"
+        multiple
+        hidden
+      />
+      <span
+        v-for="command in commandRelation"
+        :key="command.cmd"
+        class="__cxk__btn"
+        :title="command.desc"
+        onmousedown="event.preventDefault();"
+        @click="doCommand(command)"
+        v-show="!command.noIcon"
+      >
+        <i v-if="command.icon" :class="'fa fa-' + command.icon"></i>
+        {{ showOnlyIcon(command) }}
+      </span>
     </div>
     <div class="row">
       <div
@@ -218,6 +212,24 @@ export default {
 <style scoped>
 .__cxk__btn-toolbar > .__cxk__btn {
   cursor: pointer;
+  font-size: 12px;
+  border-radius: 0;
+
+  position: relative;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-width: 2px;
+  font-weight: 400;
+  margin: 5px 0px;
+  background-color: #888888;
+  color: #ffffff;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-sizing: border-box;
 }
 
 .__cxk__btn-toolbar > .__cxk__btn:hover {
@@ -228,14 +240,22 @@ export default {
   font-size: 12px;
 }
 
+.__cxk__btn-toolbar .btn-group {
+  padding: 0;
+}
 .__cxk__content {
-  border: solid 1px #ccc;
+  border: solid 1px #999999;
+  border-radius: 15px;
   padding: 20px;
-  max-width: 855px;
+  width: 100%;
+  min-width: 320px;
   min-height: 200px;
 }
 
 #__cxk__content font[size="7"] {
   font-size: 20px;
+}
+.__cxk__btn-toolbar > .__cxk__btn > .fa:before {
+  font-size: 10px;
 }
 </style>
