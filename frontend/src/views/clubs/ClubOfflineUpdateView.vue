@@ -15,10 +15,22 @@
       <button class="btn" @click="submitUpdate">제출</button>
       <div class="row">
         <!-- 사진 입력 및 미리보기 -->
-        <div class="col-4 offset-1">
-          <img v-if="meet.thumbnail == undefined" :src="thumbnailSrc" />
-          <img v-else :src="meet.thumbnailSrc" />
-          <input type="file" @change="changeThumbnail" />
+        <div class="col-4 offset-1 ">
+          <input
+                ref="thumbnailInput"
+                type="file"
+                name="photo"
+                id="recipe_thumbnail"
+                hidden
+                @change="changeThumbnail"
+          />
+          <img v-if="meet.thumbnail == undefined" :src="thumbnailSrc" class="mainImage"/>
+          <img v-else :src="meet.thumbnailSrc" class="mainImage"/>
+          <p>
+            <a @click="onClickClubImage">
+              <b-button pill style="color:white;background-color:rgb(249,99,50);">메인 사진 업로드</b-button>
+            </a>
+          </p>
         </div>
 
         <div class="col-7 text-left">
@@ -69,7 +81,7 @@
           <div class="row">
             <!-- 참여자 수 -->
 
-            <span class="col-3">참가자 :</span>
+            <span class="col-3">정원 :</span>
             <input class="col-9" type="number" v-model="meet.joinLimit" />
           </div>
 
@@ -208,6 +220,9 @@ export default {
       const file = event.target.files[0];
       this.meet.thumbnailSrc = URL.createObjectURL(file);
       this.meet.thumbnail = file;
+    },
+    onClickClubImage(){
+      this.$refs.thumbnailInput.click();
     },
 
     initMap() {
@@ -369,5 +384,10 @@ export default {
 <style scoped>
 .top {
   background-color: gainsboro;
+}
+
+.mainImage{
+  width: 50%;
+  height: 70%;
 }
 </style>
