@@ -105,34 +105,34 @@ public class UserController {
 		return response;
 	}
 	
-	@PostMapping("/kakaologin")
-	public Object kakaoLogin(@RequestParam("code") String code, HttpServletRequest request) throws Exception { 
-		ResponseEntity response = null;
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있음 
-		JsonNode accessToken = node.get("access_token"); // 사용자의 정보 
-		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken); 
-		
-		if(userInfo != null) {
-			String email = null; 
-			String nickname = null; 
-			JsonNode properties = userInfo.path("properties"); 
-			JsonNode kakao_account = userInfo.path("kakao_account"); 
-			email = kakao_account.path("email").asText(); 
-			nickname = properties.path("nickname").asText(); 
-			map.put("email", email);
-			map.put("nickname", nickname);
-			map.put("msg", "로그인 성공");
-			map.put("status", "success");
-			response = new ResponseEntity(map, HttpStatus.OK);
-		} else {
-			map.put("status", "fail");
-			map.put("msg", "로그인 실패");
-			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
-		}
-		return response;
-	}
+//	@PostMapping("/kakaologin")
+//	public Object kakaoLogin(@RequestParam("code") String code, HttpServletRequest request) throws Exception { 
+//		ResponseEntity response = null;
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		
+//		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있음 
+//		JsonNode accessToken = node.get("access_token"); // 사용자의 정보 
+//		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken); 
+//		
+//		if(userInfo != null) {
+//			String email = null; 
+//			String nickname = null; 
+//			JsonNode properties = userInfo.path("properties"); 
+//			JsonNode kakao_account = userInfo.path("kakao_account"); 
+//			email = kakao_account.path("email").asText(); 
+//			nickname = properties.path("nickname").asText(); 
+//			map.put("email", email);
+//			map.put("nickname", nickname);
+//			map.put("msg", "로그인 성공");
+//			map.put("status", "success");
+//			response = new ResponseEntity(map, HttpStatus.OK);
+//		} else {
+//			map.put("status", "fail");
+//			map.put("msg", "로그인 실패");
+//			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+//		}
+//		return response;
+//	}
 
 	@ApiOperation("토큰 유효성 체크")
 	@PostMapping("/check")
