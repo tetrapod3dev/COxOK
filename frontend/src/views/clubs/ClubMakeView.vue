@@ -105,7 +105,7 @@ export default {
   transition: background-color 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 .toggle:before {
-  content: 'Online';
+  content: 'Offline';
   position: absolute;
   left: -70px;
   top: 15px;
@@ -113,12 +113,12 @@ export default {
   color: black;
 }
 .toggle:after {
-  content: 'Offline';
+  content: 'Online';
   position: absolute;
   right: -75px;
   top: 15px;
   font-size: 18px;
-  color: gray;
+  color: rgb(168, 166, 166);
 }
 
 .toggle__handler {
@@ -230,7 +230,7 @@ input:checked + .toggle {
   background-color: #749DD6;
 }
 input:checked + .toggle:before {
-  color: gray;
+  color: rgb(168, 166, 166);
 }
 input:checked + .toggle:after {
   color: black;
