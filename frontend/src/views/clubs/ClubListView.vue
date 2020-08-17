@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="section versus-home" >
+    <div class="section meet-button" >
       <div class="container">
         <div class="button-container">
           <button class="learn-more btn mr-2" @click="changeMainType('오프라인')">오프라인</button>
@@ -120,5 +120,9 @@ button.learn-more:active::before {
   box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
   -webkit-transform: translate3d(0, 0, -1em);
           transform: translate3d(0, 0, -1em);
+}
+
+.meet-button .button-container {
+  margin-top: -112px;
 }
 </style>
