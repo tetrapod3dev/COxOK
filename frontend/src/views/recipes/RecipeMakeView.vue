@@ -151,29 +151,36 @@
         <hr class="my-5" />
 
         <div>
-          <h3 class="text-left">재료 선택</h3>
-          <div class="row" v-for="(selectedIngredient, index) in selectedIngredients" :key="index">
-            <b-form-input
-              :list="getIngredientDatalistId(index)"
-              :id="getIngredientInputId(index)"
-              v-model="selectedIngredient.ingredient"
-              @change="test(selectedIngredient)"
-              class="col-4 text-center"
-              style="margin-top: 24px"
-            />
-            <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
-            <div v-if="selectedIngredient.unit == null" class="col-3" style="margin-top: 16px">
-              <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
-            </div>
-            
-            <div v-else class="col-3 m-0 row">
-              <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
-              <p class="col-4">{{ selectedIngredient.unit }}</p>
-            </div>
-            <a @click="removeIngredient(index)">
-              <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
-            </a>
+          <h3 class="text-left" style="float:left">재료 선택</h3>
+          <div class="add-btn">
+            <n-button @click.native="showModal" type="secondary" round class="btn">
+                재료가 없어요!
+              </n-button>
           </div>
+          <!-- <div class="aaa"> -->
+            <div class="row" v-for="(selectedIngredient, index) in selectedIngredients" :key="index">
+              <b-form-input
+                :list="getIngredientDatalistId(index)"
+                :id="getIngredientInputId(index)"
+                v-model="selectedIngredient.ingredient"
+                @change="test(selectedIngredient)"
+                class="col-4 text-center"
+                style="margin-top: 24px"
+              />
+              <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
+              <div v-if="selectedIngredient.unit == null" class="col-3" style="margin-top: 16px">
+                <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
+              </div>
+              
+              <div v-else class="col-3 m-0 row">
+                <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
+                <p class="col-4">{{ selectedIngredient.unit }}</p>
+              </div>
+              <a @click="removeIngredient(index)">
+                <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
+              </a>
+            </div>
+          <!-- </div> -->
 
           <div class="row">
             <div class="col-4">
@@ -185,9 +192,9 @@
             </div>
             <div class="col-3">
               <!-- 재료 추가 모달창 필요 -->
-              <n-button @click.native="showModal" type="secondary" round class="btn">
+              <!-- <n-button @click.native="showModal" type="secondary" round class="btn">
                 재료가 없어요!
-              </n-button>
+              </n-button> -->
               
               <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
                 <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
@@ -1086,5 +1093,12 @@ input[type="range"]:active::-webkit-slider-runnable-track {
   background: none;
 }
 
+.aaa{
+  padding-left: 280px;
+}
 
+.add-btn{
+  padding-left: 510px;
+  padding-bottom: 0px;
+}
 </style>
