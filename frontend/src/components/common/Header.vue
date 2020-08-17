@@ -75,7 +75,7 @@ export default {
       user: {
         email: "",
         nickname: "",
-        profilePhoto: "",
+        profilePhoto: "dochi.png",
       },
       keyword: "",
     };
@@ -102,20 +102,22 @@ export default {
   methods: {
     ...mapActions(["logout"]),
     getUserInfo() {
-      let configs = {
-        headers: {
-          Authorization: this.config,
-        },
-      };
-      axios
-        .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
-        .then((res) => {
-          this.user = res.data.user;
-        })
-        .catch((err) => {
-          if (err.response.status != 401) {
-            console.log(err.response)
-        }})
+      if (this.isLoggedIn) {
+        let configs = {
+          headers: {
+            Authorization: this.config,
+          },
+        };
+        axios
+          .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
+          .then((res) => {
+            this.user = res.data.user;
+          })
+          .catch((err) => {
+            if (err.response.status != 401) {
+              console.log(err.response)
+          }})
+      }
     }
   },
 };

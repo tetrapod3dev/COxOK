@@ -175,15 +175,15 @@ export default {
   name: "Main",
   data() {
     return {
-      recipes: [{recipeId: null}],
+      recipes: [{recipeId: 0, recipeThumbnailSrc: "dochi.png"}],
       maxPage: 3,
       curPage: 0,
       favoriteCategory: null,
-      favoriteRecipes: [{recipeId: null}],
+      favoriteRecipes: [{recipeId: 0, recipeThumbnailSrc: "dochi.png"}],
       favoriteCurPage: 0,
-      first: {recipeId: null},
-      second: {recipeId: null},
-      third: {recipeId: null},
+      first: {recipeId: 0, recipeThumbnailSrc: "dochi.png"},
+      second: {recipeId: 0, recipeThumbnailSrc: "dochi.png"},
+      third: {recipeId: 0, recipeThumbnailSrc: "dochi.png"},
     };
   },
   components: {
@@ -191,7 +191,7 @@ export default {
     [FormGroupInput.name]: FormGroupInput,
   },
   computed: {
-    ...mapGetters(["config"]),
+    ...mapGetters(["config", "isLoggedIn"]),
     favoriteMaxPage() {
       return parseInt((this.favoriteRecipes.length - 1) / 6) + 1;
     },
@@ -201,6 +201,15 @@ export default {
         (this.favoriteCurPage + 1) * 6
       );
     },
+  },
+  created() {
+    if (!this.isLoggedIn) {
+      this.$router.push({name: 'Home'})
+    } else {
+      this.getRecipes(0);
+      this.getFavoriteRecipes();
+      this.getVersusRank();
+    }
   },
   methods: {
     imageSrc(recipePhoto) {
@@ -269,11 +278,6 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
-  },
-  created() {
-    this.getRecipes(0);
-    this.getFavoriteRecipes();
-    this.getVersusRank();
   },
 };
 </script>

@@ -117,9 +117,10 @@ export default {
         tag1: null,
         tag2: null,
         tag3: null,
-        recipeId: null,
+        recipeId: 0,
+        blogId: 0,
       },
-      recipe: { recipeId: null },
+      recipe: { recipeId: 0, recipeThumbnailSrc: "dochi.png" },
     };
   },
   created() {
@@ -141,7 +142,6 @@ export default {
           configs
         )
         .then((res) => {
-          console.log(res);
           this.blogPost = res.data.blog;
           if (this.blogPost.recipeId) {
             axios
@@ -154,10 +154,18 @@ export default {
               .then((res) => {
                 this.recipe = res.data.recipe;
               })
-              .catch((err) => console.log(err.response));
+              .catch((err) => {
+                if (err.response.status == 401) {
+                  alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+                  this.logout()
+                }});
           }
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     imageSrc(recipe) {
       return SERVER.IMAGE_URL + recipe.recipeThumbnailSrc;

@@ -102,12 +102,22 @@ export default {
         .get(SERVER.URL + SERVER.ROUTES.userMyRecipe, configs)
         .then((res) => {
           this.myrecipes = res.data.writeRecipeList;
-        });
+        })
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
       axios
         .get(SERVER.URL + SERVER.ROUTES.userLikeRecipe, configs)
         .then((res) => {
           this.likerecipes = res.data.userLikeRecipe;
-        });
+        })
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
   },
 };

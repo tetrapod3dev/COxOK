@@ -172,7 +172,7 @@ export default {
         meetJoinList: [],
         price: null,
         recipeId: null,
-        thumbnailSrc: null,
+        thumbnailSrc: "dochi.png",
         title: null,
         type: null,
         userId: null,
@@ -263,7 +263,11 @@ export default {
             map: map,
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
 
     onClickAddr() {
@@ -374,8 +378,10 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err.response);
-        });
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
   },
 };

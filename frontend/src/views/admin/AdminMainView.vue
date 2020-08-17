@@ -52,7 +52,7 @@ export default {
       })
       .then(res => {
         if ((res.data.user.email != 'admin@co-ok.com') || (res.data.user.nickname != 'admin')) {
-          alert('관리자가 아닙니다! 장난 ㄴㄴ요')
+          alert('관리자가 아닙니다! 장난 ㄴㄴ용')
           this.$router.push({ name: "Main" });
         }
       })

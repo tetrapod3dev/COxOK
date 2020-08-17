@@ -177,7 +177,11 @@ export default {
           this.ingredients = res.data.ingredient
           this.maxPage = parseInt((res.data.total - 1) / 20) + 1
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     movePage(page) {
       if (page == "«") {
@@ -213,13 +217,16 @@ export default {
         "protein": parseInt(this.newIngredient.protein),
       }
       
-
-      console.log(body)
-      
       axios
         .post(SERVER.URL + SERVER.ROUTES.adminIngredient, body, this.configs)
-        .then(res => console.log(res))
-        .catch(err => console.log(err.response))
+        .then(() => {
+          alert('재료 추가 성공!')
+        })
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     sendData(ingredientId) {
       let body = {
@@ -243,7 +250,11 @@ export default {
           alert('재료 정보 수정에 성공했습니다!')
           this.$refs['modal'].hide()
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     }
   }
 }

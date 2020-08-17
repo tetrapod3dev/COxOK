@@ -129,7 +129,11 @@ export default {
           this.curIngredients = res.data.ingredient
           this.maxPage = parseInt((res.data.ingredient.length - 1) / 20) + 1
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     movePage(page) {
       if (page == "«") {
@@ -166,7 +170,11 @@ export default {
           alert('재료 정보 수정에 성공했습니다!')
           this.$refs['modal'].hide()
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     }
   }
 }

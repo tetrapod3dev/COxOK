@@ -107,7 +107,7 @@
                     </div>
                   </div>
                   <p class="text-left">
-                    <i class="fas fa-exclamation-triangle fa-1x mr-1" style="color: red;"></i>영양소 정보는 실제와 차이가 있을 수 있습니다.
+                    <i class="fas fa-exclamation-triangle fa-1x mr-1" id="warning-dis"></i>영양소 정보는 실제와 차이가 있을 수 있습니다.
                   </p>
                 </div>
               </div>
@@ -126,12 +126,13 @@
               class="versus-card-image"
               :style="'background-image: url('+ imageSrc(recipes[0].recipeThumbnailSrc)+')'"
             ></div> -->
-            <img :src="imageSrc(recipes[0].recipeThumbnailSrc)" class="versus-card-image">
+            <img :src="imageSrc(recipes[0].recipeThumbnailSrc)" class="versus-card-image versus-selections">
             <h4 class="card-title text-left versus-card-text">{{ recipes[0].recipeName }}</h4>
             <router-link
               :to="{name:'RecipeDetailView', params: { recipe_id: recipes[0].recipeId }}"
               tag="h6"
               class="card-footer text-info text-right align-self-end"
+              target="_blank"
             >요리하기</router-link>
           </card>
         </div>
@@ -238,15 +239,6 @@ export default {
     },
   },
   methods: {
-    showModal() {
-      const loginModal = document.querySelector("#recipe-modal");
-      loginModal.style.display = "block";
-    },
-    hideModal() {
-      const loginModal = document.querySelector("#recipe-modal");
-      loginModal.style.display = "none";
-    },
-
     selectRecipe(recipe) {
       this.selectedRecipes.push(recipe);
       this.cur += 2;
@@ -273,10 +265,8 @@ export default {
             'protein': res.data.recipe.protein,
             'sugar': res.data.recipe.sugar,
           };
-
-          this.showModal();
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => console.log(err));
     },
     submitRound() {
       const selection = document.getElementById("round");
@@ -1984,5 +1974,11 @@ button.learn-more:active::before {
           transform: translate3d(0, 0, -1em);
 }
 
+.versus-selections:hover {
+  cursor:pointer;
+}
 
+#warning-dis {
+  color: red;
+}
 </style>

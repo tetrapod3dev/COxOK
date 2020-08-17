@@ -133,14 +133,14 @@
 <script>
 import SERVER from "@/api/api";
 import axios from "axios";
-
+import { mapGetters } from 'vuex'
 import { Button, FormGroupInput } from "@/components/global";
 
 export default {
   name: "Home",
   data() {
     return {
-      recipes: [],
+      recipes: [{recipeId: 0, recipeThumbnailSrc: "dochi.png"}],
       maxPage: 3,
       curPage: 0,
       form: {
@@ -148,14 +148,24 @@ export default {
         email: "",
         message: "",
       },
-      first: {},
-      second: {},
-      third: {},
+      first: {recipeId: 0, recipeThumbnailSrc: "dochi.png"},
+      second: {recipeId: 0, recipeThumbnailSrc: "dochi.png"},
+      third: {recipeId: 0, recipeThumbnailSrc: "dochi.png"},
     };
   },
   components: {
     [Button.name]: Button,
     [FormGroupInput.name]: FormGroupInput,
+  },
+  computed: {
+    ...mapGetters(['isLoggedIn'])
+  },
+  created() {
+    if (this.isLoggedIn) {
+      this.$router.push({name: 'Main'})
+    }
+    this.getRecipes(0);
+    this.getVersusRank();
   },
   methods: {
     imageSrc(recipePhoto) {
@@ -194,10 +204,6 @@ export default {
         })
         .catch(err => console.log(err.response))
     }
-  },
-  created() {
-    this.getRecipes(0);
-    this.getVersusRank();
   },
 };
 </script>

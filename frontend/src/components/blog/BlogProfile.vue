@@ -22,7 +22,7 @@ export default {
       user: {
         email: "",
         nickname: "",
-        profilePhoto: "",
+        profilePhoto: "dochi.png",
       },
     };
   },

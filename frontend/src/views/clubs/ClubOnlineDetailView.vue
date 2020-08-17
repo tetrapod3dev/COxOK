@@ -57,13 +57,13 @@ export default {
   data() {
     return {
       online: {
-        onlineId: null,
+        onlineId: 0,
         title: null,
         content: null,
         type: null,
         date: null,
         link: null,
-        thumbnailSrc: null,
+        thumbnailSrc: "dochi.png",
         video: null,
       },
       author: {
@@ -106,7 +106,12 @@ export default {
         this.isIn =
           res.data.joinList.indexOf(res.data.userId) >= 0 ? true : false;
       })
-      .catch((err) => console.log(err.response));
+      .catch((err) => {
+        if (err.response.status == 401) {
+          alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+          this.logout()
+        }});
+
   },
   methods: {
     deleteClub() {
@@ -127,7 +132,12 @@ export default {
             alert("삭제에 성공했습니다!");
             this.$router.push({ name: "ClubListView", params: { pageNum: 1 } });
           })
-          .catch((err) => console.log(err.response));
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
+
       }
     },
 
@@ -164,7 +174,12 @@ export default {
             alert("참가 신청에 성공했습니다.");
             this.isIn = true;
           })
-          .catch((err) => console.log(err.response));
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
+
       }
     },
   },

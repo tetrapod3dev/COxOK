@@ -158,7 +158,7 @@ export default {
   data() {
     return {
       foodCategories: [],
-      user: {},
+      user: { profilePhoto: "dochi.png" },
       oldNickname: null,
       currentNickname: null,
       passwordConfirm: null,
@@ -182,11 +182,10 @@ export default {
         this.user.password = null;
       })
       .catch((err) => {
-        if (err.response.status) {
-          alert("세션 정보가 만료되었습니다! 다시 로그인해주세요.");
-          this.logout();
-        }
-      });
+        if (err.response.status == 401) {
+          alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+          this.logout()
+        }});
   },
   computed: {
     checkPassword() {
@@ -272,7 +271,11 @@ export default {
               self.logout();
             }
           })
-          .catch((err) => console.log(err.response));
+          .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
       } else {
         alert("회원 탈퇴를 취소했습니다!");
       }
@@ -324,11 +327,10 @@ export default {
           }
         })
         .catch((err) => {
-          if (err.response.status) {
-            alert("세션 정보가 만료되었습니다! 다시 로그인해주세요.");
-            this.logout();
-          }
-        });
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
       this.$router.push("/blog/");
     },
     clickInputProfilePhoto() {

@@ -69,6 +69,7 @@
     </div>
 
     <router-link
+      v-if="user == meet.userId"
       :to="{ name: 'ClubOfflineUpdateView', params: { club_id: meet.meetId } }"
     >
       <div class="section make-versus">
@@ -100,15 +101,15 @@ export default {
       meet: {
         address: null,
         content: null,
-        date: null,
+        date: "2020-08-13T15:24:00",
         joinLimit: null,
         lat: null,
         lng: null,
-        meetId: null,
+        meetId: 0,
         meetJoinList: [],
         price: null,
         recipeId: null,
-        thumbnailSrc: null,
+        thumbnailSrc: "dochi.png",
         title: null,
         type: null,
         userId: null,
@@ -180,7 +181,11 @@ export default {
             map: map,
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
 
     deleteClub() {
@@ -199,8 +204,29 @@ export default {
             alert("삭제에 성공했습니다!");
             this.$router.push({ name: "ClubListView", params: { pageNum: 1 } });
           })
-          .catch((err) => console.log(err.response));
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
+    },
+
+    getClubInfo() {
+      axios
+        .get(
+          SERVER.URL + SERVER.ROUTES.clubDetail + this.$route.params.club_id, {
+            headers: {
+              Authorization: this.config,
+            }})
+        .then(res => {
+          this.meet = res.data.meet
+        })
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
 
     changeJoinClub() {
@@ -217,8 +243,13 @@ export default {
           .then(() => {
             alert("참가를 취소하셨습니다.");
             this.isIn = false;
+            this.getClubInfo();
           })
-          .catch((err) => console.log(err.response));
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       } else {
         axios
           .post(
@@ -232,17 +263,26 @@ export default {
           )
           .then(() => {
             alert("참가 신청에 성공했습니다.");
+            this.getClubInfo();
             this.isIn = true;
           })
-          .catch((err) => console.log(err.response));
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
-    }, simpleDate(date) {
+    },
+    simpleDate(date) {
       return date.slice(0,10);
-    }, simpleTime(date) {
+    },
+    simpleTime(date) {
       return date.slice(11,16);
-    }, userProfile(index) {
+    },
+    userProfile(index) {
       return SERVER.IMAGE_URL + this.meet.meetJoinList[index].profilePhoto;
-    },getUserIndex(index){
+    },
+    getUserIndex(index){
       return "user-profile" + index;
     },
   },

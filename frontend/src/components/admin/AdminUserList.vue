@@ -90,7 +90,11 @@ export default {
         .then(res => {
           this.users = res.data.list
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     selectUser(user) {
       this.selectedUser = user
@@ -125,8 +129,10 @@ export default {
         .catch(err => {
           if (err.response.status == 405) {
             alert('문제가 발생했습니다! 닉네임 초기화를 다시 시도해주세요')
-          }
-        })
+          } else if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     deleteUser(userId) {
       let response = confirm('정말로 삭제하실건가요?')
@@ -137,7 +143,11 @@ export default {
             alert('회원 정보가 삭제되었습니다!')
             this.getUser()
           })
-          .catch(err => console.log(err.response))
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
     },
   }

@@ -37,11 +37,11 @@
         <h2>선택하신 조건에 맞는 레시피가 없습니다.</h2>
       </div>
 
-      <div class="col-md-2 ml-auto mt-4 mb-5">
-            <router-link to="/recipes/make">
-              <n-button type="primary" round block>레시피 작성</n-button>
-            </router-link>
-          </div>
+      <div v-if="isLoggedIn" class="col-md-2 ml-auto mt-4 mb-5">
+        <router-link to="/recipes/make">
+          <n-button type="primary" round block>레시피 작성</n-button>
+        </router-link>
+      </div>
 
       <PageButton
         v-if="recipes.length > 0"
@@ -80,6 +80,19 @@ export default {
     RecipeListItem,
     PageButton,
     [Button.name]: Button,
+  },
+  computed: {
+    ...mapGetters(["searchingData", "isLoggedIn"]),
+  },
+  created() {
+    this.curPage = this.$route.params.pageNum * 1;
+    this.changePage(this.curPage);
+  },
+  watch: {
+    $route() {
+      this.curPage = parseInt(this.$route.params.pageNum);
+      this.changePage(this.curPage);
+    },
   },
   methods: {
     changeShow() {
@@ -165,19 +178,6 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-  },
-  created() {
-    this.curPage = this.$route.params.pageNum * 1;
-    this.changePage(this.curPage);
-  },
-  watch: {
-    $route() {
-      this.curPage = parseInt(this.$route.params.pageNum);
-      this.changePage(this.curPage);
-    },
-  },
-  computed: {
-    ...mapGetters(["searchingData"]),
   },
 };
 </script>

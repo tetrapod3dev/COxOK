@@ -235,8 +235,10 @@ export default {
           router.push({ name: "BlogPostListView", params: { pageNum: 1 } });
         })
         .catch((err) => {
-          console.log(err);
-        });
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     goBackPage() {
       this.$router.go(-1);

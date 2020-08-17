@@ -123,12 +123,15 @@ export default {
       axios
         .get(SERVER.URL + SERVER.ROUTES.userTotal, configs)
         .then((res) => {
-          console.log(res);
           this.userTotal.like = res.data.like;
           this.userTotal.meet = res.data.meet;
           this.userTotal.recipe = res.data.recipe;
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     getSelectedCategory() {
       let configs = {
@@ -163,7 +166,11 @@ export default {
             indexFoodCategories++;
           }
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;

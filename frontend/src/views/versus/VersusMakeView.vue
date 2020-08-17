@@ -224,6 +224,23 @@ export default {
       return tempChecker;
     },
   },
+  created() {
+    this.getRecipes();
+  },
+  mounted() {
+    window.addEventListener("scroll", this.indexScrollFuncion);
+    this.addScrollWatcher();
+    this.winWidth();
+  },
+  beforeDestory() {
+    window.removeEventListener('scroll', this.indexScrollFuncion);
+    clearInterval(this.widthInterval);
+  },
+  updated() {
+    if (this.curPage < this.maxPage) {
+      this.loadUntilViewportIsFull();
+    }
+  },
   methods: {
     ...mapActions(["logout"]),
     removeSelectedRecipe(index) {
@@ -380,33 +397,13 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 401) {
-            alert("세션 정보가 만료되었습니다! 다시 로그인해주세요.");
-            this.logout();
-          } else {
-            console.log(err.response)
-          }
-        });
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     goBackPage() {
       this.$router.go(-1);
     },
-  },
-  created() {
-    this.getRecipes();
-  },
-  mounted() {
-    window.addEventListener("scroll", this.indexScrollFuncion);
-    this.addScrollWatcher();
-    this.winWidth();
-  },
-  beforeDestory() {
-    window.removeEventListener('scroll', this.indexScrollFuncion);
-    clearInterval(this.widthInterval);
-  },
-  updated() {
-    if (this.curPage < this.maxPage) {
-      this.loadUntilViewportIsFull();
-    }
   },
 };
 </script>

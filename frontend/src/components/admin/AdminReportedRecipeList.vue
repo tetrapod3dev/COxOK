@@ -80,7 +80,11 @@ export default {
           this.reportedRecipes = res.data.list
           this.maxPage = parseInt((res.data.list.length - 1) / 10) + 1
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     movePage(page) {
       if (page == "«") {
@@ -102,7 +106,11 @@ export default {
             alert('신고를 취소했습니다.')
             this.getRecipes();
           })
-          .catch(err => console.log(err.response))
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
     },
 
@@ -115,7 +123,11 @@ export default {
             alert('해당 레시피를 삭제했습니다.')
             this.getRecipes();
           })
-          .catch(err => console.log(err.response))
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
     }
 

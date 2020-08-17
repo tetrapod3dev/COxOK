@@ -470,7 +470,6 @@ export default {
               }
             })
             .then(response => {
-              console.log(response)
               let videoIds = response.data.items.slice(0,3).map(video => video.id.videoId)
               let videoUrls = response.data.items.slice(0,3).map(video => video.snippet.thumbnails.medium.url)
               let body = {
@@ -481,18 +480,18 @@ export default {
               axios
                 .post(SERVER.URL + SERVER.ROUTES.addYoutube, body)
                 .then(() => {
-                  alert('영상 등록에 성공했습니다!')
+                  alert('레시피 등록에 성공했습니다!')
                 })
                 .catch(err => console.log(err))
             })
             .catch(() => {
-              alert('영상 등록에는 성공했으나, 관련 유튜브 등록에 문제가 있었습니다.')
+              alert('레시피 등록에 성공했습니다.\n\n(관련 유튜브는 추후 추가해드리겠습니다.)')
             })
-          router.push({ name: "RecipeListView", params: { pageNum: 1 } });
+          router.push({ name: "RecipeDetailView", params: { recipe_id: curRecipeId } });
         })
         .catch((err) => {
           if (err.response.status == 401) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -521,7 +520,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 401) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -658,7 +657,11 @@ export default {
             this.newIngredient = null
             this.newIngredientUnit = null
           })
-          .catch(err => console.log(err.response))
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
     }
   },

@@ -231,6 +231,7 @@ export default {
     return {
       recipe: {
         foodCategoryId: [],
+        recipeThumbnailSrc: "dochi.png"
       },
       
       filename: '',
@@ -299,8 +300,12 @@ export default {
         this.recipe = res.data.recipe
         window.addEventListener('load', this.init);
       })
-      .catch((err) => console.log(err.response));
-      
+      .catch((err) => {
+        if (err.response.status == 401) {
+          alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+          this.logout()
+        }});
+
     this.getCategory()
   },
   methods: {
@@ -342,8 +347,8 @@ export default {
           this.ingredientsName = Object.keys(this.ingredients);
         })
         .catch((err) => {
-          if (err.response.status) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -362,7 +367,6 @@ export default {
       }
     },
 
-    
     getIngredientInputId(index) {
       return "input-with-list" + index;
     },
@@ -495,8 +499,8 @@ export default {
           this.$router.push({ name: "RecipeDetailView", params: { recipe_id: this.$route.params.recipe_id } });
         })
         .catch((err) => {
-          if (err.response.status) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -633,7 +637,11 @@ export default {
             this.newIngredient = null
             this.newIngredientUnit = null
           })
-          .catch(err => console.log(err.response))
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
     }
   },

@@ -162,8 +162,8 @@ export default {
       showSelector: false,
       curPage: 1,
       selectedRecipe: {
-        recipedId: null,
-        recipeThumbnailSrc: null,
+        recipedId: 0,
+        recipeThumbnailSrc: "dochi.png",
       },
       blogPost: {
         title: "",
@@ -171,7 +171,8 @@ export default {
         tag1: null,
         tag2: null,
         tag3: null,
-        recipeId: null,
+        recipeId: 0,
+        blogId: 0,
       },
     };
   },
@@ -208,7 +209,6 @@ export default {
           configs
         )
         .then((res) => {
-          console.log(res);
           this.blogPost = res.data.blog;
           if (this.blogPost.tag1 !== null) {
             this.blogTags.push(this.blogPost.tag1);
@@ -230,10 +230,18 @@ export default {
               .then((res) => {
                 this.selectedRecipe = res.data.recipe;
               })
-              .catch((err) => console.log(err.response));
+              .catch((err) => {
+                if (err.response.status == 401) {
+                  alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+                  this.logout()
+                }});
           }
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     contentHandler(event) {
       this.blogPost.content = event;
@@ -274,16 +282,17 @@ export default {
       }
       axios
         .put(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           router.push({
             name: "BlogPostDetailView",
             params: { blogId: this.$route.params.blogId },
           });
         })
         .catch((err) => {
-          console.log(err);
-        });
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     goBackPage() {
       this.$router.go(-1);

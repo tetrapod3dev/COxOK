@@ -126,12 +126,16 @@ export default {
           configs
         )
         .then((res) => {
-          console.log(res.data);
           this.posts = res.data.blog;
           this.total = res.data.total;
           this.maxPage =
             parseInt((res.data.total - 1) / this.numPostPerPage) + 1;
-        });
+        })
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
   },
   created() {
