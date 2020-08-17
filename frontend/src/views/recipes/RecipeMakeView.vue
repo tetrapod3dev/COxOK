@@ -161,7 +161,7 @@
               style="margin-top: 24px"
             />
             <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
-            <div v-if="selectedIngredient.unit == null" class="col-3 ">
+            <div v-if="selectedIngredient.unit == null" class="col-3" style="margin-top: 16px">
               <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
             </div>
             
