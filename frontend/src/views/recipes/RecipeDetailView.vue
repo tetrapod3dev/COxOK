@@ -220,7 +220,7 @@
       <h3 class="title">관련 유튜브 영상 보기</h3>
 
       <div v-if="videoIds.length > 0" class="youtube row">
-        <a v-for="(video, index) in videoIds" :key="index" :href="youtubeLink(video)" class="col-4">
+        <a target="_blank" v-for="(video, index) in videoIds" :key="index" :href="youtubeLink(video)" class="col-4">
           <img :src="videoUrls[index]">
         </a>
       </div>
