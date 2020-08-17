@@ -20,7 +20,7 @@
         <p>신고사유 : {{ recipe.reportRecipeDto.reason }}</p>
       </div>
       <div class="col-2">
-        <router-link :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.reportRecipeDto.recipeId} }"><button class="btn">상세 보기</button></router-link>
+        <router-link :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.reportRecipeDto.recipeId} }" target="_blank"><button class="btn">상세 보기</button></router-link>
         <button class="btn" @click="deleteReport(recipe)">신고 취소</button>
         <button class="btn" @click="deleteRecipe(recipe)">레시피 삭제</button>
       </div>
@@ -97,7 +97,7 @@ export default {
       let response = confirm('신고를 취소하시겠습니까?\n\n레시피 이름: ' + recipe.recipeResponseDto.recipeName)
       if (response) {
         axios
-          .delete(SERVER.URL + SERVER.ROUTES.reportRecipe + recipe.reportRecipeDto.recipeId, this.configs)
+          .delete(SERVER.URL + SERVER.ROUTES.adminReportCancel + recipe.reportRecipeDto.reportRecipeId, this.configs)
           .then(() => {
             alert('신고를 취소했습니다.')
             this.getRecipes();

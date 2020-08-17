@@ -39,7 +39,7 @@ export default {
     recipeLike: "/recipe/like/",
     recipeDislike: "/recipe/likeCancel/",
 
-    reportRecipe: "/report/", // POST 신고하기, DELETE 신고 취소하기
+    reportRecipe: "/report/", // POST 신고하기
     adminDeleteRecipe: "/recipe/admin/", // DELETE 관리자가 레시피 삭제
 
     addYoutube: "/youtube/", // POST 유튜브 아이디, 링크 추가하기
@@ -102,5 +102,6 @@ export default {
     adminIngredient: "/recipe/admin/ingredient/", // POST : 재료 추가, PUT : 재료 수정
 
     adminGetReportedRecipes: "/report/admin/", // GET / 신고받은 레시피 전체 다 옴
+    adminReportCancel: "/report/admin/", // DELETE / 관리자가 신고 취소
   },
 };
