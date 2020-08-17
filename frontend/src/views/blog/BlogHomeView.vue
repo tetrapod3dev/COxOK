@@ -14,6 +14,11 @@
       <div class="container">
         <!-- 블로그 메뉴 -->
         <blog-menu />
+        <!-- 자기 소개 -->
+        <h3 class="title">자기 소개</h3>
+        <p
+          class="description text-center"
+        >{{user.detail == '' || user.detail == null ? '안녕하세요. ' + user.nickname + '입니다.' : user.detail}}</p>
         <p class="Cookie-2 description">좋아하는 카테고리</p>
         <p class="sub_description" v-if="tags.length == 0">선호 카테고리를 추가해주세요</p>
         <b-badge
@@ -23,11 +28,6 @@
           pill
           :variant="tag.color"
         >{{tag.name}}</b-badge>
-        <!-- 자기 소개 -->
-        <h3 class="title">자기 소개</h3>
-        <p
-          class="description text-center"
-        >{{user.detail == '' || user.detail == null ? '안녕하세요. ' + user.nickname + '입니다.' : user.detail}}</p>
 
         <!-- blog main page start -->
         <div class="container">
@@ -129,9 +129,10 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 401) {
-            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-            this.logout()
-          }});
+            alert("로그인 정보가 만료되었습니다! 다시 로그인해주세요.");
+            this.logout();
+          }
+        });
     },
     getSelectedCategory() {
       let configs = {
@@ -168,9 +169,10 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 401) {
-            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-            this.logout()
-          }});
+            alert("로그인 정보가 만료되었습니다! 다시 로그인해주세요.");
+            this.logout();
+          }
+        });
     },
     getRandomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
