@@ -170,7 +170,6 @@ export default {
             }
           )
           .then((res) => {
-            console.log(res);
             alert("삭제에 성공했습니다!");
             this.$router.push({ name: "ClubListView", params: { pageNum: 1 } });
           })

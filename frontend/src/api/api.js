@@ -17,6 +17,8 @@ export default {
 
     userAddIngredient: "/user/ingredient/", // POST / 유저 재료 추가 요청
 
+    favoriteRecipes: "/recipe/my/", // GET / 유저가 좋아하는 카테고리 중 랜덤 선택
+
     // Recipes ROUTES
     recipeList: "/recipe/all/", // 모든 레시피 리스트를 받기 위한 주소(뒤에 페이지 주소 0부터 시작 / 6개씩 전달)
     searchRecipe: "/recipe/search/", // 레시피 검색을 위한 주소입니다. (선택된 카테고리의 id와 재료의 id를 Array로 보냅니다.)
@@ -37,7 +39,8 @@ export default {
     recipeLike: "/recipe/like/",
     recipeDislike: "/recipe/likeCancel/",
 
-    reportRecipe: "/report/", // POST 신고하기
+    reportRecipe: "/report/", // POST 신고하기, DELETE 신고 취소하기
+    adminDeleteRecipe: "/recipe/admin/", // DELETE 관리자가 레시피 삭제
 
     addYoutube: "/youtube/", // POST 유튜브 아이디, 링크 추가하기
     getYoutube: "/youtube/", // GET 레시피 아이디 붙이기.
@@ -54,6 +57,7 @@ export default {
     versusDetail: "/versus/view/", // GET / 요리대전 상세보기
     versusWin: "/versus/win/",  // POST / 이긴 결과 보내기
     versusResult: "/versus/result/",  // GET / 요리대전 결과 받아오기
+    versusRank: "/versus/all/top3/", // GET / 요리대전 Top3
 
     // Club ROUTES
     clubRegister: "/meet/", // POST / 소모임 생성

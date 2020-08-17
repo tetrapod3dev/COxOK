@@ -259,6 +259,75 @@
           </div>
         </div>
       </div>
+
+      <div class="container">
+        <h2>코슐랭 가이드</h2>
+        <div class="row">
+          <router-link
+            class="col-4"
+            :to="{name: 'RecipeDetailView', params: {recipe_id: second.recipeId} }"
+          >
+            <h3>2등</h3>
+            <img :src="imageSrc(second.recipeThumbnailSrc)">
+            <p>{{ second.recipeName }}</p>
+            <p>{{ second.count }}회 우승</p>
+          </router-link>
+          
+          <router-link
+            class="col-4"
+            :to="{name: 'RecipeDetailView', params: {recipe_id: first.recipeId} }"
+          >
+            <h3>1등</h3>
+            <img :src="imageSrc(first.recipeThumbnailSrc)">
+            <p>{{ first.recipeName }}</p>
+            <p>{{ first.count }}회 우승</p>
+          </router-link>
+
+          <router-link
+            class="col-4"
+            :to="{name: 'RecipeDetailView', params: {recipe_id: third.recipeId} }"
+          >
+            <h3>3등</h3>
+            <img :src="imageSrc(third.recipeThumbnailSrc)">
+            <p>{{ third.recipeName }}</p>
+            <p>{{ third.count }}회 우승</p>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="about-office">
+        <div class="container">
+          <div class="row text-center">
+            <div class="col-md-8 ml-auto mr-auto">
+              <h2 class="title">선호카테고리 : {{ favoriteCategory }}</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-1 align-self-center" @click="moveFavoritePrev">
+              <n-button type="primary" round icon>
+                <i class="now-ui-icons arrows-1_minimal-left"></i>
+              </n-button>
+            </div>
+            <div class="col-10 row">
+              <div v-for="recipe in favoriteCurRecipes" :key="recipe.recipeId" class="col-2">
+                <router-link
+                  class="card-link"
+                  :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
+                >
+                  <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="w-100 h-100" />
+                </router-link>
+              </div>
+            </div>
+            <div class="col-1 align-self-center" @click="moveFavoriteNext">
+              <n-button type="primary" round icon>
+                <i class="now-ui-icons arrows-1_minimal-right"></i>
+              </n-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div class="about-office">
         <div class="container">
           <div class="row text-center">
@@ -309,6 +378,12 @@ export default {
       recipes: [],
       maxPage: 3,
       curPage: 0,
+      favoriteCategory: null,
+      favoriteRecipes: [],
+      favoriteCurPage: 0,
+      first: {},
+      second: {},
+      third: {},
     };
   },
   components: {
@@ -317,7 +392,13 @@ export default {
     [FormGroupInput.name]: FormGroupInput,
   },
   computed: {
-    ...mapGetters(["config"]),
+    ...mapGetters(['config']),
+    favoriteMaxPage() {
+      return parseInt((this.favoriteRecipes.length - 1) / 6) + 1
+    },
+    favoriteCurRecipes() {
+      return this.favoriteRecipes.slice(this.favoriteCurPage * 6, (this.favoriteCurPage+1) * 6)
+    }
   },
   methods: {
     imageSrc(recipePhoto) {
@@ -345,9 +426,48 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
+    moveFavoriteNext() {
+      this.favoriteCurPage += 1;
+      if (this.favoriteCurPage == this.favoriteMaxPage) {
+        this.favoriteCurPage = 0;
+      }
+    },
+    moveFavoritePrev() {
+      this.favoriteCurPage -= 1;
+      if (this.favoriteCurPage == -1) {
+        this.favoriteCurPage = this.favoriteMaxPage - 1;
+      }
+    },
+    getFavoriteRecipes() {
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.favoriteRecipes, {
+          headers: {
+            Authorization: this.config
+          }
+        })
+        .then(res => {
+          this.favoriteCategory = res.data.category.foodCategoryName
+          this.favoriteRecipes = res.data.recipe.slice(0, 18)
+        })
+        .catch(err => console.log(err))
+    },
+
+    getVersusRank() {
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.versusRank)
+        .then(res => {
+          this.first = res.data.versus[0]
+          this.second = res.data.versus[1]
+          this.third = res.data.versus[2]
+        })
+        .catch(err => console.log(err.response))
+    }
   },
   created() {
     this.getRecipes(0);
+    this.getFavoriteRecipes();
+    this.getVersusRank();
   },
 };
 </script>

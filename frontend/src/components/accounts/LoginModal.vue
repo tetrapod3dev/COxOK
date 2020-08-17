@@ -101,6 +101,10 @@ export default {
 </script>
 
 <style scoped>
+#modal-btn:hover {
+  cursor: pointer;
+}
+
 /* modal background */
 #login-modal {
   background-color: rgb(0, 0, 0);
