@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <button class="btn" @click="sendData">제출하기</button>
+    <button class="btn" @click="preTest">제출하기</button>
 
     <div class="row">
       <!-- 제목 입력 -->
@@ -18,7 +18,7 @@
       </b-col>
       <b-col sm="6">
         <b-form-select v-model="type" @change="initData">
-          <b-form-select-option :value="null">--선택--</b-form-select-option>
+          <b-form-select-option :value="null">선택</b-form-select-option>
           <b-form-select-option value="유튜브강의">유튜브강의</b-form-select-option>
           <b-form-select-option value="실시간강의">실시간강의</b-form-select-option>
         </b-form-select>
@@ -77,6 +77,16 @@ import CxkEditor from "@/components/cxkeditor/cxkeditor.vue";
 import { Datetime } from "vue-datetime";
 import { mapGetters } from "vuex";
 
+function checkYoutube(str) {
+  var regExp = /^https:\/\/youtu.be/
+  return regExp.test(str) ? true : false;
+}
+
+function checkMeeting(str) {
+  var regExp = /^https:\/\/+[0-9a-zA-Z-_.]+\.my.webex.com\/meet\//
+  return regExp.test(str) ? true : false;
+}
+
 export default {
   name: "OnlineClubMake",
   data() {
@@ -104,7 +114,7 @@ export default {
       return this.type == "유튜브강의" ? true : false;
     },
     submitVideo() {
-      return this.video != null ? this.video : "null";
+      return this.video != null ? this.video.substring(17) : "null";
     },
     submitLink() {
       return this.link != null ? this.link : "null";
@@ -116,6 +126,23 @@ export default {
     },
     initData() {
       (this.video = null), (this.link = null), (this.rawFile = null);
+    },
+
+    preTest() {
+      let flag = true
+      if (this.video != null && !checkYoutube(this.video)) {
+        alert('올바르지 않은 유튜브 링크입니다.\n\n올바른 형식: https://youtu.be/[비디오 ID]')
+        flag = false
+      }
+
+      if (this.link != null && !checkMeeting(this.link)) {
+        alert('올바르지 않은 링크입니다!\n\n올바른 형식: https://[회의실 주소].my.webex.com/meet/[아이디]')
+        flag = false
+      }
+      
+      if (flag) {
+        this.sendData();
+      }
     },
 
     makeOnlineClub: async function () {
@@ -144,7 +171,7 @@ export default {
               key: API_KEY,
               part: "snippet",
               type: "video",
-              id: this.video,
+              id: this.video.substring(17),
             },
           })
           .then((res) => {
@@ -176,7 +203,10 @@ export default {
       axios
         .post(SERVER.URL + SERVER.ROUTES.onlineRegister, body, configs)
         .then((res) => {
-          console.log(res);
+          if (res.status == 200) {
+            alert("작성에 성공했습니다!");
+            this.$router.push({ name: "ClubListView", params: { pageNum: 1 } });
+          }
         })
         .catch((err) => {
           // if (err.response.status) {

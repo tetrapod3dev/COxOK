@@ -462,8 +462,9 @@ export default {
               }
             })
             .then(response => {
+              console.log(response)
               let videoIds = response.data.items.slice(0,3).map(video => video.id.videoId)
-              let videoUrls = response.data.items.slice(0,3).map(video => video.snippet.thumbnails.default.url)
+              let videoUrls = response.data.items.slice(0,3).map(video => video.snippet.thumbnails.medium.url)
               let body = {
                 'videoId': videoIds,
                 'thumbnailSrc': videoUrls,
@@ -482,7 +483,7 @@ export default {
           router.push({ name: "RecipeListView", params: { pageNum: 1 } });
         })
         .catch((err) => {
-          if (err.response.status) {
+          if (err.response.status == 401) {
             alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
@@ -511,7 +512,7 @@ export default {
           this.ingredientsName = Object.keys(this.ingredients);
         })
         .catch((err) => {
-          if (err.response.status) {
+          if (err.response.status == 401) {
             alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});

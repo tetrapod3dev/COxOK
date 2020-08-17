@@ -108,7 +108,6 @@ export default {
       }
     },
     movePage(page) {
-      console.log(page);
       if (page == "«") {
         this.$router.push({ params: { pageNum: 1 } });
       } else if (page == "»") {

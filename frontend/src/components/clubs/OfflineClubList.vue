@@ -6,7 +6,19 @@
       <router-link :to="{ name: 'ClubOfflineListTypeView', params: {type: '쿠킹클래스', pageNum: 1} }" class="col-2">
         <button>더보기</button>
       </router-link>
-      <OfflineClubListItem v-for="cookingClass in cookingClasses" :key="cookingClass.meetId" :club="cookingClass" class="col-3" />
+
+      <div class="row">
+        <div class="col-1" @click="moveCookingPrev">
+          이전
+        </div>
+        <div class="col-10 row">
+          <OfflineClubListItem v-for="cookingClass in curCookings" :key="cookingClass.meetId" :club="cookingClass" class="col-3" />
+        </div>
+        <div class="col-1" @click="moveCookingNext">
+          다음
+        </div>
+      </div>
+      
     </div>
 
     <div class="row">
@@ -14,7 +26,18 @@
       <router-link :to="{ name: 'ClubOfflineListTypeView', params: {type: '공유키친', pageNum: 1} }" class="col-2">
         <button>더보기</button>
       </router-link>
-      <OfflineClubListItem v-for="sharedKitchen in sharedKitchens" :key="sharedKitchen.meetId" :club="sharedKitchen" class="col-3" />
+      
+      <div class="row">
+        <div class="col-1" @click="moveKitchenPrev">
+          이전
+        </div>
+        <div class="col-10 row">
+          <OfflineClubListItem v-for="sharedKitchen in curKitchens" :key="sharedKitchen.meetId" :club="sharedKitchen" class="col-3" />
+        </div>
+        <div class="col-1" @click="moveKitchenNext">
+          다음
+        </div>
+      </div>
     </div>
 
     <div class="row">
@@ -22,7 +45,18 @@
       <router-link :to="{ name: 'ClubOfflineListTypeView', params: {type: '홈파티', pageNum: 1} }" class="col-2">
         <button>더보기</button>
       </router-link>
-      <OfflineClubListItem v-for="party in parties" :key="party.meetId" :club="party" class="col-3" />
+      
+      <div class="row">
+        <div class="col-1" @click="movePartyPrev">
+          이전
+        </div>
+        <div class="col-10 row">
+          <OfflineClubListItem v-for="party in curParties" :key="party.meetId" :club="party" class="col-3" />
+        </div>
+        <div class="col-1" @click="movePartyNext">
+          다음
+        </div>
+      </div>
     </div>
 
   </div>
@@ -40,6 +74,9 @@ export default {
       cookingClasses: [],
       sharedKitchens: [],
       parties: [],
+      cookingCurPage: 0,
+      kitchenCurPage: 0,
+      partyCurPage: 0,
     }
   },
   components: {
@@ -49,6 +86,26 @@ export default {
     this.getCookingClass()
     this.getSharedKitchen()
     this.getParty()
+  },
+  computed: {
+    cookingMaxPage() {
+      return parseInt((this.cookingClasses.length-1) / 4) + 1
+    },
+    kitchenMaxPage() {
+      return parseInt((this.sharedKitchens.length-1) / 4) + 1
+    },
+    partyMaxPage() {
+      return parseInt((this.parties.length-1) / 4) + 1
+    },
+    curCookings() {
+      return this.cookingClasses.slice(this.cookingCurPage*4, (this.cookingCurPage+1)*4)
+    },
+    curKitchens() {
+      return this.sharedKitchens.slice(this.kitchenCurPage*4, (this.kitchenCurPage+1)*4)
+    },
+    curParties() {
+      return this.sharedKitchens.slice(this.partyCurPage*4, (this.partyCurPage+1)*4)
+    },
   },
   methods: {
     // 쿠킹 클래스 가져오기
@@ -77,6 +134,45 @@ export default {
           this.parties = res.data.list
         })
         .catch(err => console.log(err))
+    },
+    
+    moveCookingNext() {
+      this.cookingCurPage += 1;
+      if (this.cookingCurPage == this.cookingMaxPage) {
+        this.cookingCurPage = 0;
+      }
+    },
+    moveCookingPrev() {
+      this.cookingCurPage -= 1;
+      if (this.cookingCurPage == -1) {
+        this.cookingCurPage = this.cookingMaxPage - 1;
+      }
+    },
+
+    moveKitchenNext() {
+      this.kitchenCurPage += 1;
+      if (this.kitchenCurPage == this.kitchenMaxPage) {
+        this.kitchenCurPage = 0;
+      }
+    },
+    moveKitchenPrev() {
+      this.kitchenCurPage -= 1;
+      if (this.kitchenCurPage == -1) {
+        this.kitchenCurPage = this.kitchenMaxPage - 1;
+      }
+    },
+
+    movePartyNext() {
+      this.partyCurPage += 1;
+      if (this.partyCurPage == this.partyMaxPage) {
+        this.partyCurPage = 0;
+      }
+    },
+    movePartyPrev() {
+      this.partyCurPage -= 1;
+      if (this.partyCurPage == -1) {
+        this.partyCurPage = this.partyMaxPage - 1;
+      }
     },
   }
 }
