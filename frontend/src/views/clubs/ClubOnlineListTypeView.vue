@@ -1,17 +1,38 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <h3 class="col-12">타입별 모아보기 ({{ type }})</h3>
+  <div class="wrapper">
+    <div class="page-header page-header-mini">
+      <parallax
+        class="page-header-image"
+        style="background-image: url('https://livwanillustration.com/portfolio/recipe-illustrations/french-food-illustrations.jpg') ;"
+      ></parallax>
 
-      <OnlineClubListItem v-for="club in clubs" :key="club.meetId" :online="club" class="col-3" />
+      <div class="content-center">
+        <h1 class="title">코~옥하기</h1>
+      </div>
     </div>
 
-    <PageButtons 
-      class="d-flex justify-content-center"
-      :curPage="curPage"
-      :maxPage="maxPage"
-      @move-page="movePage"/>
-    
+    <div class="section online-list">
+      <div class="container">
+        <div class="button-container">
+          <button class="learn-more" @click="goBackPage" style="margin-left: 20px;">목록으로</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <div class="row">
+        <h2 class="title col-12">{{ type }} 모아보기</h2>
+        <OnlineClubListItem v-for="club in clubs" :key="club.meetId" :online="club" class="col-12 col-md-6 col-lg-3" />
+      </div>
+
+      <PageButtons 
+        class="d-flex justify-content-center"
+        :curPage="curPage"
+        :maxPage="maxPage"
+        @move-page="movePage"/>
+      
+    </div>
   </div>
 </template>
 
@@ -63,10 +84,15 @@ export default {
       this.getClubs();
       scroll(0, 0);
     },
+    goBackPage() {
+      this.$router.go(-1);
+    },
   }
 }
 </script>
 
 <style>
-
+.online-list .button-container {
+  margin-top: -112px;
+}
 </style>
