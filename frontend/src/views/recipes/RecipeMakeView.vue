@@ -157,7 +157,7 @@
                 재료가 없어요!
               </n-button>
           </div>
-          <!-- <div class="aaa"> -->
+          <div class="ingredient-select">
             <div class="row" v-for="(selectedIngredient, index) in selectedIngredients" :key="index">
               <b-form-input
                 :list="getIngredientDatalistId(index)"
@@ -180,7 +180,7 @@
                 <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
               </a>
             </div>
-          <!-- </div> -->
+          </div>
 
           <div class="row">
             <div class="col-4">
@@ -1093,7 +1093,7 @@ input[type="range"]:active::-webkit-slider-runnable-track {
   background: none;
 }
 
-.aaa{
+.ingredient-select{
   padding-left: 280px;
 }
 
