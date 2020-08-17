@@ -24,49 +24,62 @@
     </section>
 
     <div class="container">
-      <router-link
-                :to="{ name: 'ClubOfflineUpdateView', params: { club_id: meet.meetId } }"
-              >
-                <div class="section make-versus">
-                  <div class="container">
-                    <div class="button-container">
-                      <button class="learn-more submit">수정</button>
-                      <button class="learn-more" @click="deleteClub" style="margin-left: 20px;">삭제</button>
-                    </div>
-                  </div>
-                </div>
-              </router-link>
-
-      <div class="row mt-5">
-        <div class="col-4">
+      <div class="meet-board row col-12 mt-5" style="min-height:380px">
+        <div class="col-6">
           <img :src="thumbnailSrc" class="img-fluid" />
-          <p class="meet-subtitle text-left col-12">모임 형태 : {{ meet.type }}</p>
         </div>
-        <div class="col-8">
+        <div class="col-6">
           <div class="row">
-            <div v-if="user != meet.userId">
-              <button class="btn" @click="changeJoinClub">{{ joinMent }}</button>
-            </div>
-            <p class="meet-subtitle text-left col-12">{{ meet.type }}</p>
-            <p class="meet-content text-left col-12">일자 : {{ meet.date }}</p>
-            <p class="meet-content text-left col-12">장소 : {{ meet.address }}</p>
+            <p class="meet-subtitle text-left col-12">타입: {{ meet.type }}</p>
+            <p class="meet-content text-left col-12">날짜: {{ simpleDate(meet.date) }}</p>
+            <p class="meet-content text-left col-12">시간: {{ simpleTime(meet.date) }}</p>
+            <p class="meet-content text-left col-12">장소: {{ meet.address }}</p>
             <p class="col-12 text-left meet-content">가격: {{ meet.price }}원</p>
-            <p
-              class="col-12 text-left meet-content"
-            >현재 참가자 : {{ meet.meetJoinList.length }} / {{ meet.joinLimit }}</p>
-            <p
-              v-for="user in meet.meetJoinList"
-              :key="user.userId"
-              class="col-2"
-            >{{ user.nickname }}님</p>
+          </div>
+          <div v-if="user != meet.userId" class="join-btn-div">
+            <button class="btn" style="width:100%" @click="changeJoinClub">{{ joinMent }}</button>
           </div>
         </div>
-        <div class="detail-main-content col-12" v-html="meet.content" />
+      </div>
+      <div class="meet-board row col-12 mt-5 mb-5">
+        <div class="detail-main-content" v-html="meet.content" />
 
-        <div id="map" style="width:500px;height:400px;" class="mx-auto"></div>
-        <p>주소 : {{ meet.address }}</p>
+        <div class="col-12 mt-5">
+          <h3 class="text-left">지도 보기</h3>
+        <div id="map" style="width:100%;height:400px;" class="mx-auto"></div>
+        <p class="text-left" style="font-weight:bold">주소 : {{ meet.address }}</p>
+        </div>
+
+        <div class="col-12">
+          <h3 class="text-left mt-5">현재 참가자 ({{ meet.meetJoinList.length }} / {{ meet.joinLimit }})</h3>
+          
+          <div class="row">
+          <p
+              v-for="(user, index) in meet.meetJoinList"
+              :key="user.userId"
+              class="col-2"
+            ><img :id="getUserIndex(index)" class="join-member-profile img-raised mb-5" :src="userProfile(index)" />
+              <b-tooltip :target="getUserIndex(index)" triggers="hover" placement="bottom">
+                {{user.nickname}}
+              </b-tooltip>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
+
+    <router-link
+      :to="{ name: 'ClubOfflineUpdateView', params: { club_id: meet.meetId } }"
+    >
+      <div class="section make-versus">
+        <div class="container">
+          <div class="button-container">
+            <button class="learn-more submit">수정</button>
+            <button class="learn-more" @click="deleteClub" style="margin-left: 20px;">삭제</button>
+          </div>
+        </div>
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -110,7 +123,7 @@ export default {
       return SERVER.IMAGE_URL + this.meet.thumbnailSrc;
     },
     joinMent() {
-      return this.isIn ? "취소" : "참가";
+      return this.isIn ? "취소하기" : "신청하기";
     },
   },
   components: {
@@ -223,6 +236,14 @@ export default {
           })
           .catch((err) => console.log(err.response));
       }
+    }, simpleDate(date) {
+      return date.slice(0,10);
+    }, simpleTime(date) {
+      return date.slice(11,16);
+    }, userProfile(index) {
+      return SERVER.IMAGE_URL + this.meet.meetJoinList[index].profilePhoto;
+    },getUserIndex(index){
+      return "user-profile" + index;
     },
   },
 };
@@ -231,6 +252,12 @@ export default {
 <style scoped>
 .top {
   background-color: gainsboro;
+}
+
+.meet-board {
+  padding: 30px 60px 30px 60px;
+  border-radius: 40px;
+  box-shadow: 0px 8px 40px rgba(128, 128, 128, 0.15);
 }
 
 .meet-title {
@@ -244,8 +271,14 @@ export default {
 }
 .detail-main-content {
   min-height: 200px;
-  border: 1px solid;
+  margin-top: 30px;
   margin-bottom: 10px;
+}
+
+.join-btn-div {
+  position:absolute; 
+  bottom:0px; 
+  width:100%;
 }
 
 .stats {
@@ -389,4 +422,11 @@ button.submit:active::before {
   border-radius: 20px;
   border: solid 1px lightgray;
 }
+
+.join-member-profile {
+  width:60px;
+  height:60px;
+  border-radius:100%;
+}
+
 </style>
