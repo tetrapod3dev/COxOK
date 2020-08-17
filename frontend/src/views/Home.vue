@@ -259,6 +259,42 @@
           </div>
         </div>
       </div>
+      
+      <div class="container">
+        <h2>코슐랭 가이드</h2>
+        <div class="row">
+          <router-link
+            class="col-4"
+            :to="{name: 'RecipeDetailView', params: {recipe_id: second.recipeId} }"
+          >
+            <h3>2등</h3>
+            <img :src="imageSrc(second.recipeThumbnailSrc)">
+            <p>{{ second.recipeName }}</p>
+            <p>{{ second.count }}회 우승</p>
+          </router-link>
+          
+          <router-link
+            class="col-4"
+            :to="{name: 'RecipeDetailView', params: {recipe_id: first.recipeId} }"
+          >
+            <h3>1등</h3>
+            <img :src="imageSrc(first.recipeThumbnailSrc)">
+            <p>{{ first.recipeName }}</p>
+            <p>{{ first.count }}회 우승</p>
+          </router-link>
+
+          <router-link
+            class="col-4"
+            :to="{name: 'RecipeDetailView', params: {recipe_id: third.recipeId} }"
+          >
+            <h3>3등</h3>
+            <img :src="imageSrc(third.recipeThumbnailSrc)">
+            <p>{{ third.recipeName }}</p>
+            <p>{{ third.count }}회 우승</p>
+          </router-link>
+        </div>
+      </div>
+
       <div class="about-office">
         <div class="container">
           <div class="row text-center">
@@ -312,6 +348,9 @@ export default {
         email: "",
         message: "",
       },
+      first: {},
+      second: {},
+      third: {},
     };
   },
   components: {
@@ -345,9 +384,21 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
+    getVersusRank() {
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.versusRank)
+        .then(res => {
+          this.first = res.data.versus[0]
+          this.second = res.data.versus[1]
+          this.third = res.data.versus[2]
+        })
+        .catch(err => console.log(err.response))
+    }
   },
   created() {
     this.getRecipes(0);
+    this.getVersusRank();
   },
 };
 </script>
