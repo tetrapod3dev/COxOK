@@ -15,4 +15,7 @@ public class MeetJoinDto {
 	private long userId;
 	private long onlineId;
 	private String nickname;
+	
+	private String profilePhoto;
 }
+

@@ -30,12 +30,24 @@
 			blog 		
 		where 
 			blog_id = #{blogId}
+		order by blogId desc
 	</select>
 	
 	<select id="selectMyBlog" resultType="BlogDto">
 		select 
 			blog_id as blogId, user_id as userId, recipe_id as recipeId, title, content,
 			reg_time as regTime, tag1, tag2, tag3
+		from 
+			blog 		
+		where 
+			user_id = #{userId}
+		order by blogId desc
+		limit #{startIndex},10
+	</select>
+	
+	<select id="selectMyTotal" resultType="Long">
+		select 
+			count(blog_id)
 		from 
 			blog 		
 		where 

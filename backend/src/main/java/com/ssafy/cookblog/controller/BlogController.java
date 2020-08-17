@@ -124,8 +124,8 @@ public class BlogController {
 	}
 	
 	@ApiOperation("내 블로그 글 목록 가져오기")
-	@GetMapping("/my")
-	public Object getMyBlog(HttpServletRequest request) {
+	@GetMapping("/my/{startIndex}")
+	public Object getMyBlog(@PathVariable("startIndex")int startIndex, HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
@@ -137,13 +137,18 @@ public class BlogController {
 		if(token != null) {
 			email = jwtService.getEmailFromToken(token.substring(7));
 			userId = userService.userIdByEmail(email);
-			list = blogService.getMyBlog(userId);
+			
+			BlogDto blogDto = new BlogDto();
+			blogDto.setUserId(userId);
+			blogDto.setStartIndex(startIndex);
+			list = blogService.getMyBlog(blogDto);
 		}
 		
 		if(list != null) {
 			map.put("msg", "내 블로그 글 목록 가져오기에 성공했습니다.");
 			map.put("status", "success");
 			map.put("blog", list);
+			map.put("total",blogService.getMyTotal(userId));
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "내 블로그 글 목록 가져오기에 실패했습니다.");
