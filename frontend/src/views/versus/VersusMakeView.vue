@@ -327,7 +327,7 @@ export default {
       scroll(0, 0);
     },
     indexScrollFuncion() {
-      if(window.innerWidth > 1440 && document.getElementById("idx-btn") != null) {
+      if(window.innerWidth > 1024 && document.getElementById("idx-btn") != null) {
         if (
           document.body.scrollTop > 400 ||
           document.documentElement.scrollTop > 400
@@ -350,7 +350,7 @@ export default {
     winWidth: function () { 
         this.widthInterval = setInterval(() => {
             var w = window.innerWidth;
-            if (w < 1440 && document.getElementById("idx-btn") != null) {
+            if (w < 1024 && document.getElementById("idx-btn") != null) {
               document.getElementById("idx-btn").style.display = "none";
             }
         }, 100);
