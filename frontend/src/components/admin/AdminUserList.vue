@@ -1,17 +1,24 @@
 <template>
   <div class="container">
-    <h2>Admin이 유저 정보를 봅니다..</h2>
+    <div class="row border-bottom mb-0">
+      <h3 class="col-1 mb-0">Id</h3>
+      <h3 class="col-2 mb-0">프로필</h3>
+      <h3 class="col-3 mb-0">아이디</h3>
+      <h3 class="col-3 mb-0">자기소개</h3>
+      <h3 class="col-1 mb-0">인증</h3>
+      <h3 class="col-2 mb-0">동작</h3>
+    </div>
 
     <div v-for="user in users" :key="user.userId" class="row">
       <p class="col-1"> {{ user.userId }} </p>
-      <img :src="imageSrc(user.profilePhoto)" class="col-3">
+      <img :src="imageSrc(user.profilePhoto)" class="col-2 user-photos">
       <div class="col-3">
         <p> {{ user.email }} </p>
         <p> {{ user.nickname }} </p>
       </div>
       <p class="col-3"> {{ user.detail }} </p>
-      <p class="col-1"> {{ user.auth }}</p>
-      <div class="col-1">
+      <p class="col-1"> {{ isAuth(user.auth) }}</p>
+      <div class="col-2">
         <b-button v-b-modal.modal @click="selectUser(user)">정보 수정</b-button>
         <b-button @click="deleteUser(user.userId)">회원 삭제</b-button>
       </div>
@@ -21,15 +28,15 @@
       <h3>{{ selectedUser.email }}님의 정보</h3>
       <div class="row">
         <div class="col-6">
-          <img :src="imageSrc(selectedUser.profilePhoto)">
-          <button @click="clearPhoto">사진 초기화</button>
+          <img :src="imageSrc(tempUser.profilePhoto)">
+          <b-button @click="clearPhoto">사진 초기화</b-button>
         </div>
         <div class="col-6">
-          <input type="text" v-model="selectedUser.nickname">
-          <button @click="clearNickname">닉네임 초기화</button>
+          <input type="text" v-model="tempUser.nickname">
+          <b-button @click="clearNickname">닉네임 초기화</b-button>
 
-          <input type="text" v-model="selectedUser.detail">
-          <button @click="clearDetail">자기소개 초기화</button>
+          <input type="text" v-model="tempUser.detail">
+          <b-button @click="clearDetail">자기소개 초기화</b-button>
         </div>
 
 
@@ -52,6 +59,11 @@ export default {
     return {
       users: {},
       selectedUser: {},
+      tempUser: {
+        nickname: null,
+        detail: null,
+        profilePhoto: null,
+      },
     }
   },
   computed: {
@@ -66,6 +78,9 @@ export default {
     this.getUser();
   },
   methods: {
+    isAuth(number) {
+      return (number == 0) ? '완료' : '미완료'
+    },
     imageSrc(imageLink) {
       return SERVER.IMAGE_URL + imageLink
     },
@@ -79,28 +94,32 @@ export default {
     },
     selectUser(user) {
       this.selectedUser = user
+      this.tempUser.nickname = user.nickname
+      this.tempUser.detail = user.detail
+      this.tempUser.profilePhoto = user.profilePhoto
     },
     clearPhoto() {
-      this.selectedUser.profilePhoto = 'dochi.png'
+      this.tempUser.profilePhoto = 'dochi.png'
     },
     clearNickname() {
       let date = new Date();
-      this.selectedUser.nickname = '테스트닉네임' + (date.getTime() % 1000000007)
+      this.tempUser.nickname = '테스트닉네임' + (date.getTime() % 1000000007)
     },
     clearDetail() {
-      this.selectedUser.detail = null
+      this.tempUser.detail = null
     },
     sendData(userId) {
       let body = {
         userId: userId,
-        nickname: this.selectedUser.nickname,
-        detail: this.selectedUser.detail,
-        profilePhoto: this.selectedUser.profilePhoto,
+        nickname: this.tempUser.nickname,
+        detail: this.tempUser.detail,
+        profilePhoto: this.tempUser.profilePhoto,
       }
       axios
         .put(SERVER.URL + SERVER.ROUTES.adminUpdateUser, body, this.configs)
         .then(() => {
           alert('회원 정보 수정에 성공했습니다!')
+          this.getUser();
           this.$refs['modal'].hide()
         })
         .catch(err => {
@@ -125,6 +144,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.user-photos {
+  height: 150px;
+}
 </style>
