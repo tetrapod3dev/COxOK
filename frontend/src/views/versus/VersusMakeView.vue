@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://livwanillustration.com/portfolio/recipe-illustrations/french-food-illustrations.jpg') ;"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/versus.jpg') + '\')' }"
       ></parallax>
 
       <div class="content-center">

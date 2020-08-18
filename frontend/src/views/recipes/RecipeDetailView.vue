@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <section id="top">
-      <card type="background" style="background-image: url('https://previews.123rf.com/images/seamartini/seamartini1609/seamartini160900068/62637928-cooking-and-kitchen-utensils-seamless-background-wallpaper-with-vector-pattern-icons-of-pizza-bread-.jpg') ;" >
+      <card type="background" :style="{ backgroundImage: 'url(\'' + require('@/assets/cook.jpg') + '\')' }" >
         <div class="card-title text-left">
           <h1 style="">{{ recipe.recipeName }}</h1>
         </div>

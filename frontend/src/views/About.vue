@@ -1,13 +1,14 @@
 <template>
   <div class="wrapper landing-page">
     
-    <div class="page-header page-header-small">
+    <div class="page-header">
       <parallax
-        class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/1565982/pexels-photo-1565982.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"
+        class="page-header-image" style="background-size:80%"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/3753985.jpg') + '\')' }"
       ></parallax>
       <div class="content-center">
-        <h1 class="title">요리와 사람을 코×옥 더하다</h1>
+        <h1 class="title">코~옥이 뭔가요?</h1>
+        <h2>코옥 탐방하기</h2>
       </div>
     </div>
     

@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://i.pinimg.com/736x/7e/e8/45/7ee84510d6d06262623d1294208c1123.jpg') ;"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/meet.jpg') + '\')' }"
       ></parallax>
 
       <div class="container">

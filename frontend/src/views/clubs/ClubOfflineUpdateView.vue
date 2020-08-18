@@ -3,7 +3,7 @@
     <section id="top">
       <card
         type="background"
-        style="background-image: url('https://previews.123rf.com/images/seamartini/seamartini1609/seamartini160900068/62637928-cooking-and-kitchen-utensils-seamless-background-wallpaper-with-vector-pattern-icons-of-pizza-bread-.jpg') ;"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/meet.jpg') + '\')' }"
       >
         <div class="card-title text-left">
           <h1 style>코옥 수정 하기</h1>

@@ -3,9 +3,8 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://livwanillustration.com/portfolio/recipe-illustrations/french-food-illustrations.jpg') ;"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/cook.jpg') + '\')' }"
       ></parallax>
-
       <div class="container">
         <h1 class="title">요리하기</h1>
       </div>
