@@ -234,8 +234,8 @@
             @dragover.prevent
             @drop.prevent="onDrop"
             multiple>
-          <div class="input-group-append">
-            <span class="input-group-text" @click="onClickFile">
+          <div class="input-group-append col-1">
+            <span @click="onClickFile">
               <i class="fa fa-cloud" />
             </span>
           </div>
