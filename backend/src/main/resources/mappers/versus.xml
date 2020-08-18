@@ -69,7 +69,7 @@
 	
 	<select id="selectTop3VersusResult" resultType="VersusPointDto"> 
 		SELECT recipe_id AS recipeId, COUNT(*) AS count, 
-			recipe_name AS recipeName, recipe_thumbnail_src AS recipeThumbnailSrc
+			recipe_name AS recipeName, recipe_thumbnail_src AS recipeThumbnailSrc, avg_rating AS avgRating
 		FROM versus_point JOIN recipe USING(recipe_id)
 		GROUP BY recipe_id 
 		ORDER BY COUNT(*) desc

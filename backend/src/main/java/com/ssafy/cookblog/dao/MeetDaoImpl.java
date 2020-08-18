@@ -30,7 +30,7 @@ public class MeetDaoImpl implements MeetDao {
 	public List<MeetJoinDto> selectMeetJoinList(long meetId) {
 		return session.selectList("meet.selectMeetJoinList", meetId);
 	}
-
+	
 	@Override
 	public int delete(long meetId) {
 		return session.delete("meet.delete", meetId);

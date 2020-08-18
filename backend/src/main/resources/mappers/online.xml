@@ -107,6 +107,14 @@
 		order by online_id desc
 	</select>
 	
+	<select id="selectOnlineJoinList" resultType="MeetJoinDto">
+		select 
+			meet_join_id as meetJoinId, online_id as onlineId, user_id as userId, nickname, profile_photo as profilePhoto
+		FROM
+			meet_join join user using(user_id)
+		where online_id = #{onlineId}
+	</select>
+	
 	
 	<insert id="insertOnlineJoin">
 		insert into 
@@ -143,11 +151,11 @@
 			type = #{type}
 	</select>
 	
-	<select id="selectOnlineJoinList" resultType="Long">
+	<!-- <select id="selectOnlineJoinList" resultType="Long">
 		select user_id as userId
 		from meet_join
 		where online_id = #{onlineId}
-	</select>
+	</select> -->
 	
 	
 </mapper>

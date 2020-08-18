@@ -63,7 +63,7 @@ public class OnlineServiceImpl implements OnlineService {
 	}
 	
 	@Override
-	public List<Long> getOnlineJoinList(long onlineId) {
+	public List<MeetJoinDto> getOnlineJoinList(long onlineId) {
 		return onlineDao.selectOnlineJoinList(onlineId);
 	}
 	
