@@ -155,7 +155,7 @@
           <div class="add-btn">
             <n-button @click.native="showModal" type="secondary" round class="btn">
                 재료가 없어요!
-              </n-button>
+            </n-button>
           </div>
           <div class="ingredient-select">
             <div class="row" v-for="(selectedIngredient, index) in selectedIngredients" :key="index">
@@ -191,11 +191,6 @@
             </n-button>
             </div>
             <div class="col-3">
-              <!-- 재료 추가 모달창 필요 -->
-              <!-- <n-button @click.native="showModal" type="secondary" round class="btn">
-                재료가 없어요!
-              </n-button> -->
-              
               <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
                 <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
 
