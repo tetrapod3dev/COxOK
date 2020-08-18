@@ -122,43 +122,47 @@
 
     <hr>
 
-    <h2 class="text-left">재료 선택</h2>
-    <div class="row" v-for="(selectedIngredient, index) in recipe.ingredientList" :key="index">
-      <b-form-input
-        :list="getIngredientDatalistId(index)"
-        :id="getIngredientInputId(index)"
-        v-model="selectedIngredient.name"
-        @change="test(selectedIngredient)"
-        class="col-4 text-center"
-        style="margin-top: 24px"
-      />
-      <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
-      <div v-if="selectedIngredient.unit == null" class="col-2 offset-1">
-              <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
-      </div>
-      <div v-else class="col-3 m-0 row">
-        <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
-        <p class="col-4">{{ selectedIngredient.unit }}</p>
-      </div>
-      <a @click="removeIngredient(index)">
-              <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
-      </a>
-    </div>
-
-    <div class="row">
-            <div class="col-4">
+    <div>
+          <h3 class="text-left" style="float:left">재료 선택</h3>
+          <div class="add-btn">
+            <n-button @click.native="showModal" type="secondary" round class="btn">
+                재료가 없어요!
+            </n-button>
+          </div>
+          <div class="ingredient-select">
+            <div class="row" v-for="(selectedIngredient, index) in recipe.ingredientList" :key="index" style="margin-left:280px;">
+              <b-form-input
+                :list="getIngredientDatalistId(index)"
+                :id="getIngredientInputId(index)"
+                v-model="selectedIngredient.name"
+                @change="test(selectedIngredient)"
+                class="col-3 text-center"
+                style="margin-top: 24px"
+              />
+              <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
+              <div v-if="selectedIngredient.unit == null" class="col-3" style="margin-top: 16px">
+                <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
+              </div>
+              
+              <div v-else class="col-3 m-0 row">
+                <fg-input type="number" v-model="selectedIngredient.amount" class="col-8 offset-1" />
+                <p class="col-3">{{ selectedIngredient.unit }}</p>
+              </div>
+              <a @click="removeIngredient(index)">
+                <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
+              </a>
             </div>
-            <div class="col-1" @click="addIngredient">
+          </div>
+
+          <div class="row">
+            <div class="col-5">
+            </div>
+            <div class="col-2" @click="addIngredient">
             <n-button type="secondary" class="btn">
               <i class="now-ui-icons ui-1_simple-add"></i>
             </n-button>
             </div>
             <div class="col-3">
-              <!-- 재료 추가 모달창 필요 -->
-              <n-button @click.native="showModal" type="secondary" round class="btn">
-                재료가 없어요!
-              </n-button>
-              
               <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
                 <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
 
@@ -169,6 +173,7 @@
               </b-modal>
             </div>
           </div>
+        </div>
 
     <hr>
 
@@ -190,26 +195,26 @@
         </div>
       </draggable>
     </div>
-
+    <br>
     <div class="row">
-          <div class="col-3">
-          </div>
-    <div class="input-group col-9">
-      <input
-        type="text"
-        class="form-control-file detail-image-upload"
-        placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
-        v-model="filename"
-        @dragover.prevent
-        @drop.prevent="onDrop"
-        multiple>
-      <div class="input-group-append ">
-            <span class="input-group-text" @click="onClickFile">
-              <i class="fa fa-cloud" />
-            </span>
+      <div class="col-3">
       </div>
-      <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
-    </div>
+      <div class="input-group col-9">
+        <input
+          type="text"
+          class="form-control-file detail-image-upload"
+          placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
+          v-model="filename"
+          @dragover.prevent
+          @drop.prevent="onDrop"
+          multiple>
+        <div class="input-group-append col-1">
+          <span @click="onClickFile">
+            <i class="fa fa-cloud" />
+          </span>
+        </div>
+        <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
+      </div>
     </div>
 
     <hr class="my-5" />
@@ -820,6 +825,8 @@ input[type="submit"]:active {
   --slider-handle-margin-top: -4px;
   --slider-track-height: 6px;
   --slider-track-border-radius: 4px;
+
+  margin-top:50px;
 }
 
 #slider {
@@ -1081,4 +1088,14 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
 input[type="range"]:active::-webkit-slider-runnable-track {
   background: none;
 }
+
+
+
+
+.add-btn{
+  padding-left: 365px;
+  padding-bottom: 0px;
+}
+
+
 </style>

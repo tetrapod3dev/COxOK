@@ -9,20 +9,39 @@
         <div class="photo-container">
           <img :src="profileImage" alt />
         </div>
+        <h2 class="title">회원 정보 수정</h2>
       </div>
     </div>
 
     <div class="section">
       <div class="container">
         <div class="button-container">
-          <button class="btn btn-primary btn-round btn-lg" @click="clickInputProfilePhoto">프로필 변경</button>
+          <button class="learn-more" @click="goBackPage">
+            <i class="fas fa-undo-alt"></i>
+            <p class="d-none d-sm-block">뒤로</p>
+          </button>
+          <button class="learn-more" @click="isChangingNickname ? notChecked : updateUserInfo()">
+            <i class="fas fa-user-edit"></i>
+            <p class="d-none d-sm-block">정보수정</p>
+          </button>
+          <button @click="withdrawal" class="learn-more">
+            <i class="fas fa-user-slash"></i>
+            <p class="d-none d-sm-block">회원탈퇴</p>
+          </button>
+          <button class="learn-more" @click="clickInputProfilePhoto">
+            <i class="far fa-edit"></i>
+            <p class="d-none d-sm-block">사진수정</p>
+          </button>
           <input hidden id="input-form-profile" type="file" @change="changeProfilePhoto" />
-          <button class="btn btn-danger btn-round btn-lg" @click="removeProfile">프로필 삭제</button>
+          <button class="learn-more" @click="removeProfile">
+            <i class="fas fa-eraser"></i>
+            <p class="d-none d-sm-block">사진삭제</p>
+          </button>
         </div>
-        <h2 class="title">회원 정보 수정</h2>
         <div class="row">
           <!-- 회원 가입 form start -->
           <div class="col-lg-6 text-center ml-auto mr-auto col-md-8 update-user-form-group">
+            <p class="title">회원정보</p>
             <b-form-input
               v-model="user.email"
               id="email"
@@ -87,13 +106,14 @@
           </div>
         </div>
         <div class="container">
+          <p class="title">선호 카테고리</p>
           <!-- 회원 가입 form start -->
           <div class="col-lg-8 mr-auto ml-auto col-md-10 row">
             <div
               v-for="foodCategory in foodCategories"
               :key="foodCategory.foodCategoryId"
               @click="checkCategory(foodCategory.foodCategoryId)"
-              class="col-2 text-left"
+              class="col-2 text-left text-nowrap"
             >
               <input
                 type="checkbox"
@@ -102,41 +122,6 @@
               />
               {{ foodCategory.foodCategoryName }}
             </div>
-          </div>
-        </div>
-        <div class="col-12">
-          <!-- <div class="mt-5 row">
-        <label for="id_profile_image">프로필 사진:</label>
-        <img :src="userimage" />
-        <input type="file" name="profile_image" class="form-control-file" title id="id_userimage" />
-          </div>-->
-          <!-- 
-      <div class="mt-5 row">
-        <label>선호하는 카테고리</label>
-        <div class="checkbox" id="id_food_category">
-          <div class="form-check col" v-for="food in foodCategory" :key="food.food_category_id">
-            <label class="form-check-label" :for="'id_food_category_' + food.food_category_id">
-              <input
-                checked
-                class="form-check-input"
-                :id="'id_food_category_' + food.food_category_id"
-                name="food_category"
-                title
-                type="checkbox"
-                :value="food.food_category_id"
-              />
-              {{ food.food_category_name }}
-            </label>
-          </div>
-        </div>
-          </div>-->
-
-          <div class="mt-5 row justify-content-center">
-            <button
-              :class="isChangingNickname? 'btn' : 'btn btn-outline-danger'"
-              @click="isChangingNickname ? notChecked : updateUserInfo()"
-            >정보 수정</button>
-            <button @click="withdrawal" class="btn btn-danger">회원 탈퇴</button>
           </div>
         </div>
       </div>
@@ -183,9 +168,10 @@ export default {
       })
       .catch((err) => {
         if (err.response.status == 401) {
-          alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-          this.logout()
-        }});
+          alert("로그인 정보가 만료되었습니다! 다시 로그인해주세요.");
+          this.logout();
+        }
+      });
   },
   computed: {
     checkPassword() {
@@ -225,7 +211,6 @@ export default {
     ...mapActions(["logout"]),
     changeProfilePhoto(event) {
       const newProfilePhoto = event.target.files[0];
-      console.log(newProfilePhoto);
 
       let frm = new FormData();
       const self = this;
@@ -272,10 +257,11 @@ export default {
             }
           })
           .catch((err) => {
-          if (err.response.status == 401) {
-            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-            this.logout()
-          }});
+            if (err.response.status == 401) {
+              alert("로그인 정보가 만료되었습니다! 다시 로그인해주세요.");
+              this.logout();
+            }
+          });
       } else {
         alert("회원 탈퇴를 취소했습니다!");
       }
@@ -328,13 +314,17 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 401) {
-            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-            this.logout()
-          }});
+            alert("로그인 정보가 만료되었습니다! 다시 로그인해주세요.");
+            this.logout();
+          }
+        });
       this.$router.push("/blog/");
     },
     clickInputProfilePhoto() {
       document.getElementById("input-form-profile").click();
+    },
+    goBackPage() {
+      this.$router.go(-1);
     },
   },
 };
@@ -346,5 +336,91 @@ export default {
 
 .update-user-form-group .check-btn {
   margin: 0px 0px 10px;
+}
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+}
+button.learn-more {
+  font-weight: 600;
+  height: 60px;
+  color: #382b22;
+  text-transform: uppercase;
+  padding: 0.3em 1.5em;
+  background: #f2efe4;
+  border: 2px solid #b69f81;
+  border-left: 0;
+  border-radius: 0;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:first-child {
+  border-top-left-radius: 0.75em;
+  border-bottom-left-radius: 0.75em;
+  padding-left: 2em;
+  border-left: 2px solid #b69f81;
+}
+button.learn-more:last-child {
+  border-top-right-radius: 0.75em;
+  border-bottom-right-radius: 0.75em;
+  padding-right: 2em;
+}
+button.learn-more::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f2d4ae;
+  border-radius: inherit;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.625em 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0.75em, -1em);
+  transform: translate3d(0, 0.75em, -1em);
+  -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:hover {
+  background: #f2efe4;
+  -webkit-transform: translate(0, 0.25em);
+  transform: translate(0, 0.25em);
+}
+button.learn-more:hover::before {
+  box-shadow: 0 0 0 2px #b69f81, 0 0.5em 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0.5em, -1em);
+  transform: translate3d(0, 0.5em, -1em);
+}
+button.learn-more:active {
+  background: #f2efe4;
+  -webkit-transform: translate(0em, 0.75em);
+  transform: translate(0em, 0.75em);
+}
+button.learn-more:active::before {
+  box-shadow: 0 0 0 2px #b69f81, 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0, -1em);
+  transform: translate3d(0, 0, -1em);
 }
 </style>

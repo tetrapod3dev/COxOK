@@ -1,11 +1,11 @@
 <template>
   <div>
-    <table class="table">
+    <table class="table table-hover">
       <thead>
-        <tr class="bg-primary text-white text-left">
-          <th>번호</th>
-          <th>제목</th>
-          <th>등록일</th>
+        <tr class="text-left">
+          <th style="width:20%">번호</th>
+          <th style="width:60%">제목</th>
+          <th style="width:20%">등록일</th>
         </tr>
       </thead>
 
@@ -18,6 +18,12 @@
             >{{ post.title }}</router-link>
           </td>
           <td>{{ formattingDate(post.regTime) }}</td>
+        </tr>
+      </tbody>
+
+      <tbody v-if="posts.length == 0" class="text-center">
+        <tr>
+          <td colspan="3">글을 작성해보세요</td>
         </tr>
       </tbody>
     </table>

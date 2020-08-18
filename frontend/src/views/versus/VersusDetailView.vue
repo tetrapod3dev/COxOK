@@ -130,10 +130,10 @@
             <h4 class="card-title text-left versus-card-text">{{ recipes[0].recipeName }}</h4>
             <router-link
               :to="{name:'RecipeDetailView', params: { recipe_id: recipes[0].recipeId }}"
-              tag="h6"
+              
               class="card-footer text-info text-right align-self-end"
               target="_blank"
-            >요리하기</router-link>
+            ><h6>요리하기</h6></router-link>
           </card>
         </div>
         <!-- <div class="ranking-table versus-card col-md-6"> -->

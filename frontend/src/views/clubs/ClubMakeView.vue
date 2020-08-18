@@ -5,7 +5,7 @@
         type="background"
         style="background-image: url('https://previews.123rf.com/images/seamartini/seamartini1609/seamartini160900068/62637928-cooking-and-kitchen-utensils-seamless-background-wallpaper-with-vector-pattern-icons-of-pizza-bread-.jpg') ;"
       >
-        <div class="card-title text-left">
+        <div class="card-title text-center">
           <h1 style>코~옥 만들기</h1>
         </div>
       </card>
@@ -31,7 +31,7 @@
           </label>
         </div>
       </div>
-      <br><br><br><br>
+      <br>
       <!-- <button class="btn my-5" @click="changeOff">오프라인</button>
       <button class="btn" @click="changeOn">온라인</button> -->
 
@@ -77,17 +77,12 @@ export default {
 
 <style scoped>
 .tab {
-  font-family: 'Helvetica Rounded', 'Arial Rounded MT Bold','Montserrat', sans-serif;
+  font-family: 'Katuri';
   color: #fff;
 }
 
 .toggleWrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   overflow: hidden;
-  padding: 0 200px;
-  transform: translate3d(-50%, -50%, 0);
 }
 .toggleWrapper input {
   position: absolute;

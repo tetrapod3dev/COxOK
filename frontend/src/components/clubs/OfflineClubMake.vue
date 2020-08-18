@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button class="btn" @click="makeMeet">제출</button>
     <div class="row">
       <!-- 사진 입력 및 미리보기 -->
       <div class="col-4 offset-1 align-self-end">
@@ -182,6 +181,7 @@
         <h2 v-if="isEnd">끝!</h2>
       </div>
     </div>
+    <button class="btn mt-5" @click="makeMeet">작성</button>
   </div>
 </template>
 
