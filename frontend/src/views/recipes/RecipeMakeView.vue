@@ -164,7 +164,7 @@
                 :id="getIngredientInputId(index)"
                 v-model="selectedIngredient.ingredient"
                 @change="test(selectedIngredient)"
-                class="col-4 text-center"
+                class="col-3 text-center"
                 style="margin-top: 24px"
               />
               <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
@@ -173,8 +173,8 @@
               </div>
               
               <div v-else class="col-3 m-0 row">
-                <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
-                <p class="col-4">{{ selectedIngredient.unit }}</p>
+                <fg-input type="number" v-model="selectedIngredient.amount" class="col-8 offset-1" />
+                <p class="col-3">{{ selectedIngredient.unit }}</p>
               </div>
               <a @click="removeIngredient(index)">
                 <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
@@ -183,9 +183,9 @@
           </div>
 
           <div class="row">
-            <div class="col-4">
+            <div class="col-5">
             </div>
-            <div class="col-1" @click="addIngredient">
+            <div class="col-2" @click="addIngredient">
             <n-button type="secondary" class="btn">
               <i class="now-ui-icons ui-1_simple-add"></i>
             </n-button>
