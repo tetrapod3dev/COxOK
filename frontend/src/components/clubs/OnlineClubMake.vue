@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <button class="btn" @click="preTest">제출하기</button>
-
+  
     <div class="row">
       <!-- 제목 입력 -->
       <b-col sm="3">
@@ -63,6 +62,7 @@
 
     <CxkEditor :value.sync="content" />
     <br />
+    <button class="btn" @click="preTest">작성</button>
   </div>
 </template>
 

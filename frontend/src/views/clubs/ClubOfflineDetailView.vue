@@ -16,8 +16,6 @@
                 {{ meet.writerNickname }}
               </div>
             </div>
-            <div v-if="user == meet.userId">
-            </div>
           </div>
         </div>
       </card>
@@ -41,9 +39,43 @@
           </div>
         </div>
       </div>
-      <div class="meet-board row col-12 mt-5 mb-5">
-        <div class="detail-main-content" v-html="meet.content" />
+      <div class="meet-board row mt-5">
+        <div v-if="meet.recipeId != 0">
+          <div class="col-12">
+            <h3 class="text-left">레시피</h3>
+            <div class="col-md-8 ml-auto mr-auto">
+              <card type="profile">
+                <div slot="raw-content" class="row">
+                  <div class="col-md-5 mt-auto mb-auto">
+                    <div class="card-image ml-3">
+                      <router-link
+                        :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
+                      >
+                        <img class="img img-zoom" :src="imageSrc(recipe)" />
+                      </router-link>
+                    </div>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="card-body text-left">
+                      <h3 class="card-title">{{recipe.recipeName}}</h3>
+                      <h6 class="category text-primary text-left">{{recipe.nickname}}</h6>
+                      <p class="card-description">{{recipe.recipeDetail}}</p>
+                      <router-link
+                        class="card-footer"
+                        :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
+                      >상세보기</router-link>
+                    </div>
+                  </div>
+                </div>
+              </card>
+            </div>
+          </div>
+        </div>
 
+        <div class="col-12 mt-5">
+          <h3 class="text-left">상세 내용</h3>
+          <div class="detail-main-content" v-html="meet.content" />
+        </div>
         <div class="col-12 mt-5">
           <h3 class="text-left">지도 보기</h3>
         <div id="map" style="width:100%;height:400px;" class="mx-auto"></div>
@@ -72,7 +104,7 @@
       v-if="user == meet.userId"
       :to="{ name: 'ClubOfflineUpdateView', params: { club_id: meet.meetId } }"
     >
-      <div class="section make-versus">
+      <div class="section offline-view">
         <div class="container">
           <div class="button-container">
             <button class="learn-more submit">수정</button>
@@ -108,7 +140,7 @@ export default {
         meetId: 0,
         meetJoinList: [],
         price: null,
-        recipeId: null,
+        recipeId: 0,
         thumbnailSrc: "dochi.png",
         title: null,
         type: null,
@@ -116,6 +148,7 @@ export default {
       },
       user: null,
       isIn: null,
+      recipe: { recipeId: 0, recipeThumbnailSrc: "dochi.png" },
     };
   },
   computed: {
@@ -126,6 +159,13 @@ export default {
     joinMent() {
       return this.isIn ? "취소하기" : "신청하기";
     },
+    configs() {
+      return {
+        headers: {
+          Authorization: this.config
+        }
+      }
+    }
   },
   components: {
     Card,
@@ -144,6 +184,7 @@ export default {
   },
   methods: {
     initMap() {
+      const self = this
       axios
         .get(
           SERVER.URL + SERVER.ROUTES.clubDetail + this.$route.params.club_id,
@@ -156,6 +197,23 @@ export default {
         .then((res) => {
           this.user = res.data.userId;
           this.meet = res.data.meet;
+          if (res.data.meet.recipeId) {
+            axios
+              .get(
+                SERVER.URL +
+                  SERVER.ROUTES.recipeDetail +
+                  res.data.meet.recipeId,
+                self.configs
+              )
+              .then((res) => {
+                this.recipe = res.data.recipe;
+              })
+              .catch((error) => {
+                if (err.response.status == 401) {
+                  alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+                  this.logout()
+                }});
+          }
           this.isIn =
             res.data.meet.meetJoinList
               .map((user) => user.userId)
@@ -284,6 +342,9 @@ export default {
     },
     getUserIndex(index){
       return "user-profile" + index;
+    },
+    imageSrc(recipe) {
+      return SERVER.IMAGE_URL + recipe.recipeThumbnailSrc;
     },
   },
 };
@@ -447,6 +508,18 @@ button.learn-more:active::before {
 
 button.submit:active::before {
   box-shadow: 0 0 0 2px #77AF9C, 0 0 #cff0da;
+}
+
+.card-image {
+  overflow: hidden;
+}
+.card-image .img-zoom {
+  transform: scale(1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-image .img-zoom:hover {
+  transform: scale(1.2);
 }
 
 

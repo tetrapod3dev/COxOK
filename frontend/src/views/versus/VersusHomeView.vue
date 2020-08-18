@@ -24,7 +24,7 @@
     <div class="container">
       <div class="row">
         <router-link
-          class="col-12 col-md-6 col-lg-4"
+          class="col-12 col-md-6 col-lg-4 text-decoration-none"
           v-for="versus in versusList"
           :key="versus.versusId"
           :to="{name: 'VersusDetailView', params: {versus_id: versus.versusId} }"
