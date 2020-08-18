@@ -1101,7 +1101,7 @@ input[type="range"]:active::-webkit-slider-runnable-track {
 }
 
 .add-btn{
-  padding-left: 510px;
+  padding-left: 365px;
   padding-bottom: 0px;
 }
 </style>
