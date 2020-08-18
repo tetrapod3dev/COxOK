@@ -55,8 +55,8 @@
             <span class="col-3">타입 : {{ meet.type }}</span>
             <b-form-select v-model="meet.type" class="col-9">
               <b-form-select-option :value="null">--선택--</b-form-select-option>
-              <b-form-select-option value="쿠킹 클래스">쿠킹 클래스</b-form-select-option>
-              <b-form-select-option value="공유 키친">공유 키친</b-form-select-option>
+              <b-form-select-option value="쿠킹클래스">쿠킹 클래스</b-form-select-option>
+              <b-form-select-option value="공유키친">공유 키친</b-form-select-option>
               <b-form-select-option value="홈파티">홈파티</b-form-select-option>
             </b-form-select>
           </div>
