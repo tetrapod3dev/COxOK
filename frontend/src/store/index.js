@@ -60,7 +60,6 @@ export default new Vuex.Store({
           router.push({ name: "Main" });
         })
         .catch((err) => {
-          console.log(err.response);
           if (err.response.data.msg == "이메일 인증 미완료") {
             let answer = confirm(
               "이메일 미인증 사용자입니다. 이메일을 재전송할까요?"
@@ -70,7 +69,6 @@ export default new Vuex.Store({
             }
           } else {
             alert(err.response.data.msg);
-            console.log(err.response);
           }
         });
     },

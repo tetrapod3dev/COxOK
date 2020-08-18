@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <button class="btn" @click="preTest">제출하기</button>
-
+  
     <div class="row">
       <!-- 제목 입력 -->
       <b-col sm="3">
@@ -63,6 +62,7 @@
 
     <CxkEditor :value.sync="content" />
     <br />
+    <button class="btn" @click="preTest">작성</button>
   </div>
 </template>
 
@@ -209,12 +209,10 @@ export default {
           }
         })
         .catch((err) => {
-          // if (err.response.status) {
-          //   alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
-          //   this.logout()
-          // }
-          console.log(err.response);
-        });
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     clickDateForm() {
       this.$refs.datetimePicker.open(event);

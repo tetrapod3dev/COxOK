@@ -2,6 +2,12 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Main from "../views/Main.vue";
+import About from "../views/About.vue";
+import ErrorPage from "../views/ErrorPage.vue";
+
+import cookies from "vue-cookies"; // cookie 사용(토큰 저장)
+import axios from "axios";
+import SERVER from "@/api/api";
 
 // Accounts Router
 import SignUpView from "../views/accounts/SignUpView.vue";
@@ -9,11 +15,11 @@ import UserSettingView from "../views/accounts/UserSettingView.vue";
 import EmailAuthView from "../views/accounts/EmailAuthView.vue";
 
 // Recipes Router
-import PrevRecipeList from '../views/recipes/PrevRecipeList.vue'
-import RecipeListView from '../views/recipes/RecipeListView.vue'
-import RecipeDetailView from '../views/recipes/RecipeDetailView.vue'
-import RecipeUpdateView from '../views/recipes/RecipeUpdateView.vue'
-import RecipeMakeView from '../views/recipes/RecipeMakeView.vue'
+import PrevRecipeList from "../views/recipes/PrevRecipeList.vue";
+import RecipeListView from "../views/recipes/RecipeListView.vue";
+import RecipeDetailView from "../views/recipes/RecipeDetailView.vue";
+import RecipeUpdateView from "../views/recipes/RecipeUpdateView.vue";
+import RecipeMakeView from "../views/recipes/RecipeMakeView.vue";
 
 // Blog Router
 import BlogHomeView from "../views/blog/BlogHomeView.vue";
@@ -22,7 +28,6 @@ import BlogPostMakeView from "../views/blog/BlogPostMakeView.vue";
 import BlogPostUpdateView from "../views/blog/BlogPostUpdateView.vue";
 import BlogPostDetailView from "../views/blog/BlogPostDetailView.vue";
 import BlogRecipeListView from "../views/blog/BlogRecipeListView.vue";
-import BlogMarkedRecipeListView from "../views/blog/BlogMarkedRecipeListView.vue";
 import BlogGraphView from "../views/blog/BlogGraphView.vue";
 import BlogCalendarView from "../views/blog/BlogCalendarView.vue";
 
@@ -42,11 +47,7 @@ import ClubOfflineListTypeView from "../views/clubs/ClubOfflineListTypeView.vue"
 import ClubOnlineListTypeView from "../views/clubs/ClubOnlineListTypeView.vue";
 
 // Admin Router
-import AdminMainView from "../views/admin/AdminMainView.vue"
-
-// Test Router
-import EditorTest from "../views/articles/EditorTest.vue";
-import About from "../views/About.vue";
+import AdminMainView from "../views/admin/AdminMainView.vue";
 
 Vue.use(VueRouter);
 
@@ -60,6 +61,11 @@ const routes = [
     path: "/main",
     name: "Main",
     component: Main,
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: About,
   },
   // Accounts Router
   {
@@ -99,9 +105,9 @@ const routes = [
     component: RecipeDetailView,
   },
   {
-    path: '/recipes/update/:recipe_id',
-    name: 'RecipeUpdateView',
-    component: RecipeUpdateView
+    path: "/recipes/update/:recipe_id",
+    name: "RecipeUpdateView",
+    component: RecipeUpdateView,
   },
   // Blog Router
   {
@@ -123,11 +129,6 @@ const routes = [
     path: "/blog/recipes/:pageNum",
     name: "BlogRecipeListView",
     component: BlogRecipeListView,
-  },
-  {
-    path: "/blog/markedrecipes/:pageNum",
-    name: "BlogMarkedRecipeListView",
-    component: BlogMarkedRecipeListView,
   },
   {
     path: "/blog/graph",
@@ -210,46 +211,87 @@ const routes = [
   {
     path: "/admin",
     name: "AdminMainView",
-    component: AdminMainView
-  },
-  // Test Router
-  {
-    path: "/test",
-    name: "EditorTest",
-    component: EditorTest,
+    component: AdminMainView,
   },
   {
-    path: "/test2",
-    name: "About",
-    component: About,
+    path: "*",
+    name: "ErrorPage",
+    component: ErrorPage,
   },
 ];
 
 const router = new VueRouter({
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  },
   mode: "history",
   base: process.env.BASE_URL,
   routes,
 });
 
 // 인증 관련 필터링(로그인 토큰 기반)
-// router.beforeEach((to, from, next) => { // 모든 라우터에 대해 입장하기 전에
-//   const publicPages = ['SignUpView', 'Home', 'RecipeListView', 'RecipeItemView', 'BlogHomeView', 'BlogPostListView', 'BlogPostMakeView', 'VersusHome'];
-//   // Login 안 해도 되는 페이지
-//   const authPages = ['SignUpView']; // Login 되어있으면 안되는 페이지
+router.beforeEach(async (to, from, next) => {
+  // 모든 라우터에 대해 입장하기 전에
+  const publicPages = [
+    "SignUpView",
+    "Home",
+    "About",
+    "EmailAuthView",
+    "PrevRecipeList",
+    "RecipeListView",
+    "RecipeDetailView",
+    "VersusHomeView",
+    "VersusDetailView",
+    "ClubListView",
+    "ClubOfflineListTypeView",
+    "ClubOnlineListTypeView",
+  ];
+  // Login 안 해도 되는 페이지
 
-//   const authRequired = !publicPages.includes(to.name); // 로그인 해야 됨
-//   const unauthRequired = authPages.includes(to.name); // 로그인 X여야 됨
-//   const isLoggedIn = (localStorage.getItem('auth-token') == null) ? false : true
+  const authPages = ["SignUpView", "Home", "EmailAuthView"]; // Login 되어있으면 안되는 페이지
 
-//   if (unauthRequired && isLoggedIn) { // 가야하는 페이지가 로그인 X여야 되고, 로그인 된 경우 첫 화면으로 이동
-//     next('/');
-//   }
+  const authRequired = !publicPages.includes(to.name); // 로그인 해야 됨
+  const unauthRequired = authPages.includes(to.name); // 로그인 X여야 됨
 
-//   if (authRequired && !isLoggedIn) { // 로그인 해야되는 페이지로 가려고하고, 로그인 X인 경우 첫 화면으로 이동
-//     next('/');
-//   } else {
-//     next();
-//   }
-// })
+  const isLoggedIn = cookies.get("auth-token") != null ? true : false;
+
+  if (authRequired && !isLoggedIn) {
+    alert("로그인이 필요합니다!");
+    next("/");
+  } else if (isLoggedIn) {
+    axios
+      .get(SERVER.URL + SERVER.ROUTES.myPage, {
+        headers: {
+          Authorization: "Bearer: " + cookies.get("auth-token"),
+        },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          if (unauthRequired) {
+            if (to.name == "Home") {
+              next();
+            } else {
+              alert("로그인한 상태로 접근할 수 없습니다.");
+              next("/main");
+            }
+          } else {
+            next();
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status == 401) {
+          if (authRequired) {
+            alert("로그인이 필요합니다!");
+            next("/");
+          } else {
+            next();
+          }
+        }
+      });
+  } else {
+    next();
+  }
+});
 
 export default router;

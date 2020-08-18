@@ -15,23 +15,9 @@
         <div class="row">
           <div class="col-md-12">
             <!-- blog inner page start -->
-            <div class="d-flex bd-highlight mb-1">
-              <router-link to="/blog/posts/make">
-                <button class="btn btn-outline-secondary mx-2">글 작성</button>
-              </router-link>
-
-              <form class="form-inline my-2 my-lg-0 bd-highlight" method="GET" action>
-                <input
-                  class="form-control mr-sm-2"
-                  type="search"
-                  placeholder
-                  aria-label="Search"
-                  name="kw"
-                  value
-                />
-                <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">검색</button>
-              </form>
-            </div>
+            <router-link to="/blog/posts/make" tag="div" class="col-md-2 ml-auto">
+              <n-button type="primary" round block>글 작성</n-button>
+            </router-link>
 
             <PostList
               :posts="posts"
@@ -39,6 +25,7 @@
               :maxPage="maxPage"
               :numPostPerPage="numPostPerPage"
               :total="total"
+              class="Cookie-2"
             />
 
             <PageButtons
@@ -47,7 +34,6 @@
               :maxPage="maxPage"
               @move-page="movePage"
             />
-
             <!-- blog inner Page end -->
           </div>
         </div>
@@ -66,6 +52,7 @@ import PageButtons from "@/components/common/PageButtons.vue";
 import SERVER from "@/api/api";
 import axios from "axios";
 import { mapGetters } from "vuex";
+import { Button } from "@/components/global";
 
 export default {
   name: "BlogPostListView",
@@ -87,6 +74,7 @@ export default {
     PageButtons,
     BlogProfile,
     BlogMenu,
+    [Button.name]: Button,
   },
 
   methods: {
@@ -115,20 +103,28 @@ export default {
       this.allBlogPost(page);
       // }
     },
-    allBlogPost(page) {
+    allBlogPost() {
       let configs = {
         headers: {
           Authorization: this.config,
         },
       };
       axios
-        .get(SERVER.URL + SERVER.ROUTES.blogList + (page - 1), configs)
+        .get(
+          SERVER.URL + SERVER.ROUTES.blogMy + (this.$route.params.pageNum - 1),
+          configs
+        )
         .then((res) => {
-          console.log(res.data);
-          this.posts = res.data.list;
+          this.posts = res.data.blog;
           this.total = res.data.total;
           this.maxPage =
             parseInt((res.data.total - 1) / this.numPostPerPage) + 1;
+        })
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert("로그인 정보가 만료되었습니다! 다시 로그인해주세요.");
+            this.logout();
+          }
         });
     },
   },
@@ -145,6 +141,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

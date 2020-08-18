@@ -3,30 +3,28 @@
     <h2>추가 요청이 들어온 재료들 목록</h2>
 
 
-    <div class="row">
+    <div class="row border-bottom">
       <p class="col-1">ID</p>
       <p class="col-2">Name</p>
       <p class="col-3">기본 정보</p>
       <p class="col-4">단위 당 영양소 정보</p>
       <p class="col-2">버튼들</p>
-
-      <hr class="col-12">
     </div>
     <div v-for="ingredient in curIngredients" :key="ingredient.ingredientId" class="row">
       <p class="col-1">{{ ingredient.ingredientId }}</p>
       <p class="col-2">{{ ingredient.name }}</p>
-      <ul class="col-3">
-        <li>상세정보 : {{ ingredient.detail }}</li>
-        <li>단위량 : {{ ingredient.baseAmount }}</li>
-        <li>단위 : {{ ingredient.unit }}</li>
+      <ul class="col-3 row list-group list-group-horizontal text-left mx-0">
+        <li class="list-group-item col-8 offset-2 border rounded-lg">상세정보 : {{ ingredient.detail }}</li>
+        <li class="list-group-item col-8 offset-2 border rounded-lg">단위량 : {{ ingredient.baseAmount }}</li>
+        <li class="list-group-item col-8 offset-2 border rounded-lg">단위 : {{ ingredient.unit }}</li>
       </ul>
-      <ul class="col-4">
-        <li>칼로리 : {{ ingredient.calorie }} kcal</li>
-        <li>탄수화물 : {{ ingredient.carbon }} g</li>
-        <li>단백질 : {{ ingredient.protein }} g</li>
-        <li>지방 : {{ ingredient.fat }} g</li>
-        <li>나트륨 : {{ ingredient.natrium }} mg</li>
-        <li>당 : {{ ingredient.sugar }} g</li>
+      <ul class="col-4 row list-group list-group-horizontal text-left mx-0">
+        <li class="list-group-item col-6 border rounded-lg">칼로리 : {{ ingredient.calorie }} kcal</li>
+        <li class="list-group-item col-6 border rounded-lg">탄수화물 : {{ ingredient.carbon }} g</li>
+        <li class="list-group-item col-6 border rounded-lg">단백질 : {{ ingredient.protein }} g</li>
+        <li class="list-group-item col-6 border rounded-lg">지방 : {{ ingredient.fat }} g</li>
+        <li class="list-group-item col-6 border rounded-lg">나트륨 : {{ ingredient.natrium }} mg</li>
+        <li class="list-group-item col-6 border rounded-lg">당 : {{ ingredient.sugar }} g</li>
       </ul>
       <div class="col-2">
         <b-button v-b-modal.modal @click="selectIngredient(ingredient)">정보 수정</b-button>
@@ -40,7 +38,7 @@
       
       <hr class="col-12">
 
-      <input type="text" class="col-12" v-model="selectedIngredient.detail">
+      <textarea type="text" class="col-12" v-model="selectedIngredient.detail" placeholder="설명" rows="3" />
       <input type="number" class="col-6" v-model="selectedIngredient.baseAmount">
       <select v-model="selectedIngredient.unit" class="col-3">
         <option v-for="unit in units" :key="unit">{{ unit }}</option>
@@ -131,7 +129,7 @@ export default {
           this.curIngredients = res.data.ingredient
           this.maxPage = parseInt((res.data.ingredient.length - 1) / 20) + 1
         })
-        .catch(err => console.log(err.response))
+
     },
     movePage(page) {
       if (page == "«") {
@@ -168,7 +166,11 @@ export default {
           alert('재료 정보 수정에 성공했습니다!')
           this.$refs['modal'].hide()
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     }
   }
 }

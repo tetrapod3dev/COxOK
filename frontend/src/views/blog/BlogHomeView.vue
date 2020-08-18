@@ -14,13 +14,20 @@
       <div class="container">
         <!-- 블로그 메뉴 -->
         <blog-menu />
-        <p class="description">좋아하는 카테고리</p>
-        <b-badge v-for="tag in tags" :key="tag" pill variant="dark">{{tag}}</b-badge>
         <!-- 자기 소개 -->
         <h3 class="title">자기 소개</h3>
-        <h5
+        <p
           class="description text-center"
-        >{{user.detail == '' || user.detail == null ? '안녕하세요. ' + user.nickname + '입니다.' : user.detail}}</h5>
+        >{{user.detail == '' || user.detail == null ? '안녕하세요. ' + user.nickname + '입니다.' : user.detail}}</p>
+        <p class="Cookie-2 description">좋아하는 카테고리</p>
+        <p class="sub_description" v-if="tags.length == 0">선호 카테고리를 추가해주세요</p>
+        <b-badge
+          v-for="tag in tags"
+          :key="tag.name"
+          class="Cookie-1"
+          pill
+          :variant="tag.color"
+        >{{tag.name}}</b-badge>
 
         <!-- blog main page start -->
         <div class="container">
@@ -73,6 +80,14 @@ export default {
   bodyClass: "profile-page",
   data() {
     return {
+      color_class: [
+        "primary",
+        "secondary",
+        "success",
+        "danger",
+        "dark",
+        "info",
+      ],
       user: {
         nickname: "",
         detail: "",
@@ -112,7 +127,12 @@ export default {
           this.userTotal.meet = res.data.meet;
           this.userTotal.recipe = res.data.recipe;
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert("로그인 정보가 만료되었습니다! 다시 로그인해주세요.");
+            this.logout();
+          }
+        });
     },
     getSelectedCategory() {
       let configs = {
@@ -138,13 +158,24 @@ export default {
             ) {
               indexFoodCategories++;
             }
-            this.tags.push(
-              this.foodCategories[indexFoodCategories]["foodCategoryName"]
-            );
+            this.tags.push({
+              name: this.foodCategories[indexFoodCategories][
+                "foodCategoryName"
+              ],
+              color: this.color_class[this.getRandomInt(0, 5)],
+            });
             indexFoodCategories++;
           }
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert("로그인 정보가 만료되었습니다! 다시 로그인해주세요.");
+            this.logout();
+          }
+        });
+    },
+    getRandomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     },
   },
 };
@@ -153,5 +184,11 @@ export default {
 <style scoped>
 .blog-main .description {
   color: #333333;
+}
+.Cookie-1 {
+  font-weight: 100;
+}
+.sub_description {
+  color: #666666;
 }
 </style>

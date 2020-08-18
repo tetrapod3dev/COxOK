@@ -20,7 +20,7 @@
         <p>신고사유 : {{ recipe.reportRecipeDto.reason }}</p>
       </div>
       <div class="col-2">
-        <router-link :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.reportRecipeDto.recipeId} }"><button class="btn">상세 보기</button></router-link>
+        <router-link :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.reportRecipeDto.recipeId} }" target="_blank"><button class="btn">상세 보기</button></router-link>
         <button class="btn" @click="deleteReport(recipe)">신고 취소</button>
         <button class="btn" @click="deleteRecipe(recipe)">레시피 삭제</button>
       </div>
@@ -80,7 +80,11 @@ export default {
           this.reportedRecipes = res.data.list
           this.maxPage = parseInt((res.data.list.length - 1) / 10) + 1
         })
-        .catch(err => console.log(err.response))
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
     movePage(page) {
       if (page == "«") {
@@ -97,12 +101,16 @@ export default {
       let response = confirm('신고를 취소하시겠습니까?\n\n레시피 이름: ' + recipe.recipeResponseDto.recipeName)
       if (response) {
         axios
-          .delete(SERVER.URL + SERVER.ROUTES.reportRecipe + recipe.reportRecipeDto.recipeId, this.configs)
+          .delete(SERVER.URL + SERVER.ROUTES.adminReportCancel + recipe.reportRecipeDto.reportRecipeId, this.configs)
           .then(() => {
             alert('신고를 취소했습니다.')
             this.getRecipes();
           })
-          .catch(err => console.log(err.response))
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
     },
 
@@ -115,7 +123,11 @@ export default {
             alert('해당 레시피를 삭제했습니다.')
             this.getRecipes();
           })
-          .catch(err => console.log(err.response))
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
     }
 

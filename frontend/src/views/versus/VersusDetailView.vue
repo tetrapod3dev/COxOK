@@ -14,7 +14,8 @@
     <div class="section detail-versus">
       <div class="container">
         <div v-if="selectedMax == 0" class="button-container">
-          <b-form-select class="btn btn-primary btn-round btn-lg" id="round">
+          <!-- <b-form-select class="btn btn-primary btn-round btn-lg" id="round"> -->
+            <b-form-select class="select-num mr-2" id="round">
             <template v-slot:first>
               <b-form-select-option :value="undefined" selected disabled>-- 선택 --</b-form-select-option>
             </template>
@@ -25,7 +26,8 @@
               :value="length"
             >{{length}}강</b-form-select-option>
           </b-form-select>
-          <button class="btn btn-primary btn-round btn-lg" @click="submitRound">코~옥</button>
+          <button class="learn-more" @click="submitRound">코~옥</button>
+          <!-- <button class="btn btn-primary btn-round btn-lg" @click="submitRound">코~옥</button> -->
         </div>
       </div>
     </div>
@@ -105,7 +107,7 @@
                     </div>
                   </div>
                   <p class="text-left">
-                    <i class="fas fa-exclamation-triangle fa-1x mr-1" style="color: red;"></i>영양소 정보는 실제와 차이가 있을 수 있습니다.
+                    <i class="fas fa-exclamation-triangle fa-1x mr-1" id="warning-dis"></i>영양소 정보는 실제와 차이가 있을 수 있습니다.
                   </p>
                 </div>
               </div>
@@ -124,26 +126,27 @@
               class="versus-card-image"
               :style="'background-image: url('+ imageSrc(recipes[0].recipeThumbnailSrc)+')'"
             ></div> -->
-            <img :src="imageSrc(recipes[0].recipeThumbnailSrc)" class="versus-card-image">
+            <img :src="imageSrc(recipes[0].recipeThumbnailSrc)" class="versus-card-image versus-selections">
             <h4 class="card-title text-left versus-card-text">{{ recipes[0].recipeName }}</h4>
             <router-link
               :to="{name:'RecipeDetailView', params: { recipe_id: recipes[0].recipeId }}"
-              tag="h6"
+              
               class="card-footer text-info text-right align-self-end"
-            >요리하기</router-link>
+              target="_blank"
+            ><h6>요리하기</h6></router-link>
           </card>
         </div>
         <!-- <div class="ranking-table versus-card col-md-6"> -->
+            <div>
               <h4><i class="fas fa-utensils ml-3 mr-2"></i>코~옥 랭킹</h4>
-
                 <div class = "col">
                   <div class = "card shadow">
                     <div class="table-responsive">
                       <table class="table align-items-center table-flush">
                         <thead class="thead-light">
                           <tr>
-                            <th scope="col">이름</th>
                             <th scope="col">점수</th>
+                            <th scope="col"> </th>
                           </tr>
                         </thead>
 
@@ -152,7 +155,7 @@
                               <tr >
                                 <th scope="row">
                                   <div class="media align-items-center">
-                                    <router-link :to="{name:'RecipeDetailView', params: { recipe_id: result.recipeId }}">
+                                    <router-link target="_blank" :to="{name:'RecipeDetailView', params: { recipe_id: result.recipeId }}">
                                         <img :src="imageSrc(result.recipeThumbnailSrc)" 
                                     class="avatar rounded-circle mr-3">
                                     </router-link>
@@ -185,7 +188,7 @@
                     </div>
                   </div>
                 </div>  
-                
+                </div>
                 <!-- <div v-for="result in versusResult" :key="result.recipeId">
                   <hr>
                   <p class="text-left "> 
@@ -236,15 +239,6 @@ export default {
     },
   },
   methods: {
-    showModal() {
-      const loginModal = document.querySelector("#recipe-modal");
-      loginModal.style.display = "block";
-    },
-    hideModal() {
-      const loginModal = document.querySelector("#recipe-modal");
-      loginModal.style.display = "none";
-    },
-
     selectRecipe(recipe) {
       this.selectedRecipes.push(recipe);
       this.cur += 2;
@@ -271,10 +265,8 @@ export default {
             'protein': res.data.recipe.protein,
             'sugar': res.data.recipe.sugar,
           };
-
-          this.showModal();
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => console.log(err));
     },
     submitRound() {
       const selection = document.getElementById("round");
@@ -384,13 +376,14 @@ export default {
 
 }
 
-.versus-card {
+ .versus-card {
   display:inline-block;
   transition: all 0.8s;
 }
+
 .versus-card:hover {
   transform:scale(1.1);
-}
+} 
 
 .additinal-info {
   font-size: 20px;
@@ -553,7 +546,7 @@ th {
     text-align: inherit;
 }
 
-button {
+/* button {
     border-radius: 0;
 }
 
@@ -591,7 +584,7 @@ button::-moz-focus-inner,
 [type='submit']::-moz-focus-inner {
     padding: 0;
     border-style: none;
-}
+} */
 
 input[type='radio'],
 input[type='checkbox'] {
@@ -1908,5 +1901,84 @@ p {
     }
 }
 
+.select-num {
+    background-color:#fff0f0;
+    border:2px solid #b18597;
+    border-radius: 10px;
+}
 
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+button.learn-more {
+  font-weight: 600;
+  color: #382b22;
+  text-transform: uppercase;
+  padding: 1.25em 2em;
+  background: #fff0f0;
+  border: 2px solid #b18597;
+  border-radius: 0.75em;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-transition: background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more::before {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f9c4d2;
+  border-radius: inherit;
+  box-shadow: 0 0 0 2px #b18597, 0 0.625em 0 0 #ffe3e2;
+  -webkit-transform: translate3d(0, 0.75em, -1em);
+          transform: translate3d(0, 0.75em, -1em);
+  -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:hover {
+  background: #ffe9e9;
+  -webkit-transform: translate(0, 0.25em);
+          transform: translate(0, 0.25em);
+}
+button.learn-more:hover::before {
+  box-shadow: 0 0 0 2px #b18597, 0 0.5em 0 0 #ffe3e2;
+  -webkit-transform: translate3d(0, 0.5em, -1em);
+          transform: translate3d(0, 0.5em, -1em);
+}
+button.learn-more:active {
+  background: #ffe9e9;
+  -webkit-transform: translate(0em, 0.75em);
+          transform: translate(0em, 0.75em);
+}
+button.learn-more:active::before {
+  box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
+  -webkit-transform: translate3d(0, 0, -1em);
+          transform: translate3d(0, 0, -1em);
+}
+
+.versus-selections:hover {
+  cursor:pointer;
+}
+
+#warning-dis {
+  color: red;
+}
 </style>

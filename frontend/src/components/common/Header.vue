@@ -4,19 +4,19 @@
       type="primary"
       position="fixed"
       :transparent="transparent"
-      :color-on-scroll="300"
+      :color-on-scroll="20"
       menu-classes="ml-auto"
     >
       <template>
-        <router-link class="navbar-brand" :to="isLoggedIn ? '/main/' : '/'">
+        <router-link class="navbar-brand" :to="isLoggedIn ? '/main' : '/'">
           <img src="@/assets/CO_OK-logo.png" width="40px" />
         </router-link>
       </template>
       <template slot="navbar-menu">
         <li class="nav-item dropdown">
           <drop-down class="nav-item" icon="now-ui-icons shopping_shop" title="둘러보기">
-            <router-lilnk class="dropdown-item" :to="{ name: isLoggedIn ? 'Main' : 'Home'}">홈</router-lilnk>
-            <router-lilnk class="dropdown-item" :to="{ name: 'About'}">씨없는수박</router-lilnk>
+            <router-link class="dropdown-item" :to="{ name: isLoggedIn ? 'Main' : 'Home'}">홈</router-link>
+            <router-link class="dropdown-item" :to="{ name: 'About'}">씨없는수박</router-link>
           </drop-down>
         </li>
         <li class="nav-item">
@@ -75,7 +75,7 @@ export default {
       user: {
         email: "",
         nickname: "",
-        profilePhoto: "",
+        profilePhoto: "dochi.png",
       },
       keyword: "",
     };
@@ -91,22 +91,34 @@ export default {
       return SERVER.IMAGE_URL + this.user.profilePhoto;
     },
   },
-  watch: {},
+  watch: {
+    config() {
+      this.getUserInfo();
+    }
+  },
   created() {
-    let configs = {
-      headers: {
-        Authorization: this.config,
-      },
-    };
-    axios
-      .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
-      .then((res) => {
-        this.user = res.data.user;
-      })
-      .catch((err) => console.log(err.response));
+    this.getUserInfo();
   },
   methods: {
     ...mapActions(["logout"]),
+    getUserInfo() {
+      if (this.isLoggedIn) {
+        let configs = {
+          headers: {
+            Authorization: this.config,
+          },
+        };
+        axios
+          .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
+          .then((res) => {
+            this.user = res.data.user;
+          })
+          .catch((err) => {
+            if (err.response.status != 401) {
+              console.log(err.response)
+          }})
+      }
+    }
   },
 };
 </script>

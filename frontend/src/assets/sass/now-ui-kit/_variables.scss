@@ -10,8 +10,35 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "CookieRun-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CookieRunOTF-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Bold00.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "CookieRunOTF-Black";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Black00.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 // $sans-serif-family:          'Montserrat', 'Helvetica Neue',  Arial, sans-serif !default;
-$sans-serif-family: "Katuri" !default;
+$sans-serif-family: "Katuri", Arial, sans-serif !default;
+$CookieRun-Regular-family: "CookieRun-Regular", Arial, sans-serif !default;
+$CookieRunOTF-Bold-family: "CookieRunOTF-Bold", Arial, sans-serif !default;
+$CookieRunOTF-Black-family: "CookieRunOTF-Black", Arial, sans-serif !default;
 
 $none: 0 !default;
 $border-thin: 1px !default;

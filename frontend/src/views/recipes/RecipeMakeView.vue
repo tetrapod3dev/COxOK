@@ -24,18 +24,19 @@
                 hidden
                 @change="onChangeThumbnail"
               />
-              <div class="row">
-                <div class="col-12">
-                  <img id="recipe-preview" :src="recipePreview" class="w-100" />
+              <!-- <div class="row"> -->
+                <div class="col-5">
+                  <img id="recipe-preview" :src="recipePreview" class="w-100" style="height:200px;"/>
+                  <br><br>
                   <a @click="onClickThumbnailUpload" class="w-100">
                     <n-button type="primary" round block>메인 사진 업로드</n-button>
                   </a>
                 </div>
-              </div>
-            </div>
+              <!-- </div> -->
+            <!-- </div> -->
             <br><br>
-            <div class="row">
-                <div class="col-12 detail-input">
+            <!-- <div class="row"> -->
+                <div class="col-7 detail-input">
                   <input type="text" name="name" class="question" id="nme" required autocomplete="off" v-model="recipeName"/>
                   <label for="nme"><span>레시피 제목</span></label>
                   <br><br>
@@ -150,44 +151,46 @@
         <hr class="my-5" />
 
         <div>
-          <h3 class="text-left">재료 선택</h3>
-          <div class="row" v-for="(selectedIngredient, index) in selectedIngredients" :key="index">
-            <b-form-input
-              :list="getIngredientDatalistId(index)"
-              :id="getIngredientInputId(index)"
-              v-model="selectedIngredient.ingredient"
-              @change="test(selectedIngredient)"
-              class="col-4 text-center"
-              style="margin-top: 24px"
-            />
-            <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
-            <div v-if="selectedIngredient.unit == null" class="col-3 ">
-              <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
+          <h3 class="text-left" style="float:left">재료 선택</h3>
+          <div class="add-btn">
+            <n-button @click.native="showModal" type="secondary" round class="btn">
+                재료가 없어요!
+            </n-button>
+          </div>
+          <div class="ingredient-select">
+            <div class="row" v-for="(selectedIngredient, index) in selectedIngredients" :key="index">
+              <b-form-input
+                :list="getIngredientDatalistId(index)"
+                :id="getIngredientInputId(index)"
+                v-model="selectedIngredient.ingredient"
+                @change="test(selectedIngredient)"
+                class="col-3 text-center"
+                style="margin-top: 24px"
+              />
+              <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
+              <div v-if="selectedIngredient.unit == null" class="col-3" style="margin-top: 16px">
+                <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
+              </div>
+              
+              <div v-else class="col-3 m-0 row">
+                <fg-input type="number" v-model="selectedIngredient.amount" class="col-8 offset-1" />
+                <p class="col-3">{{ selectedIngredient.unit }}</p>
+              </div>
+              <a @click="removeIngredient(index)">
+                <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
+              </a>
             </div>
-            
-            <div v-else class="col-3 m-0 row">
-              <fg-input type="number" v-model="selectedIngredient.amount" class="col-6 offset-2" />
-              <p class="col-4">{{ selectedIngredient.unit }}</p>
-            </div>
-            <a @click="removeIngredient(index)">
-              <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
-            </a>
           </div>
 
           <div class="row">
-            <div class="col-4">
+            <div class="col-5">
             </div>
-            <div class="col-1" @click="addIngredient">
+            <div class="col-2" @click="addIngredient">
             <n-button type="secondary" class="btn">
               <i class="now-ui-icons ui-1_simple-add"></i>
             </n-button>
             </div>
             <div class="col-3">
-              <!-- 재료 추가 모달창 필요 -->
-              <n-button @click.native="showModal" type="secondary" round class="btn">
-                재료가 없어요!
-              </n-button>
-              
               <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
                 <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
 
@@ -217,22 +220,22 @@
         <div class="row">
           <div class="col-3">
           </div>
-        <div class="input-group col-9">
-          <input
-            type="text"
-            class="form-control-file detail-image-upload"
-            placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
-            v-model="filename"
-            @dragover.prevent
-            @drop.prevent="onDrop"
-            multiple>
-          <div class="input-group-append">
-            <span class="input-group-text" @click="onClickFile">
-              <i class="fa fa-cloud" />
-            </span>
+          <div class="input-group col-9">
+            <input
+              type="text"
+              class="form-control-file detail-image-upload"
+              placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
+              v-model="filename"
+              @dragover.prevent
+              @drop.prevent="onDrop"
+              multiple>
+            <div class="input-group-append col-1">
+              <span @click="onClickFile">
+                <i class="fa fa-cloud" />
+              </span>
+            </div>
+            <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
           </div>
-          <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
-        </div>
         </div>
         <hr class="my-5" />
         <button class="btn btn-success" @click="preTest">등록</button>
@@ -260,7 +263,7 @@ export default {
     return {
       recipeName: null,
       recipeDetail: null,
-      recipePreview: null,
+      recipePreview: "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg",
       level: 1,
       cookTime: 60,
       categories: [],
@@ -363,7 +366,7 @@ export default {
     preTest() {
       let problems = [];
       let photoFile = document.getElementById("recipe_thumbnail");
-      if (photoFile.files.length == 0) {
+      if (photoFile.files.length == 0 || this.recipePreview === "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg") {
         problems.push("레시피 썸네일");
       }
       if (this.recipeName == null) {
@@ -462,7 +465,6 @@ export default {
               }
             })
             .then(response => {
-              console.log(response)
               let videoIds = response.data.items.slice(0,3).map(video => video.id.videoId)
               let videoUrls = response.data.items.slice(0,3).map(video => video.snippet.thumbnails.medium.url)
               let body = {
@@ -473,18 +475,18 @@ export default {
               axios
                 .post(SERVER.URL + SERVER.ROUTES.addYoutube, body)
                 .then(() => {
-                  alert('영상 등록에 성공했습니다!')
+                  alert('레시피 등록에 성공했습니다!')
                 })
                 .catch(err => console.log(err))
             })
             .catch(() => {
-              alert('영상 등록에는 성공했으나, 관련 유튜브 등록에 문제가 있었습니다.')
+              alert('레시피 등록에 성공했습니다.\n\n(관련 유튜브는 추후 추가해드리겠습니다.)')
             })
-          router.push({ name: "RecipeListView", params: { pageNum: 1 } });
+          router.push({ name: "RecipeDetailView", params: { recipe_id: curRecipeId } });
         })
         .catch((err) => {
           if (err.response.status == 401) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -513,7 +515,7 @@ export default {
         })
         .catch((err) => {
           if (err.response.status == 401) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -650,7 +652,11 @@ export default {
             this.newIngredient = null
             this.newIngredientUnit = null
           })
-          .catch(err => console.log(err.response))
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
       }
     }
   },
@@ -661,7 +667,8 @@ export default {
 
 .detail-image-upload{
   text-align: center;
-  width: 60%
+  width: 60%;
+  border: solid 1px;
 }
 
 /*
@@ -1084,5 +1091,12 @@ input[type="range"]:active::-webkit-slider-runnable-track {
   background: none;
 }
 
+.ingredient-select{
+  padding-left: 280px;
+}
 
+.add-btn{
+  padding-left: 365px;
+  padding-bottom: 0px;
+}
 </style>

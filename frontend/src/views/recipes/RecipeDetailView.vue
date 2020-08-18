@@ -43,12 +43,25 @@
             {{ recipe.level }}
           </div>
         </div>  
+         <div>
+          <h3 class="title text-center mt-5 mb-1">요리 분류</h3>
+          <div class="category">
+             <span class="categories"
+                v-for="(category) in categories"
+                :key="category"
+              >
+              {{category}}    
+             </span>
+          </div>
+        </div>
+        
         <div>
           <h3 class="title text-center mt-5 mb-1">레시피 점수</h3>
           <div class="avgRating">
             <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
           </div>
         </div>
+        
       </div>
     </div>
     <!--     *********    END TEAM 1      *********      -->
@@ -163,12 +176,12 @@
                 <!-- 
                 v-model="form.comment"-->
 
-                <ReviewMake v-if="(loginUserId > 0) && !isReviewed" @submitReview="submitReview" />
-                <h5 v-else-if="(loginUserId < 0)"><i class="fas fa-exclamation-circle mr-2"></i>한줄평을 작성하기 위해서는 로그인을 해주세요.</h5>
+                <ReviewMake v-if="isLoggedIn && !isReviewed && (loginUserId != recipe.userId)" @submitReview="submitReview" />
+                <h5 v-else-if="!isLoggedIn"><i class="fas fa-exclamation-circle mr-2"></i>한줄평을 작성하기 위해서는 로그인을 해주세요.</h5>
 
                 <div class="media-footer col-10">
                   <span @click="changeLike" class="pull-right ml-2">
-                    <n-button v-show="(loginUserId > 0)" type="success" round block>
+                    <n-button v-show="isLoggedIn" type="success" round block>
                       <i :class="isLiked ? 'fa fa-heart' : 'fa fa-heart-o'" aria-hidden="true"></i>
                       {{ likeCnt }}
                     </n-button>
@@ -207,7 +220,7 @@
       <h3 class="title">관련 유튜브 영상 보기</h3>
 
       <div v-if="videoIds.length > 0" class="youtube row">
-        <a v-for="(video, index) in videoIds" :key="index" :href="youtubeLink(video)" class="col-4">
+        <a target="_blank" v-for="(video, index) in videoIds" :key="index" :href="youtubeLink(video)" class="col-4">
           <img :src="videoUrls[index]">
         </a>
       </div>
@@ -249,8 +262,11 @@ export default {
       isLiked: null,
       loginUserId: null,
       recipe: {
-        'reviewDtoList': [],
+        reviewDtoList: [],
+        recipeId: 0,
+        recipeThumbnailSrc: "dochi.png"
       },
+      categories:[],
       unitList: ["kcal", "g", "g", "mg", "g", "g"],
       tempUserId: [],
       videos: [],
@@ -279,9 +295,6 @@ export default {
       return {headers: {
         Authorization: this.config,
       }}
-    },
-    likeMent() {
-      return this.isLiked ? "좋아요 취소" : "좋아요";
     },
     recipeThumbnailSrc() {
       return SERVER.IMAGE_URL + this.recipe.recipeThumbnailSrc;
@@ -353,7 +366,7 @@ export default {
       }
     },
     deleteRecipe() {
-      let response = confirm('진짜요??? 에이..설마...')
+      let response = confirm('정말 레시피를 삭제하시겠습니까?')
       if (response) {
         axios.delete(SERVER.URL + SERVER.ROUTES.recipeDelte + this.recipe.recipeId, {
           headers: {
@@ -363,9 +376,9 @@ export default {
         .then(() => {
           this.$router.push({ name:'RecipeListView', params: { pageNum: 1 } });
         })
-        .catch(err => {
-          if (err.response.status) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
       }
@@ -382,25 +395,28 @@ export default {
           this.getRecipe();
         })
         .catch((err) => {
-          if (err.response.status) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
     deleteReview(reviewId) {
-      axios.delete(SERVER.URL + SERVER.ROUTES.reviewDelete + reviewId, {
-          headers: {
-            Authorization: this.config,
-          },
-        })
-        .then(() => {
-          this.getRecipe();
-        })
-        .catch(err => {
-          if (err.response.status) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
-            this.logout()
-          }});
+      let response = confirm('정말 한줄평을 삭제하시겠습니까?')
+      if (response) {
+        axios.delete(SERVER.URL + SERVER.ROUTES.reviewDelete + reviewId, {
+            headers: {
+              Authorization: this.config,
+            },
+          })
+          .then(() => {
+            this.getRecipe();
+          })
+          .catch(err => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
+      }
     },
     modifyMod(review) {
       // this.$set(review, 'changing', true);
@@ -416,9 +432,12 @@ export default {
             Authorization: this.config,
           },
         })
+        .then(() => {
+          alert('한줄평 입력에 성공했습니다!')
+        })
         .catch(err => {
-          if (err.response.status) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -440,12 +459,10 @@ export default {
     },
 
     reportRecipe() {
-      console.log(1)
       let body = {
         recipeId: this.$route.params.recipe_id,
         reason: this.reportReason + '/' + this.detailReason
       }
-
       axios
         .post(SERVER.URL + SERVER.ROUTES.reportRecipe, body, this.configs)
         .then(res => {
@@ -454,9 +471,13 @@ export default {
             this.hideModal()
           }
         })
-        .catch(err => console.log(err.response))
-
+        .catch(err => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
+
     likeRecipe() {
       const data = {
         recipeId: this.$route.params.recipe_id,
@@ -468,8 +489,8 @@ export default {
           this.isLiked = !this.isLiked;
         })
         .catch((err) => {
-          if (err.response.status) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -488,8 +509,8 @@ export default {
           this.isLiked = !this.isLiked;
         })
         .catch((err) => {
-          if (err.response.status) {
-            alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
             this.logout()
           }});
     },
@@ -514,7 +535,7 @@ export default {
             'protein': res.data.recipe.protein,
             'sugar': res.data.recipe.sugar,
           };
-
+        
           this.likeCnt = res.data.likeCnt;
           this.isLiked = res.data.userLike;
           this.loginUserId = res.data.loginUserId
@@ -545,7 +566,7 @@ export default {
             'protein': res.data.recipe.protein,
             'sugar': res.data.recipe.sugar,
           };
-
+          this.categories = res.data.recipe.foodCategoryName
           this.likeCnt = res.data.likeCnt;
           this.isLiked = res.data.userLike;
           this.loginUserId = res.data.loginUserId
@@ -659,5 +680,14 @@ export default {
 
 .idx-obj:hover {
   cursor: pointer;
+}
+
+.category{
+  padding-top: 40px;
+  font-size: 20px;
+}
+.categories{
+  padding-right: 5px;
+  padding-left:5px;
 }
 </style>

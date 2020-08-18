@@ -1,84 +1,82 @@
 ﻿<template>
-  <div class="__cxk__frame">
-    <div class="row">
-      <div class="btn-toolbar __cxk__btn-toolbar row" role="toolbar">
-        <div class="btn-group btn-group-sm ml-auto" role="group">
-          <select
-            class="btn __cxk__btn __cxk__selectFontFamily"
-            name="cxk-selectFontFamily"
-            v-model="cxkSelectFontFamily"
-            @change="setCxkSelectFontFamily($event)"
-          >
-            <option
-              v-for="elementFontFamily in listFontFamily"
-              :key="elementFontFamily"
-              v-text="elementFontFamily"
-              :value="elementFontFamily"
-              :style="'font-family:' + elementFontFamily"
-            />
-          </select>
-          <select
-            class="btn __cxk__btn __cxk__selectFontSize"
-            name="cxk-selectFontSize"
-            v-model="cxkSelectFontSize"
-            @change="setCxkSelectFontSize($event)"
-          >
-            <option
-              v-for="elementFontSize in listFontSize"
-              :key="elementFontSize"
-              v-text="elementFontSize"
-              :value="elementFontSize"
-            />
-          </select>
-          <span class="btn __cxk__btn" @click="clickFontColor()">
-            <i class="fa fa-pencil"></i>
-          </span>
-          <input
-            id="__cxk__fontcolor"
-            type="color"
-            v-model="cxkInputFontColor"
-            @change="doFontColor($event)"
-            hidden
-          />
-          <span class="btn __cxk__btn" @click="clickHiliteColor()">
-            <i class="fa fa-paint-brush"></i>
-          </span>
-          <input
-            id="__cxk__hiliteColor"
-            type="color"
-            v-model="cxkInputHiliteColor"
-            @change="doHiliteColor($event)"
-            hidden
-          />
-
-          <span class="btn __cxk__btn" @click="clickImage()">
-            <i class="fa fa-image"></i>
-          </span>
-          <input
-            type="file"
-            class="item-file-image"
-            id="inputFileToLoad"
-            ref="inputFileToLoad"
-            @change="loadImageFileAsURL"
-            multiple
-            hidden
-          />
-        </div>
-        <div class="btn-group btn-group-sm mr-auto" role="group">
-          <span
-            v-for="command in commandRelation"
-            :key="command.cmd"
-            class="btn __cxk__btn"
-            :title="command.desc"
-            onmousedown="event.preventDefault();"
-            @click="doCommand(command)"
-            v-show="!command.noIcon"
-          >
-            <i v-if="command.icon" :class="'fa fa-' + command.icon"></i>
-            {{ showOnlyIcon(command) }}
-          </span>
-        </div>
+  <div class="__cxk__frame container">
+    <div class="btn-toolbar __cxk__btn-toolbar row" role="toolbar">
+      <select
+        class="__cxk__btn __cxk__selectFontFamily"
+        name="cxk-selectFontFamily"
+        v-model="cxkSelectFontFamily"
+        @change="setCxkSelectFontFamily($event)"
+      >
+        <option
+          v-for="elementFontFamily in listFontFamily"
+          :key="elementFontFamily"
+          v-text="elementFontFamily"
+          :value="elementFontFamily"
+          :style="'font-family:' + elementFontFamily"
+        />
+      </select>
+      <select
+        class="__cxk__btn __cxk__selectFontSize"
+        name="cxk-selectFontSize"
+        v-model="cxkSelectFontSize"
+        @change="setCxkSelectFontSize($event)"
+      >
+        <option
+          v-for="elementFontSize in listFontSize"
+          :key="elementFontSize"
+          v-text="elementFontSize"
+          :value="elementFontSize"
+        />
+      </select>
+      <div class="__cxk__group-btn-input">
+        <span class="__cxk__btn" @click="clickFontColor()">
+          <i class="fa fa-pencil"></i>
+        </span>
+        <input
+          id="__cxk__fontcolor"
+          class="__cxk__btn-input"
+          type="color"
+          v-model="cxkInputFontColor"
+          @change="doFontColor($event)"
+        />
       </div>
+      <div class="__cxk__group-btn-input">
+        <span class="__cxk__btn" @click="clickHiliteColor()">
+          <i class="fa fa-paint-brush"></i>
+        </span>
+        <input
+          id="__cxk__hiliteColor"
+          class="__cxk__btn-input"
+          type="color"
+          v-model="cxkInputHiliteColor"
+          @change="doHiliteColor($event)"
+        />
+      </div>
+      <div class="__cxk__group-btn-input">
+        <span class="__cxk__btn" @click="clickImage()">
+          <i class="fa fa-image"></i>
+        </span>
+        <input
+          type="file"
+          class="__cxk__btn-input"
+          id="inputFileToLoad"
+          ref="inputFileToLoad"
+          @change="loadImageFileAsURL"
+          multiple
+        />
+      </div>
+      <span
+        v-for="command in commandRelation"
+        :key="command.cmd"
+        class="__cxk__btn"
+        :title="command.desc"
+        onmousedown="event.preventDefault();"
+        @click="doCommand(command)"
+        v-show="!command.noIcon"
+      >
+        <i v-if="command.icon" :class="'fa fa-' + command.icon"></i>
+        {{ showOnlyIcon(command) }}
+      </span>
     </div>
     <div class="row">
       <div
@@ -88,9 +86,54 @@
         @input="update"
         @focus="focus"
         @blur="blur"
+        @click.once="addClickImageEvent"
         v-html="valueText"
       ></div>
     </div>
+    <b-modal
+      ref="__cxk__img-model"
+      id="modal-prevent-closing"
+      title="이미지 크기"
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk"
+      size="sm"
+    >
+      <form ref="form" @submit.stop.prevent="handleSubmit" class="__cxk__img-model">
+        <b-form-group
+          :state="cxkImgState"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          label-align="center"
+          label="넓이"
+          label-for="__cxk__width-input"
+          invalid-feedback="넓이를 입력하세요"
+        >
+          <b-form-input
+            id="__cxk__width-input"
+            v-model="cxkSelectImageStyle.width"
+            :state="cxkImgState"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group
+          :state="cxkImgState"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          label-align="center"
+          label="높이"
+          label-for="__cxk__height-input"
+          invalid-feedback="높이를 입력하세요"
+        >
+          <b-form-input
+            id="__cxk__height-input"
+            v-model="cxkSelectImageStyle.height"
+            :state="cxkImgState"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </form>
+    </b-modal>
   </div>
 </template>
 
@@ -111,6 +154,13 @@ export default {
       cxkInputHiliteColor: "#FFFFFF",
       focusIn: false,
       valueText: "",
+      cxkSelectImageElement: null,
+      cxkSelectImageStyle: {
+        width: 0,
+        height: 0,
+      },
+      name: "",
+      cxkImgState: null,
     };
   },
   props: {
@@ -142,6 +192,7 @@ export default {
       }
     },
   },
+  mounted() {},
   methods: {
     showOnlyIcon: (cmd) => {
       return typeof cmd.icon === "undefined" ? cmd.text : "";
@@ -166,28 +217,31 @@ export default {
         }
       }
     },
-    setCxkSelectFontFamily: (event) => {
+    setCxkSelectFontFamily(event) {
       document.execCommand("fontName", false, event.target.value);
     },
-    clickFontColor: () => {
+    clickFontColor() {
+      this.setCaret();
       document.getElementById("__cxk__fontcolor").click();
     },
-    doFontColor: (event) => {
+    doFontColor(event) {
       document.execCommand("foreColor", false, event.target.value);
     },
-    clickHiliteColor: () => {
+    clickHiliteColor() {
+      this.setCaret();
       document.getElementById("__cxk__hiliteColor").click();
     },
-    doHiliteColor: (event) => {
+    doHiliteColor(event) {
       document.execCommand("hiliteColor", false, event.target.value);
     },
-    clickImage: () => {
+    clickImage() {
+      this.setCaret();
       document.getElementById("inputFileToLoad").click();
     },
-    doImage: (event) => {
+    doImage(event) {
       document.execCommand("insertImage", false, event.target.value);
     },
-    loadImageFileAsURL: () => {
+    loadImageFileAsURL() {
       let frm = new FormData();
       document.getElementById("inputFileToLoad").files.forEach(function (file) {
         frm.append("photo", file);
@@ -196,9 +250,11 @@ export default {
       axios
         .post(SERVER.URL + SERVER.ROUTES.photoRegister, frm)
         .then((res) => {
-          var imageLoaded = document.createElement("img");
-          imageLoaded.src = SERVER.IMAGE_URL + res.data.photo;
-          document.getSelection()["focusNode"].appendChild(imageLoaded);
+          for (let index = 0; index < res.data.photo.length; index++) {
+            const imageSrc = SERVER.IMAGE_URL + res.data.photo[index];
+            document.execCommand("insertImage", false, imageSrc);
+          }
+          this.addClickImageEvent();
         })
         .catch((err) => console.log(err));
     },
@@ -211,16 +267,113 @@ export default {
     blur() {
       this.focusIn = false;
     },
+    setCaret() {
+      var node = document.getElementById("__cxk__content");
+      var caretID = "__cxk__caret-position";
+      var caretElement = document.createElement("span");
+      caretElement.id = caretID;
+
+      window.getSelection().getRangeAt(0).insertNode(caretElement);
+
+      node.blur();
+    },
+    addClickImageEvent() {
+      let cxkContent = document.getElementById("__cxk__content");
+      let imgElements = cxkContent.querySelector("img");
+
+      imgElements.addEventListener("click", (event) => {
+        this.showImgModal();
+        this.cxkSelectImageElement = event.target;
+        this.cxkSelectImageStyle.width = event.target.width;
+        this.cxkSelectImageStyle.height = event.target.height;
+      });
+    },
+    showImgModal() {
+      this.$refs["__cxk__img-model"].show();
+    },
+    hideImgModal() {
+      this.$refs["__cxk__img-model"].hide();
+    },
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity();
+      this.cxkImgState = valid;
+      return valid;
+    },
+    resetModal() {
+      this.name = "";
+      this.cxkImgState = null;
+    },
+    handleOk(bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault();
+      // Trigger submit handler
+      this.handleSubmit();
+    },
+    handleSubmit() {
+      // Exit when the form isn't valid
+      if (!this.checkFormValidity()) {
+        return;
+      }
+      this.cxkSelectImageElement.style.width =
+        this.cxkSelectImageStyle.width + "px";
+      this.cxkSelectImageElement.style.height =
+        this.cxkSelectImageStyle.height + "px";
+
+      this.localValue = document.getElementById("__cxk__content").innerHTML;
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$bvModal.hide("modal-prevent-closing");
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-.__cxk__btn-toolbar > .__cxk__btn {
+.__cxk__btn-toolbar .__cxk__btn {
   cursor: pointer;
+  font-size: 12px;
+  border-radius: 0;
+  position: relative;
+  padding: 0.25rem 0.5rem;
+  line-height: 1.5;
+  border-width: 2px;
+  font-weight: 400;
+  margin: 5px 0px;
+  background-color: #888888;
+  color: #ffffff;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-sizing: border-box;
+}
+.__cxk__group-btn-input {
+  position: relative;
+  padding: 0;
+  margin: 5px 0px;
+  width: 30px;
+  height: 29px;
+}
+.__cxk__group-btn-input .__cxk__btn,
+.__cxk__group-btn-input .__cxk__btn-input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  top: 0;
+  left: 0;
+}
+.__cxk__btn-input {
+  z-index: 1;
+  opacity: 0;
+  width: 26px;
+  height: 29px;
+  margin: 5px 0px;
 }
 
-.__cxk__btn-toolbar > .__cxk__btn:hover {
+.__cxk__btn-toolbar .__cxk__btn:hover {
   text-decoration: underline;
 }
 
@@ -228,14 +381,26 @@ export default {
   font-size: 12px;
 }
 
+.__cxk__btn-toolbar .btn-group {
+  padding: 0;
+}
 .__cxk__content {
-  border: solid 1px #ccc;
+  border: solid 1px #999999;
+  border-radius: 15px;
   padding: 20px;
-  max-width: 855px;
+  width: 100%;
+  min-width: 320px;
   min-height: 200px;
 }
 
 #__cxk__content font[size="7"] {
   font-size: 20px;
+}
+.__cxk__btn-toolbar > .__cxk__btn > .fa:before {
+  font-size: 10px;
+}
+
+.__cxk__img-model .col-form-label {
+  padding: 12px 5px !important;
 }
 </style>

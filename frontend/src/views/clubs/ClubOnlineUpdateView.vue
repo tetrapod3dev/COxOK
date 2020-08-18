@@ -97,13 +97,13 @@ export default {
   data() {
     return {
       online: {
-        onlineId: null,
+        onlineId: 0,
         title: null,
         content: null,
         type: null,
         date: null,
         link: null,
-        thumbnailSrc: null,
+        thumbnailSrc: "dochi.png",
         video: null,
       },
       rawFile: null,
@@ -139,7 +139,11 @@ export default {
       .then((res) => {
         this.online = res.data.online;
       })
-      .catch((err) => console.log(err.response));
+      .catch((err) => {
+        if (err.response.status == 401) {
+          alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+          this.logout()
+        }});
   },
   methods: {
     onChangeThumbnail(event) {
@@ -181,9 +185,8 @@ export default {
             },
           })
           .then((res) => {
-            console.log(res);
             this.online.thumbnailSrc =
-              res.data.items[0].snippet.thumbnails.default.url;
+              res.data.items[0].snippet.thumbnails.medium.url;
           })
           .catch((err) => console.log(err.response));
       }
@@ -208,8 +211,6 @@ export default {
         },
       };
 
-      console.log(body, configs);
-
       axios
         .put(SERVER.URL + SERVER.ROUTES.onlineRegister, body, configs)
         .then(() => {
@@ -219,12 +220,11 @@ export default {
           });
         })
         .catch((err) => {
-          // if (err.response.status) {
-          //   alert('세션 정보가 만료되었습니다! 다시 로그인해주세요.')
-          //   this.logout()
-          // }
-          console.log(err.response);
-        });
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
+
     },
 
     clickDateForm() {
@@ -233,6 +233,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>
