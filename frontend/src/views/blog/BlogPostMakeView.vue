@@ -67,8 +67,8 @@
         </div>
         <div class="row">
           <div class="col-md-8 ml-auto mr-auto">
-            <card v-if="!selectedRecipe" type="profile" v-b-modal.modal-lg>
-              <div slot="raw-content" class="row blog-make-border blog-make-border-color">
+            <card v-if="!selectedRecipe" type="profile">
+              <div slot="raw-content" class="row blog-make-border blog-make-border-color custom-cursor-pointer" @click="changeSelectorShow">
                 <div class="col-12 align-self-center">
                   <h3 class="card-title text-center" style="padding: 40px">레시피 추가</h3>
                 </div>
@@ -77,7 +77,7 @@
             <card v-if="selectedRecipe" type="profile">
               <div slot="raw-content" class="row">
                 <div class="col-md-5">
-                  <div class="card-image" v-b-modal.modal-lg>
+                  <div class="card-image custom-cursor-pointer" @click="changeSelectorShow">
                     <img class="img img-zoom" :src="imageSrc(selectedRecipe)" />
                   </div>
                 </div>
@@ -86,7 +86,7 @@
                     <h3 class="card-title">{{selectedRecipe.recipeName}}</h3>
                     <h6 class="category text-primary text-left">{{selectedRecipe.nickname}}</h6>
                     <div class="row">
-                      <h5 class="card-title col-4 text-info" v-b-modal.modal-lg>수정</h5>
+                      <h5 class="card-title col-4 text-info custom-cursor-pointer" @click="changeSelectorShow">수정</h5>
                       <h5
                         class="card-title col-4 text-danger custom-cursor-pointer"
                         @click.stop="deleteSelectedRecipe"
@@ -96,35 +96,23 @@
                 </div>
               </div>
             </card>
-            <b-modal id="modal-lg" ref="my-modal" hide-footer size="lg" title="Test">
-              <button @click="changeSelectorShow">카테고리 검색기</button>
 
+            
+            <div v-show="showSelector" class="col-12">
               <CategorySelector
-                v-show="showSelector"
                 @searchRecipe="categorySubmit"
-                @removeSelect="removeSelect"
-              />
+                @removeSelect="categorySubmit"/>
 
-              <div class="row" v-show="!showSelector">
-                <div
-                  v-for="recipe in recipes"
-                  :key="recipe.recipeId"
-                  @click="selectRecipe(recipe)"
-                  class="col-4"
-                >
-                  <img :src="imageSrc(recipe)" />
-                  <p>{{ recipe.recipeName }}</p>
+              <div v-for="recipe in recipes" :key="recipe.id" @click="selectRecipe(recipe)" class="row custom-cursor-pointer m-2" >
+                <img :src="imageSrc(recipe)" class="col-4" />
+                <div class="col-7">
+                  <h3 class="row">{{ recipe.recipeName }}</h3>
+                  <p class="row">{{ recipe.recipeDetail }}</p>
                 </div>
               </div>
-
-              <PageButton
-                v-if="recipes.length > 0"
-                class="d-flex justify-content-center"
-                :curPage="curPage"
-                :maxPage="maxPage"
-                @move-page="movePage"
-              />
-            </b-modal>
+              <div id="bottomSensor"></div>
+              <h2 v-if="isEnd">끝!</h2>
+            </div>
           </div>
         </div>
         <!-- 레시피 추가 끝 -->
@@ -141,9 +129,10 @@ import { Card } from "@/components/global";
 
 import CxkEditor from "@/components/cxkeditor/cxkeditor.vue";
 import CategorySelector from "@/components/recipes/CategorySelector.vue";
-import PageButton from "@/components/common/PageButtons.vue";
 
 import axios from "axios";
+import scrollmonitor from "scrollmonitor";
+
 import router from "@/router";
 import SERVER from "@/api/api";
 import { mapGetters } from "vuex";
@@ -156,7 +145,9 @@ export default {
       blogTags: [],
       recipes: [],
       showSelector: false,
+      isEnd: false,
       curPage: 1,
+      maxPage: 10,
       selectedRecipe: null,
       blogPost: {
         title: null,
@@ -172,7 +163,6 @@ export default {
     CxkEditor,
     BlogProfile,
     CategorySelector,
-    PageButton,
     BlogMenu,
     Card,
   },
@@ -182,8 +172,25 @@ export default {
       return this.blogPost.length > 2 && this.blogPost.legnth < 0;
     },
   },
+  created() {
+    this.getRecipes();
+  },
   mounted() {
-    this.allRecipe(1);
+    window.addEventListener("scroll", this.indexScrollFuncion);
+    this.addScrollWatcher();
+  },
+  beforeDestory() {
+    window.removeEventListener('scroll', this.indexScrollFuncion);
+    clearInterval(this.widthInterval);
+  },
+  updated() {
+    if (this.showSelector) {
+      if (this.curPage-1 < this.maxPage) {
+        this.loadUntilViewportIsFull();
+      } else {
+        this.isEnd = true
+      }
+    }
   },
   methods: {
     contentHandler(event) {
@@ -227,11 +234,9 @@ export default {
       if (this.selectedRecipe) {
         this.blogPost.recipeId = this.selectedRecipe.recipeId;
       }
-      console.log(this.blogPost);
       axios
         .post(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           router.push({ name: "BlogPostListView", params: { pageNum: 1 } });
         })
         .catch((err) => {
@@ -258,51 +263,53 @@ export default {
       this.clubPost.meetPhoto = file;
     },
 
-    movePage(page) {
-      if (page == "«") {
-        this.curPage = 1 * 1;
-      } else if (page == "»") {
-        this.curPage = this.maxPage * 1;
-      } else if (page != this.curPage) {
-        this.curPage = page * 1;
-      }
-      this.changePage();
-      scroll(0, 0);
-    },
-
     changeSelectorShow() {
       this.showSelector = !this.showSelector;
     },
 
-    categorySubmit() {
-      this.curPage = 1;
-      this.changePage();
-    },
-    removeSelect() {
-      this.curPage = 1;
-      this.changePage();
-    },
-
-    changePage() {
-      if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
-      ) {
-        this.searchRecipe(this.curPage);
-      } else {
-        this.allRecipe(this.curPage);
+    addScrollWatcher() {
+      const bottomSensor = document.querySelector("#bottomSensor");
+      const watcher = scrollmonitor.create(bottomSensor);
+      if (this.curPage < this.maxPage) {
+        watcher.enterViewport(() => {
+          setTimeout(() => {
+            this.getRecipes();
+          }, 1000);
+        });
       }
     },
-
+    loadUntilViewportIsFull() {
+      const bottomSensor = document.querySelector("#bottomSensor");
+      const watcher = scrollmonitor.create(bottomSensor);
+      if (watcher.isFullyInViewport) {
+        this.getRecipes();
+      }
+    },
+    getRecipes() {
+      if (
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
+      ) {
+        this.allRecipe(this.curPage++);
+      } else {
+        this.searchRecipe(this.curPage++);
+      }
+    },
+    categorySubmit() {
+      this.isEnd = false;
+      this.recipes = [];
+      this.curPage = 1;
+      this.getRecipes();
+    },
     allRecipe(page) {
       axios
         .get(SERVER.URL + SERVER.ROUTES.recipeList + (page - 1))
         .then((res) => {
-          this.recipes = res.data.list;
+          this.recipes = [...this.recipes, ...res.data.list];
           this.maxPage = parseInt((res.data.total - 1) / 6) + 1;
-          this.categoryShow = false;
-        });
+        })
+        .catch((err) => console.log(err));
     },
     searchRecipe(page) {
       let frm = new FormData();
@@ -311,26 +318,37 @@ export default {
       this.searchingData.selectedCategory.forEach(function (selectedCategory) {
         frm.append("selectedCategory", selectedCategory);
       });
-
       this.searchingData.selectedIngredients.forEach(function (
         selectedIngredient
       ) {
         frm.append("selectedIngredients", selectedIngredient);
       });
 
+      frm.append("level", this.searchingData.level)
+
+      frm.append("cookTime", this.searchingData.cookTime)
+
       // recipe/search/{{page}} 라는 주소로 selectedCategory(선택된 카테고리의 id들) / selectedIngredients(선택된 재료들의 id)를 전달합니다.
       axios
         .post(SERVER.URL + SERVER.ROUTES.searchRecipe + (page - 1), frm)
         .then((res) => {
-          this.recipes = res.data.list;
+          this.recipes = [...this.recipes, ...res.data.list];
           this.maxPage = parseInt((res.data.total - 1) / 6) + 1;
         })
         .catch((err) => console.log(err));
     },
     selectRecipe(recipe) {
       this.selectedRecipe = recipe;
-      this.hideModal();
+      this.showSelector = false
     },
+    deleteSelectedRecipe() {
+      this.selectedRecipe = null
+    },
+    scrollToTop() {
+      scroll(0, 0);
+    },
+
+
   },
 };
 </script>
@@ -349,5 +367,9 @@ export default {
 }
 .blog-make-border-color {
   border-color: #999999;
+}
+
+.custom-cursor-pointer {
+  cursor: pointer;
 }
 </style>

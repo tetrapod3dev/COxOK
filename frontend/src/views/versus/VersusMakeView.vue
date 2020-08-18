@@ -63,16 +63,6 @@
          <div class="select-zero" v-if="selectedRecipes.length == 0">
              레시피를 선택하세요.
           </div>
-        <!-- <div class="col-10 row p-3">
-          <div v-for="(recipe, index) in curRecipes" :key="index" class="card col-3 m-0">
-            <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="card-img-top" alt="레시피 사진" />
-            <div class="card-body">
-              <h5 class="card-title">{{ recipe.recipeName }}</h5>
-              <p class="card-text">{{ recipe.recipeDetail}}</p>
-              <button @click="removeSelectedRecipe(index)">x</button>
-            </div>
-          </div>
-        </div>-->
         <div v-for="(recipe, index) in curRecipes" :key="index" class="col-md-4 col-lg-2">
           <card
             type="pricing"
@@ -112,10 +102,7 @@
           </template>
 
           <div class="container">
-            <!-- <div>
-              <label for="title">대회 이름</label>
-              <b-form-input type="text" id="title" v-model="versusTitle" />
-            </div> -->
+
             <div class="versus-name">
               <label for="name" class="inp">
                 <input type="text" id="name" placeholder=" " v-model="versusTitle">
@@ -123,12 +110,10 @@
                 <span class="focus-bg"></span>
               </label>
             </div>
+
             <br />
             <br />
-            <!-- <div>
-              <label for="content">대회 개요</label>
-              <b-form-textarea rows="6" type="text" id="content" v-model="versusContent" />
-            </div> -->
+
             <div class="versus-name">
               <label for="detail" class="inp">
                 <input type="text" id="detail" placeholder=" " v-model="versusContent">
@@ -137,6 +122,7 @@
               </label>
             </div>
           </div>
+
           <div style="height:300px"></div>
         </tab-pane>
         <tab-pane label="Settings">
@@ -183,10 +169,6 @@ export default {
       selectedCurPage: null,
       curPage: 1,
       maxPage: 10,
-      searchData: {
-        selectedCategory: [],
-        selectedIngredients: [],
-      },
     };
   },
   components: {
@@ -341,13 +323,13 @@ export default {
     },
     getRecipes() {
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
-        this.searchRecipe(this.curPage++);
-      } else {
         this.allRecipe(this.curPage++);
+      } else {
+        this.searchRecipe(this.curPage++);
       }
     },
     scrollToTop() {

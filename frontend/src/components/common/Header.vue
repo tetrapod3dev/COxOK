@@ -8,7 +8,7 @@
       menu-classes="ml-auto"
     >
       <template>
-        <router-link class="navbar-brand" :to="isLoggedIn ? '/main/' : '/'">
+        <router-link class="navbar-brand" :to="isLoggedIn ? '/main' : '/'">
           <img src="@/assets/CO_OK-logo.png" width="40px" />
         </router-link>
       </template>

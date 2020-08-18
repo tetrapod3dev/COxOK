@@ -17,7 +17,7 @@
               >
                 <i class="fas fa-edit"></i>수정
               </router-link>
-              <a @click="deleteClub">X삭제</a>
+              <a @click="deleteClub">삭제</a>
             </div>
           </div>
         </div>

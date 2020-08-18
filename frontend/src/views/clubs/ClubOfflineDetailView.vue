@@ -76,7 +76,7 @@
         <div class="container">
           <div class="button-container">
             <button class="learn-more submit">수정</button>
-            <button class="learn-more" @click="deleteClub" style="margin-left: 20px;">삭제</button>
+            <button class="learn-more" @click.prevent="deleteClub" style="margin-left: 20px;">삭제</button>
           </div>
         </div>
       </div>

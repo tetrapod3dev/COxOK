@@ -93,54 +93,6 @@
     <CxkEditor :value.sync="clubPost.content" />
     <br />
 
-    <div class="row">
-      <b-col sm="3">
-        <span>레시피 :</span>
-      </b-col>
-      <b-col sm="6">
-        <div v-if="clubPost.selectedRecipe == null">
-          {{clubPost.selectedRecipe}}
-        </div>
-        <div v-else>
-          <b-col sm="12">
-            <img class="img img-raised mb-5" :src="getThumbnail()" style="height:200px; margin-right:20px;"/>
-            <p>{{clubPost.selectedRecipe.recipeName}}</p>
-          </b-col>
-        </div>
-      </b-col>
-      <button class="btn col-2" v-b-modal.modal-lg>레시피 선택</button>
-
-      <b-modal id="modal-lg" ref="my-modal" hide-footer size="xl" title="레시피 검색기">
-        <button @click="changeSelectorShow">카테고리 검색기</button>
-
-        <CategorySelector
-          v-show="showSelector"
-          @searchRecipe="categorySubmit"
-          @removeSelect="removeSelect"
-        />
-
-        <div class="row" v-show="!showSelector">
-          <div
-            v-for="recipe in recipes"
-            :key="recipe.recipeId"
-            @click="selectRecipe(recipe)"
-            class="col-4"
-          >
-            <img :src="imageSrc(recipe)" />
-            <p>{{ recipe.recipeName }}</p>
-          </div>
-        </div>
-
-        <PageButton
-          v-if="recipes.length > 0"
-          class="d-flex justify-content-center"
-          :curPage="curPage"
-          :maxPage="maxPage"
-          @move-page="movePage"
-        />
-      </b-modal>
-    </div>
-
     <!-- 주소 입력 -->
     <div class="row">
       <b-col sm="3">
@@ -192,6 +144,44 @@
       id="map"
       style="width:500px;height:400px;"
     ></div>
+
+    <!-- 레시피 검색 -->
+    <div class="row">
+      <b-col sm="3">
+        <span>레시피 :</span>
+      </b-col>
+      <b-col sm="6">
+        <div v-if="clubPost.selectedRecipe == null">
+          {{clubPost.selectedRecipe}}
+        </div>
+        <div v-else>
+          <b-col sm="12">
+            <img class="img img-raised mb-5" :src="getThumbnail()" style="height:200px; margin-right:20px;"/>
+            <p>{{clubPost.selectedRecipe.recipeName}}</p>
+          </b-col>
+        </div>
+      </b-col>
+      <div class="col-2 px-0">
+        <button class="btn w-100" @click="changeSelectorShow">레시피 선택</button>
+      </div>
+      
+
+      <div v-show="showSelector" class="col-12">
+        <CategorySelector
+          @searchRecipe="categorySubmit"
+          @removeSelect="categorySubmit"/>
+
+        <div v-for="recipe in recipes" :key="recipe.id" @click="selectRecipe(recipe)" class="row searched-recipes m-2" >
+          <img :src="imageSrc(recipe)" class="col-4" />
+          <div class="col-7">
+            <h3 class="row">{{ recipe.recipeName }}</h3>
+            <p class="row">{{ recipe.recipeDetail }}</p>
+          </div>
+        </div>
+        <div id="bottomSensor"></div>
+        <h2 v-if="isEnd">끝!</h2>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -200,10 +190,10 @@
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 import SERVER from "@/api/api";
+import scrollmonitor from "scrollmonitor";
 
 import CxkEditor from "@/components/cxkeditor/cxkeditor.vue";
 import CategorySelector from "@/components/recipes/CategorySelector.vue";
-import PageButton from "@/components/common/PageButtons.vue";
 
 import { Form } from "element-ui";
 import { Datetime } from "vue-datetime";
@@ -234,15 +224,15 @@ export default {
         "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg",
       recipes: [],
       curPage: 1,
-      maxPage: null,
+      maxPage: 10,
       showSelector: false,
       date: null,
+      isEnd: false,
     };
   },
   components: {
     CxkEditor,
     CategorySelector,
-    PageButton,
     datetime: Datetime,
   },
   computed: {
@@ -256,6 +246,9 @@ export default {
       return this.date.slice(0, 19);
     },
   },
+  created() {
+    this.getRecipes();
+  },
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -266,7 +259,21 @@ export default {
       script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${API_KEY}&autoload=false&libraries=services`;
       document.head.appendChild(script);
     }
-    this.allRecipe(1);
+    window.addEventListener("scroll", this.indexScrollFuncion);
+    this.addScrollWatcher();
+  },
+  beforeDestory() {
+    window.removeEventListener('scroll', this.indexScrollFuncion);
+    clearInterval(this.widthInterval);
+  },
+  updated() {
+    if (this.showSelector) {
+      if (this.curPage-1 < this.maxPage) {
+        this.loadUntilViewportIsFull();
+      } else {
+        this.isEnd = true
+      }
+    }
   },
   methods: {
     onClickClubImage(){
@@ -288,85 +295,6 @@ export default {
       const file = event.target.files[0];
       this.clubPreview = URL.createObjectURL(file);
       this.clubPost.meetPhoto = file;
-    },
-
-    movePage(page) {
-      if (page == "«") {
-        this.curPage = 1 * 1;
-      } else if (page == "»") {
-        this.curPage = this.maxPage * 1;
-      } else if (page != this.curPage) {
-        this.curPage = page * 1;
-      }
-      this.changePage();
-      scroll(0, 0);
-    },
-
-    changeSelectorShow() {
-      this.showSelector = !this.showSelector;
-    },
-
-    categorySubmit() {
-      this.curPage = 1;
-      this.changePage();
-    },
-    removeSelect() {
-      this.curPage = 1;
-      this.changePage();
-    },
-
-    changePage() {
-      if (
-        (this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length ==
-        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
-      ) {
-        this.allRecipe(this.curPage);
-      } else {
-        this.searchRecipe(this.curPage);
-      }
-      this.showSelector = false;
-    },
-
-    allRecipe(page) {
-      axios
-        .get(SERVER.URL + SERVER.ROUTES.recipeList + (page - 1))
-        .then((res) => {
-          this.recipes = res.data.list;
-          this.maxPage = parseInt((res.data.total - 1) / 6) + 1;
-          this.categoryShow = false;
-        });
-    },
-    searchRecipe(page) {
-      let frm = new FormData();
-
-      // categories 배열에는 선택된 카테고리의 ID가 String으로 들어갑니다.
-      this.searchingData.selectedCategory.forEach(function (selectedCategory) {
-        frm.append("selectedCategory", selectedCategory);
-      });
-
-      this.searchingData.selectedIngredients.forEach(function (
-        selectedIngredient
-      ) {
-        frm.append("selectedIngredients", selectedIngredient);
-      });
-
-      frm.append("level", this.searchingData.level)
-
-      frm.append("cookTime", this.searchingData.cookTime)
-
-      // recipe/search/{{page}} 라는 주소로 selectedCategory(선택된 카테고리의 id들) / selectedIngredients(선택된 재료들의 id)를 전달합니다.
-      axios
-        .post(SERVER.URL + SERVER.ROUTES.searchRecipe + (page - 1), frm)
-        .then((res) => {
-          this.recipes = res.data.list;
-          this.maxPage = parseInt((res.data.total - 1) / 6) + 1;
-        })
-        .catch((err) => console.log(err));
-    },
-    selectRecipe(recipe) {
-      this.clubPost.selectedRecipe = recipe;
-      this.hideModal();
     },
 
     initMap() {
@@ -478,6 +406,87 @@ export default {
             this.logout()
           }});
     },
+
+    changeSelectorShow() {
+      this.showSelector = !this.showSelector;
+    },
+    addScrollWatcher() {
+      const bottomSensor = document.querySelector("#bottomSensor");
+      const watcher = scrollmonitor.create(bottomSensor);
+      if (this.curPage < this.maxPage) {
+        watcher.enterViewport(() => {
+          setTimeout(() => {
+            this.getRecipes();
+          }, 1000);
+        });
+      }
+    },
+    loadUntilViewportIsFull() {
+      const bottomSensor = document.querySelector("#bottomSensor");
+      const watcher = scrollmonitor.create(bottomSensor);
+      if (watcher.isFullyInViewport) {
+        this.getRecipes();
+      }
+    },
+    getRecipes() {
+      if (
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
+      ) {
+        this.allRecipe(this.curPage++);
+      } else {
+        this.searchRecipe(this.curPage++);
+      }
+    },
+    categorySubmit() {
+      this.isEnd = false;
+      this.recipes = [];
+      this.curPage = 1;
+      this.getRecipes();
+    },
+    allRecipe(page) {
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.recipeList + (page - 1))
+        .then((res) => {
+          this.recipes = [...this.recipes, ...res.data.list];
+          this.maxPage = parseInt((res.data.total - 1) / 6) + 1;
+        })
+        .catch((err) => console.log(err));
+    },
+    searchRecipe(page) {
+      let frm = new FormData();
+
+      // categories 배열에는 선택된 카테고리의 ID가 String으로 들어갑니다.
+      this.searchingData.selectedCategory.forEach(function (selectedCategory) {
+        frm.append("selectedCategory", selectedCategory);
+      });
+      this.searchingData.selectedIngredients.forEach(function (
+        selectedIngredient
+      ) {
+        frm.append("selectedIngredients", selectedIngredient);
+      });
+
+      frm.append("level", this.searchingData.level)
+
+      frm.append("cookTime", this.searchingData.cookTime)
+
+      // recipe/search/{{page}} 라는 주소로 selectedCategory(선택된 카테고리의 id들) / selectedIngredients(선택된 재료들의 id)를 전달합니다.
+      axios
+        .post(SERVER.URL + SERVER.ROUTES.searchRecipe + (page - 1), frm)
+        .then((res) => {
+          this.recipes = [...this.recipes, ...res.data.list];
+          this.maxPage = parseInt((res.data.total - 1) / 6) + 1;
+        })
+        .catch((err) => console.log(err));
+    },
+    selectRecipe(recipe) {
+      this.clubPost.selectedRecipe = recipe;
+      this.showSelector = false
+    },
+    scrollToTop() {
+      scroll(0, 0);
+    },
   },
 };
 </script>
@@ -489,5 +498,9 @@ export default {
   border: 1px solid;
   border-color: #ddd;
   border-radius: 15px;
+}
+
+.searched-recipes:hover {
+  cursor: pointer;
 }
 </style>

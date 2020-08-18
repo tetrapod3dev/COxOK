@@ -393,15 +393,18 @@ export default {
     onDrop (event) {
       this.inputImageFile(event.dataTransfer.files)
     },
+    inputImageFile (addingfiles) {
+      this.addingFiles = addingfiles
+      this.fileList = [...this.fileList, ...addingfiles]
+      this.onClickUpload()
+    },
     onClickFile() {
       this.$refs.fileInput.click()
     },
     onFileChange(event) {
       this.onClickUpload(event.target.files)
     },
-    onClickUpload (addingfiles) {
-      this.addingFiles = addingfiles
-
+    onClickUpload () {
       const self = this
       this.addingFiles.forEach(function(file) {
         self.recipe.recipePhotoList.push(
@@ -494,8 +497,7 @@ export default {
             Authorization: this.config,
           },
         })
-        .then(res => {
-          console.log(res)
+        .then(() => {
           this.$router.push({ name: "RecipeDetailView", params: { recipe_id: this.$route.params.recipe_id } });
         })
         .catch((err) => {
