@@ -1,7 +1,7 @@
 <template>
   <router-link :to="{ name: 'ClubOnlineDetailView', params: { club_id: online.onlineId } }">
      <figure class="card card--1">
-      <img :src="imageSrc(online)">
+      <img :src="imageSrc(online)" style="width:100%">
       <figcaption>
         <span class="info">
           <h3>{{online.title}}</h3>
