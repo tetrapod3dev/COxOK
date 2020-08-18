@@ -37,7 +37,8 @@
             <div class="row">
               <div class="versus-img">
                 <img class="col-5" style="padding:0px; height:120px; bottom:4px;" :src="imageSrc1(versus)" />
-                VS
+                <!-- VS -->
+                <i class="fas fa-utensils ml-2 mr-2"></i>
                 <img class="col-5" style="padding:0px; height:120px; bottom:4px;" :src="imageSrc2(versus)" />
               </div>
             </div>
