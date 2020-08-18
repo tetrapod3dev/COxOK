@@ -823,6 +823,8 @@ input[type="submit"]:active {
   --slider-handle-margin-top: -4px;
   --slider-track-height: 6px;
   --slider-track-border-radius: 4px;
+
+  margin-top:50px;
 }
 
 #slider {
@@ -1092,4 +1094,6 @@ input[type="range"]:active::-webkit-slider-runnable-track {
   padding-left: 365px;
   padding-bottom: 0px;
 }
+
+
 </style>
