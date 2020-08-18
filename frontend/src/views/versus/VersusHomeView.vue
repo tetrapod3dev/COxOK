@@ -36,9 +36,9 @@
           >
             <div class="row">
               <div class="versus-img">
-                <img class="col-5" style="padding:0px" :src="imageSrc1(versus)" />
+                <img class="col-5" style="padding:0px; height:120px; bottom:4px;" :src="imageSrc1(versus)" />
                 VS
-                <img class="col-5" style="padding:0px" :src="imageSrc2(versus)" />
+                <img class="col-5" style="padding:0px; height:120px; bottom:4px;" :src="imageSrc2(versus)" />
               </div>
             </div>
             <div class="mt-auto mb-auto">
