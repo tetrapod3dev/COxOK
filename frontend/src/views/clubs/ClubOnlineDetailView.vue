@@ -31,8 +31,8 @@
       <div v-else>
         <div class="live-div col-12">
           <p class="meet-content text-left col-12">강의 링크: <a :href="online.link" target="_blank"> {{ online.link }}</a></p>
-          <p class="meet-content text-left col-12">날짜: {{ simpleDate(online.date) }}</p>
-          <p class="meet-content text-left col-12">시간: {{ simpleTime(online.date) }}</p>
+          <p class="meet-content text-left col-12">날짜: {{ simpleDate }}</p>
+          <p class="meet-content text-left col-12">시간: {{ simpleTime }}</p>
         </div>
       </div>
       
@@ -96,7 +96,7 @@ export default {
         title: null,
         content: null,
         type: null,
-        date: null,
+        date: "",
         link: null,
         thumbnailSrc: "dochi.png",
         video: null,
@@ -120,6 +120,12 @@ export default {
     },
     joinMent() {
       return this.isIn ? "찜 취소하기" : "강의 찜하기";
+    },
+    simpleDate() {
+      return this.online.date.slice(0,10);
+    },
+    simpleTime() {
+      return this.online.date.slice(11,16);
     },
   },
   created() {},
@@ -230,12 +236,6 @@ export default {
 
       }
       this.getInfo();
-    },
-    simpleDate(date) {
-      return date.slice(0,10);
-    },
-    simpleTime(date) {
-      return date.slice(11,16);
     },
     userProfile(index) {
       return SERVER.IMAGE_URL + this.joinList[index].profilePhoto;
