@@ -16,6 +16,8 @@ public class VersusPointDto {
 	private int count;
 	private String recipeName;
 	private String recipeThumbnailSrc;
+	
+	private double avgRating;
 }
 
 	

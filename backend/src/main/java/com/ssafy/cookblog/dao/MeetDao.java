@@ -12,6 +12,7 @@ public interface MeetDao {
 	public List<MeetDto> selectAllMeet(int startIndex);
 	public MeetViewResponseDto selectMeet(long meetId);
 	public List<MeetJoinDto> selectMeetJoinList(long meetId);
+	
 	public int delete(long meetId);
 
 	public int insertMeetJoin(MeetJoinDto meetJoinDto);

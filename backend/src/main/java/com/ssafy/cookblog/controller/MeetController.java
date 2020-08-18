@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.MeetDto;
 import com.ssafy.cookblog.dto.MeetJoinDto;
+import com.ssafy.cookblog.dto.UserDto;
 import com.ssafy.cookblog.dto.request.MeetRegisterRequestDto;
 import com.ssafy.cookblog.dto.response.MeetViewResponseDto;
 import com.ssafy.cookblog.service.MeetService;
@@ -73,13 +74,16 @@ public class MeetController {
 		MeetViewResponseDto meet = meetService.getOneMeet(meetId);
 		
 		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
-		Long userId = (userService.findUserByEmail(email).getUserId());
+		UserDto user = userService.findUserByEmail(email);
+		Long userId = user.getUserId();
+		String userProfile = user.getProfilePhoto();
 		
 		if(meet != null) {
 			map.put("msg", "소모임 조회를 성공했습니다.");
 			map.put("status", "success");
 			map.put("meet", meet);
 			map.put("userId",userId);
+			map.put("userProfile", userProfile);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "소모임을 찾지 못했습니다.");

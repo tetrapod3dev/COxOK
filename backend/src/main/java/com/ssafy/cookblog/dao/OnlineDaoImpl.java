@@ -60,7 +60,7 @@ public class OnlineDaoImpl implements OnlineDao {
 	}
 	
 	@Override
-	public List<Long> selectOnlineJoinList(long onlineId) {
+	public List<MeetJoinDto> selectOnlineJoinList(long onlineId) {
 		return session.selectList("online.selectOnlineJoinList",onlineId);
 	}
 	
