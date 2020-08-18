@@ -61,12 +61,7 @@ export default new Vuex.Store({
         })
         .catch((err) => {
           if (err.response.data.msg == "이메일 인증 미완료") {
-            let answer = confirm(
-              "이메일 미인증 사용자입니다. 이메일을 재전송할까요?"
-            );
-            if (answer) {
-              alert("아쉽게도 이메일 인증은 미구현입니다!");
-            }
+            alert("이메일 미인증 사용자입니다. 이메일 인증을 진행해주세요!");
           } else {
             alert(err.response.data.msg);
           }

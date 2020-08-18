@@ -221,5 +221,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.meet-date {
+  height: 30px;
+  color: black;
+  border: 1px solid;
+  border-color: #ddd;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
 </style>

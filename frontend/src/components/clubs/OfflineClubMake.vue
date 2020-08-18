@@ -498,6 +498,7 @@ export default {
   border: 1px solid;
   border-color: #ddd;
   border-radius: 15px;
+  cursor: pointer;
 }
 
 .searched-recipes:hover {

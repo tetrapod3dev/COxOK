@@ -153,7 +153,7 @@
         <div>
           <h3 class="text-left" style="float:left">재료 선택</h3>
           <div class="add-btn">
-            <n-button @click.native="showModal" type="secondary" round class="btn">
+            <n-button @click.native="showModal" type="primary" round class="btn">
                 재료가 없어요!
             </n-button>
           </div>
@@ -164,7 +164,7 @@
                 :id="getIngredientInputId(index)"
                 v-model="selectedIngredient.ingredient"
                 @change="test(selectedIngredient)"
-                class="col-3 text-center"
+                class="col-4 text-center"
                 style="margin-top: 24px"
               />
               <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
@@ -183,24 +183,20 @@
           </div>
 
           <div class="row">
-            <div class="col-5">
-            </div>
-            <div class="col-2" @click="addIngredient">
-            <n-button type="secondary" class="btn">
+            <div class="col-3" />
+            <n-button @click.native.prevent="addIngredient" class="col-6" type="primary">
               <i class="now-ui-icons ui-1_simple-add"></i>
             </n-button>
-            </div>
-            <div class="col-3">
-              <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
-                <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
-
-                <b-form-input v-model="newIngredient" placeholder="재료명을 적어주세요"></b-form-input>
-                <b-form-select v-model="newIngredientUnit" :options="units"></b-form-select>
-
-                <n-button type="danger" round block @click.native="sendData">제출</n-button>
-              </b-modal>
-            </div>
           </div>
+          
+          <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
+            <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
+
+            <b-form-input v-model="newIngredient" placeholder="재료명을 적어주세요"></b-form-input>
+            <b-form-select v-model="newIngredientUnit" :options="units"></b-form-select>
+
+            <n-button type="danger" round block @click.native="sendData">제출</n-button>
+          </b-modal>
         </div>
 
         <hr class="my-5" />
@@ -209,10 +205,12 @@
 
         <div v-show="tempInputs.length > 0" class="upload-image">
           <draggable v-model="tempInputs" group="recipeDetail" @start="drag=true" @end="drag=false">
-            <div v-for="(tempInput, index) in tempInputs" :key="index" class="row my-3">
-              <img :src="tempInput.imageSrc" class="col-4 offset-1">
-              <input type="text" v-model="tempInput.content" class="col-5">
-              <button class="btn btn-danger col-1" @click="removeRecipeDetail(index)">-</button>
+            <div v-for="(tempInput, index) in tempInputs" :key="index" class="my-3 row">
+              <div class="col-10 row">
+                <img :src="tempInput.imageSrc" class="col-3 offset-2">
+                <textarea v-model="tempInput.content" rows="4" class="col-5 offset-1 border align-self-center" />
+              </div>
+              <button class="btn btn-danger col-1 align-self-start mt-5" @click="removeRecipeDetail(index)">-</button>
             </div>
           </draggable>
         </div>

@@ -9,7 +9,7 @@
     >
       <template>
         <router-link class="navbar-brand" :to="isLoggedIn ? '/main' : '/'">
-          <img src="@/assets/CO_OK-logo.png" width="40px" />
+          <img src="http://i3a104.p.ssafy.io/CO_OK-logo.png" width="40px" />
         </router-link>
       </template>
       <template slot="navbar-menu">
