@@ -190,26 +190,26 @@
         </div>
       </draggable>
     </div>
-
+    <br>
     <div class="row">
-          <div class="col-3">
-          </div>
-    <div class="input-group col-9">
-      <input
-        type="text"
-        class="form-control-file detail-image-upload"
-        placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
-        v-model="filename"
-        @dragover.prevent
-        @drop.prevent="onDrop"
-        multiple>
-      <div class="input-group-append ">
-            <span class="input-group-text" @click="onClickFile">
-              <i class="fa fa-cloud" />
-            </span>
+      <div class="col-3">
       </div>
-      <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
-    </div>
+      <div class="input-group col-9">
+        <input
+          type="text"
+          class="form-control-file detail-image-upload"
+          placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
+          v-model="filename"
+          @dragover.prevent
+          @drop.prevent="onDrop"
+          multiple>
+        <div class="input-group-append col-1">
+          <span @click="onClickFile">
+            <i class="fa fa-cloud" />
+          </span>
+        </div>
+        <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
+      </div>
     </div>
 
     <hr class="my-5" />
