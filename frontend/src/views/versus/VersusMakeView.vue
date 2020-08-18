@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div id="idx-btn" class="row mt-5 text-left"> 
+    <div id="idx-btn" class="row mt-5 text-left Katuri"> 
       <h4><i class="fas fa-utensils ml-1 mr-2"></i>선택된 레시피</h4>
       <div>
         <span class="idx-obj ml-5">{{selectedRecipes.length}}개 
@@ -63,16 +63,7 @@
          <div class="select-zero" v-if="selectedRecipes.length == 0">
              레시피를 선택하세요.
           </div>
-        <!-- <div class="col-10 row p-3">
-          <div v-for="(recipe, index) in curRecipes" :key="index" class="card col-3 m-0">
-            <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="card-img-top" alt="레시피 사진" />
-            <div class="card-body">
-              <h5 class="card-title">{{ recipe.recipeName }}</h5>
-              <p class="card-text">{{ recipe.recipeDetail}}</p>
-              <button @click="removeSelectedRecipe(index)">x</button>
-            </div>
-          </div>
-        </div>-->
+
         <div v-for="(recipe, index) in curRecipes" :key="index" class="col-md-4 col-lg-2">
           <card
             type="pricing"
@@ -417,6 +408,10 @@ export default {
 </script>
 
 <style scoped>
+.wrapper{
+  font-family: 'Katuri';
+}
+
 .make-versus .button-container {
   margin-top: -112px;
 }
@@ -453,7 +448,6 @@ export default {
 
 /* 대회 이름, 대회 개요 */
 .versus-name {
-  font-family: Roboto;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
 }
@@ -545,7 +539,7 @@ export default {
 .paragraph {
   text-align:center;
   color:rgb(56, 9, 25);
-  font-family:'Roboto';
+  font-family:'Katuri';
   font-weight:500;
   font-size:30px;
   overflow:hidden;
