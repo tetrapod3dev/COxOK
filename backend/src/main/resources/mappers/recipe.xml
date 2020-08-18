@@ -227,7 +227,8 @@
 	
 	
 	<select id="selectRecipeListByCategoryId" resultType="RecipeDto">
-		SELECT recipe_id as recipeId, recipe_thumbnail_src as recipeThumbnailSrc
+		SELECT recipe_id as recipeId, recipe_thumbnail_src as recipeThumbnailSrc, cook_time as cookTime,
+			level, recipe_name as recipeName, avg_rating as avgRating
 		FROM recipe_food_category JOIN recipe USING(recipe_id)
 		WHERE food_category_id = #{foodCategoryId}
 		order by recipe_id desc
