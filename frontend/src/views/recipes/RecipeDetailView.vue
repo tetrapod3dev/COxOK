@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <section id="top">
-      <card type="background" style="background-image: url('https://previews.123rf.com/images/seamartini/seamartini1609/seamartini160900068/62637928-cooking-and-kitchen-utensils-seamless-background-wallpaper-with-vector-pattern-icons-of-pizza-bread-.jpg') ;" >
+      <card type="background" :style="{ backgroundImage: 'url(\'' + require('@/assets/cook.jpg') + '\')' }" >
         <div class="card-title text-left">
           <h1 style="">{{ recipe.recipeName }}</h1>
         </div>
@@ -192,7 +192,7 @@
                     </n-button>
                   </span>
                   <!-- 수정해야함 신고 -->
-                  <span @click="showModal" class="pull-right">
+                  <span v-if="isLoggedIn" @click="showModal" class="pull-right">
                     <n-button type="danger" round block>
                       <i class="fas fa-bullhorn"></i> 신고
                     </n-button>
@@ -525,7 +525,6 @@ export default {
             this.$route.params.recipe_id, config
         )
         .then((res) => {
-          console.log(res)
           this.recipe = res.data.recipe
           this.recipeDataSet = {
             'calorie': res.data.recipe.calorie,
@@ -589,7 +588,16 @@ export default {
 
     
     showModal() {
-      this.$refs['report-modal'].show()
+      axios
+        .get(SERVER.URL + SERVER.ROUTES.reportRecipe + this.$route.params.recipe_id, this.configs)
+        .then(res => {
+          if (res.data.isReport) {
+            alert('신고 내용을 검토하고 있습니다...')
+          } else {
+            this.$refs['report-modal'].show()
+          }
+        })
+        .catch(err => console.log(err))
     },
     hideModal() {
       this.$refs['report-modal'].hide()

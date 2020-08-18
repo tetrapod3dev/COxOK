@@ -5,7 +5,7 @@
       <!-- 배너 배경 사진 -->
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80')"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/mypage.jpg') + '\')' }"
       ></parallax>
       <!-- 프로필 -->
       <blog-profile />

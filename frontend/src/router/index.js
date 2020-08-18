@@ -245,6 +245,7 @@ router.beforeEach(async (to, from, next) => {
     "ClubListView",
     "ClubOfflineListTypeView",
     "ClubOnlineListTypeView",
+    "ErrorPage"
   ];
   // Login 안 해도 되는 페이지
 

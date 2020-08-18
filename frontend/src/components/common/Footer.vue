@@ -1,28 +1,11 @@
 <template>
   <footer class="footer footer-default">
-    <div class="container">
-      <nav>
-        <ul>
-          <li>
-            <a href="https://lab.ssafy.com/s03-webmobile1-sub2/s03p12a104">씨 없는 수박</a>
-          </li>
-          <li>
-            <a href="https://lab.ssafy.com/minkwon4">권민</a>
-          </li>
-          <li>
-            <a href="https://lab.ssafy.com/sdf7575">박태록</a>
-          </li>
-          <li>
-            <a href="https://lab.ssafy.com/lee33843">이동혁</a>
-          </li>
-          <li>
-            <a href="https://lab.ssafy.com/wkddbswjd325">장윤정</a>
-          </li>
-          <li>
-            <a href="https://lab.ssafy.com/ryunhoo123">최원대</a>
-          </li>
-        </ul>
-      </nav>
+    <div class="container mx-auto">
+      <div class="row">
+        <h3 class="col-2">Co~ok</h3>
+        <p class="col-8 align-self-center">@ 2020 Copyright 씨없는수박</p>
+        <h3 class="col-2"><router-link :to="{name: 'About'}" class="text-decoration-none">About Us</router-link></h3>
+      </div>
     </div>
   </footer>
 </template>
@@ -34,4 +17,9 @@ export default {
 </script>
 
 <style scoped>
+.container, .row, h3, p, a {
+  margin: 0;
+  padding: 0;
+}
+
 </style>

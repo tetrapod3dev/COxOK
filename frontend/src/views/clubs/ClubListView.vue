@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://i.pinimg.com/736x/7e/e8/45/7ee84510d6d06262623d1294208c1123.jpg') ;"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/meet.jpg') + '\')' }"
       ></parallax>
 
       <div class="container">
@@ -11,23 +11,18 @@
       </div>
     </div>
 
-    <div class="section meet-button" >
+    <div class="section meet-button pb-0" >
       <div class="container">
         <div class="button-container">
           <button class="learn-more" @click="changeMainType('오프라인')">오프라인</button>
+          <button v-if="isLoggedIn" class="learn-more" @click="makeClub">코~옥 만들기</button> 
           <button class="learn-more" @click="changeMainType('온라인')">온라인</button> 
         </div>
       </div>
-      <div class="Cookie-1" style="font-size:30px;font-weight:bold">{{this.mainClubType}} CO~OK</div>
     </div>
 
     <div class="container">
       <div class="row">
-        <div class="col-12 text-right">
-          <router-link :to="{ name: 'ClubMakeView' }">
-            <button class="meet-make-btn btn mx-2">코~옥 만들기</button>
-          </router-link>
-        </div>
         <OfflineClubList v-if="isOffline" />
         <OnlineClubList v-else />
       </div>
@@ -50,7 +45,7 @@ export default {
     OnlineClubList,
   },
   computed: {
-    ...mapGetters(["mainClubType"]),
+    ...mapGetters(["mainClubType", "isLoggedIn"]),
     isOffline() {
       return this.mainClubType == "오프라인" ? true : false;
     },
@@ -58,6 +53,9 @@ export default {
   created() {},
   methods: {
     ...mapActions(["changeClubMainType"]),
+    makeClub() {
+      this.$router.push({name: 'ClubMakeView'})
+    },
     changeMainType(type) {
       this.changeClubMainType(type);
     },

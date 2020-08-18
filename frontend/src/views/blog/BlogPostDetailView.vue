@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini header-filter" filter-color="orange">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/mypage.jpg') + '\')' }"
       ></parallax>
       <blog-profile />
     </div>

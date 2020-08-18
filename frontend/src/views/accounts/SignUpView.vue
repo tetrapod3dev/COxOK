@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.unsplash.com/photo-1452251889946-8ff5ea7b27ab?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=730&q=80') ;"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/mypage.jpg') + '\')' }"
       ></parallax>
       <div class="content-center">
         <h1>회원가입</h1>

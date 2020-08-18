@@ -1,12 +1,13 @@
 <template>
   <div class="wrapper landing-page">
-    <div class="page-header page-header-small">
+    <div class="page-header">
       <parallax
-        class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/1565982/pexels-photo-1565982.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"
+        class="page-header-image" style="background-size:80%"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/3753985.jpg') + '\')' }"
       ></parallax>
       <div class="content-center">
-        <h1 class="title">요리와 사람을 코×옥 더하다</h1>
+        <h1 class="title">CO~OK</h1>
+        <h2>함께하면 가능하다</h2>
       </div>
     </div>
 
@@ -14,7 +15,7 @@
       <div class="container">
         <div class="row text-center">
           <div class="col-md-8 ml-auto mr-auto">
-            <h2 class="title text-left mb-0">최근에 만들어진 요리들</h2>
+            <h2 class="title mb-0">최근에 만들어진 요리들</h2>
           </div>
         </div>
         <div class="row">
@@ -23,15 +24,39 @@
               <i class="now-ui-icons arrows-1_minimal-left"></i>
             </n-button>
           </div>
-          <div class="col-10 row recent-recipes">
-            <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-lg-2 col-4 recipe-item p-0">
-              <router-link
-                class="card-link main-list-recipe"
-                tag="div"
-                :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }">
-                <img :src="imageSrc(recipe.recipeThumbnailSrc)" class="recent-recipe-image">
-              </router-link>
-            </div>
+          <div class="col-10 row justify-content-around recipes">
+            
+            <router-link
+              v-for="recipe in curRecipes" :key="recipe.recipeId"
+              class="col-3 p-0 m-0 card-link"
+              :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }">
+              <b-card
+                :img-src=imageSrc(recipe.recipeThumbnailSrc)
+                img-alt="레시피 사진"
+                img-top
+                tag="article"
+                style="max-width: 20rem;"
+                class="recipe-card"
+              >
+                <div>
+                <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
+                <div class="mt-auto mb-auto">
+                <b-card-text class="recipe-card-text row">
+                  <p class="col-12">{{recipe.recipeName}}</p>
+                  <div class="col-6">
+                    <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
+                    {{ recipe.cookTime }}분
+                  </div>
+                  <div class="col-6">
+                    <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
+                    {{ recipe.level }}
+                  </div>
+                </b-card-text>
+                </div>
+                </div>
+              </b-card>
+            </router-link>
+
           </div>
           <div class="ml-auto mr-auto align-self-center" @click="moveNext">
             <n-button type="primary" round icon>
@@ -42,12 +67,13 @@
       </div>
     </div>
 
+
     <div class="section">
       <div class="container">
         <h2 class="title">코슐랭 가이드</h2>
-        <div class="row top-recipes">
+        <div class="row recipes">
           <router-link
-            class="card-link col-3 mt-4"
+            class="card-link col-3"
             :to="{name: 'RecipeDetailView', params: {recipe_id: second.recipeId} }"
           >
             <h2>2등</h2>
@@ -99,7 +125,7 @@
           </router-link>
 
           <router-link
-            class="card-link col-3 mt-5"
+            class="card-link col-3"
             :to="{name: 'RecipeDetailView', params: {recipe_id: third.recipeId} }"
           >
             <h2>3등</h2>
@@ -141,7 +167,7 @@ export default {
   data() {
     return {
       recipes: [{recipeId: 0, recipeThumbnailSrc: "dochi.png"}],
-      maxPage: 3,
+      maxPage: 2,
       curPage: 0,
       form: {
         firstName: "",
@@ -158,13 +184,19 @@ export default {
     [FormGroupInput.name]: FormGroupInput,
   },
   computed: {
-    ...mapGetters(['isLoggedIn'])
+    ...mapGetters(['isLoggedIn']),
+    curRecipes() {
+      return this.recipes.slice(
+        this.curPage * 3,
+        (this.curPage + 1) * 3
+      );
+    },
   },
   created() {
     if (this.isLoggedIn) {
       this.$router.push({name: 'Main'})
     }
-    this.getRecipes(0);
+    this.getRecipes();
     this.getVersusRank();
   },
   methods: {
@@ -176,18 +208,16 @@ export default {
       if (this.curPage == this.maxPage) {
         this.curPage = 0;
       }
-      this.getRecipes(this.curPage);
     },
     movePrev() {
       this.curPage -= 1;
       if (this.curPage == -1) {
         this.curPage = this.maxPage - 1;
       }
-      this.getRecipes(this.curPage);
     },
-    getRecipes(page) {
+    getRecipes() {
       axios
-        .get(SERVER.URL + SERVER.ROUTES.recipeList + page)
+        .get(SERVER.URL + SERVER.ROUTES.recipeList + 0)
         .then((res) => {
           this.recipes = res.data.list;
         })
@@ -216,42 +246,24 @@ export default {
   background-position: center;
 }
 
-.recipe-item {
-  cursor: pointer;
-}
-
-.recent-recipe-image {
-  height: 100px;
-}
-
-.top-recipes {
+.recipes {
   display: flex;
   justify-content:space-around;
 }
 
-.top-recipes > a {
+.recipes > a {
   border-radius: 50px;
   transition: all 0.5s ease-in-out;
 }
 
-.top-recipes > a > article > img {
+.recipes > a > article > img {
   height: 200px;
 }
 
-.top-recipes > a:hover {
+.recipes > a:hover {
   transform: scale(1.2);
   transition: transform.5s;
   cursor: pointer;
 }
 
-.recent-recipes > div {
-  border-radius: 50px;
-  transition: all 0.5s ease-in-out;
-}
-
-.recent-recipes > div:hover {
-  transform: scale(1.2);
-  transition: transform.5s;
-  cursor: pointer;
-}
 </style>
