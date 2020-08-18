@@ -5,9 +5,9 @@ import Main from "../views/Main.vue";
 import About from "../views/About.vue";
 import ErrorPage from "../views/ErrorPage.vue";
 
-import cookies from 'vue-cookies' // cookie 사용(토큰 저장)
-import axios from 'axios'
-import SERVER from '@/api/api'
+import cookies from "vue-cookies"; // cookie 사용(토큰 저장)
+import axios from "axios";
+import SERVER from "@/api/api";
 
 // Accounts Router
 import SignUpView from "../views/accounts/SignUpView.vue";
@@ -15,11 +15,11 @@ import UserSettingView from "../views/accounts/UserSettingView.vue";
 import EmailAuthView from "../views/accounts/EmailAuthView.vue";
 
 // Recipes Router
-import PrevRecipeList from '../views/recipes/PrevRecipeList.vue'
-import RecipeListView from '../views/recipes/RecipeListView.vue'
-import RecipeDetailView from '../views/recipes/RecipeDetailView.vue'
-import RecipeUpdateView from '../views/recipes/RecipeUpdateView.vue'
-import RecipeMakeView from '../views/recipes/RecipeMakeView.vue'
+import PrevRecipeList from "../views/recipes/PrevRecipeList.vue";
+import RecipeListView from "../views/recipes/RecipeListView.vue";
+import RecipeDetailView from "../views/recipes/RecipeDetailView.vue";
+import RecipeUpdateView from "../views/recipes/RecipeUpdateView.vue";
+import RecipeMakeView from "../views/recipes/RecipeMakeView.vue";
 
 // Blog Router
 import BlogHomeView from "../views/blog/BlogHomeView.vue";
@@ -28,7 +28,6 @@ import BlogPostMakeView from "../views/blog/BlogPostMakeView.vue";
 import BlogPostUpdateView from "../views/blog/BlogPostUpdateView.vue";
 import BlogPostDetailView from "../views/blog/BlogPostDetailView.vue";
 import BlogRecipeListView from "../views/blog/BlogRecipeListView.vue";
-import BlogMarkedRecipeListView from "../views/blog/BlogMarkedRecipeListView.vue";
 import BlogGraphView from "../views/blog/BlogGraphView.vue";
 import BlogCalendarView from "../views/blog/BlogCalendarView.vue";
 
@@ -48,7 +47,7 @@ import ClubOfflineListTypeView from "../views/clubs/ClubOfflineListTypeView.vue"
 import ClubOnlineListTypeView from "../views/clubs/ClubOnlineListTypeView.vue";
 
 // Admin Router
-import AdminMainView from "../views/admin/AdminMainView.vue"
+import AdminMainView from "../views/admin/AdminMainView.vue";
 
 Vue.use(VueRouter);
 
@@ -106,9 +105,9 @@ const routes = [
     component: RecipeDetailView,
   },
   {
-    path: '/recipes/update/:recipe_id',
-    name: 'RecipeUpdateView',
-    component: RecipeUpdateView
+    path: "/recipes/update/:recipe_id",
+    name: "RecipeUpdateView",
+    component: RecipeUpdateView,
   },
   // Blog Router
   {
@@ -130,11 +129,6 @@ const routes = [
     path: "/blog/recipes/:pageNum",
     name: "BlogRecipeListView",
     component: BlogRecipeListView,
-  },
-  {
-    path: "/blog/markedrecipes/:pageNum",
-    name: "BlogMarkedRecipeListView",
-    component: BlogMarkedRecipeListView,
   },
   {
     path: "/blog/graph",
@@ -217,75 +211,87 @@ const routes = [
   {
     path: "/admin",
     name: "AdminMainView",
-    component: AdminMainView
+    component: AdminMainView,
   },
   {
     path: "*",
     name: "ErrorPage",
-    component: ErrorPage
-  }
+    component: ErrorPage,
+  },
 ];
 
 const router = new VueRouter({
   scrollBehavior() {
-    return { x: 0, y: 0 }
+    return { x: 0, y: 0 };
   },
   mode: "history",
   base: process.env.BASE_URL,
   routes,
 });
 
-
 // 인증 관련 필터링(로그인 토큰 기반)
-router.beforeEach(async (to, from, next) => { // 모든 라우터에 대해 입장하기 전에
-  const publicPages = ['SignUpView', 'Home', 'About', 'EmailAuthView', 'PrevRecipeList', 'RecipeListView', 'RecipeDetailView',
-                        'VersusHomeView', 'VersusDetailView', 'ClubListView', 'ClubOfflineListTypeView', 'ClubOnlineListTypeView'];
+router.beforeEach(async (to, from, next) => {
+  // 모든 라우터에 대해 입장하기 전에
+  const publicPages = [
+    "SignUpView",
+    "Home",
+    "About",
+    "EmailAuthView",
+    "PrevRecipeList",
+    "RecipeListView",
+    "RecipeDetailView",
+    "VersusHomeView",
+    "VersusDetailView",
+    "ClubListView",
+    "ClubOfflineListTypeView",
+    "ClubOnlineListTypeView",
+  ];
   // Login 안 해도 되는 페이지
 
-  const authPages = ['SignUpView', 'Home', 'EmailAuthView']; // Login 되어있으면 안되는 페이지
+  const authPages = ["SignUpView", "Home", "EmailAuthView"]; // Login 되어있으면 안되는 페이지
 
   const authRequired = !publicPages.includes(to.name); // 로그인 해야 됨
   const unauthRequired = authPages.includes(to.name); // 로그인 X여야 됨
 
-  const isLoggedIn = (cookies.get('auth-token') != null) ? true : false
+  const isLoggedIn = cookies.get("auth-token") != null ? true : false;
 
   if (authRequired && !isLoggedIn) {
-    alert('로그인이 필요합니다!');
-    next('/');
+    alert("로그인이 필요합니다!");
+    next("/");
   } else if (isLoggedIn) {
     axios
-    .get(SERVER.URL + SERVER.ROUTES.myPage, {
-      headers: {
-        Authorization: 'Bearer: ' + cookies.get('auth-token')
-      },
-    })
-    .then(res => {
-      if (res.status == 200) {
-        if (unauthRequired) {
-          if (to.name == 'Home') {
-            next();
+      .get(SERVER.URL + SERVER.ROUTES.myPage, {
+        headers: {
+          Authorization: "Bearer: " + cookies.get("auth-token"),
+        },
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          if (unauthRequired) {
+            if (to.name == "Home") {
+              next();
+            } else {
+              alert("로그인한 상태로 접근할 수 없습니다.");
+              next("/main");
+            }
           } else {
-            alert('로그인한 상태로 접근할 수 없습니다.');
-            next('/main');
+            next();
           }
-        } else {
-          next();
         }
-      }
-    })
-    .catch(err => {
-      if (err.response.status == 401) {
-        if (authRequired) {
-          alert('로그인이 필요합니다!');
-          next('/');
-        } else {
-          next();
+      })
+      .catch((err) => {
+        if (err.response.status == 401) {
+          if (authRequired) {
+            alert("로그인이 필요합니다!");
+            next("/");
+          } else {
+            next();
+          }
         }
-      }
-    })
+      });
   } else {
     next();
   }
-})
+});
 
 export default router;

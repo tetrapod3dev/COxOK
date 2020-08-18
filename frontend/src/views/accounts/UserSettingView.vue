@@ -41,18 +41,7 @@
         <div class="row">
           <!-- 회원 가입 form start -->
           <div class="col-lg-6 text-center ml-auto mr-auto col-md-8 update-user-form-group">
-            <input
-              type="text"
-              class="question"
-              id="user-email"
-              required
-              autocomplete="off"
-              v-model="user.email"
-              readonly
-            />
-            <label for="user-email">
-              <span>이메일</span>
-            </label>
+            <p class="title">회원정보</p>
             <b-form-input
               v-model="user.email"
               id="email"
@@ -117,13 +106,14 @@
           </div>
         </div>
         <div class="container">
+          <p class="title">선호 카테고리</p>
           <!-- 회원 가입 form start -->
           <div class="col-lg-8 mr-auto ml-auto col-md-10 row">
             <div
               v-for="foodCategory in foodCategories"
               :key="foodCategory.foodCategoryId"
               @click="checkCategory(foodCategory.foodCategoryId)"
-              class="col-2 text-left"
+              class="col-2 text-left text-nowrap"
             >
               <input
                 type="checkbox"
@@ -221,7 +211,6 @@ export default {
     ...mapActions(["logout"]),
     changeProfilePhoto(event) {
       const newProfilePhoto = event.target.files[0];
-      console.log(newProfilePhoto);
 
       let frm = new FormData();
       const self = this;
@@ -348,7 +337,6 @@ export default {
 .update-user-form-group .check-btn {
   margin: 0px 0px 10px;
 }
-
 button {
   position: relative;
   display: inline-block;
@@ -364,8 +352,8 @@ button.learn-more {
   color: #382b22;
   text-transform: uppercase;
   padding: 0.3em 1.5em;
-  background: #fff0f0;
-  border: 2px solid #b18597;
+  background: #f2efe4;
+  border: 2px solid #b69f81;
   border-left: 0;
   border-radius: 0;
   -webkit-transform-style: preserve-3d;
@@ -384,7 +372,7 @@ button.learn-more:first-child {
   border-top-left-radius: 0.75em;
   border-bottom-left-radius: 0.75em;
   padding-left: 2em;
-  border-left: 2px solid #b18597;
+  border-left: 2px solid #b69f81;
 }
 button.learn-more:last-child {
   border-top-right-radius: 0.75em;
@@ -400,9 +388,9 @@ button.learn-more::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #f9c4d2;
+  background: #f2d4ae;
   border-radius: inherit;
-  box-shadow: 0 0 0 2px #b18597, 0 0.625em 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.625em 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0.75em, -1em);
   transform: translate3d(0, 0.75em, -1em);
   -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
@@ -416,143 +404,23 @@ button.learn-more::before {
     -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
 }
 button.learn-more:hover {
-  background: #ffe9e9;
+  background: #f2efe4;
   -webkit-transform: translate(0, 0.25em);
   transform: translate(0, 0.25em);
 }
 button.learn-more:hover::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0.5em 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.5em 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0.5em, -1em);
   transform: translate3d(0, 0.5em, -1em);
 }
 button.learn-more:active {
-  background: #ffe9e9;
+  background: #f2efe4;
   -webkit-transform: translate(0em, 0.75em);
   transform: translate(0em, 0.75em);
 }
 button.learn-more:active::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0, -1em);
   transform: translate3d(0, 0, -1em);
-}
-
-input:focus {
-  outline: 0;
-}
-/* Question */
-
-textarea.question {
-  resize: none;
-}
-
-input.question,
-textarea.question {
-  font-size: 30px;
-  font-weight: 300;
-  border-radius: 2px;
-  margin: 0;
-  border: none;
-  width: 110%;
-  background: rgba(0, 0, 0, 0);
-  transition: padding-top 0.2s ease, margin-top 0.2s ease;
-  overflow-x: hidden; /* Hack to make "rows" attribute apply in Firefox. */
-}
-/* Underline and Placeholder */
-
-input.question + label,
-textarea.question + label {
-  display: block;
-  position: relative;
-  white-space: nowrap;
-  padding: 0;
-  margin: 0;
-  width: 10%;
-  border-top: 1px solid red;
-  -webkit-transition: width 0.4s ease;
-  transition: width 0.4s ease;
-  height: 0px;
-}
-
-input.question:focus + label,
-textarea.question:focus + label {
-  width: 110%;
-}
-
-input.question:focus,
-input.question:valid {
-  padding-top: 35px;
-}
-
-textarea.question:valid,
-textarea.question:focus {
-  margin-top: 35px;
-}
-
-input.question:focus + label > span,
-input.question:valid + label > span {
-  top: -100px;
-  font-size: 22px;
-  color: #333;
-}
-
-textarea.question:focus + label > span,
-textarea.question:valid + label > span {
-  top: -150px;
-  font-size: 22px;
-  color: #333;
-}
-
-input.question:valid + label,
-textarea.question:valid + label {
-  border-color: green;
-}
-
-input.question:invalid,
-textarea.question:invalid {
-  box-shadow: none;
-}
-
-input.question + label > span,
-textarea.question + label > span {
-  font-weight: 300;
-  margin: 0;
-  position: absolute;
-  color: #8f8f8f;
-  font-size: 48px;
-  top: -66px;
-  left: 0px;
-  z-index: 0;
-  -webkit-transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
-  transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
-}
-
-input[type="submit"] {
-  -webkit-transition: opacity 0.2s ease, background 0.2s ease;
-  transition: opacity 0.2s ease, background 0.2s ease;
-  display: block;
-  opacity: 0;
-  margin: 10px 0 0 0;
-  padding: 10px;
-  cursor: pointer;
-}
-
-input[type="submit"]:hover {
-  background: #eee;
-}
-
-input[type="submit"]:active {
-  background: #999;
-}
-
-@-webkit-keyframes appear {
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes appear {
-  100% {
-    opacity: 1;
-  }
 }
 </style>
