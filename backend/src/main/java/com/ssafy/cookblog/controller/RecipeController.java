@@ -206,18 +206,25 @@ public class RecipeController {
 	
 	@ApiOperation("레시피 수정 버튼 클릭 시 기존 정보 불러오기")
 	@GetMapping("/modifyInfo/{id}")
-	public Object modifyInfoRecipe(@PathVariable int id) {
+	public Object modifyInfoRecipe(@PathVariable int id, HttpServletRequest request) {
 		
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
 		RecipeResponseDto recipe = recipeService.getOneRecipe(id);
 		
+		String token = request.getHeader("Authorization");
+		String email = null;
+		long userId = -1;
+		
 		if(recipe != null) {
 			recipe.setRecipeId(id);
 			map.put("msg", "레시피 정보 조회 성공");
 			map.put("status", "success");
 			map.put("recipe", recipe);
+			email = jwtService.getEmailFromToken(token.substring(7));
+			userId = userService.userIdByEmail(email);
+			map.put("loginUserId", userId);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		} else {
 			map.put("msg", "레시피 정보 조회 실패");
