@@ -91,16 +91,6 @@
               :state="checkPassword"
             />
             <br />
-            <!-- <div class="textarea-container">
-              <p class="title">자기 소개</p>
-              <textarea
-                class="form-control"
-                rows="4"
-                cols="80"
-                v-model="user.detail"
-                placeholder="자기 소개"
-              ></textarea>
-            </div> -->
             <div class="versus-name">
               <p class="title">자기 소개</p>
               <label for="userDetail" class="inp">
@@ -439,6 +429,7 @@ button.learn-more:active::before {
 }
 
 .inp {
+  font-family: 'Katuri';
   position: relative;
   margin: auto;
   width: 100%;
