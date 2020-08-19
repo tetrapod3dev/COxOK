@@ -51,7 +51,7 @@
                         </div>
                         <div class="col-4 recipe-info">
                           <i class="far fa-star" v-b-popover.hover="'평점'"></i><br>
-                          {{ recipe.avgRating }}
+                          {{ avgRound(recipe.avgRating) }}
                         </div>
                         <div class="col-4 recipe-info">
                           <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
@@ -117,7 +117,7 @@
                         </div>
                         <div class="col-4 recipe-info">
                           <i class="far fa-star" v-b-popover.hover="'평점'"></i><br>
-                          {{ recipe.avgRating }}
+                          {{ avgRound(recipe.avgRating) }}
                         </div>
                         <div class="col-4 recipe-info">
                           <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
@@ -173,7 +173,7 @@
                         </div>
                         <div class="col-4 recipe-info">
                           <i class="far fa-star" v-b-popover.hover="'평점'"></i><br>
-                          {{ recipe.avgRating }}
+                          {{ avgRound(recipe.avgRating) }}
                         </div>
                         <div class="col-4 recipe-info">
                           <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
@@ -247,6 +247,9 @@ export default {
     }
   },
   methods: {
+    avgRound(avgRating){
+      return Math.round(avgRating * 100) / 100;
+    },
     imageSrc(recipePhoto) {
       return "http://i3a104.p.ssafy.io/img/" + recipePhoto;
     },
