@@ -155,7 +155,7 @@
       <div>
         <h3 class="text-left" style="float:left">재료 선택</h3>
         <div class="add-btn">
-          <n-button @click.native="showModal" type="secondary" round class="btn">
+          <n-button @click.native="showModal" type="primary" round class="btn">
             재료가 없어요!
           </n-button>
         </div>
@@ -185,24 +185,20 @@
         </div>
 
         <div class="row">
-          <div class="col-5">
+            <div class="col-3" />
+            <n-button @click.native.prevent="addIngredient" class="col-6" type="primary">
+              <i class="now-ui-icons ui-1_simple-add"></i>
+            </n-button>
           </div>
-          <div class="col-2" @click="addIngredient">
-          <n-button type="secondary" class="btn">
-            <i class="now-ui-icons ui-1_simple-add"></i>
-          </n-button>
-          </div>
-          <div class="col-3">
-            <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
-              <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
+          
+          <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
+            <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
 
-              <b-form-input v-model="newIngredient" placeholder="재료명을 적어주세요"></b-form-input>
-              <b-form-select v-model="newIngredientUnit" :options="units"></b-form-select>
+            <b-form-input v-model="newIngredient" placeholder="재료명을 적어주세요"></b-form-input>
+            <b-form-select v-model="newIngredientUnit" :options="units"></b-form-select>
 
-              <n-button type="danger" round block @click.native="sendData">제출</n-button>
-            </b-modal>
-          </div>
-        </div>
+            <n-button type="danger" round block @click.native="sendData">제출</n-button>
+          </b-modal>
       </div>
 
       <hr>
