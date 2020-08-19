@@ -58,7 +58,7 @@
               </p>
             </div>
             <!-- 레시피 -->
-            <div class="col-md-8 ml-auto mr-auto">
+            <div v-if="recipe.recipeId != 0" class="col-md-8 ml-auto mr-auto">
               <card type="profile">
                 <div slot="raw-content" class="row">
                   <div class="col-md-5">

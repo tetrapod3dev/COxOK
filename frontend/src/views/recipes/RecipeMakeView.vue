@@ -471,7 +471,7 @@ export default {
             .catch(() => {
               alert('레시피 등록에 성공했습니다.\n\n(관련 유튜브는 추후 추가해드리겠습니다.)')
             })
-          router.push({ name: "RecipeDetailView", params: { recipe_id: curRecipeId } });
+          router.push({ name: "PrevRecipeList" });
         })
         .catch((err) => {
           if (err.response.status == 401) {

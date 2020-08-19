@@ -235,6 +235,7 @@ export default {
       if (this.selectedRecipe) {
         this.blogPost.recipeId = this.selectedRecipe.recipeId;
       }
+      
       axios
         .post(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
         .then(() => {

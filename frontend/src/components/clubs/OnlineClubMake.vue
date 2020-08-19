@@ -191,7 +191,7 @@ export default {
           })
           .then((res) => {
             this.thumbnailSrc =
-              res.data.items[0].snippet.thumbnails.default.url;
+              res.data.items[0].snippet.thumbnails.medium.url;
           })
           .catch((err) => console.log(err.response));
       }

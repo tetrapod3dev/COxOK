@@ -284,7 +284,10 @@ export default {
       }
       if (this.selectedRecipe) {
         this.blogPost.recipeId = this.selectedRecipe.recipeId;
+      } else {
+        this.blogPost.recipeId = 0
       }
+
       axios
         .put(SERVER.URL + SERVER.ROUTES.blog, this.blogPost, configs)
         .then(() => {
