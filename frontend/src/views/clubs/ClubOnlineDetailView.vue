@@ -19,7 +19,23 @@
           </div>
         </div>
       </card>
+      
     </section>
+
+    <router-link
+      v-if="userId == author.id"
+      :to="{ name: 'ClubOnlineUpdateView', params: { club_id: online.onlineId } }"
+      style="height:1px;">
+      <div class="section online-view" style=" padding: 0;">
+        <div class="container">
+          <div class="button-container" style="height:1px;">
+            <button class="learn-more submit"><i class="far fa-edit"></i><p>수정</p></button>
+            <button class="learn-more" @click="deleteClub" style="margin-left: 20px;"><i class="fas fa-ban"></i><p>삭제</p></button>
+          </div>
+        </div>
+      </div>
+    </router-link>
+    
 
     <div class="container">
       <h3 class="meet-subtitle text-left col-12">[{{ online.type }}]</h3>
@@ -61,20 +77,6 @@
           </p>
         </div>
       </div>
-
-      <router-link
-      v-if="userId == author.id"
-      :to="{ name: 'ClubOnlineUpdateView', params: { club_id: online.onlineId } }"
-      >
-      <div class="section online-view">
-        <div class="container">
-          <div class="button-container">
-            <button class="learn-more submit">수정</button>
-            <button class="learn-more" @click="deleteClub" style="margin-left: 20px;">삭제</button>
-          </div>
-        </div>
-      </div>
-      </router-link>
 
     </div>
   </div>
@@ -258,91 +260,94 @@ export default {
   margin-bottom: 10px;
 }
 
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+}
 button.learn-more {
   font-weight: 600;
+  height: 60px;
   color: #382b22;
   text-transform: uppercase;
-  padding: 1.25em 2em;
-  background: #fff0f0;
-  border: 2px solid #b18597;
-  border-radius: 0.75em;
+  padding: 0.3em 1.5em;
+  background: #f2efe4;
+  border: 2px solid #b69f81;
+  border-left: 0;
+  border-radius: 0;
   -webkit-transform-style: preserve-3d;
-          transform-style: preserve-3d;
-  -webkit-transition: background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
-  transition: background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
-  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
-  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transform-style: preserve-3d;
+  -webkit-transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  bottom: 70px;
+  z-index: 2;
 }
-button.submit {
-  color: #382b22;
-  background: #D7FFF1;
-  border: 2px solid #77AF9C;
+button.learn-more:first-child {
+  border-top-left-radius: 0.75em;
+  border-bottom-left-radius: 0.75em;
+  padding-left: 2em;
+  border-left: 2px solid #b69f81;
 }
-
+button.learn-more:last-child {
+  border-top-right-radius: 0.75em;
+  border-bottom-right-radius: 0.75em;
+  padding-right: 2em;
+  right: 1.5em;
+}
 button.learn-more::before {
   position: absolute;
-  content: '';
+  content: "";
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: #f9c4d2;
+  background: #f2d4ae;
   border-radius: inherit;
-  box-shadow: 0 0 0 2px #b18597, 0 0.625em 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.625em 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0.75em, -1em);
-          transform: translate3d(0, 0.75em, -1em);
-  -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
-  transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
-  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
-  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transform: translate3d(0, 0.75em, -1em);
+  -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
 }
-
-button.submit::before {
-  background: #67D5B5;
-  box-shadow: 0 0 0 2px #77AF9C, 0 0.625em 0 0 #cff0da;
-}
-
-
 button.learn-more:hover {
-  background: #ffe9e9;
+  background: #f2efe4;
   -webkit-transform: translate(0, 0.25em);
-          transform: translate(0, 0.25em);
+  transform: translate(0, 0.25em);
 }
-
-button.submit:hover {
-  background: #D7FFF1;
-}
-
 button.learn-more:hover::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0.5em 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.5em 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0.5em, -1em);
-          transform: translate3d(0, 0.5em, -1em);
+  transform: translate3d(0, 0.5em, -1em);
 }
-
-button.submit:hover::before {
-  box-shadow: 0 0 0 2px #77AF9C, 0 0.5em 0 0 #cff0da;
-}
-
 button.learn-more:active {
-  background: #ffe9e9;
+  background: #f2efe4;
   -webkit-transform: translate(0em, 0.75em);
-          transform: translate(0em, 0.75em);
+  transform: translate(0em, 0.75em);
 }
-
-button.submit:active {
-  background: #D7FFF1;
-}
-
 button.learn-more:active::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0, -1em);
-          transform: translate3d(0, 0, -1em);
-}
-
-button.submit:active::before {
-  box-shadow: 0 0 0 2px #77AF9C, 0 0 #cff0da;
+  transform: translate3d(0, 0, -1em);
 }
 
 .join-btn-div, .live-div {

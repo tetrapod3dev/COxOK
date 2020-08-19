@@ -34,7 +34,7 @@
                 pill
                 variant="primary"
                 size="sm"
-              >인증</b-button>
+              >중복확인</b-button>
             </div>
             <p v-show="emailMessage" v-text="emailMessage" class="text-center"></p>
             <br />
@@ -57,7 +57,7 @@
                 pill
                 variant="primary"
                 size="sm"
-              >체크</b-button>
+              >중복확인</b-button>
             </div>
             <br />
             <!-- 비밀번호 input -->
