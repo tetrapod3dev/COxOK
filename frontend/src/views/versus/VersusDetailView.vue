@@ -1904,8 +1904,8 @@ p {
 }
 
 .select-num {
-    background-color:#fff0f0;
-    border:2px solid #b18597;
+    background-color:#f2efe4;
+    border:2px solid #b69f81;
     border-radius: 10px;
 }
 
