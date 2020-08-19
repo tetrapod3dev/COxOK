@@ -63,6 +63,7 @@
                 </div>
               </template>
             </b-form-tags>
+            <p>태그는 최대 3개까지 입력이 가능합니다.</p>
           </div>
         </div>
         <div class="row">

@@ -259,6 +259,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (authRequired && !isLoggedIn) {
     alert("로그인이 필요합니다!");
+    store.dispatch("logout")
     next("/");
   } else if (isLoggedIn) {
     axios
@@ -294,6 +295,10 @@ router.beforeEach(async (to, from, next) => {
       });
   } else {
     next()}
+
+  if (to.name == 'PrevRecipeList' && from.name == 'RecipeListView') {
+    router.go(-1)
+  }
 });
 
 export default router;

@@ -38,12 +38,8 @@
                     <div class="mt-auto mb-auto align-self-center">
                       <b-card-text class="recipe-card-text text-center">레시피를 작성해보세요</b-card-text>
 
-                      <router-link :to="{ name: 'PrevRecipeList' }">
-                        <b-card-text class="recipe-card-text text-center text-info">레시피 구경하기</b-card-text>
-                      </router-link>
-
-                      <router-link to="/blog/posts/make" tag="div">
-                        <b-card-text class="recipe-card-text text-center text-success">작성하러 가기</b-card-text>
+                      <router-link :to="{name: 'RecipeMakeView'}" tag="div">
+                        <b-card-text class="recipe-card-text text-center text-success custom-cursor mt-5">작성하러 가기</b-card-text>
                       </router-link>
                     </div>
                   </div>
@@ -69,12 +65,9 @@
                       <b-card-text class="recipe-card-text text-center">좋아하는 레시피를 추가해보세요</b-card-text>
 
                       <router-link :to="{ name: 'PrevRecipeList' }">
-                        <b-card-text class="recipe-card-text text-center text-info">레시피 구경하기</b-card-text>
+                        <b-card-text class="recipe-card-text text-center text-info custom-cursor mt-5">레시피 구경하기</b-card-text>
                       </router-link>
 
-                      <router-link to="/blog/posts/make" tag="div">
-                        <b-card-text class="recipe-card-text text-center text-success">작성하러 가기</b-card-text>
-                      </router-link>
                     </div>
                   </div>
                 </b-card>
@@ -160,4 +153,7 @@ export default {
 </script>
 
 <style scoped>
+.custom-cursor {
+  cursor: pointer;
+}
 </style>
