@@ -22,19 +22,19 @@
       
     </section>
 
-<router-link
+    <router-link
       v-if="userId == author.id"
       :to="{ name: 'ClubOnlineUpdateView', params: { club_id: online.onlineId } }"
-      >
-      <div class="section online-view">
+      style="height:1px;">
+      <div class="section online-view" style=" padding: 0;">
         <div class="container">
-          <div class="button-container">
+          <div class="button-container" style="height:1px;">
             <button class="learn-more submit"><i class="far fa-edit"></i><p>수정</p></button>
             <button class="learn-more" @click="deleteClub" style="margin-left: 20px;"><i class="fas fa-ban"></i><p>삭제</p></button>
           </div>
         </div>
       </div>
-      </router-link>
+    </router-link>
     
 
     <div class="container">
