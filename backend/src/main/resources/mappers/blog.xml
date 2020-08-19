@@ -82,10 +82,10 @@
 		insert into blog (user_id, recipe_id, title, content, tag1, tag2, tag3)
 		values (
 			#{userId}, 
-		<if test="recipeId==0">
+		<if test="recipeId==null">
 			null
 		</if>
-		<if test="recipeId!=0">
+		<if test="recipeId!=null">
 			#{recipeId}
 		</if>
 		, #{title}, #{content}, #{tag1}, #{tag2}, #{tag3})
@@ -93,8 +93,11 @@
 
 	<update id="update">
 		update blog set
-			<if test="recipeId!=0">
+			<if test="recipeId!=null">
 				recipe_id = #{recipeId},
+			</if>
+			<if test="recipeId==null">
+				recipe_id=null,
 			</if>
 			title=#{title},
 			content = #{content}, tag1=#{tag1}, tag2=#{tag2}, tag3=#{tag3}
