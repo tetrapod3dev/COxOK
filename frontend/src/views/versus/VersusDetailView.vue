@@ -7,11 +7,11 @@
       ></parallax>
 
       <div class="content-center">
-        <h1 class="title">요리대전</h1>
+        <h1 class="title">{{ title }}</h1>
       </div>
     </div>
 
-    <div class="section detail-versus">
+    <div class="section detail-versus pb-0">
       <div class="container">
         <div v-if="selectedMax == 0" class="button-container">
           <!-- <b-form-select class="btn btn-primary btn-round btn-lg" id="round"> -->
@@ -46,11 +46,11 @@
         </div>
       </div>
     </div>
-    <div v-if="selectedMax > 1" class="section container">
-      <h2 class="versus-title">{{ selectedMax }}강전</h2>
+    <div v-if="selectedMax > 1" class="section container p-0 mt-5">
+      <h2 class="versus-title p-0">{{ selectedMax }}강전</h2>
       <div class="row">
         <div v-for="recipe in nowRecipes" :key="recipe.id" class="versus-card col-6">
-          <card type="profile" style="width:465px;height:400px;">
+          <card type="profile" class="mx-auto" style="width:465px;height:400px;">
             <img
               :src="imageSrc(recipe.recipeThumbnailSrc)"
               @click="selectRecipe(recipe)"
@@ -215,6 +215,7 @@ export default {
   name: "VersusDetailView",
   data() {
     return {
+      title: "",
       total:0,
       TempMax: 4,
       selectedMax: 0,
@@ -237,6 +238,28 @@ export default {
     nowRecipes() {
       return this.recipes.slice(this.cur, this.cur + 2);
     },
+  },
+  created() {
+    // this.recipes = _.shuffle(this.recipes.slice(0, this.maxNow))
+    axios
+      .get(
+        SERVER.URL + SERVER.ROUTES.versusDetail + this.$route.params.versus_id
+      )
+      .then((res) => {
+        this.title = res.data.versus.title
+        this.recipes = res.data.versus.recipeList;
+        this.recipesAll = res.data.versus.recipeList;
+        const recipeLength = res.data.versus.recipeList.length;
+        while (this.TempMax <= recipeLength) {
+          this.possibleLength.push(this.TempMax);
+          this.TempMax *= 2;
+        }
+      })
+      .catch((err) => console.log(err));
+
+    // const recipeLength = this.recipes.length
+
+    // this.TempMax /= 2
   },
   methods: {
     selectRecipe(recipe) {
@@ -307,27 +330,6 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-  },
-  created() {
-    // this.recipes = _.shuffle(this.recipes.slice(0, this.maxNow))
-    axios
-      .get(
-        SERVER.URL + SERVER.ROUTES.versusDetail + this.$route.params.versus_id
-      )
-      .then((res) => {
-        this.recipes = res.data.versus.recipeList;
-        this.recipesAll = res.data.versus.recipeList;
-        const recipeLength = res.data.versus.recipeList.length;
-        while (this.TempMax <= recipeLength) {
-          this.possibleLength.push(this.TempMax);
-          this.TempMax *= 2;
-        }
-      })
-      .catch((err) => console.log(err));
-
-    // const recipeLength = this.recipes.length
-
-    // this.TempMax /= 2
   },
 };
 </script>

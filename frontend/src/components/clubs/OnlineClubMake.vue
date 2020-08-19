@@ -17,7 +17,6 @@
       </b-col>
       <b-col sm="6">
         <b-form-select v-model="type" @change="initData">
-          <b-form-select-option :value="null">선택</b-form-select-option>
           <b-form-select-option value="유튜브강의">유튜브강의</b-form-select-option>
           <b-form-select-option value="실시간강의">실시간강의</b-form-select-option>
         </b-form-select>
@@ -95,8 +94,8 @@ export default {
       title: null,
       content: null,
       date: null,
-      video: null,
-      link: null,
+      video: "",
+      link: "",
       thumbnailSrc: null,
       rawFile: null,
     };
@@ -129,19 +128,35 @@ export default {
     },
 
     preTest() {
-      let flag = true
-      if (this.video != null && !checkYoutube(this.video)) {
-        alert('올바르지 않은 유튜브 링크입니다.\n\n올바른 형식: https://youtu.be/[비디오 ID]')
-        flag = false
+
+      let problems = [];
+      if (this.title == null) { problems.push("제목") }
+      if (this.content == null) { problems.push("내용") }
+      if (this.fullTime == "") { problems.push("일자") }
+      if (this.type=="실시간강의") {
+        if (this.submitLink == "") { problems.push("링크") }
+        if (this.rawFile == null) { problems.push("썸네일") }
+      } else {      
+        if (this.submitVideo == "") { problems.push("비디오") }
       }
 
-      if (this.link != null && !checkMeeting(this.link)) {
-        alert('올바르지 않은 링크입니다!\n\n올바른 형식: https://[회의실 주소].my.webex.com/meet/[아이디]')
-        flag = false
-      }
-      
-      if (flag) {
-        this.sendData();
+      if (problems.length > 0) {
+        alert("필수 항목이 누락되었습니다!\n\n누락된 항목: " + problems)
+      } else {
+        let flag = true
+        if (this.video != "" && !checkYoutube(this.video)) {
+          alert('올바르지 않은 유튜브 링크입니다.\n\n올바른 형식: https://youtu.be/[비디오 ID]')
+          flag = false
+        }
+
+        if (this.link != "" && !checkMeeting(this.link)) {
+          alert('올바르지 않은 링크입니다!\n\n올바른 형식: https://[회의실 주소].my.webex.com/meet/[아이디]')
+          flag = false
+        }
+        
+        if (flag) {
+          this.sendData();
+        }
       }
     },
 

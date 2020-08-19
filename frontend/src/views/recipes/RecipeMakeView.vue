@@ -172,7 +172,7 @@
               </div>
               
               <div v-else class="col-3 m-0 row">
-                <fg-input type="number" v-model="selectedIngredient.amount" class="col-8 offset-1" />
+                <fg-input type="number" v-model="selectedIngredient.amount" min="0" class="col-8 offset-1" />
                 <p class="col-3">{{ selectedIngredient.unit }}</p>
               </div>
               <a @click="removeIngredient(index)">
@@ -285,13 +285,13 @@ export default {
   computed: {
     ...mapGetters(["config"]),
   },
-  mounted:function(){
-    window.onload(this.init),
-    window.addEventListener('resize', this.onResize)
-  },
   created() {
-    this.getCategory(),
+    this.getCategory();
     window.onload = this.init
+  },
+  mounted:function(){
+    window.onload(this.init);
+    window.addEventListener('resize', this.onResize)
   },
   methods: {
     ...mapActions(['logout']),
@@ -366,21 +366,11 @@ export default {
       if (photoFile.files.length == 0 || this.recipePreview === "https://www.sylff.org/wp-content/uploads/2016/04/noImage.jpg") {
         problems.push("레시피 썸네일");
       }
-      if (this.recipeName == null) {
-        problems.push("레시피 제목");
-      }
-      if (this.recipeDetail == null) {
-        problems.push("레시피 설명");
-      }
-      if (this.level == 0) {
-        problems.push("요리 난이도");
-      }
-      if (this.cookTime == null || this.cookTime < 0) {
-        problems.push("요리 소요 시간");
-      }
-      if (this.selectedCategories.length == 0) {
-        problems.push("카테고리");
-      }
+      if (this.recipeName == null) { problems.push("레시피 제목"); }
+      if (this.recipeDetail == null) { problems.push("레시피 설명"); }
+      if (this.level == 0) { problems.push("요리 난이도"); }
+      if (this.cookTime == null || this.cookTime < 0) { problems.push("요리 소요 시간"); }
+      if (this.selectedCategories.length == 0) { problems.push("카테고리");}
       this.selectedIngredients.forEach(function (selectedIngredient, index) {
         if (selectedIngredient.unit == null) {
           problems.push(index + 1 + "번째 재료");
@@ -391,6 +381,8 @@ export default {
           problems.push(index + 1 + "번째 재료의 양");
         }
       });
+
+      if (this.tempInputs.length == 0 ) { problems.push('상세 과정') }
 
       this.tempInputs.forEach(function (tempInput, index) {
         if (tempInput.rawFile == null) {
@@ -404,7 +396,7 @@ export default {
       if (problems.length == 0) {
         this.makeRecipe();
       } else {
-        alert("문제가 있는 위치: " + problems);
+        alert("필수 항목이 누락되었습니다!\n\n누락된 항목: " + problems);
       }
     },
     makeRecipe() {

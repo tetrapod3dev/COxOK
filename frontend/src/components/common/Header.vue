@@ -42,7 +42,7 @@
             <router-link class="dropdown-item" :to="{ name: 'BlogHomeView' }">
               <p>마이페이지</p>
             </router-link>
-            <a class="dropdown-item" @click="logout">로그아웃</a>
+            <a class="dropdown-item custom-cursor" @click="logout">로그아웃</a>
           </drop-down>
         </li>
         <li class="nav-item" v-if="!isLoggedIn">
@@ -123,4 +123,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-cursor {
+  cursor: pointer;
+}
+</style>

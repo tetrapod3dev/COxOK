@@ -58,6 +58,7 @@ export default {
     versusWin: "/versus/win/", // POST / 이긴 결과 보내기
     versusResult: "/versus/result/", // GET / 요리대전 결과 받아오기
     versusRank: "/versus/all/top3/", // GET / 요리대전 Top3
+    versusDelete: "/versus/delete/", // DELETE/ 요리대전 삭제
 
     // Club ROUTES
     clubRegister: "/meet/", // POST / 소모임 생성

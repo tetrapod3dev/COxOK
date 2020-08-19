@@ -6,6 +6,7 @@ import About from "../views/About.vue";
 import ErrorPage from "../views/ErrorPage.vue";
 
 import cookies from "vue-cookies"; // cookie 사용(토큰 저장)
+import { store } from '../store/index'
 import axios from "axios";
 import SERVER from "@/api/api";
 
@@ -283,7 +284,8 @@ router.beforeEach(async (to, from, next) => {
       .catch((err) => {
         if (err.response.status == 401) {
           if (authRequired) {
-            alert("로그인이 필요합니다!");
+            alert("로그인 정보가 만료되었습니다.");
+            store.dispatch("logout")
             next("/");
           } else {
             next();
@@ -291,8 +293,7 @@ router.beforeEach(async (to, from, next) => {
         }
       });
   } else {
-    next();
-  }
+    next()}
 });
 
 export default router;

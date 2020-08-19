@@ -9,7 +9,7 @@ import SERVER from "@/api/api";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+export const store = new Vuex.Store({
   state: {
     // authToken: localStorage.getItem("auth-token"),
     authToken: cookies.get('auth-token'),
@@ -35,7 +35,7 @@ export default new Vuex.Store({
     SET_TOKEN(state, token) {
       state.authToken = token;
       // localStorage.setItem("auth-token", token);
-      cookies.set('auth-token', token, 60 * 60 * 2)
+      cookies.set('auth-token', token, 60 * 60)
       // state의 authToken을 바꾸고, 이왕 한 김에 localStorage에서도 갱신
     },
     setSearchData(state, searchData) {
@@ -86,10 +86,9 @@ export default new Vuex.Store({
     },
 
     logout({ commit }) {
-      commit("SET_TOKEN", null);
-      // localStorage.removeItem("auth-token");
-      cookies.remove('auth-token')
       router.push({ name: "Home" });
+      commit("SET_TOKEN", null);
+      cookies.remove('auth-token')
     },
 
     changeSearchData({ commit }, searchData) {
@@ -98,8 +97,12 @@ export default new Vuex.Store({
 
     changeClubMainType({ commit }, mainType) {
       commit("setMainClubType", mainType)
-    }
+    },
+
   },
 
   modules: {},
 });
+
+
+export default store;

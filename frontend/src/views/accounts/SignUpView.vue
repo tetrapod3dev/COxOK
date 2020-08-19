@@ -79,11 +79,12 @@
               :state="checkPassword"
             />
             <div class="mt-5 row justify-content-center">
-              <b-button
-                pill
-                :class="isValid ? 'btn btn-danger' : 'btn'"
-                @click="isValid ? signup(signupData) : notChecked"
-              >회원 가입</b-button>
+              <b-button v-if="isValid" class="btn btn-danger" pill @click="signup(signupData)">
+                회원 가입
+              </b-button>
+              <b-button v-if="!isValid" class="btn" pill @click="notChecked">
+                회원 가입
+              </b-button>
             </div>
           </div>
           <!-- 회원 가입 form end -->

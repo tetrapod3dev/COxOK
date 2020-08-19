@@ -137,7 +137,12 @@ export default {
         }
       )
       .then((res) => {
-        this.online = res.data.online;
+        if (res.data.userId != res.data.online.userId) {
+          alert('올바르지 않은 접근입니다!!!!!')
+          this.$router.go(-1)
+        } else {
+          this.online = res.data.online;
+        }
       })
       .catch((err) => {
         if (err.response.status == 401) {

@@ -1,224 +1,245 @@
 <template>
-  <div class="container">
-    <div class="row mt-5">
-      <div class="col-4">
-        <img v-if="recipe.recipeThumbnail == undefined" :src="imageSrc(recipe.recipeThumbnailSrc)">
-        <img v-else :src="recipe.recipeThumbnailSrc">
-        <div class="filebox">
-          <input type="file" id="main-image" @change="changeThumbnail" hidden ref="thumbnailInput">
-          <label for="main-image">
-            <a @click="onClickThumbnailUpload" class="w-100">
-              <n-button type="primary" round block>메인 사진 변경</n-button>
-            </a>
-          </label>
-        </div>
-      </div>
-
-      <div class="col-8">
-        <div class="row">
-                <div class="col-12 detail-input">
-                  <input type="text" name="name" class="question" id="nme" required autocomplete="off" v-model="recipe.recipeName"/>
-                  <label for="nme"><span>레시피 제목</span></label>
-                  <br><br>
-                  <textarea name="message" rows="2" class="question" id="msg" required autocomplete="off" v-model="recipe.recipeDetail" ></textarea>
-                  <label for="msg"><span>레시피 내용</span></label>
-                </div>
-            </div>
+  <div class="wrapper">
+    <div class="page-header page-header-mini">
+      <parallax
+        class="page-header-image"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/cook.jpg') + '\')' }"
+      ></parallax>
+      <div class="content-center">
+        <h1>레시피 수정하기</h1>
       </div>
     </div>
 
-    <hr>
-    <br><br><br><br><br><br><br><br><br><br>
-
-    <div class="row">
-          <div class="col-12">
-          <div id="slider">
-    <div id="sliderContainer">
-        <div class="tick-slider">
-            <div class="tick-slider-header">
-                <h5><label for="weightSlider">난이도</label></h5>
-                <h5>level</h5>
-            </div>
-            <div class="tick-slider-value-container">
-                <div id="weightLabelMin" class="tick-slider-label">1</div>
-                <div id="weightLabelMax" class="tick-slider-label">5</div>
-                <div id="weightValue" class="tick-slider-value"></div>
-            </div>
-            <div class="tick-slider-background"></div>
-            <div id="weightProgress" class="tick-slider-progress"></div>
-            <div id="weightTicks" class="tick-slider-tick-container"></div>
-            <input
-                id="weightSlider"
-                class="tick-slider-input"
-                type="range"
-                min="1"
-                max="5"
-                step="1"
-                v-model="recipe.level"
-                data-tick-step="5"
-                data-tick-id="weightTicks"
-                data-value-id="weightValue"
-                data-progress-id="weightProgress"
-                data-handle-size="18"
-                data-min-label-id="weightLabelMin"
-                data-max-label-id="weightLabelMax"
-            />
+    <div class="section meet-button pb-0" >
+      <div class="container">
+        <div class="button-container">
+          <button class="learn-more" @click="submitUpdate">수정</button>
+          <button class="learn-more" @click="goBack">취소</button> 
         </div>
-        <div class="tick-slider">
-            <div class="tick-slider-header">
-                <h5><label for="sizeSlider">소요 시간</label></h5>
-                <h5>분</h5>
-            </div>
-            <div class="tick-slider-value-container">
-                <div id="sizeLabelMin" class="tick-slider-label">0</div>
-                <div id="sizeLabelMax" class="tick-slider-label">120</div>
-                <div id="sizeValue" class="tick-slider-value"></div>
-            </div>
-            <div class="tick-slider-background"></div>
-            <div id="sizeProgress" class="tick-slider-progress"></div>
-            <div id="sizeTicks" class="tick-slider-tick-container"></div>
-            <input
-                id="sizeSlider"
-                class="tick-slider-input"
-                type="range"
-                min="0"
-                max="120"
-                step="5"
-                v-model="recipe.cookTime"
-                data-tick-step="5"
-                data-tick-id="sizeTicks"
-                data-value-id="sizeValue"
-                data-progress-id="sizeProgress"
-                data-handle-size="18"
-                data-min-label-id="sizeLabelMin"
-                data-max-label-id="sizeLabelMax"
-            />
-        </div>
-    </div>
-</div>
-          </div>
-        </div>
-      <br><br><br><br><br><br><br><br><br><br>
-    <hr>
-
-    <h2 class="text-left">카테고리 선택</h2>
-    <div class="row">
-      <div
-        v-for="category in categories"
-        :key="category.foodCategoryId"
-        class="col-2 d-flex justify-content-start"
-      >
-        <p>
-          <input
-            type="checkbox"
-            class="mr-2"
-            v-model="checker[category.foodCategoryId]"
-            @click="selectCategory(category.foodCategoryId, category.foodCategoryName)"
-          />
-          {{ category['foodCategoryName']}}
-        </p>
       </div>
     </div>
 
-    <hr>
-
-    <div>
-          <h3 class="text-left" style="float:left">재료 선택</h3>
-          <div class="add-btn">
-            <n-button @click.native="showModal" type="secondary" round class="btn">
-                재료가 없어요!
-            </n-button>
-          </div>
-          <div class="ingredient-select">
-            <div class="row" v-for="(selectedIngredient, index) in recipe.ingredientList" :key="index" style="margin-left:280px;">
-              <b-form-input
-                :list="getIngredientDatalistId(index)"
-                :id="getIngredientInputId(index)"
-                v-model="selectedIngredient.name"
-                @change="test(selectedIngredient)"
-                class="col-3 text-center"
-                style="margin-top: 24px"
-              />
-              <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
-              <div v-if="selectedIngredient.unit == null" class="col-3" style="margin-top: 16px">
-                <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
-              </div>
-              
-              <div v-else class="col-3 m-0 row">
-                <fg-input type="number" v-model="selectedIngredient.amount" class="col-8 offset-1" />
-                <p class="col-3">{{ selectedIngredient.unit }}</p>
-              </div>
-              <a @click="removeIngredient(index)">
-                <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-4">
+          <img v-if="recipe.recipeThumbnail == undefined" :src="imageSrc(recipe.recipeThumbnailSrc)">
+          <img v-else :src="recipe.recipeThumbnailSrc">
+          <div class="filebox">
+            <input type="file" id="main-image" @change="changeThumbnail" hidden ref="thumbnailInput">
+            <label for="main-image">
+              <a @click="onClickThumbnailUpload" class="w-100">
+                <n-button type="primary" round block>메인 사진 변경</n-button>
               </a>
-            </div>
+            </label>
           </div>
+        </div>
 
+        <div class="col-8">
           <div class="row">
-            <div class="col-5">
-            </div>
-            <div class="col-2" @click="addIngredient">
-            <n-button type="secondary" class="btn">
-              <i class="now-ui-icons ui-1_simple-add"></i>
-            </n-button>
-            </div>
-            <div class="col-3">
-              <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
-                <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
-
-                <b-form-input v-model="newIngredient" placeholder="재료명을 적어주세요"></b-form-input>
-                <b-form-select v-model="newIngredientUnit" :options="units"></b-form-select>
-
-                <n-button type="danger" round block @click.native="sendData">제출</n-button>
-              </b-modal>
+            <div class="col-12 detail-input">
+              <input type="text" name="name" class="question" id="nme" required autocomplete="off" v-model="recipe.recipeName"/>
+              <label for="nme"><span>레시피 제목</span></label>
+              <br><br>
+              <textarea name="message" rows="2" class="question" id="msg" required autocomplete="off" v-model="recipe.recipeDetail" ></textarea>
+              <label for="msg"><span>레시피 내용</span></label>
             </div>
           </div>
         </div>
+      </div>
 
-    <hr>
+      <hr>
+      <br><br><br><br><br><br><br><br><br><br>
 
-    
-    <h2 class="text-left">상세 과정 입력</h2>
-
-    <div class="upload-image">
-      <draggable v-model="recipe.recipePhotoList" group="recipeDetail" @start="drag=true" @end="drag=false">
-        <div v-for="(recipePhoto, index) in recipe.recipePhotoList" :key="index" class="row my-3">
-
-          <div class="col-4 offset-1 row">
-            <img v-if="recipePhoto.rawFile" :src="recipePhoto.photoSrc" @click="clickTest(index)" >
-            <img v-else :src="imageSrc(recipePhoto.photoSrc)" @click="clickTest(index)" >
-            <input type="file" @change="changeFile(index, $event)" hidden ref="recipeDetail">
+      <div class="row">
+        <div class="col-12">
+          <div id="slider">
+            <div id="sliderContainer">
+              <div class="tick-slider">
+                <div class="tick-slider-header">
+                  <h5><label for="weightSlider">난이도</label></h5>
+                  <h5>level</h5>
+                </div>
+                <div class="tick-slider-value-container">
+                  <div id="weightLabelMin" class="tick-slider-label">1</div>
+                  <div id="weightLabelMax" class="tick-slider-label">5</div>
+                  <div id="weightValue" class="tick-slider-value"></div>
+                </div>
+                <div class="tick-slider-background"></div>
+                <div id="weightProgress" class="tick-slider-progress"></div>
+                <div id="weightTicks" class="tick-slider-tick-container"></div>
+                  <input
+                      id="weightSlider"
+                      class="tick-slider-input"
+                      type="range"
+                      min="1"
+                      max="5"
+                      step="1"
+                      v-model="recipe.level"
+                      data-tick-step="5"
+                      data-tick-id="weightTicks"
+                      data-value-id="weightValue"
+                      data-progress-id="weightProgress"
+                      data-handle-size="18"
+                      data-min-label-id="weightLabelMin"
+                      data-max-label-id="weightLabelMax"
+                  />
+              </div>
+              <div class="tick-slider">
+                <div class="tick-slider-header">
+                  <h5><label for="sizeSlider">소요 시간</label></h5>
+                  <h5>분</h5>
+                </div>
+                <div class="tick-slider-value-container">
+                  <div id="sizeLabelMin" class="tick-slider-label">0</div>
+                  <div id="sizeLabelMax" class="tick-slider-label">120</div>
+                  <div id="sizeValue" class="tick-slider-value"></div>
+                </div>
+                <div class="tick-slider-background"></div>
+                <div id="sizeProgress" class="tick-slider-progress"></div>
+                <div id="sizeTicks" class="tick-slider-tick-container"></div>
+                <input
+                    id="sizeSlider"
+                    class="tick-slider-input"
+                    type="range"
+                    min="0"
+                    max="120"
+                    step="5"
+                    v-model="recipe.cookTime"
+                    data-tick-step="5"
+                    data-tick-id="sizeTicks"
+                    data-value-id="sizeValue"
+                    data-progress-id="sizeProgress"
+                    data-handle-size="18"
+                    data-min-label-id="sizeLabelMin"
+                    data-max-label-id="sizeLabelMax"
+                />
+              </div>
+            </div>
           </div>
-
-          <textarea type="text" v-model="recipePhoto.photoDetail" class="col-5"></textarea>
-          <button class="btn btn-danger col-1" @click="removeRecipeDetail(index)">-</button>
         </div>
-      </draggable>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-3">
       </div>
-      <div class="input-group col-9">
-        <input
-          type="text"
-          class="form-control-file detail-image-upload"
-          placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
-          v-model="filename"
-          @dragover.prevent
-          @drop.prevent="onDrop"
-          multiple>
-        <div class="input-group-append col-1">
-          <span @click="onClickFile">
-            <i class="fa fa-cloud" />
-          </span>
-        </div>
-        <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
-      </div>
-    </div>
 
-    <hr class="my-5" />
-    <button class="btn btn-success" @click="submitUpdate">수정 완료</button>
+      <br><br><br><br><br><br><br><br><br><br>
+      <hr>
+
+      <h2 class="text-left">카테고리 선택</h2>
+      <div class="row">
+        <div
+          v-for="category in categories"
+          :key="category.foodCategoryId"
+          class="col-2 d-flex justify-content-start"
+        >
+          <p>
+            <input
+              type="checkbox"
+              class="mr-2"
+              v-model="checker[category.foodCategoryId]"
+              @click="selectCategory(category.foodCategoryId, category.foodCategoryName)"
+            />
+            {{ category['foodCategoryName']}}
+          </p>
+        </div>
+      </div>
+
+      <hr>
+
+      <div>
+        <h3 class="text-left" style="float:left">재료 선택</h3>
+        <div class="add-btn">
+          <n-button @click.native="showModal" type="secondary" round class="btn">
+            재료가 없어요!
+          </n-button>
+        </div>
+        <div class="ingredient-select">
+          <div class="row" v-for="(selectedIngredient, index) in recipe.ingredientList" :key="index" style="margin-left:280px;">
+            <b-form-input
+              :list="getIngredientDatalistId(index)"
+              :id="getIngredientInputId(index)"
+              v-model="selectedIngredient.name"
+              @change="test(selectedIngredient)"
+              class="col-3 text-center"
+              style="margin-top: 24px"
+            />
+            <b-form-datalist :id="getIngredientDatalistId(index)" :options="ingredientsName"></b-form-datalist>
+            <div v-if="selectedIngredient.unit == null" class="col-3" style="margin-top: 16px">
+              <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
+            </div>
+            
+            <div v-else class="col-3 m-0 row">
+              <fg-input type="number" v-model="selectedIngredient.amount" class="col-8 offset-1" />
+              <p class="col-3">{{ selectedIngredient.unit }}</p>
+            </div>
+            <a @click="removeIngredient(index)">
+              <b-button variant="danger" style="margin-top: 24px">재료 삭제</b-button>
+            </a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-5">
+          </div>
+          <div class="col-2" @click="addIngredient">
+          <n-button type="secondary" class="btn">
+            <i class="now-ui-icons ui-1_simple-add"></i>
+          </n-button>
+          </div>
+          <div class="col-3">
+            <b-modal hide-footer ref="ingredient-modal" title="재료 추가 요청">
+              <p class="my-4">추가할 재료명과 단위를 올려주세요!</p>
+
+              <b-form-input v-model="newIngredient" placeholder="재료명을 적어주세요"></b-form-input>
+              <b-form-select v-model="newIngredientUnit" :options="units"></b-form-select>
+
+              <n-button type="danger" round block @click.native="sendData">제출</n-button>
+            </b-modal>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      
+
+      <h3 class="text-left">상세 과정 입력</h3>
+
+      <div class="upload-image">
+        <draggable v-model="recipe.recipePhotoList" group="recipeDetail" @start="drag=true" @end="drag=false">
+          <div v-for="(recipePhoto, index) in recipe.recipePhotoList" :key="index" class="my-3 row">
+            <div class="col-10 row">
+              <img v-if="recipePhoto.rawFile" :src="recipePhoto.photoSrc" @click="clickTest(index)" class="col-3 offset-2" >
+              <img v-else :src="imageSrc(recipePhoto.photoSrc)" @click="clickTest(index)" class="col-3 offset-2" >
+              <input type="file" @change="changeFile(index, $event)" hidden ref="recipeDetail">
+
+              <textarea v-model="recipePhoto.photoDetail" rows="4" class="col-5 offset-1 border align-self-center" />
+            </div>
+            <button class="btn btn-danger col-1 align-self-start mt-5" @click="removeRecipeDetail(index)">-</button>
+          </div>
+        </draggable>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="input-group col-9">
+          <input
+            type="text"
+            class="form-control-file detail-image-upload"
+            placeholder="드래그 & 드랍하거나 오른쪽 버튼을 클릭하세요"
+            v-model="filename"
+            @dragover.prevent
+            @drop.prevent="onDrop"
+            multiple>
+          <div class="input-group-append col-1">
+            <span @click="onClickFile">
+              <i class="fa fa-cloud" />
+            </span>
+          </div>
+          <input hidden type=file class="file-input" ref="fileInput" multiple @change="onFileChange">
+        </div>
+      </div>
+
+      <hr class="my-5" />
+    </div>
   </div>
 </template>
 
@@ -280,7 +301,6 @@ export default {
           tempChecker[category.foodCategoryId] = false;
         }
       }); 
-
       return tempChecker;
     },
   },
@@ -290,39 +310,20 @@ export default {
     draggable,
   },
   created() {
-    axios
-      .get(
-        SERVER.URL +
-          SERVER.ROUTES.updateInfo +
-          this.$route.params.recipe_id,
-          {
-            headers: {
-              Authorization: this.config,
-            },
-          }
-        )
-      .then((res) => {
-        this.recipe = res.data.recipe
-        window.addEventListener('load', this.init);
-      })
-      .catch((err) => {
-        if (err.response.status == 401) {
-          alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-          this.logout()
-        }});
-
-    this.getCategory()
+    this.getUpdateInfo();
+    this.getCategory();
+  },
+  mounted() {
+    window.addEventListener('load', this.init);
+    window.addEventListener('resize', this.onResize)
   },
   methods: {
+    ...mapActions(['logout']),
     clickTest(index) {
       this.$refs.recipeDetail[index].click()
     },
-    ...mapActions(['logout']),
     onClickThumbnailUpload() {
       this.$refs.thumbnailInput.click();
-    },
-    recipeImageUpload(){
-      alert("test");
     },
     changeThumbnail(event) {
       const file = event.target.files[0]
@@ -334,6 +335,7 @@ export default {
       this.recipe.recipePhotoList[index].photoSrc = URL.createObjectURL(file)
       this.recipe.recipePhotoList[index].rawFile = file
     },
+
     getCategory() {
       axios
         .get(SERVER.URL + SERVER.ROUTES.goRegister, {
@@ -350,6 +352,33 @@ export default {
             ];
           });
           this.ingredientsName = Object.keys(this.ingredients);
+        })
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
+    },
+
+    getUpdateInfo() {
+      axios
+        .get(
+          SERVER.URL +
+            SERVER.ROUTES.updateInfo +
+            this.$route.params.recipe_id,
+            {
+              headers: {
+                Authorization: this.config,
+              },
+            }
+          )
+        .then((res) => {
+          this.recipe = res.data.recipe
+          if (res.data.recipe.userId != res.data.loginUserId) {
+            alert('올바르지 않은 접근입니다!!!')
+            this.$router.push({name: 'RecipeDetailView', recipe_id: res.data.recipe.recipeId})
+          }
+          window.addEventListener('load', this.init);
         })
         .catch((err) => {
           if (err.response.status == 401) {
@@ -409,9 +438,10 @@ export default {
     onFileChange(event) {
       this.onClickUpload(event.target.files)
     },
-    onClickUpload () {
+    onClickUpload (addingFiles) {
       const self = this
-      this.addingFiles.forEach(function(file) {
+      addingFiles.forEach(function(file) {
+        console.log(file)
         self.recipe.recipePhotoList.push(
           {'photoSrc': URL.createObjectURL(file), 'photoDetail': null, 'rawFile': file}
           )
@@ -476,6 +506,9 @@ export default {
           });
       }
     },
+    goBack() {
+      this.$router.go(-1)
+    },
     submitUpdate: async function() {
       await this.TestBtn()
       await this.TestTumbnail()
@@ -496,20 +529,64 @@ export default {
         level: this.recipe.level,
         cookTime: this.recipe.cookTime,
       }
-      axios.post(SERVER.URL + SERVER.ROUTES.recipeUpdate, body, 
-        {
-          headers: {
-            Authorization: this.config,
-          },
-        })
-        .then(() => {
-          this.$router.push({ name: "RecipeDetailView", params: { recipe_id: this.$route.params.recipe_id } });
-        })
-        .catch((err) => {
-          if (err.response.status == 401) {
-            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-            this.logout()
-          }});
+      let problems = [];
+      if (body.recipeThumbnail == "") {
+        problems.push("레시피 썸네일");
+      }
+      if (body.recipeName == "") {
+        problems.push("레시피 제목");
+      }
+      if (body.recipeDetail == "") {
+        problems.push("레시피 설명");
+      }
+      if (body.level == 0) {
+        problems.push("요리 난이도");
+      }
+      if (body.cookTime == null || body.cookTime < 0) {
+        problems.push("요리 소요 시간");
+      }
+      if (body.categories.length == 0) {
+        problems.push("카테고리");
+      }
+      body.ingredientPk.forEach(function (ingredient, index) {
+        if (body.ingredientPk[index] == null) {
+          problems.push(index + 1 + "번째 재료");
+        } else if (
+          body.ingredientAmount[index] == null ||
+          body.ingredientAmount[index] <= 0
+        ) {
+          problems.push(index + 1 + "번째 재료의 양");
+        }
+      });
+
+      if (body.description.length == 0 ) {
+        problems.push('상세 과정')
+      }
+
+      body.description.forEach(function (description, index) {
+        if (description == "" || description == null) {
+          problems.push(index + 1 + "번째 상세 과정의 설명");
+        }
+      });
+
+      if (problems.length != 0) {
+        alert("필수 항목이 누락되었습니다!\n\n누락된 항목: " + problems);
+      } else {
+        axios.post(SERVER.URL + SERVER.ROUTES.recipeUpdate, body, 
+          {
+            headers: {
+              Authorization: this.config,
+            },
+          })
+          .then(() => {
+            this.$router.push({ name: "RecipeDetailView", params: { recipe_id: this.$route.params.recipe_id } });
+          })
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }})
+      }
     },
     // 난이도, 소요시간
     init() {
@@ -652,15 +729,101 @@ export default {
       }
     }
   },
-  mounted:function(){
-    
-    window.addEventListener('load', this.init);
-    window.addEventListener('resize', this.onResize)
-  }
 }
 </script>
 
 <style scoped>
+
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+}
+button.learn-more {
+  font-weight: 600;
+  height: 60px;
+  color: #382b22;
+  text-transform: uppercase;
+  padding: 0.3em 1.5em;
+  background: #f2efe4;
+  border: 2px solid #b69f81;
+  border-left: 0;
+  border-radius: 0;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:first-child {
+  border-top-left-radius: 0.75em;
+  border-bottom-left-radius: 0.75em;
+  padding-left: 2em;
+  border-left: 2px solid #b69f81;
+}
+button.learn-more:last-child {
+  border-top-right-radius: 0.75em;
+  border-bottom-right-radius: 0.75em;
+  padding-right: 2em;
+}
+button.learn-more::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f2d4ae;
+  border-radius: inherit;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.625em 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0.75em, -1em);
+  transform: translate3d(0, 0.75em, -1em);
+  -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:hover {
+  background: #f2efe4;
+  -webkit-transform: translate(0, 0.25em);
+  transform: translate(0, 0.25em);
+}
+button.learn-more:hover::before {
+  box-shadow: 0 0 0 2px #b69f81, 0 0.5em 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0.5em, -1em);
+  transform: translate3d(0, 0.5em, -1em);
+}
+button.learn-more:active {
+  background: #f2efe4;
+  -webkit-transform: translate(0em, 0.75em);
+  transform: translate(0em, 0.75em);
+}
+button.learn-more:active::before {
+  box-shadow: 0 0 0 2px #b69f81, 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0, -1em);
+  transform: translate3d(0, 0, -1em);
+}
+
+.meet-button .button-container {
+  margin-top: -162px;
+}
 
 .detail-image-upload{
   text-align: center;

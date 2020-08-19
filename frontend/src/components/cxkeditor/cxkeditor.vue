@@ -281,12 +281,14 @@ export default {
       let cxkContent = document.getElementById("__cxk__content");
       let imgElements = cxkContent.querySelector("img");
 
-      imgElements.addEventListener("click", (event) => {
-        this.showImgModal();
-        this.cxkSelectImageElement = event.target;
-        this.cxkSelectImageStyle.width = event.target.width;
-        this.cxkSelectImageStyle.height = event.target.height;
-      });
+      if (imgElements != null) {
+        imgElements.addEventListener("click", (event) => {
+          this.showImgModal();
+          this.cxkSelectImageElement = event.target;
+          this.cxkSelectImageStyle.width = event.target.width;
+          this.cxkSelectImageStyle.height = event.target.height;
+        });
+      }
     },
     showImgModal() {
       this.$refs["__cxk__img-model"].show();

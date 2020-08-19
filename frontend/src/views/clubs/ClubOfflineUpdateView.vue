@@ -301,26 +301,32 @@ export default {
         .get(
           SERVER.URL + SERVER.ROUTES.clubDetail + this.$route.params.club_id, configs)
         .then((res) => {
-          this.user = res.data.userId;
-          this.meet = res.data.meet;
-          this.isIn =
-            res.data.meet.meetJoinList
-              .map((user) => user.userId)
-              .indexOf(res.data.userId) >= 0
-              ? true
-              : false;
+          if (res.data.userId != res.data.meet.userId) {
+            alert('올바르지 않은 접근입니다!!!!!')
+            this.$router.go(-1)
+          } else {
 
-          if (res.data.meet.recipeId) {
-            axios
-              .get(SERVER.URL + SERVER.ROUTES.recipeDetail + res.data.meet.recipeId, configs)
-              .then((res) => {
-                this.selectedRecipe = res.data.recipe;
-              })
-              .catch((err) => {
-                if (err.response.status == 401) {
-                  alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-                  this.logout()
-                }});
+            this.user = res.data.userId;
+            this.meet = res.data.meet;
+            this.isIn =
+              res.data.meet.meetJoinList
+                .map((user) => user.userId)
+                .indexOf(res.data.userId) >= 0
+                ? true
+                : false;
+
+            if (res.data.meet.recipeId) {
+              axios
+                .get(SERVER.URL + SERVER.ROUTES.recipeDetail + res.data.meet.recipeId, configs)
+                .then((res) => {
+                  this.selectedRecipe = res.data.recipe;
+                })
+                .catch((err) => {
+                  if (err.response.status == 401) {
+                    alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+                    this.logout()
+                  }});
+            }
           }
 
           var container = document.getElementById("map");

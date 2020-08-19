@@ -37,10 +37,7 @@ export default {
   },
   methods: {
     deleteComment(reviewId) {
-      let response = confirm('정말요???')
-      if (response) {
-        this.$emit('deleteReview', reviewId)
-      }
+      this.$emit('deleteReview', reviewId)
     },
     updateComment(review) {
       this.$emit('modifyMod', review)

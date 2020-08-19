@@ -1,18 +1,28 @@
 <template>
   <div class="wrapper">
-    <section id="top">
-      <card type="background" :style="{ backgroundImage: 'url(\'' + require('@/assets/cook.jpg') + '\')' }" >
-        <div class="card-title text-left">
-          <h1 style="">{{ recipe.recipeName }}</h1>
+    <div class="page-header page-header-mini header-filter" filter-color="black">
+      <!-- 배너 배경 사진 -->
+      <parallax
+        class="page-header-image"
+        :style="{ backgroundImage: 'url(\'' + require('@/assets/cook.jpg') + '\')' }"
+      ></parallax>
+      <div>
+        <h1 class="recipe-name">{{ recipe.recipeName }}</h1>
+        <div class="stats">
+          <i class="fas fa-edit"></i>
+          {{ recipe.nickname }}
         </div>
-        <div class="card-footer text-left">
-          <div class="stats">
-            <i class="fas fa-edit"></i>
-            {{ recipe.nickname }}
-          </div>
+      </div>
+    </div>
+    
+    <div v-if="loginUserId == recipe.userId" class="section meet-button pb-0" >
+      <div class="container">
+        <div class="button-container">
+          <button class="learn-more" @click="updateRecipe">수정</button>
+          <button class="learn-more" @click="deleteRecipe">삭제</button> 
         </div>
-      </card>
-    </section>
+      </div>
+    </div>
 
     <div id="idx-btn" class="row mt-5 text-left"> 
       <h4><i class="far fa-list-alt ml-3 mr-2"></i>목차</h4>
@@ -152,12 +162,7 @@
         </div>
       </div>
     </div>
-    <div v-if="loginUserId == recipe.userId">
-      <router-link :to="{ name: 'RecipeUpdateView', params: { recipe_id: recipe.recipeId } }">
-        <button class="btn btn-primary">수정</button>
-      </router-link>
-      <button class="btn btn-primary" @click="deleteRecipe">삭제</button>
-    </div>
+
     <div class="section section-comments" id="reviewInfo" >
       <div class="container">
         <div class="row">
@@ -364,6 +369,9 @@ export default {
       } else {
         this.likeRecipe();
       }
+    },
+    updateRecipe() {
+      this.$router.push({ name: 'RecipeUpdateView', params: { recipe_id: this.recipe.recipeId } })
     },
     deleteRecipe() {
       let response = confirm('정말 레시피를 삭제하시겠습니까?')
@@ -609,6 +617,98 @@ export default {
 </script>
 
 <style scoped>
+
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+}
+button.learn-more {
+  font-weight: 600;
+  height: 60px;
+  color: #382b22;
+  text-transform: uppercase;
+  padding: 0.3em 1.5em;
+  background: #f2efe4;
+  border: 2px solid #b69f81;
+  border-left: 0;
+  border-radius: 0;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:first-child {
+  border-top-left-radius: 0.75em;
+  border-bottom-left-radius: 0.75em;
+  padding-left: 2em;
+  border-left: 2px solid #b69f81;
+}
+button.learn-more:last-child {
+  border-top-right-radius: 0.75em;
+  border-bottom-right-radius: 0.75em;
+  padding-right: 2em;
+}
+button.learn-more::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f2d4ae;
+  border-radius: inherit;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.625em 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0.75em, -1em);
+  transform: translate3d(0, 0.75em, -1em);
+  -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:hover {
+  background: #f2efe4;
+  -webkit-transform: translate(0, 0.25em);
+  transform: translate(0, 0.25em);
+}
+button.learn-more:hover::before {
+  box-shadow: 0 0 0 2px #b69f81, 0 0.5em 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0.5em, -1em);
+  transform: translate3d(0, 0.5em, -1em);
+}
+button.learn-more:active {
+  background: #f2efe4;
+  -webkit-transform: translate(0em, 0.75em);
+  transform: translate(0em, 0.75em);
+}
+button.learn-more:active::before {
+  box-shadow: 0 0 0 2px #b69f81, 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0, -1em);
+  transform: translate3d(0, 0, -1em);
+}
+
+.meet-button .button-container {
+  margin-top: -112px;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 .top {
   background-color: gainsboro;
@@ -616,6 +716,10 @@ export default {
 
 .wrapper {
   font-family: 'Nanum Gothic', sans-serif;
+}
+
+.recipe-name {
+  margin-top: 100px;
 }
 
 #idx-btn {

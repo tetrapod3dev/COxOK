@@ -155,7 +155,7 @@
         </div>
         <div v-else>
           <b-col sm="12">
-            <img class="img img-raised mb-5" :src="getThumbnail()" style="height:200px; margin-right:20px;"/>
+            <img v-if="clubPost.selectedRecipe.recipeId != null" class="img img-raised mb-5" :src="getThumbnail()" style="height:200px; margin-right:20px;"/>
             <p>{{clubPost.selectedRecipe.recipeName}}</p>
           </b-col>
         </div>
@@ -212,7 +212,9 @@ export default {
         detailAdress: null,
         latitude: null,
         longitude: null,
-        selectedRecipe: null,
+        selectedRecipe: {
+          recipdId: null
+        },
         meetPhoto: null,
         joinLimit: null,
         price: null,
@@ -385,26 +387,41 @@ export default {
       frm.append("recipeId", this.clubPost.selectedRecipe.recipeId);
       frm.append("type", this.clubPost.type);
 
-      let configs = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: this.config,
-        },
-      };
+      let problems = [];
+      if (this.fullAddress == null) {problems.push("주소")}
+      if (this.clubPost.title == null) {problems.push("제목")}
+      if (this.clubPost.content == null) {problems.push("내용")}
+      if (this.fullTime == "") {problems.push("일자")}
+      if (this.clubPost.joinLimit == null) {problems.push("참가자 수")}
+      if (this.clubPost.meetPhoto == null) {problems.push("코옥 썸네일")}
+      if (this.clubPost.price == null) {problems.push("참가비")}
+      if (this.clubPost.selectedRecipe.recipeId == undefined) {problems.push("레시피")}
+      if (this.clubPost.type == null) {problems.push("유형")}
 
-      axios
-        .post(SERVER.URL + SERVER.ROUTES.clubRegister, frm, configs)
-        .then((res) => {
-          if (res.status == 200) {
-            alert("작성에 성공했습니다!");
-            this.$router.push({ name: "ClubListView", params: { pageNum: 1 } });
-          }
-        })
-        .catch((err) => {
-          if (err.response.status == 401) {
-            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-            this.logout()
-          }});
+      if (problems.length > 0) {
+        alert("필수 항목이 누락되었습니다!\n\n누락된 항목: " + problems)
+      } else {
+        let configs = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: this.config,
+          },
+        };
+
+        axios
+          .post(SERVER.URL + SERVER.ROUTES.clubRegister, frm, configs)
+          .then((res) => {
+            if (res.status == 200) {
+              alert("작성에 성공했습니다!");
+              this.$router.push({ name: "ClubListView", params: { pageNum: 1 } });
+            }
+          })
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
+      }
     },
 
     changeSelectorShow() {
