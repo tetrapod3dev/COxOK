@@ -36,7 +36,7 @@
 
 ## :closed_book: 프로젝트 주재료
 
-![Tech_Stack](frontend/assets/web_stack.png)
+![Tech_Stack](README.assets/web_stack.png)
 
 
 
