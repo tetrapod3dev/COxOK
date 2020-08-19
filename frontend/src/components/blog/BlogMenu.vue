@@ -25,7 +25,7 @@
       :to="{ name: 'BlogCalendarView', params: { pageNum: 1 } }"
       class="learn-more Katuri"
     >
-      <i class="fas fa-people-arrows"></i>
+      <img src="@/assets/icons/자산2.svg" style="height:16px;">
       <p class="d-none d-sm-block">코~옥</p>
     </router-link>
     <router-link tag="button" :to="{ name: 'UserSettingView' }" class="learn-more Katuri">

@@ -27,13 +27,14 @@
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'ClubListView', params: {pageNum: 1} }">
-            <i class="now-ui-icons users_circle-08"></i>
-            <p>코옥하기</p>
+            <img src="@/assets/icons/자산1.svg" style="height:16px;">
+            <!-- <i class="now-ui-icons users_circle-08"></i> -->
+            <p style="padding-left: 5px;">코옥하기</p>
           </router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'VersusHomeView' }">
-            <i class="now-ui-icons users_circle-08"></i>
+            <i class="now-ui-icons sport_trophy"></i>
             <p>대결하기</p>
           </router-link>
         </li>

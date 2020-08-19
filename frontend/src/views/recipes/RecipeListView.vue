@@ -14,8 +14,8 @@
     <div class="section meet-button pb-0" >
       <div class="container">
         <div class="button-container">
-          <button class="learn-more" @click="changeShow">검색</button> 
-          <button v-if="isLoggedIn" class="learn-more" @click="moveMake">작성</button>
+          <button class="learn-more" @click="changeShow"><i class="fas fa-search"></i><p>검색</p></button> 
+          <button v-if="isLoggedIn" class="learn-more" @click="moveMake"><i class="far fa-edit"></i> <p>작성</p></button>
         </div>
       </div>
     </div>

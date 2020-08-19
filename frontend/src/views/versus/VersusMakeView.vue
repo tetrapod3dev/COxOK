@@ -25,8 +25,8 @@
     <div class="section make-versus">
       <div class="container">
         <div class="button-container">
-          <button class="learn-more submit" @click="submitVersus">등록</button>
-          <button class="learn-more" @click="goBackPage">취소</button>
+          <button class="learn-more submit" @click="submitVersus"><i class="far fa-check-circle"></i><p>등록</p></button>
+          <button class="learn-more" @click="goBackPage"><i class="fas fa-ban"></i><p>취소</p></button>
           <!-- <button class="btn btn-primary btn-round btn-lg" @click="submitVersus">등록</button>
           <button class="btn btn-danger btn-round btn-lg" @click="goBackPage">취소</button> -->
         </div>
@@ -708,7 +708,7 @@ button.learn-more:active::before {
   transform: translate3d(0, 0, -1em);
 }
   
-button.submit {
+/* button.submit {
   color: #382b22;
   background: #D7FFF1;
   border: 2px solid #77AF9C;
@@ -738,7 +738,7 @@ button.submit:active {
 
 button.submit:active::before {
   box-shadow: 0 0 0 2px #77AF9C, 0 0 #cff0da;
-}
+} */
 
 
 
