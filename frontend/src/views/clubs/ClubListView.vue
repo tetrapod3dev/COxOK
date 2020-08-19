@@ -14,9 +14,9 @@
     <div class="section meet-button pb-0" >
       <div class="container">
         <div class="button-container">
-          <button class="learn-more" @click="changeMainType('오프라인')">오프라인</button>
-          <button v-if="isLoggedIn" class="learn-more" @click="makeClub">코~옥 만들기</button> 
-          <button class="learn-more" @click="changeMainType('온라인')">온라인</button> 
+          <button class="learn-more" @click="changeMainType('오프라인')"><i class="fas fa-users"></i><p>오프라인</p></button>
+          <button v-if="isLoggedIn" class="learn-more" @click="makeClub"><i class="far fa-edit"></i><p>코~옥 만들기</p></button> 
+          <button class="learn-more" @click="changeMainType('온라인')"><i class="fas fa-wifi"></i><p>온라인</p></button> 
         </div>
       </div>
     </div>

@@ -26,7 +26,7 @@
               :value="length"
             >{{length}}강</b-form-select-option>
           </b-form-select>
-          <button class="learn-more" @click="submitRound">코~옥</button>
+          <button class="learn-more" @click="submitRound"><i class="far fa-hand-pointer"></i><p>코~옥</p></button>
           <!-- <button class="btn btn-primary btn-round btn-lg" @click="submitRound">코~옥</button> -->
         </div>
       </div>
@@ -1924,8 +1924,8 @@ button.learn-more {
   color: #382b22;
   text-transform: uppercase;
   padding: 1.25em 2em;
-  background: #fff0f0;
-  border: 2px solid #b18597;
+  background: #f2efe4;
+  border: 2px solid #b69f81;
   border-radius: 0.75em;
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -1933,6 +1933,7 @@ button.learn-more {
   transition: background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  height: 80px;
 }
 button.learn-more::before {
   position: absolute;
@@ -1943,9 +1944,9 @@ button.learn-more::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #f9c4d2;
+  background: #f2d4ae;
   border-radius: inherit;
-  box-shadow: 0 0 0 2px #b18597, 0 0.625em 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.625em 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0.75em, -1em);
           transform: translate3d(0, 0.75em, -1em);
   -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
@@ -1954,22 +1955,22 @@ button.learn-more::before {
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
 }
 button.learn-more:hover {
-  background: #ffe9e9;
+  background: #f2efe4;
   -webkit-transform: translate(0, 0.25em);
           transform: translate(0, 0.25em);
 }
 button.learn-more:hover::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0.5em 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.5em 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0.5em, -1em);
           transform: translate3d(0, 0.5em, -1em);
 }
 button.learn-more:active {
-  background: #ffe9e9;
+  background: #f2efe4;
   -webkit-transform: translate(0em, 0.75em);
           transform: translate(0em, 0.75em);
 }
 button.learn-more:active::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0, -1em);
           transform: translate3d(0, 0, -1em);
 }
