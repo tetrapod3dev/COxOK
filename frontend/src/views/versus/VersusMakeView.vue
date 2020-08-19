@@ -14,11 +14,7 @@
     <div id="idx-btn" class="row mt-5 text-left Katuri"> 
       <h4><i class="fas fa-utensils ml-1 mr-2"></i>선택된 레시피</h4>
       <div>
-        <span class="idx-obj ml-5">{{selectedRecipes.length}}개 / 16개
-          <span v-if="selectedRecipes.length != 16">
-            <i class="fas fa-exclamation-triangle fa-2x" style="color: red;" id="insufficient" v-b-tooltip.hover.bottom="'16개 선택해야 합니다!'" />
-          </span>
-        </span>
+        <span class="idx-obj ml-5">{{selectedRecipes.length}}개 / 16개</span>
       </div>
     </div>
 
@@ -27,8 +23,6 @@
         <div class="button-container">
           <button class="learn-more submit" @click="submitVersus"><i class="far fa-check-circle"></i><p>등록</p></button>
           <button class="learn-more" @click="goBackPage"><i class="fas fa-ban"></i><p>취소</p></button>
-          <!-- <button class="btn btn-primary btn-round btn-lg" @click="submitVersus">등록</button>
-          <button class="btn btn-danger btn-round btn-lg" @click="goBackPage">취소</button> -->
         </div>
       </div>
     </div>
