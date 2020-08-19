@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/versus.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/versus.jpg)' }"
       ></parallax>
 
       <div class="content-center">
@@ -14,7 +14,7 @@
     <div id="idx-btn" class="row mt-5 text-left Katuri"> 
       <h4><i class="fas fa-utensils ml-1 mr-2"></i>선택된 레시피</h4>
       <div>
-        <span class="idx-obj ml-5">{{selectedRecipes.length}}개 
+        <span class="idx-obj ml-5">{{selectedRecipes.length}}개 / 16개
           <span v-if="selectedRecipes.length != 16">
             <i class="fas fa-exclamation-triangle fa-2x" style="color: red;" id="insufficient" v-b-tooltip.hover.bottom="'16개 선택해야 합니다!'" />
           </span>
@@ -25,8 +25,8 @@
     <div class="section make-versus">
       <div class="container">
         <div class="button-container">
-          <button class="learn-more submit" @click="submitVersus">등록</button>
-          <button class="learn-more" @click="goBackPage">취소</button>
+          <button class="learn-more submit" @click="submitVersus"><i class="far fa-check-circle"></i><p>등록</p></button>
+          <button class="learn-more" @click="goBackPage"><i class="fas fa-ban"></i><p>취소</p></button>
           <!-- <button class="btn btn-primary btn-round btn-lg" @click="submitVersus">등록</button>
           <button class="btn btn-danger btn-round btn-lg" @click="goBackPage">취소</button> -->
         </div>
@@ -378,22 +378,25 @@ export default {
         content: this.versusContent,
         recipeIdList: this.selectedRecipesId,
       };
-
-      axios
-        .post(SERVER.URL + SERVER.ROUTES.versusRegister, versusData, {
-          headers: {
-            Authorization: this.config,
-          },
-        })
-        .then(() => {
-          alert('작성에 성공했습니다!')
-          this.$router.push({ name: "VersusHomeView" });
-        })
-        .catch((err) => {
-          if (err.response.status == 401) {
-            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
-            this.logout()
-          }});
+      if (this.selectedRecipes.length != 16) {
+        alert('16개의 레시피를 선택해주세요!')
+      } else {
+        axios
+          .post(SERVER.URL + SERVER.ROUTES.versusRegister, versusData, {
+            headers: {
+              Authorization: this.config,
+            },
+          })
+          .then(() => {
+            alert('작성에 성공했습니다!')
+            this.$router.push({ name: "VersusHomeView" });
+          })
+          .catch((err) => {
+            if (err.response.status == 401) {
+              alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+              this.logout()
+            }});
+      }
     },
     goBackPage() {
       this.$router.go(-1);
@@ -705,7 +708,7 @@ button.learn-more:active::before {
   transform: translate3d(0, 0, -1em);
 }
   
-button.submit {
+/* button.submit {
   color: #382b22;
   background: #D7FFF1;
   border: 2px solid #77AF9C;
@@ -735,7 +738,7 @@ button.submit:active {
 
 button.submit:active::before {
   box-shadow: 0 0 0 2px #77AF9C, 0 0 #cff0da;
-}
+} */
 
 
 

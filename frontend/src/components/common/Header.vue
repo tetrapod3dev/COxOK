@@ -9,7 +9,7 @@
     >
       <template>
         <router-link class="navbar-brand" :to="isLoggedIn ? '/main' : '/'">
-          <img src="http://i3a104.p.ssafy.io/CO_OK-logo.png" width="40px" />
+          <img src="http://i3a104.p.ssafy.io/logo/CO_OK-logo.png" width="40px" />
         </router-link>
       </template>
       <template slot="navbar-menu">
@@ -27,13 +27,14 @@
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'ClubListView', params: {pageNum: 1} }">
-            <i class="now-ui-icons users_circle-08"></i>
-            <p>코옥하기</p>
+            <img src="@/assets/icons/자산1.svg" style="height:16px;">
+            <!-- <i class="now-ui-icons users_circle-08"></i> -->
+            <p style="padding-left: 5px;">코옥하기</p>
           </router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'VersusHomeView' }">
-            <i class="now-ui-icons users_circle-08"></i>
+            <i class="now-ui-icons sport_trophy"></i>
             <p>대결하기</p>
           </router-link>
         </li>
@@ -42,7 +43,7 @@
             <router-link class="dropdown-item" :to="{ name: 'BlogHomeView' }">
               <p>마이페이지</p>
             </router-link>
-            <a class="dropdown-item" @click="logout">로그아웃</a>
+            <a class="dropdown-item custom-cursor" @click="logout">로그아웃</a>
           </drop-down>
         </li>
         <li class="nav-item" v-if="!isLoggedIn">
@@ -123,4 +124,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-cursor {
+  cursor: pointer;
+}
+</style>

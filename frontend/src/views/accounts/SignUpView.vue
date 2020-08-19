@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/mypage.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/mypage.jpg)' }"
       ></parallax>
       <div class="content-center">
         <h1>회원가입</h1>
@@ -79,11 +79,12 @@
               :state="checkPassword"
             />
             <div class="mt-5 row justify-content-center">
-              <b-button
-                pill
-                :class="isValid ? 'btn btn-danger' : 'btn'"
-                @click="isValid ? signup(signupData) : notChecked"
-              >회원 가입</b-button>
+              <b-button v-if="isValid" class="btn btn-danger" pill @click="signup(signupData)">
+                회원 가입
+              </b-button>
+              <b-button v-if="!isValid" class="btn" pill @click="notChecked">
+                회원 가입
+              </b-button>
             </div>
           </div>
           <!-- 회원 가입 form end -->

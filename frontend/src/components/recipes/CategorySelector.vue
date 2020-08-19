@@ -1,7 +1,7 @@
 <template>
   <div class="search-form">
-    <div class="row px-5 ml-auto">
-      <div class="col-12 col-md-6 row">
+    <div class="row px-0 ml-auto">
+      <div class="col-12 col-lg-6 row">
         <div v-for="(categoryGroup, index) in categoryGroups" :key="index" class="col-4">
           <div
             v-for="category in categoryGroup"
@@ -10,7 +10,7 @@
           >
             <b-form-checkbox
               v-model="checker[category.category_id]"
-              class="mt-1"
+              class="mt-1 text-nowrap"
               @click.native.prevent="selectCategory(category.category_id)"
             >
               {{ category['category_name']}}

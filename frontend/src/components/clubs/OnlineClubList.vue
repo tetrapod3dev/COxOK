@@ -7,13 +7,13 @@
       </router-link>
 
       <div class="row">
-        <div class="prev-button col-1 mb-auto mt-auto" @click="moveYoutubePrev">
+        <div class="prev-button col-1 mb-auto mt-auto custom-cursor" @click="moveYoutubePrev">
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
           <OnlineClubListItem v-for="youtube in curYoutubes" :key="youtube.onlineId" :online="youtube" class="col-12 col-md-4" />
         </div>
-        <div class="next-button col-1 mb-auto mt-auto" @click="moveYoutubeNext">
+        <div class="next-button col-1 mb-auto mt-auto custom-cursor" @click="moveYoutubeNext">
           <i class="far fa-arrow-alt-circle-right"></i>
         </div>
       </div>
@@ -26,13 +26,13 @@
       </router-link>
 
       <div class="row">
-        <div class="prev-button col-1 mb-auto mt-auto" @click="moveMeetingPrev">
+        <div class="prev-button col-1 mb-auto mt-auto custom-cursor" @click="moveMeetingPrev">
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
           <OnlineClubListItem v-for="meeting in curMeetings" :key="meeting.onlineId" :online="meeting" class="col-12 col-md-4" />
         </div>
-        <div class="next-button col-1 mb-auto mt-auto" @click="moveMeetingNext">
+        <div class="next-button col-1 mb-auto mt-auto custom-cursor" @click="moveMeetingNext">
           <i class="far fa-arrow-alt-circle-right"></i>
         </div>
       </div>
@@ -138,6 +138,10 @@ export default {
 .prev-button, .next-button {
   font-size:30px;
   color: orange;
+}
+
+.custom-cursor {
+  cursor: pointer;
 }
 
 </style>

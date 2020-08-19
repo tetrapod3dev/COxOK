@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini header-filter" filter-color="black">
       <parallax
         class="page-header-image"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/mypage.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/mypage.jpg)' }"
       ></parallax>
       <blog-profile />
     </div>

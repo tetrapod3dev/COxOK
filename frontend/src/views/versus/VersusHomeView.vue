@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/versus.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/versus.jpg)' }"
       ></parallax>
 
       <div class="container">
@@ -15,7 +15,7 @@
       <div class="container">
         <div class="button-container">
           <router-link :to="{ name: 'VersusMakeView' }">
-            <button v-if="isLoggedIn" class="learn-more">대결 작성</button>
+            <button v-if="isLoggedIn" class="learn-more"><i class="far fa-edit"></i><p>대결 작성</p></button>
           </router-link>
         </div>
       </div>

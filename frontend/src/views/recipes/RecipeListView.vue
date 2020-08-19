@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/cook.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/cook.jpg)' }"
       ></parallax>
       <div class="container">
         <h1 class="title">요리하기</h1>
@@ -14,8 +14,8 @@
     <div class="section meet-button pb-0" >
       <div class="container">
         <div class="button-container">
-          <button class="learn-more" @click="changeShow">검색</button> 
-          <button v-if="isLoggedIn" class="learn-more" @click="moveMake">작성</button>
+          <button class="learn-more" @click="changeShow"><i class="fas fa-search"></i><p>검색</p></button> 
+          <button v-if="isLoggedIn" class="learn-more" @click="moveMake"><i class="far fa-edit"></i> <p>작성</p></button>
         </div>
       </div>
     </div>

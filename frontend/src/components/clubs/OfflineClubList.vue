@@ -7,13 +7,13 @@
       </router-link>
 
       <div class="row">
-        <div class="prev-button col-1 mb-auto mt-auto" @click="moveCookingPrev">
+        <div class="prev-button col-1 mb-auto mt-auto custom-cursor" @click="moveCookingPrev">
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
           <OfflineClubListItem v-for="cookingClass in curCookings" :key="cookingClass.meetId" :club="cookingClass" class="col-12 col-md-4" />
         </div>
-        <div class="next-button col-1 mb-auto mt-auto" @click="moveCookingNext">
+        <div class="next-button col-1 mb-auto mt-auto custom-cursor" @click="moveCookingNext">
           <i class="far fa-arrow-alt-circle-right"></i>
         </div>
       </div>
@@ -27,13 +27,13 @@
       </router-link>
       
       <div class="row">
-        <div class="prev-button col-1 mb-auto mt-auto" @click="moveKitchenPrev">
+        <div class="prev-button col-1 mb-auto mt-auto custom-cursor" @click="moveKitchenPrev">
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
           <OfflineClubListItem v-for="sharedKitchen in curKitchens" :key="sharedKitchen.meetId" :club="sharedKitchen" class="col-12 col-md-4" />
         </div>
-        <div class="next-button col-1 mb-auto mt-auto" @click="moveKitchenNext">
+        <div class="next-button col-1 mb-auto mt-auto custom-cursor" @click="moveKitchenNext">
           <i class="far fa-arrow-alt-circle-right"></i>
         </div>
       </div>
@@ -46,13 +46,13 @@
       </router-link>
       
       <div class="row">
-        <div class="prev-button col-1 mb-auto mt-auto" @click="movePartyPrev">
+        <div class="prev-button col-1 mb-auto mt-auto custom-cursor" @click="movePartyPrev">
           <i class="far fa-arrow-alt-circle-left"></i>
         </div>
         <div class="col-10 row">
           <OfflineClubListItem v-for="party in curParties" :key="party.meetId" :club="party" class="col-12 col-md-4" />
         </div>
-        <div class="next-button col-1 mb-auto mt-auto" @click="movePartyNext">
+        <div class="next-button col-1 mb-auto mt-auto custom-cursor" @click="movePartyNext">
           <i class="far fa-arrow-alt-circle-right"></i>
         </div>
       </div>
@@ -191,6 +191,10 @@ export default {
 .prev-button, .next-button {
   font-size:30px;
   color: orange;
+}
+
+.custom-cursor {
+  cursor: pointer;
 }
 
 </style>

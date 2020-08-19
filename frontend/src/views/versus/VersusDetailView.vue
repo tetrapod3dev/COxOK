@@ -3,15 +3,15 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/versus.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/versus.jpg)' }"
       ></parallax>
 
       <div class="content-center">
-        <h1 class="title">요리대전</h1>
+        <h1 class="title">{{ title }}</h1>
       </div>
     </div>
 
-    <div class="section detail-versus">
+    <div class="section detail-versus pb-0">
       <div class="container">
         <div v-if="selectedMax == 0" class="button-container">
           <!-- <b-form-select class="btn btn-primary btn-round btn-lg" id="round"> -->
@@ -26,7 +26,7 @@
               :value="length"
             >{{length}}강</b-form-select-option>
           </b-form-select>
-          <button class="learn-more" @click="submitRound">코~옥</button>
+          <button class="learn-more" @click="submitRound"><i class="far fa-hand-pointer"></i><p>코~옥</p></button>
           <!-- <button class="btn btn-primary btn-round btn-lg" @click="submitRound">코~옥</button> -->
         </div>
       </div>
@@ -46,11 +46,11 @@
         </div>
       </div>
     </div>
-    <div v-if="selectedMax > 1" class="section container">
-      <h2 class="versus-title">{{ selectedMax }}강전</h2>
+    <div v-if="selectedMax > 1" class="section container p-0 mt-5">
+      <h2 class="versus-title p-0">{{ selectedMax }}강전</h2>
       <div class="row">
         <div v-for="recipe in nowRecipes" :key="recipe.id" class="versus-card col-6">
-          <card type="profile" style="width:465px;height:400px;">
+          <card type="profile" class="mx-auto" style="width:465px;height:400px;">
             <img
               :src="imageSrc(recipe.recipeThumbnailSrc)"
               @click="selectRecipe(recipe)"
@@ -215,6 +215,7 @@ export default {
   name: "VersusDetailView",
   data() {
     return {
+      title: "",
       total:0,
       TempMax: 4,
       selectedMax: 0,
@@ -237,6 +238,28 @@ export default {
     nowRecipes() {
       return this.recipes.slice(this.cur, this.cur + 2);
     },
+  },
+  created() {
+    // this.recipes = _.shuffle(this.recipes.slice(0, this.maxNow))
+    axios
+      .get(
+        SERVER.URL + SERVER.ROUTES.versusDetail + this.$route.params.versus_id
+      )
+      .then((res) => {
+        this.title = res.data.versus.title
+        this.recipes = res.data.versus.recipeList;
+        this.recipesAll = res.data.versus.recipeList;
+        const recipeLength = res.data.versus.recipeList.length;
+        while (this.TempMax <= recipeLength) {
+          this.possibleLength.push(this.TempMax);
+          this.TempMax *= 2;
+        }
+      })
+      .catch((err) => console.log(err));
+
+    // const recipeLength = this.recipes.length
+
+    // this.TempMax /= 2
   },
   methods: {
     selectRecipe(recipe) {
@@ -307,27 +330,6 @@ export default {
         })
         .catch((err) => console.log(err));
     },
-  },
-  created() {
-    // this.recipes = _.shuffle(this.recipes.slice(0, this.maxNow))
-    axios
-      .get(
-        SERVER.URL + SERVER.ROUTES.versusDetail + this.$route.params.versus_id
-      )
-      .then((res) => {
-        this.recipes = res.data.versus.recipeList;
-        this.recipesAll = res.data.versus.recipeList;
-        const recipeLength = res.data.versus.recipeList.length;
-        while (this.TempMax <= recipeLength) {
-          this.possibleLength.push(this.TempMax);
-          this.TempMax *= 2;
-        }
-      })
-      .catch((err) => console.log(err));
-
-    // const recipeLength = this.recipes.length
-
-    // this.TempMax /= 2
   },
 };
 </script>
@@ -1924,8 +1926,8 @@ button.learn-more {
   color: #382b22;
   text-transform: uppercase;
   padding: 1.25em 2em;
-  background: #fff0f0;
-  border: 2px solid #b18597;
+  background: #f2efe4;
+  border: 2px solid #b69f81;
   border-radius: 0.75em;
   -webkit-transform-style: preserve-3d;
           transform-style: preserve-3d;
@@ -1933,6 +1935,7 @@ button.learn-more {
   transition: background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  height: 80px;
 }
 button.learn-more::before {
   position: absolute;
@@ -1943,9 +1946,9 @@ button.learn-more::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #f9c4d2;
+  background: #f2d4ae;
   border-radius: inherit;
-  box-shadow: 0 0 0 2px #b18597, 0 0.625em 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.625em 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0.75em, -1em);
           transform: translate3d(0, 0.75em, -1em);
   -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
@@ -1954,22 +1957,22 @@ button.learn-more::before {
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1), -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
 }
 button.learn-more:hover {
-  background: #ffe9e9;
+  background: #f2efe4;
   -webkit-transform: translate(0, 0.25em);
           transform: translate(0, 0.25em);
 }
 button.learn-more:hover::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0.5em 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.5em 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0.5em, -1em);
           transform: translate3d(0, 0.5em, -1em);
 }
 button.learn-more:active {
-  background: #ffe9e9;
+  background: #f2efe4;
   -webkit-transform: translate(0em, 0.75em);
           transform: translate(0em, 0.75em);
 }
 button.learn-more:active::before {
-  box-shadow: 0 0 0 2px #b18597, 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px #b69f81, 0 0 #f2f0ce;
   -webkit-transform: translate3d(0, 0, -1em);
           transform: translate3d(0, 0, -1em);
 }
