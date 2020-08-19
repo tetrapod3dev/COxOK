@@ -39,21 +39,27 @@
                 style="max-width: 20rem;"
                 class="recipe-card"
               >
-                <div style="height:220px;">
-                <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
-                <div class="mt-auto mb-auto">
-                <b-card-text class="recipe-card-text row">
-                  <p class="col-12">{{ recipeNameTrun(recipe.recipeName) }}</p>
-                  <div class="col-6">
-                    <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
-                    {{ recipe.cookTime }}분
+                <div style="height:180px;">
+                  <!-- <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating> -->
+                  <div class="mt-auto mb-auto">
+                    <b-card-text class="recipe-card-text row">
+                      <p class="col-12">{{ recipeNameTrun(recipe.recipeName) }}</p>
+                      <div class="recipe-icon col-12">
+                        <div class="col-4 recipe-info">
+                          <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
+                          {{ recipe.cookTime }}분
+                        </div>
+                        <div class="col-4 recipe-info">
+                          <i class="far fa-star" v-b-popover.hover="'평점'"></i><br>
+                          {{ recipe.avgRating }}
+                        </div>
+                        <div class="col-4 recipe-info">
+                          <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
+                          {{ recipe.level }}
+                        </div>
+                      </div>
+                    </b-card-text>
                   </div>
-                  <div class="col-6">
-                    <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
-                    {{ recipe.level }}
-                  </div>
-                </b-card-text>
-                </div>
                 </div>
               </b-card>
             </router-link>
@@ -99,21 +105,27 @@
                 style="max-width: 20rem;"
                 class="recipe-card"
               >
-                <div style="height:220px;">
-                  <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
+                <div style="height:180px;">
+                  <!-- <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating> -->
                   <div class="mt-auto mb-auto">
-                  <b-card-text class="recipe-card-text row" >
-                    <p class="col-12">{{ recipeNameTrun(recipe.recipeName) }}</p>
-                    <div class="col-6">
-                      <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
-                      {{ recipe.cookTime }}분
-                    </div>
-                    <div class="col-6">
-                      <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
-                      {{ recipe.level }}
-                    </div>
-                  </b-card-text>
-                </div>
+                    <b-card-text class="recipe-card-text row">
+                      <p class="col-12">{{ recipeNameTrun(recipe.recipeName) }}</p>
+                      <div class="recipe-icon col-12">
+                        <div class="col-4 recipe-info">
+                          <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
+                          {{ recipe.cookTime }}분
+                        </div>
+                        <div class="col-4 recipe-info">
+                          <i class="far fa-star" v-b-popover.hover="'평점'"></i><br>
+                          {{ recipe.avgRating }}
+                        </div>
+                        <div class="col-4 recipe-info">
+                          <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
+                          {{ recipe.level }}
+                        </div>
+                      </div>
+                    </b-card-text>
+                  </div>
                 </div>
               </b-card>
             </router-link>
@@ -149,14 +161,28 @@
               style="max-width: 20rem;"
               class="recipe-card mb-2"
             >
-              <div style="height:110px">
-              <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
-              <div class="mt-auto mb-auto">
-              <b-card-text class="recipe-card-text">
-                {{recipe.recipeName}}
-              </b-card-text>
-              </div>
-              </div>
+              <div style="height:180px;">
+                  <!-- <b-form-rating class="list-rating rating-inline" inline value="4" size="sm" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating> -->
+                  <div class="mt-auto mb-auto">
+                    <b-card-text class="recipe-card-text row">
+                      <p class="col-12">{{ recipeNameTrun(recipe.recipeName) }}</p>
+                      <div class="recipe-icon col-12">
+                        <div class="col-4 recipe-info">
+                          <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
+                          {{ recipe.cookTime }}분
+                        </div>
+                        <div class="col-4 recipe-info">
+                          <i class="far fa-star" v-b-popover.hover="'평점'"></i><br>
+                          {{ recipe.avgRating }}
+                        </div>
+                        <div class="col-4 recipe-info">
+                          <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
+                          {{ recipe.level }}
+                        </div>
+                      </div>
+                    </b-card-text>
+                  </div>
+                </div>
             </b-card>
           </router-link>
 
@@ -321,6 +347,16 @@ export default {
   transform: scale(1.2);
   transition: transform.5s;
   cursor: pointer;
+}
+
+.recipe-info{
+  color: #a79d9c;
+}
+
+.recipe-icon{
+  display: flex;
+  position: absolute; 
+  bottom: 0px; 
 }
 
 </style>
