@@ -35,13 +35,22 @@
             <!-- </div> -->
             <br><br>
             <!-- <div class="row"> -->
-                <div class="col-7 detail-input">
-                  <input type="text" name="name" class="question" id="nme" required autocomplete="off" v-model="recipeName"/>
-                  <label for="nme"><span>레시피 제목</span></label>
-                  <br><br>
-                  <textarea name="message" rows="2" class="question" id="msg" required autocomplete="off" v-model="recipeDetail"></textarea>
-                  <label for="msg"><span>레시피 내용</span></label>
+              <div class="col-7 detail-input">
+                <div class="versus-name">
+                  <label for="name" class="inp">
+                    <input type="text" id="name" placeholder=" " v-model="recipeName" required autocomplete="off">
+                    <span class="label">레시피 제목</span>
+                    <span class="focus-bg"></span>
+                  </label>
                 </div>
+                <div class="versus-name">
+                  <label for="msg" class="inp">
+                    <input type="text" id="msg" placeholder=" " v-model="recipeDetail" required autocomplete="off">
+                    <span class="label">레시피 내용</span>
+                    <span class="focus-bg"></span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -681,121 +690,92 @@ textarea:focus,
 input:focus {
   outline: 0;
 }
-/* Question */
 
-textarea.question{
-  resize: none;
+/* 제목, 내용 입력 */
+
+.versus-name {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
-input.question,
-textarea.question {
-  font-size: 30px;
-  font-weight: 300;
-  border-radius: 2px;
-  margin: 0;
-  border: none;
-  width: 110%;
-  background: rgba(0, 0, 0, 0);
-  transition: padding-top 0.2s ease, margin-top 0.2s ease;
-  overflow-x: hidden; /* Hack to make "rows" attribute apply in Firefox. */
-}
-/* Underline and Placeholder */
-
-input.question + label,
-textarea.question + label {
-  display: block;
+.inp {
   position: relative;
-  white-space: nowrap;
-  padding: 0;
-  margin: 0;
-  width: 10%;
-  border-top: 1px solid red;
-  -webkit-transition: width 0.4s ease;
-  transition: width 0.4s ease;
-  height: 0px;
+  margin: auto;
+  width: 100%;
+  max-width: 700px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
-
-input.question:focus + label,
-textarea.question:focus + label {
-  width: 110%;
-}
-
-input.question:focus,
-input.question:valid {
-  padding-top: 35px;
-}
-
-textarea.question:valid,
-textarea.question:focus {
-  margin-top: 35px;
-}
-
-input.question:focus + label > span,
-input.question:valid + label > span {
-  top: -100px;
-  font-size: 22px;
-  color: #333;
-}
-
-textarea.question:focus + label > span,
-textarea.question:valid + label > span {
-  top: -150px;
-  font-size: 22px;
-  color: #333;
-}
-
-input.question:valid + label,
-textarea.question:valid + label {
-  border-color: green;
-}
-
-input.question:invalid,
-textarea.question:invalid {
-  box-shadow: none;
-}
-
-input.question + label > span,
-textarea.question + label > span {
-  font-weight: 300;
-  margin: 0;
+.inp .label {
   position: absolute;
-  color: #8f8f8f;
-  font-size: 48px;
-  top: -66px;
-  left: 0px;
-  z-index: 0;
-  -webkit-transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
-  transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+  top: 20px;
+  left: 12px;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  pointer-events: none;
 }
-
-input[type="submit"] {
-  -webkit-transition: opacity 0.2s ease, background 0.2s ease;
-  transition: opacity 0.2s ease, background 0.2s ease;
-  display: block;
-  opacity: 0;
-  margin: 10px 0 0 0;
-  padding: 10px;
-  cursor: pointer;
+.inp .focus-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  z-index: -1;
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
+  -webkit-transform-origin: left;
+          transform-origin: left;
 }
-
-input[type="submit"]:hover {
-  background: #eee;
+.inp input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  padding: 16px 12px 0 12px;
+  height: 56px;
+  font-size: 16px;
+  font-weight: 400;
+  background: white;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  color: #000;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
 }
-
-input[type="submit"]:active {
-  background: #999;
+.inp input:hover {
+  background: white;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.5);
 }
-
-@-webkit-keyframes appear {
-  100% {
-    opacity: 1;
-  }
+.inp input:not(:placeholder-shown) + .label {
+  color: rgba(0, 0, 0, 0.5);
+  -webkit-transform: translate3d(0, -12px, 0) scale(0.75);
+          transform: translate3d(0, -12px, 0) scale(0.75);
 }
-
-@keyframes appear {
-  100% {
-    opacity: 1;
-  }
+.inp input:focus {
+  background: white;
+  outline: none;
+  box-shadow: inset 0 -2px 0 #0077FF;
+}
+.inp input:focus + .label {
+  color: #0077FF;
+  -webkit-transform: translate3d(0, -12px, 0) scale(0.75);
+          transform: translate3d(0, -12px, 0) scale(0.75);
+}
+.inp input:focus + .label + .focus-bg {
+  -webkit-transform: scaleX(1);
+          transform: scaleX(1);
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
 }
 
 
