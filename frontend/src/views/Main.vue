@@ -3,7 +3,7 @@
     <div class="page-header">
       <parallax
         class="page-header-image" style="background-size:80%"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/3753985.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/3753985.jpg)' }"
       ></parallax>
       <div class="content-center">
         <h1 class="title">요즘 누가 쿡해? 코~옥해</h1>

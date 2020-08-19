@@ -3,7 +3,7 @@
     <section id="top">
       <card
         type="background"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/meet.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/meet.jpg)' }"
       >
         <div class="card-title text-left">
           <h1 style>{{ online.title }}</h1>

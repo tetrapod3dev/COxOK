@@ -4,7 +4,7 @@
       <!-- 배너 배경 사진 -->
       <parallax
         class="page-header-image"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/cook.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/cook.jpg)' }"
       ></parallax>
       <div>
         <h1 class="recipe-name">{{ recipe.recipeName }}</h1>

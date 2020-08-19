@@ -5,7 +5,7 @@
       <!-- 배너 배경 사진 -->
       <parallax
         class="page-header-image"
-        :style="{ backgroundImage: 'url(\'' + require('@/assets/mypage.jpg') + '\')' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/mypage.jpg)' }"
       ></parallax>
       <!-- 프로필 -->
       <blog-profile />
