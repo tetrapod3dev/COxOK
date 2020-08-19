@@ -1,75 +1,142 @@
-# A104팀 씨없는 수박 - 공통 프로젝트 (트랙 1-웹 기술)
 
-SSAFY 3기 2학기 공통 프로젝트 (트랙 1-웹 기술)
 
-[팀원](#팀원): 권민, 박태록, 이동혁, 장윤정, 최원대
+![logo](README.assets/CO_OK-logo.png)
 
-## 주제 : 블로그 + 요리
-1. 음식을 IT 기술로 정보화 하고, 유저의 취향을 분석해
-2. "오늘 뭐 먹을까?"란 문제를, 내 몸에 맞는 좋은 음식을 찾아주는 기술로 해결합니다.
-3. 어떠한 상황에 어떤 음식이 가장 선호도가 높은지 요리 대전을 통해 데이터를 쌓고,
-4. 이를 통해 더욱 유저 친화적인 음식을 추천해줍니다.
+<center><h2>A104 - 씨없는 수박</h2></center>
 
-### 프로젝트 관련 링크
+<center>
+    <img src="https://img.shields.io/badge/platform-web-green">
+    <img src="https://img.shields.io/static/v1.svg?label=&message=Vue&style=flat-square&logo=Vue.js&logoColor=white&color=42b883">
+    <img src="https://img.shields.io/badge/framework-spring boot-blue">
+    <img src="https://img.shields.io/badge/database-MariaDB-9cf">
+    <img src="https://img.shields.io/badge/server-AWS-yellow">
+    <img src="https://img.shields.io/badge/language-java%2C javascript-yellowgreen">
+    <img src="https://img.shields.io/badge/swagger-valid-brightgreen">
+</center>
 
-* [프로젝트 명세서](https://docs.google.com/spreadsheets/d/1yYckXZ3XjaSQNNAyH2LwVpScy0xvuOw33CdOOm-ju_Q/edit?usp=sharing)  
-  
-* [프로젝트 MockUp(Adobe XD)](https://xd.adobe.com/view/791bb88c-be0c-4475-b77d-4d5113cbb5f1-2c48/)
 
-* [프로젝트 MockUp(카카오오븐)](https://ovenapp.io/project/GI426sr7JIpBpEdeMTR3nkLuQxO5qo9q#60EyS)  
-  
+<center><a href="http://i3a104.p.ssafy.io">CO~OK 바로가기</a></center>
 
-## 프로젝트 세팅
+<center>
+    사용자들이 자유롭게 레시피를 등록하여 다른 사용자와 공유할 수 있습니다.<br>
+    함께 요리하는 기능인 코옥하기를 통해 기존에는 시도하지 못했던 레시피를 시도하며,<br>
+    요리를 해본 적 없는 사용자들도 요리에 자신감을 가질 수 있습니다. 
+</center>
 
-![프로젝트 기술 스택](assets/web_stack.png)
 
-### 프론트엔드
-  
-프론트엔드 프로젝트 [설치](frontend/README.md)  
-  
-|이름|버전|
-|-|-|
-|node.js|6.14.5|
-|yarn|1.22.4|
-|vue|4.4.6|
-|bootstrap||
+## :point_right: 프로젝트 기술 특이점
 
-### 백엔드
+* JWT 토큰을 활용한 로그인 기능
+* vue-charts를 사용한 데이터 시각화
+* 카카오 지도 API를 통한 소모임 위치 검색 및 지도 표시(API)
+* 유튜브 API를 활용한 관련 유튜브 영상 저장 및 출력
 
-백엔드 프로젝트 [설치](https://code.visualstudio.com/docs/java/java-spring-boot)
-  
-|이름|버전|
-|-|-|
-|spring boot|2.3.1|
-|java|1.8|
-|swagger2|2.9.2|
-|mybatis|2.1.2|
 
-## 주요 항목
-|wiki|코 x 옥|설치 가이드|기술 문서|
-|-|-|-|-|
-|![i1][wiki-image]|![i2][help-image]|![i3][setup-image]|![i4][techdocs-image]|
-|[Home][home]|[코 x 옥][about]|[설치 가이드][setupdocs]|[기술 문서][techdocs]|
-|코 x 옥 프로젝트 gitlab wiki|코 x 옥 프로젝트에 대한 설명|단계별 설치 가이드|기술에 대한 상세 문서|
 
-### 코 x 옥 팀원
-* **권민** - *backend* - [minkwon4](https://lab.ssafy.com/minkwon4)
+
+## :closed_book: 프로젝트 주재료
+
+![Tech_Stack](README.assets/web_stack.png)
+
+
+
+## :package: 프로젝트 추가 재료
+
+### frontend
+
+|          Package          |    Version     |                      Comment                      |
+| :-----------------------: | :------------: | :-----------------------------------------------: |
+|        vue-router         |     3.2.0      |      요청 URL에 따라 브라우저에서 돔을 변경       |
+|           vuex            |     3.5.1      |            상태 관리 패턴 + 라이브러리            |
+|           axios           |     0.19.2     |  REST API 서버로부터 데이터를 받아오기 위해 사용  |
+| bootstrap / bootstrap-vue | 4.5.0 / 2.15.0 | 프론트엔드 디자인을 효율적으로 진행하기 위해 사용 |
+|          vuetify          |     2.3.8      |                Calendar 요소 사용                 |
+|  chart.js / vue-chartjs   | 2.9.3 / 3.5.0  |      데이터를 시각화하여 보여주기 위해 사용       |
+|       scrollmonitor       |     1.2.4      |          무한스크롤을 구현하기 위해 사용          |
+|          lodash           |    4.17.19     |     요리대전의 순서를 랜덤으로 섞기위해 사용      |
+
+### backend
+
+|      |      |      |
+| ---- | ---- | ---- |
+|      |      |      |
+|      |      |      |
+|      |      |      |
+
+
+
+## :cookie: 프로젝트 레시피
+
+### Preparation
+
+- Please must install Java 1.8  or even higher version
+
+- install Node.js / NPM
+
+- Clone Repository
+
+    ```
+    git clone https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104.git
+      
+    cd s03p13a104
+    ```
+
+### Installation
+
+- Build front-end environment & run front-end server
+
+    ```
+    cd s03p13a104/frontend
+    
+    yarn install 
+    
+    yarn serve --port 3000
+    ```
+
+
+
+## :globe_with_meridians: 지원 브라우저
+
+| <img width="50" src="https://simpleicons.org/icons/googlechrome.svg" alt="Chrome" /> |
+| ------------------------------------------------------------ |
+| Latest                                                       |
+
+
+
+## :two_men_holding_hands: 요리사들
+
 * **박태록** - *PM, frontend* - [sdf7575](https://lab.ssafy.com/sdf7575)
+* **권민** - *backend* - [minkwon4](https://lab.ssafy.com/minkwon4)
 * **이동혁** - *frontend* - [lee33843](https://lab.ssafy.com/lee33843)
 * **장윤정** - *backend* - [wkddbswjd325](https://lab.ssafy.com/wkddbswjd325)
 * **최원대** - *backend* - [ryunhoo123](https://lab.ssafy.com/ryunhoo123)
 
----
 
-[Home][home] _|_ [Project][project] _|_ [About][about] _|_ [Setup Guide][setupdocs] _|_ [Technical Docs][techdocs] _|_ Copyright © 2020 SSAFY
 
-[home]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/Home
-[project]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104
-[about]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/coxok-overview
-[setupdocs]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/Setting-up-coxok
-[techdocs]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/technical-documentation
+### :star: 브랜치 전략
 
-[techdocs-image]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/raw/master/assets/database.png
-[setup-image]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/raw/master/assets/tools.png
-[help-image]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/raw/master/assets/help.png
-[wiki-image]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/raw/master/assets/wiki.png
+### branch
+
+```bash
+master -> developer -> frontend/backend -> frontend-feature
+```
+
+### merge
+
+```bash
+merge하기 전에 현재 작업 진행 상황 공유
+merge 후 브랜치 지우기
+```
+
+### commit
+
+```bash
+UPDATE/ADD/FIX | feature
+```
+
+
+
+### :calendar: 개발 일정
+
+# <사진 추가 예정>
+
