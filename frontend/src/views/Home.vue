@@ -6,12 +6,12 @@
         :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/3753985.jpg)' }"
       ></parallax>
       <div class="content-center">
-        <h1 class="title">CO~OK</h1>
+        <h1 class="title d-inline-block border border-white rounded-lg move-btn py-0" @click="scrollPage">CO~OK</h1>
         <h2>함께하면 가능하다</h2>
       </div>
     </div>
 
-    <div class="about-office my-5">
+    <div class="about-office my-5" id="mainPage">
       <div class="container">
         <div class="row text-center">
           <div class="col-md-8 ml-auto mr-auto">
@@ -150,6 +150,11 @@ export default {
     this.getVersusRank();
   },
   methods: {
+    scrollPage() {
+      var location = document.querySelector("#mainPage").offsetTop-100;
+
+      window.scrollTo({ top: location, behavior: "smooth" });
+    },
     imageSrc(recipePhoto) {
       return "http://i3a104.p.ssafy.io/img/" + recipePhoto;
     },
@@ -194,6 +199,11 @@ export default {
 </script>
 
 <style scoped>
+.move-btn:hover {
+  cursor: pointer;
+  background-color: orange;
+}
+
 .main-list-recipe {
   width: 120px;
   height: 100px;

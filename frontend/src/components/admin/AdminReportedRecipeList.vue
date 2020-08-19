@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <h2>Admin이 신고당한 레시피를 봅니당..</h2>
-
     <div class="row">
       <p class="col-3">레시피 사진</p>
       <p class="col-4">레시피 정보</p>
@@ -20,7 +18,7 @@
         <p>신고사유 : {{ recipe.reportRecipeDto.reason }}</p>
       </div>
       <div class="col-2">
-        <router-link :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.reportRecipeDto.recipeId} }" target="_blank"><button class="btn">상세 보기</button></router-link>
+        <router-link :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.reportRecipeDto.recipeId} }"><button class="btn">상세 보기</button></router-link>
         <button class="btn" @click="deleteReport(recipe)">신고 취소</button>
         <button class="btn" @click="deleteRecipe(recipe)">레시피 삭제</button>
       </div>

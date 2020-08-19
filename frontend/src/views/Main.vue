@@ -6,11 +6,11 @@
         :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/3753985.jpg)' }"
       ></parallax>
       <div class="content-center">
-        <h1 class="title">요즘 누가 쿡해? 코~옥해</h1>
+        <h1 class="title">요즘 누가 쿡해? <span class="border border-white rounded-lg move-btn" @click="scrollPage">코~옥</span>해</h1>
       </div>
     </div>
 
-    <div class="about-office my-5">
+    <div class="about-office my-5" id="mainPage">
       <div class="container">
         <div class="row text-center">
           <div class="col-md-8 ml-auto mr-auto">
@@ -221,6 +221,11 @@ export default {
     }
   },
   methods: {
+    scrollPage() {
+      var location = document.querySelector("#mainPage").offsetTop-100;
+
+      window.scrollTo({ top: location, behavior: "smooth" });
+    },
     imageSrc(recipePhoto) {
       return "http://i3a104.p.ssafy.io/img/" + recipePhoto;
     },
@@ -296,7 +301,10 @@ export default {
 </script>
 
 <style scoped>
-
+.move-btn:hover {
+  cursor: pointer;
+  background-color: orange;
+}
 .main-list-recipe {
   width: 120px;
   height: 100px;
