@@ -107,8 +107,8 @@
       <div class="section offline-view">
         <div class="container">
           <div class="button-container">
-            <button class="learn-more submit">수정</button>
-            <button class="learn-more" @click.prevent="deleteClub" style="margin-left: 20px;">삭제</button>
+            <button class="learn-more submit"><i class="far fa-edit"></i><p>수정</p></button>
+            <button class="learn-more" @click.prevent="deleteClub" style="margin-left: 20px;"><i class="fas fa-ban"></i><p>삭제</p></button>
           </div>
         </div>
       </div>

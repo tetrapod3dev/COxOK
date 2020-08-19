@@ -13,7 +13,7 @@
     <div class="section meet-button pb-0" >
       <div class="container">
         <div class="button-container">
-          <button class="learn-more" @click="submitUpdate"><i class="far fa-check-circle"></i><p>수정</p></button>
+          <button class="learn-more" @click="submitUpdate"><i class="far fa-edit"></i><p>수정</p></button>
           <button class="learn-more" @click="goBack"><i class="fas fa-ban"></i><p>취소</p></button> 
         </div>
       </div>

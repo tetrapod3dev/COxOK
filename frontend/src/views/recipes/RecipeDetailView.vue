@@ -18,7 +18,7 @@
     <div v-if="loginUserId == recipe.userId" class="section meet-button pb-0" >
       <div class="container">
         <div class="button-container">
-          <button class="learn-more" @click="updateRecipe"><i class="far fa-check-circle"></i><p>수정</p></button>
+          <button class="learn-more" @click="updateRecipe"><i class="far fa-edit"></i><p>수정</p></button>
           <button class="learn-more" @click="deleteRecipe"><i class="fas fa-ban"></i><p>삭제</p></button> 
         </div>
       </div>
