@@ -32,7 +32,7 @@
       <!-- <p class="selected-recipe-list-title">선택한 레시피 목록</p> -->
       <div class="paragraph">
         <div class="RecipeVersus">
-            <div v-if="versusTitle === null">
+            <div v-if="versusTitle === ''">
               [대회 이름을 입력하세요]
             </div>
             <div v-else>
