@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="row">
-      <div class="align-items-center row">
+    <div class="row col-12 col-md-10 ml-auto mr-auto" >
+      <div class="mt-auto mb-auto ml-auto">
         <b-form-rating size="lg" variant="warning" v-model="reviewData.rating" inline></b-form-rating>
       </div>
-      <div class="align-items-center col-8">
+      <div class="col-8 mt-auto mb-4">
         <fg-input
           class="no-border form-control-lg"
           id="review-input"
@@ -12,8 +12,8 @@
           placeholder="댓글 작성해주세요"
           v-model="reviewData.content"
         ></fg-input>
-      </div>
-      <div class="align-items-center row" @click="submitReview">
+        </div>
+      <div class="mt-auto mb-auto" @click="submitReview" >
         <n-button type="primary" round block>
           <i class="now-ui-icons ui-1_send"></i> 작성
         </n-button>
@@ -50,6 +50,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

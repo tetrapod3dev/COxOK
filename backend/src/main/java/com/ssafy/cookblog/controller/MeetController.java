@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.cookblog.dto.MeetDto;
 import com.ssafy.cookblog.dto.MeetJoinDto;
+import com.ssafy.cookblog.dto.UserDto;
 import com.ssafy.cookblog.dto.request.MeetRegisterRequestDto;
 import com.ssafy.cookblog.dto.response.MeetViewResponseDto;
 import com.ssafy.cookblog.service.MeetService;
@@ -50,7 +51,7 @@ public class MeetController {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
-		List<MeetDto> list = meetService.getAllMeet(6*startIndex);
+		List<MeetDto> list = meetService.getAllMeet(12*startIndex);
 		if(list!=null) {
 			map.put("msg", "소모임 조회를 성공했습니다.");
 			map.put("status", "success");
@@ -66,16 +67,23 @@ public class MeetController {
 	
 	@ApiOperation("소모임 상세 조회")
 	@GetMapping("/view/{meetId}")
-	public Object getOneMeet(@PathVariable("meetId") long meetId) {
+	public Object getOneMeet(@PathVariable("meetId") long meetId, HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 
 		MeetViewResponseDto meet = meetService.getOneMeet(meetId);
 		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		UserDto user = userService.findUserByEmail(email);
+		Long userId = user.getUserId();
+		String userProfile = user.getProfilePhoto();
+		
 		if(meet != null) {
 			map.put("msg", "소모임 조회를 성공했습니다.");
 			map.put("status", "success");
 			map.put("meet", meet);
+			map.put("userId",userId);
+			map.put("userProfile", userProfile);
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "소모임을 찾지 못했습니다.");
@@ -87,7 +95,7 @@ public class MeetController {
 	
 	@ApiOperation("소모임 삭제")
 	@DeleteMapping("/delete/{meetId}")
-	public Object deleteMeet(@PathVariable long meetId) {
+	public Object deleteMeet(@PathVariable("meetId") long meetId) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
@@ -136,7 +144,6 @@ public class MeetController {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		
 		int count = meetService.modify(meetDto);
 		if(count!=0) {
 			map.put("msg", "소모임 수정에 성공했습니다.");
@@ -152,7 +159,7 @@ public class MeetController {
 	}
 	
 	@ApiOperation("소모임 참석하기")
-	@PostMapping("/meetjoin")
+	@PostMapping("/join")
 	public Object registerMeetJoin(@RequestBody MeetJoinDto meetJoinDto,HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
@@ -177,18 +184,102 @@ public class MeetController {
 	}
 	
 	@ApiOperation("소모임 참석 취소하기")
-	@DeleteMapping("/meetjoin/{meetJoinId}")
-	public Object deleteMeetJoin(@PathVariable("meetJoinId") long meetJoinId) {
+	@DeleteMapping("/join/{meetId}")
+	public Object deleteMeetJoin(@PathVariable("meetId") long meetId,HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		int count = meetService.removeMeetJoin(meetJoinId);
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		MeetJoinDto meetJoinDto =new MeetJoinDto();
+		meetJoinDto.setMeetId(meetId);
+		meetJoinDto.setUserId(userId);
+		
+		int count = meetService.removeMeetJoin(meetJoinDto);
 		if(count!=0) {
 			map.put("msg", "소모임 참석 삭제를 성공했습니다.");
 			map.put("status", "success");
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "소모임 참석 삭제를 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("소모임 타입으로 조회하기")
+	@GetMapping("/type/{type}/{startIndex}")
+	public Object getType(@PathVariable("type")String type,@PathVariable("startIndex")int startIndex) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		MeetDto meetDto =new MeetDto();
+		meetDto.setType(type); 
+		meetDto.setStartIndex(startIndex*12);
+		
+		List<MeetDto> list = meetService.getMeetByType(meetDto);
+		if(list!=null) {
+			map.put("msg", "소모임 타입 조회를 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
+			map.put("total",meetService.getMeetTotalByType(type));
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "소모임 타입 조회를 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("내가 등록한 meet목록")
+	@GetMapping("/my")
+	public Object getMyMeet(HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		List<MeetDto> list = meetService.getMeetByUserId(userId);
+		if(list!=null) {
+			map.put("msg", "내가 작성한 목록을 조회 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "내가 작성한 목록을 조회 실패했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		
+		return response;
+	}
+	
+	@ApiOperation("내가 등록한 meet목록")
+	@GetMapping("/myjoin")
+	public Object getMyMeetJoin(HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		String token = request.getHeader("Authorization");
+		String email = jwtService.getEmailFromToken(token.substring(7));
+		long userId = userService.userIdByEmail(email);
+		
+		List<MeetDto> list = meetService.getMeetByMeetJoinUserid(userId);
+		if(list!=null) {
+			map.put("msg", "내가 참석한 목록을 조회 성공했습니다.");
+			map.put("status", "success");
+			map.put("list",list);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "내가 참석한 목록을 조회 실패했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}

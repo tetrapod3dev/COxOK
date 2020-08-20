@@ -37,8 +37,5 @@ public class RecipeResponseDto {
    private List<RecipeIngredientResponseDto> ingredientList;
    private List<ReviewResponseDto> reviewDtoList;
 
-    //페이징
-	private int startIndex;
-	private int pagingSize;
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.ssafy.cookblog.dto.FoodCategoryDto;
 import com.ssafy.cookblog.dto.IngredientDto;
 import com.ssafy.cookblog.dto.LikeDto;
+import com.ssafy.cookblog.dto.request.IngredientRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeRegisterRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.request.RecipeUpdateRequestDto;
@@ -20,6 +21,13 @@ public interface RecipeService {
 	public int deleteRecipe(long recipeId);
 	public List<FoodCategoryDto> selectAllFoodCategory();
 	public List<IngredientDto> selectAllIngredient();
+	public List<IngredientDto> selectAllIngredientAdmin(int startIndex);
+	public List<IngredientDto> readAllIngredientToBeUpdated(int startIndex);
+	public IngredientDto readIngredientAdmin(long ingredientId);
+	public int registerIngredientUser(IngredientRequestDto ingredient);
+	public int registerIngredientAdmin(IngredientDto ingredient);
+	public int modifyIngredientAdmin(IngredientDto ingredient);
+	public int removeIngredientAdmin(long ingredientId);
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId);
 	public long getRecipeId();
 	public long getTotalRecipeNum();
@@ -33,4 +41,10 @@ public interface RecipeService {
 	
 	public FoodCategoryDto getRandomCategoryByUserId(long userId);
 	public List<RecipeDto> getRecipeListByCategoryId(long foodCategoryId);
+	
+	public List<RecipeDto> getRecipeListByCookTime(RecipeDto recipeDto);
+	public long getRecipeTotalByCookTime(int cookTime);
+	
+	public List<RecipeDto> getRecipeListByLevel(RecipeDto recipeDto);
+	public long getRecipeTotalByLevel(int level);
 }

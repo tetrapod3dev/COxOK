@@ -11,9 +11,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ssafy.cookblog.dao.RecipeDao;
 import com.ssafy.cookblog.dao.RecipeDaoImpl;
+import com.ssafy.cookblog.dto.BlogDto;
 import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.request.RecipeSearchRequestDto;
 import com.ssafy.cookblog.dto.response.RecipeResponseDto;
+import com.ssafy.cookblog.service.BlogService;
 import com.ssafy.cookblog.service.RecipeService;
 import com.ssafy.cookblog.util.JwtService;
 
@@ -23,6 +25,9 @@ public class RecipeTest {
 
 	@Autowired
 	RecipeService recipeService;
+	
+	@Autowired
+	BlogService blogService;
 	
 	@Test
 	public void RecipeTest() {
@@ -44,5 +49,10 @@ public class RecipeTest {
 		
 		Long count = recipeService.searchTotal(dto);
 		System.out.println(count);
+		
+		List<BlogDto> a = blogService.getByTitle("e");
+		for(BlogDto d : a)
+			System.out.println(d);
+		
 	}
 }

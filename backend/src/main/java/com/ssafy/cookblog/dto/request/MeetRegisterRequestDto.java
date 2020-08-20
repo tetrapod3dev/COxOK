@@ -2,7 +2,10 @@ package com.ssafy.cookblog.dto.request;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +26,8 @@ public class MeetRegisterRequestDto {
 	private int price;
 	private String title;
 	private String content;
+	
+	@DateTimeFormat(pattern ="yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime date;
 	private String address;
 	private double lat;

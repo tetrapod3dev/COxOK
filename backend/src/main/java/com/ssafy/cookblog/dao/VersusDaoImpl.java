@@ -55,4 +55,9 @@ public class VersusDaoImpl implements VersusDao {
 		return session.selectList("versus.selectVersusResult", versusId);
 	}
 
+	@Override
+	public List<VersusPointDto> selectTop3VersusResult() {
+		return session.selectList("versus.selectTop3VersusResult");
+	}
+
 }

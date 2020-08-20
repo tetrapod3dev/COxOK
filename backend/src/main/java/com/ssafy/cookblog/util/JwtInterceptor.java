@@ -24,7 +24,7 @@ public class JwtInterceptor implements HandlerInterceptor{
 		if(token != null && jwtService.isValid(token)){
 			return true;
 		}else{
-			response.setStatus(403);
+			response.setStatus(401);
 			return false;
 		}
 

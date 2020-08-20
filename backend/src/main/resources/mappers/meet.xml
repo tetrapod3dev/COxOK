@@ -5,45 +5,46 @@
 	<insert id="insert">
 		insert into 
 			meet (user_id, recipe_id, thumbnail_src, type, join_limit, price, title,
-			content, address, lat, lng )
+			content, address, lat, lng, date)
 		values
 			(#{userId}, #{recipeId}, #{thumbnailSrc}, #{type}, #{joinLimit}, 
-			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng} )
+			#{price}, #{title}, #{content}, #{address}, #{lat}, #{lng}, #{date})
 	</insert>
 	
 	<update id="update">
 		update 
 			meet
 		set
-			recipe_id = #{recipeId}, thumbnail_src = #{thumbnaulSrc},
+			recipe_id = #{recipeId}, thumbnail_src = #{thumbnailSrc}, title=#{title},
 			type = #{type}, join_limit = #{joinLimit}, price = #{price},
-			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}
+			content=#{content}, address=#{address}, lat = #{lat}, lng=#{lng}, date=#{date}
 		where
 			meet_id = #{meetId}
 	</update>
 
 	<select id="selectAllMeet" resultType="MeetDto">
 		select 
-			meet_id as meetId, user_id as userId, thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, title
-		FROM
-			meet
-		order by meet_id desc
-		LIMIT #{startIndex}, 6
-	</select>
-	
-	<select id="selectMeet" resultType="MeetDto">
-		select 
 			meet_id as meetId, user_id as userId, recipe_id as recipeId,
 			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
 			title, content, date, address, lat, lng
 		FROM
 			meet
+		order by meet_id desc
+		LIMIT #{startIndex}, 12
+	</select>
+	
+	<select id="selectMeet" resultType="MeetViewResponseDto">
+		select 
+			meet_id as meetId, user_id as userId, nickname as writerNickname, recipe_id as recipeId,
+			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
+			title, content, date, address, lat, lng
+		FROM meet join user using(user_id) 
 		where meet_id = #{meetId}
 	</select>
 	
 	<select id="selectMeetJoinList" resultType="MeetJoinDto">
 		select 
-			meet_join_id as meetJoinId, meet_id as meetId, user_id as userId, nickname
+			meet_join_id as meetJoinId, meet_id as meetId, user_id as userId, nickname, profile_photo as profilePhoto
 		FROM
 			meet_join join user using(user_id)
 		where meet_id = #{meetId}
@@ -55,7 +56,9 @@
 	
 	<select id="selectMeetByUserid" resultType="MeetDto">
 		select 
-			meet_id as meetId, user_id as userId, thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, title
+			meet_id as meetId, user_id as userId, recipe_id as recipeId,
+			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
+			title, content, date, address, lat, lng
 		FROM
 			meet
 		where
@@ -63,7 +66,41 @@
 		order by meet_id desc
 	</select>
 	
-	<select id="selectMeetJoinByUserid" resultType="MeetDto">
+	<select id="selectMeetByMeetJoinUserid" resultType="MeetDto">
+		select 
+			meet_id as meetId, user_id as userId, recipe_id as recipeId,
+			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
+			title, content, date, address, lat, lng		FROM
+			meet
+		where
+			meet_id in(select meet_id from meet_join where user_id=#{user_id} ) 
+		order by meet_id desc
+	</select>
+	
+	
+	<select id="selectMeetByType" resultType="MeetDto">
+		select 
+			meet_id as meetId, user_id as userId, recipe_id as recipeId,
+			thumbnail_src as thumbnailSrc, type, join_limit as joinLimit, price, 
+			title, content, date, address, lat, lng
+		FROM
+			meet
+		where
+			type = #{type}
+		order by meet_id desc
+		LIMIT #{startIndex}, 12
+	</select>
+	
+	<select id="selectMeetTotalByType" resultType="Long">
+		select 
+			count(meet_id)
+		FROM
+			meet
+		where
+			type = #{type}
+	</select>
+	
+	<!-- <select id="selectMeetJoinByUserid" resultType="MeetDto">
 		select 
 			m.meet_id as meetId, m.user_id as userId, m.thumbnail_src as thumbnailSrc, type, m.join_limit as joinLimit, price, title
 		FROM
@@ -71,16 +108,17 @@
 		where
 			mj.user_id = #{userId}
 		order BY m.meet_id desc
-	</select>
+	</select> -->
 	
 	<insert id="insertMeetJoin">
 		insert into 
 			meet_join (meet_id, user_id)
 		values 
-			(#{meet_id}, #{user_id})
+			(#{meetId}, #{userId})
 	</insert>
 	
 	<delete id="deleteMeetJoin">
-		delete from meet_join where meet_join_id = #{meetJoinId}
+		delete from meet_join where meet_id = #{meetId} and user_id =#{userId}
 	</delete>
+	
 </mapper>

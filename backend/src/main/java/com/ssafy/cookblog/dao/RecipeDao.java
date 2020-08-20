@@ -20,6 +20,12 @@ public interface RecipeDao {
 	public long getRecipeId();
 	public List<FoodCategoryDto> selectAllFoodCategory();
 	public List<IngredientDto> selectAllIngredient();
+	public List<IngredientDto> selectAllIngredientAdmin(int startIndex);
+	public List<IngredientDto> selectAllIngredientToBeUpdated(int startIndex);
+	public int insertIngredientUser(IngredientDto ingredient);
+	public int insertIngredientAdmin(IngredientDto ingredient);
+	public int updateIngredientAdmin(IngredientDto ingredient);
+	public int deleteIngredientAdmin(long ingredientId);
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId);
 	public IngredientDto selectIngredientById(long ingredientId);
 	public int insertRecipeIngredient(RecipeIngredientDto recipeIngredient);
@@ -37,4 +43,16 @@ public interface RecipeDao {
 	public List<RecipeDto> selectRecipeListByCategoryId(long foodCategoryId);
 	
 	
+	public List<Long> selectRecipeIdByIngredientId(long ingredientId);
+	
+	public int updateNutrient(RecipeDto recipeDto);
+	
+	public List<RecipeDto> selectRecipeListByCookTime(RecipeDto recipeDto);
+	public long selectRecipeTotalByCookTime(int cookTime);
+	
+	
+	public List<RecipeDto> selectRecipeListByLevel(RecipeDto recipeDto);
+
+	public long selectRecipeTotalByLevel(int level);
+
 }

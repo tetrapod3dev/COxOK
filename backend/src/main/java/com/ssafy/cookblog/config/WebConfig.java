@@ -13,9 +13,11 @@ public class WebConfig implements WebMvcConfigurer {
 			"/user/**",
 			"/recipe/**",
 			"/review/**",
-			"/versus/**",
+			"/versus/register/**",
 			"/photo/**",
-			"/meet/**"
+			"/meet/**",
+			"/online/**",
+			"/report/**"
 //			"/**"
 	};
 	private static final String[] EXCLUDE_PATHS = {
@@ -32,10 +34,10 @@ public class WebConfig implements WebMvcConfigurer {
 			
 			"/review/view/**",
 			
-			"/versus/all/**",
-			"/versus/win/**",
-			"/versus/view/**",
-			"/versus/result/**",
+//			"/versus/all/**",
+//			"/versus/win/**",
+//			"/versus/view/**",
+//			"/versus/result/**",
 			
 			"/swagger-ui.html",
 			"/swagger-resources/**",
@@ -45,6 +47,15 @@ public class WebConfig implements WebMvcConfigurer {
 			"/photo/**",
 			
 			"/meet/all/**",
+			"/meet/type/**",
+			
+			"/online/all/**",
+			"/online/type/**",
+			
+			"/blog/title/**",
+			"/blog/tag/**",
+			
+			"/error"
 	};
 
 	@Autowired

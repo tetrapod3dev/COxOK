@@ -9,16 +9,19 @@ import SERVER from "@/api/api";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+export const store = new Vuex.Store({
   state: {
     // authToken: localStorage.getItem("auth-token"),
     authToken: cookies.get('auth-token'),
+    // 레시피 검색 시 사용하는 searchData입니다.
     searchData: {
       selectedCategory: [],
       selectedIngredients: [],
       selectedIngredientsName: [],
+      level: 5,
+      cookTime: 120,
     },
-    // 레시피 검색 시 사용하는 searchData입니다.
+    mainType: '오프라인',
   },
   getters: {
     isLoggedIn(state) {
@@ -26,18 +29,22 @@ export default new Vuex.Store({
     },
     config: (state) => `Bearer ${state.authToken}`,
     searchingData: (state) => state.searchData,
+    mainClubType: (state) => state.mainType,
   },
   mutations: {
     SET_TOKEN(state, token) {
       state.authToken = token;
       // localStorage.setItem("auth-token", token);
-      cookies.set('auth-token', token, 60 * 60 * 2)
+      cookies.set('auth-token', token, 60 * 60)
       // state의 authToken을 바꾸고, 이왕 한 김에 localStorage에서도 갱신
     },
     setSearchData(state, searchData) {
       state.searchData = searchData;
       // 레시피 검색에서 사용하는 searchData를 변경합니다..
     },
+    setMainClubType(state, mainType) {
+      state.mainType = mainType
+    }
   },
   actions: {
     // 회원 관리 개념
@@ -53,17 +60,10 @@ export default new Vuex.Store({
           router.push({ name: "Main" });
         })
         .catch((err) => {
-          console.log(err.response);
           if (err.response.data.msg == "이메일 인증 미완료") {
-            let answer = confirm(
-              "이메일 미인증 사용자입니다. 이메일을 재전송할까요?"
-            );
-            if (answer) {
-              alert("아쉽게도 이메일 인증은 미구현입니다!");
-            }
+            alert("이메일 미인증 사용자입니다. 이메일 인증을 진행해주세요!");
           } else {
             alert(err.response.data.msg);
-            console.log(err.response);
           }
         });
     },
@@ -86,16 +86,23 @@ export default new Vuex.Store({
     },
 
     logout({ commit }) {
-      commit("SET_TOKEN", null);
-      // localStorage.removeItem("auth-token");
-      cookies.remove('auth-token')
       router.push({ name: "Home" });
+      commit("SET_TOKEN", null);
+      cookies.remove('auth-token')
     },
 
     changeSearchData({ commit }, searchData) {
       commit("setSearchData", searchData);
     },
+
+    changeClubMainType({ commit }, mainType) {
+      commit("setMainClubType", mainType)
+    },
+
   },
 
   modules: {},
 });
+
+
+export default store;

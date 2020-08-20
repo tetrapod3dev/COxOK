@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="youtube">
+	<insert id="insert">
+		insert into youtube (recipe_id, video_id, thumbnail_src) 
+		values (#{recipeId}, #{videoId}, #{thumbnailSrc})
+	</insert>
+	
+	<select id="select" resultType="YoutubeDto">
+		select 
+			youtube_id as youtubeId, recipe_id as recipeId, 
+			video_id as videoId, thumbnail_src as thumbnailSrc
+		from 
+			youtube
+		where
+			recipe_id = #{recipeId}
+	</select>
+</mapper>

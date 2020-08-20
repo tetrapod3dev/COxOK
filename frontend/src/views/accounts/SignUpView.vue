@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.unsplash.com/photo-1452251889946-8ff5ea7b27ab?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=730&q=80') ;"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/mypage.jpg)' }"
       ></parallax>
       <div class="content-center">
         <h1>회원가입</h1>
@@ -34,7 +34,7 @@
                 pill
                 variant="primary"
                 size="sm"
-              >인증</b-button>
+              >중복확인</b-button>
             </div>
             <p v-show="emailMessage" v-text="emailMessage" class="text-center"></p>
             <br />
@@ -57,7 +57,7 @@
                 pill
                 variant="primary"
                 size="sm"
-              >체크</b-button>
+              >중복확인</b-button>
             </div>
             <br />
             <!-- 비밀번호 input -->
@@ -79,11 +79,12 @@
               :state="checkPassword"
             />
             <div class="mt-5 row justify-content-center">
-              <b-button
-                pill
-                :class="isValid ? 'btn btn-danger' : 'btn'"
-                @click="isValid ? signup(signupData) : notChecked"
-              >회원 가입</b-button>
+              <b-button v-if="isValid" class="btn btn-danger" pill @click="signup(signupData)">
+                회원 가입
+              </b-button>
+              <b-button v-if="!isValid" class="btn" pill @click="notChecked">
+                회원 가입
+              </b-button>
             </div>
           </div>
           <!-- 회원 가입 form end -->

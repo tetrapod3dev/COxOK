@@ -1,93 +1,271 @@
 <template>
-  <div class="container">
-    <h2>소모임 작성 페이지입니당.</h2>
+  <div class="wrapper">
+    <section id="top">
+      <card
+        type="background"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/meet.jpg)' }"
+      >
+        <div class="card-title text-center">
+          <h1 style>코~옥 만들기</h1>
+        </div>
+      </card>
+    </section>
+    
+    <div class="container">
+      
+      <div class="tab">
+        <div class="toggleWrapper">
+          <input type="checkbox" class="dn" id="dn" @click="changeToggle"/>
+          <label for="dn" class="toggle">
+            <span class="toggle__handler">
+              <span class="crater crater--1"></span>
+              <span class="crater crater--2"></span>
+              <span class="crater crater--3"></span>
+            </span>
+            <span class="star star--1"></span>
+            <span class="star star--2"></span>
+            <span class="star star--3"></span>
+            <span class="star star--4"></span>
+            <span class="star star--5"></span>
+            <span class="star star--6"></span>
+          </label>
+        </div>
+      </div>
+      <br>
+      <!-- <button class="btn my-5" @click="changeOff">오프라인</button>
+      <button class="btn" @click="changeOn">온라인</button> -->
 
-    <div class="row">
-      <input type="text" v-model="postcode" placeholder="우편번호" class="col-4 offset-2">
-      <input type="button" @click="onClickAddr" value="우편번호 찾기" class="col-2 offset-1"><br>
-      <input type="text" v-model="address" placeholder="주소" class="col-4 offset-2"><br>
-      <input type="text" v-model="detailAdress" placeholder="상세주소" class="col-3 offset-1">
+      <OfflineClubMake v-if="isOffline" />
+
+      <OnlineClubMake v-else />
     </div>
-
-    <div v-show="address != null" id="map" style="width:500px;height:400px;"></div>
   </div>
 </template>
 
-
-<!-- 주소 검색 API, 위치확인 필요 -->
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7903d1a2c2c53b0b1f5321ef4b9d7208&libraries=services"></script>
 <script>
+import OfflineClubMake from "@/components/clubs/OfflineClubMake.vue";
+import OnlineClubMake from "@/components/clubs/OnlineClubMake.vue";
+import { Card } from "@/components/global";
+
 export default {
-  name: 'ClubMakeView',
-  data () {
+  name: "ClubMakeView",
+  data() {
     return {
-      address: null,
-      postcode: null,
-      detailAdress: null,
-      latitude: null,
-      longitude: null,
-    }
+      isOffline: true,
+    };
   },
   components: {
+    OfflineClubMake,
+    OnlineClubMake,
+    Card,
   },
-  computed: {
-  },
+  computed: {},
+  mounted() {},
   methods: {
-    onClickAddr() {
-      const self = this
-
-      var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-      mapOption = {
-        center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
-        level: 5 // 지도의 확대 레벨
-      };
-
-      //지도를 미리 생성
-      var map = new daum.maps.Map(mapContainer, mapOption);
-      //주소-좌표 변환 객체를 생성
-      var geocoder = new daum.maps.services.Geocoder();
-      //마커를 미리 생성
-      var marker = new daum.maps.Marker({
-        position: new daum.maps.LatLng(37.537187, 127.005476),
-        map: map
-      });
-
-      new daum.Postcode({
-        oncomplete: function(data) {
-          var addr = data.address; // 최종 주소 변수
-
-          // 주소 정보를 해당 필드에 넣는다.
-          self.postcode = data.zonecode;
-          self.address = addr;
-          // 주소로 상세 정보를 검색
-          geocoder.addressSearch(data.address, function(results, status) {
-              // 정상적으로 검색이 완료됐으면
-            if (status === daum.maps.services.Status.OK) {
-
-              var result = results[0]; //첫번째 결과의 값을 활용
-
-              self.longitude = result.x
-              self.latitude = result.y
-
-              // 해당 주소에 대한 좌표를 받아서
-              var coords = new daum.maps.LatLng(result.y, result.x);
-              // 지도를 보여준다.
-              mapContainer.style.display = "block";
-              map.relayout();
-              // 지도 중심을 변경한다.
-              map.setCenter(coords);
-              // 마커를 결과값으로 받은 위치로 옮긴다.
-              marker.setPosition(coords)
-            }
-          });
-        }
-      }).open();
-    }
+    changeToggle(){
+      this.isOffline = !this.isOffline;
+    },
+    changeOff() {
+      this.isOffline = true;
+    },
+    changeOn() {
+      this.isOffline = false;
+    },
   },
-}
+};
 </script>
 
-<style>
+<style scoped>
+.tab {
+  font-family: 'Katuri';
+  color: #fff;
+}
+
+.toggleWrapper {
+  overflow: hidden;
+}
+.toggleWrapper input {
+  position: absolute;
+  left: -99em;
+}
+
+.toggle {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  width: 90px;
+  height: 50px;
+  background-color: #83D8FF;
+  border-radius: 84px;
+  transition: background-color 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+.toggle:before {
+  content: 'Offline';
+  position: absolute;
+  left: -70px;
+  top: 15px;
+  font-size: 18px;
+  color: black;
+}
+.toggle:after {
+  content: 'Online';
+  position: absolute;
+  right: -75px;
+  top: 15px;
+  font-size: 18px;
+  color: rgb(168, 166, 166);
+}
+
+.toggle__handler {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  top: 3px;
+  left: -20px;
+  width: 44px;
+  height: 44px;
+  background-color: #FFCF96;
+  border-radius: 50px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: rotate(-45deg);
+}
+.toggle__handler .crater {
+  position: absolute;
+  background-color: #E8CDA5;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+  border-radius: 100%;
+}
+.toggle__handler .crater--1 {
+  top: 18px;
+  left: 10px;
+  width: 4px;
+  height: 4px;
+}
+.toggle__handler .crater--2 {
+  top: 28px;
+  left: 22px;
+  width: 6px;
+  height: 6px;
+}
+.toggle__handler .crater--3 {
+  top: 10px;
+  left: 25px;
+  width: 8px;
+  height: 8px;
+}
+
+.star {
+  position: absolute;
+  background-color: #ffffff;
+  transition: all 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  border-radius: 50%;
+}
+
+.star--1 {
+  top: 10px;
+  left: 35px;
+  z-index: 0;
+  width: 30px;
+  height: 3px;
+}
+
+.star--2 {
+  top: 18px;
+  left: 28px;
+  z-index: 1;
+  width: 30px;
+  height: 3px;
+}
+
+.star--3 {
+  top: 27px;
+  left: 40px;
+  z-index: 0;
+  width: 30px;
+  height: 3px;
+}
+
+.star--4,
+.star--5,
+.star--6 {
+  opacity: 0;
+  transition: all 300ms 0 cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+.star--4 {
+  top: 16px;
+  left: 11px;
+  z-index: 0;
+  width: 2px;
+  height: 2px;
+  transform: translate3d(3px, 0, 0);
+}
+
+.star--5 {
+  top: 32px;
+  left: 17px;
+  z-index: 0;
+  width: 3px;
+  height: 3px;
+  transform: translate3d(3px, 0, 0);
+}
+
+.star--6 {
+  top: 36px;
+  left: 28px;
+  z-index: 0;
+  width: 2px;
+  height: 2px;
+  transform: translate3d(3px, 0, 0);
+}
+
+input:checked + .toggle {
+  background-color: #749DD6;
+}
+input:checked + .toggle:before {
+  color: rgb(168, 166, 166);
+}
+input:checked + .toggle:after {
+  color: black;
+}
+input:checked + .toggle .toggle__handler {
+  background-color: #FFE5B5;
+  transform: translate3d(40px, 0, 0) rotate(0);
+}
+input:checked + .toggle .toggle__handler .crater {
+  opacity: 1;
+}
+input:checked + .toggle .star--1 {
+  width: 2px;
+  height: 2px;
+}
+input:checked + .toggle .star--2 {
+  width: 4px;
+  height: 4px;
+  transform: translate3d(-5px, 0, 0);
+}
+input:checked + .toggle .star--3 {
+  width: 2px;
+  height: 2px;
+  transform: translate3d(-7px, 0, 0);
+}
+input:checked + .toggle .star--4,
+input:checked + .toggle .star--5,
+input:checked + .toggle .star--6 {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+input:checked + .toggle .star--4 {
+  transition: all 300ms 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+input:checked + .toggle .star--5 {
+  transition: all 300ms 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+input:checked + .toggle .star--6 {
+  transition: all 300ms 400ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
 
 </style>

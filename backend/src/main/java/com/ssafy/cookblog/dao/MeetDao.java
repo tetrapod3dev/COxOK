@@ -12,9 +12,15 @@ public interface MeetDao {
 	public List<MeetDto> selectAllMeet(int startIndex);
 	public MeetViewResponseDto selectMeet(long meetId);
 	public List<MeetJoinDto> selectMeetJoinList(long meetId);
+	
 	public int delete(long meetId);
 
 	public int insertMeetJoin(MeetJoinDto meetJoinDto);
-	public int deleteMeetJoin(long meetJoinId);
+	public int deleteMeetJoin(MeetJoinDto meetJoinDto);
+
+	public List<MeetDto> selectMeetByType(MeetDto meetDto);
+	public long selectMeetTotalByType(String type);
 	
+	public List<MeetDto> selectMeetByUserid(long userId);
+	public List<MeetDto> selectMeetByMeetJoinUserid(long userId);
 }

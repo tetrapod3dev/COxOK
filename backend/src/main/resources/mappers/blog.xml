@@ -30,6 +30,7 @@
 			blog 		
 		where 
 			blog_id = #{blogId}
+		order by blogId desc
 	</select>
 	
 	<select id="selectMyBlog" resultType="BlogDto">
@@ -40,6 +41,41 @@
 			blog 		
 		where 
 			user_id = #{userId}
+		order by blogId desc
+		limit #{startIndex},10
+	</select>
+	
+	<select id="selectMyTotal" resultType="Long">
+		select 
+			count(blog_id)
+		from 
+			blog 		
+		where 
+			user_id = #{userId}
+	</select>
+	
+	<select id="selectByTitle" resultType="BlogDto">
+		select
+			blog_id as blogId, user_id as userId, recipe_id as recipeId, title, content,
+			reg_time as regTime, tag1, tag2, tag3
+		from 
+			blog
+		where 
+			title like concat('%',#{title},'%')
+		order by blogId desc	
+	</select>
+
+	<select id="selectByTag" resultType="BlogDto">
+		select
+			distinct(blog_id) as blogId, user_id as userId, recipe_id as recipeId, title, content,
+			reg_time as regTime, tag1, tag2, tag3
+		from 
+			blog
+		where 
+			tag1 like concat('%',#{tag},'%') or
+			tag2 like concat('%',#{tag},'%') or
+			tag3 like concat('%',#{tag},'%')
+		order by blogId desc	
 	</select>
 	
 	<insert id ="insert">
@@ -59,6 +95,9 @@
 		update blog set
 			<if test="recipeId!=0">
 				recipe_id = #{recipeId},
+			</if>
+			<if test="recipeId==0">
+				recipe_id=null,
 			</if>
 			title=#{title},
 			content = #{content}, tag1=#{tag1}, tag2=#{tag2}, tag3=#{tag3}

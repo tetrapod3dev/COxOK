@@ -45,6 +45,21 @@ public class RecipeDaoImpl implements RecipeDao{
 	public List<IngredientDto> selectAllIngredient() {
 		return session.selectList("recipe.selectAllIngredient");
 	}
+	
+	@Override
+	public List<IngredientDto> selectAllIngredientAdmin(int startIndex) {
+		return session.selectList("recipe.selectAllIngredientAdmin", startIndex);
+	}
+	
+	@Override
+	public int insertIngredientAdmin(IngredientDto ingredient) {
+		return session.insert("recipe.registerIngredientAdmin", ingredient);
+	}
+	
+	@Override
+	public int updateIngredientAdmin(IngredientDto ingredient) {
+		return session.update("recipe.modifyIngredientAdmin", ingredient);
+	}
 
 	@Override
 	public List<RecipeIngredientResponseDto> selectRecipeIngredient(long recipeId) {
@@ -128,7 +143,51 @@ public class RecipeDaoImpl implements RecipeDao{
 	
 	@Override
 	public List<RecipeDto> selectRecipeListByCategoryId(long foodCategoryId) {
-		return session.selectList("recipe.selectRecipeListByCategoryId",foodCategoryId);
+		return session.selectList("recipe.selectRecipeListByCategoryId", foodCategoryId);
+	}
+
+	@Override
+	public int deleteIngredientAdmin(long ingredientId) {
+		return session.delete("recipe.removeIngredientAdmin", ingredientId);
+	}
+	
+	@Override
+	public List<Long> selectRecipeIdByIngredientId(long ingredientId) {
+		return session.selectList("recipe.selectRecipeIdByIngredientId",ingredientId);
+	}
+	
+	@Override
+	public int updateNutrient(RecipeDto recipeDto) {
+		return session.update("recipe.updateNutrient",recipeDto);
+	}
+
+	@Override
+	public int insertIngredientUser(IngredientDto ingredient) {
+		return session.insert("recipe.registerIngredientUser", ingredient);
+	}
+
+	@Override
+	public List<IngredientDto> selectAllIngredientToBeUpdated(int startIndex) {
+		return session.selectList("recipe.allIngredientToBeUpdated", startIndex);
+	}
+	
+	@Override
+	public List<RecipeDto> selectRecipeListByCookTime(RecipeDto recipeDto) {
+		return session.selectList("recipe.selectRecipeListByCookTime",recipeDto);
+	}
+	@Override
+	public long selectRecipeTotalByCookTime(int cookTime) {
+		return session.selectOne("recipe.selectRecipeTotalByCookTime",cookTime);
+	}
+	
+	@Override
+	public List<RecipeDto> selectRecipeListByLevel(RecipeDto recipeDto) {
+		return session.selectList("recipe.selectRecipeListByLevel",recipeDto);
+	}
+	
+	@Override
+	public long selectRecipeTotalByLevel(int level) {
+		return session.selectOne("recipe.selectRecipeTotalByLevel",level);
 	}
 
 }

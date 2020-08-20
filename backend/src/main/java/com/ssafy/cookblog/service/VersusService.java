@@ -14,4 +14,5 @@ public interface VersusService {
 	public VersusViewResponseDto getOneVersus(long versusId);
 	public int removeVersus(long versusId);
 	public List<VersusPointDto> getVersusResult(long versusId);
+	public List<VersusPointDto> getTop3VersusResult();
 }

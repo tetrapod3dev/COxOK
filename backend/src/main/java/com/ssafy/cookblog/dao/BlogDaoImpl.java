@@ -18,8 +18,13 @@ public class BlogDaoImpl implements BlogDao{
 		return session.selectOne("blog.select",blogId);
 	}
 	
-	public List<BlogDto> selectMyBlog(long userId) {
-		return session.selectList("blog.selectMyBlog",userId);
+	public List<BlogDto> selectMyBlog(BlogDto blogDto) {
+		return session.selectList("blog.selectMyBlog",blogDto);
+	}
+	
+	@Override
+	public long selectMyTotal(long userId) {
+		return session.selectOne("blog.selectMyTotal",userId);
 	}
 	
 	public List<BlogDto> selectAll(int startIndex) {
@@ -40,5 +45,14 @@ public class BlogDaoImpl implements BlogDao{
 	
 	public long selectTotal() {
 		return session.selectOne("blog.selectTotalNum");
+	}
+	
+	@Override
+	public List<BlogDto> selectByTitle(String title) {
+		return session.selectList("blog.selectByTitle",title);
+	}
+	@Override
+	public List<BlogDto> selectByTag(String tag) {
+		return session.selectList("blog.selectByTag",tag);
 	}
 }

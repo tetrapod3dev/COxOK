@@ -1,6 +1,9 @@
 <template>
   <div>
-    <p @click="showModal">로그인</p>
+    <div @click="showModal" class="custom-cursor">
+      <i :class="icon"></i>
+      <span class="no-icon" @click="showModal">로그인</span>
+    </div>
 
     <div class="modal" id="login-modal">
       <div class="modal-dialog modal-login">
@@ -53,7 +56,7 @@
 
           <div class="modal-footer">
             <p>아직 회원이 아니신가요?</p>
-            <span @click="hideModal">
+            <span @click="hideModal" class="custom-cursor">
               <router-link to="/accounts/signup" tag="span">회원 가입</router-link>
             </span>
           </div>
@@ -79,6 +82,9 @@ export default {
   computed: {},
   created() {},
   components: {},
+  props: {
+    icon: String,
+  },
   methods: {
     ...mapActions(["login"]),
 
@@ -97,6 +103,10 @@ export default {
 </script>
 
 <style scoped>
+.custom-cursor {
+  cursor: pointer;
+}
+
 /* modal background */
 #login-modal {
   background-color: rgb(0, 0, 0);

@@ -3,35 +3,37 @@
     <div class="page-header page-header-mini">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.pexels.com/photos/406152/pexels-photo-406152.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') ;"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/cook.jpg)' }"
       ></parallax>
-    </div>
-    <div class="subscribe-line subscribe-line-white">
       <div class="container">
-        <div class="row">
-          <div class="col-md-2">
-            <router-link to="/recipes/make">
-              <n-button type="primary" round block>레시피 작성</n-button>
-            </router-link>
-          </div>
-          <div class="col-md-2 offset-md-8" @click="changeShow">
-            <n-button type="primary" round block>레시피 검색</n-button>
-          </div>
+        <h1 class="title">요리하기</h1>
+      </div>
+    </div>
+
+    
+    <div class="section meet-button pb-0" >
+      <div class="container">
+        <div class="button-container">
+          <button class="learn-more" @click="changeShow"><i class="fas fa-search"></i><p>검색</p></button> 
+          <button v-if="isLoggedIn" class="learn-more" @click="moveMake"><i class="far fa-edit"></i> <p>작성</p></button>
         </div>
       </div>
     </div>
+    
     <div class="container">
       <div class="row"></div>
-
       <CategorySelector
         v-show="categoryShow"
         @searchRecipe="categorySubmit"
         @removeSelect="removeSelect"
-        class="mt-5"
       />
 
-      <div v-if="recipes.length > 0" class="row mt-4">
-        <div v-for="recipe in recipes" :key="recipe.recipeId" class="col-md-4 px-5 my-3">
+      <div v-if="recipes.length > 0" class="row">
+        <div
+          v-for="recipe in recipes"
+          :key="recipe.recipeId"
+          class="col-12 col-lg-4 col-md-6 px-5 my-3"
+        >
           <RecipeListItem :recipe="recipe" />
         </div>
       </div>
@@ -70,10 +72,6 @@ export default {
       recipes: [],
       curPage: this.$route.params.pageNum * 1,
       maxPage: 10,
-      searchData: {
-        selectedCategory: [],
-        selectedIngredients: [],
-      },
     };
   },
   components: {
@@ -82,23 +80,39 @@ export default {
     PageButton,
     [Button.name]: Button,
   },
+  computed: {
+    ...mapGetters(["searchingData", "isLoggedIn"]),
+  },
+  created() {
+    this.curPage = this.$route.params.pageNum * 1;
+    this.changePage(this.curPage);
+  },
+  watch: {
+    $route() {
+      this.curPage = parseInt(this.$route.params.pageNum);
+      this.changePage(this.curPage);
+    },
+  },
   methods: {
     changeShow() {
       this.categoryShow = !this.categoryShow;
     },
+    moveMake() {
+      this.$router.push({name: 'RecipeMakeView'})
+    },
     categorySubmit() {
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
+        alert("검색 항목을 입력해주세요!");
+      } else {
         if (this.$route.params.pageNum != 1) {
           this.$router.push({ params: { pageNum: 1 } });
         } else {
           this.changePage(1);
         }
-      } else {
-        alert("검색 항목을 입력해주세요!");
       }
     },
     removeSelect() {
@@ -109,7 +123,6 @@ export default {
       }
     },
     movePage(page) {
-      console.log(page);
       if (page == "«") {
         this.$router.push({ params: { pageNum: 1 } });
       } else if (page == "»") {
@@ -121,13 +134,13 @@ export default {
     },
     changePage(page) {
       if (
-        this.searchingData.selectedCategory.length +
-          this.searchingData.selectedIngredients.length !=
-        0
+        (this.searchingData.selectedCategory.length +
+          this.searchingData.selectedIngredients.length ==
+        0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
-        this.searchRecipe(page);
-      } else {
         this.allRecipe(page);
+      } else {
+        this.searchRecipe(page);
       }
     },
     allRecipe(page) {
@@ -153,6 +166,10 @@ export default {
         frm.append("selectedIngredients", selectedIngredient);
       });
 
+      frm.append("level", this.searchingData.level)
+
+      frm.append("cookTime", this.searchingData.cookTime)
+
       // recipe/search/{{page}} 라는 주소로 selectedCategory(선택된 카테고리의 id들) / selectedIngredients(선택된 재료들의 id)를 전달합니다.
       axios
         .post(SERVER.URL + SERVER.ROUTES.searchRecipe + (page - 1), frm)
@@ -164,21 +181,98 @@ export default {
         .catch((err) => console.log(err));
     },
   },
-  created() {
-    this.curPage = this.$route.params.pageNum * 1;
-    this.changePage(this.curPage);
-  },
-  watch: {
-    $route() {
-      this.curPage = parseInt(this.$route.params.pageNum);
-      this.changePage(this.curPage);
-    },
-  },
-  computed: {
-    ...mapGetters(["searchingData"]),
-  },
 };
 </script>
 
-<style>
+<style scoped>
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+}
+button.learn-more {
+  font-weight: 600;
+  height: 60px;
+  color: #382b22;
+  text-transform: uppercase;
+  padding: 0.3em 1.5em;
+  background: #f2efe4;
+  border: 2px solid #b69f81;
+  border-left: 0;
+  border-radius: 0;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    background 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:first-child {
+  border-top-left-radius: 0.75em;
+  border-bottom-left-radius: 0.75em;
+  padding-left: 2em;
+  border-left: 2px solid #b69f81;
+}
+button.learn-more:last-child {
+  border-top-right-radius: 0.75em;
+  border-bottom-right-radius: 0.75em;
+  padding-right: 2em;
+}
+button.learn-more::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f2d4ae;
+  border-radius: inherit;
+  box-shadow: 0 0 0 2px #b69f81, 0 0.625em 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0.75em, -1em);
+  transform: translate3d(0, 0.75em, -1em);
+  -webkit-transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1),
+    box-shadow 150ms cubic-bezier(0, 0, 0.58, 1),
+    -webkit-transform 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.learn-more:hover {
+  background: #f2efe4;
+  -webkit-transform: translate(0, 0.25em);
+  transform: translate(0, 0.25em);
+}
+button.learn-more:hover::before {
+  box-shadow: 0 0 0 2px #b69f81, 0 0.5em 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0.5em, -1em);
+  transform: translate3d(0, 0.5em, -1em);
+}
+button.learn-more:active {
+  background: #f2efe4;
+  -webkit-transform: translate(0em, 0.75em);
+  transform: translate(0em, 0.75em);
+}
+button.learn-more:active::before {
+  box-shadow: 0 0 0 2px #b69f81, 0 0 #f2f0ce;
+  -webkit-transform: translate3d(0, 0, -1em);
+  transform: translate3d(0, 0, -1em);
+}
+
+.meet-button .button-container {
+  margin-top: -112px;
+}
 </style>

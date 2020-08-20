@@ -19,5 +19,8 @@ public class RecipeSearchRequestDto {
 	private List<Integer> categoryId;
 	private List<Integer> ingredientId;
 	
+	private int level;
+	private int cookTime;
+	
 	private int startIndex;
 }

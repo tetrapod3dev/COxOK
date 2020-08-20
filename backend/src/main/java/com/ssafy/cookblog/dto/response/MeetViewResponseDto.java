@@ -17,6 +17,7 @@ import lombok.Setter;
 public class MeetViewResponseDto {
 	private long meetId;
 	private long userId;
+	private String writerNickname;
 	private long recipeId;
 	private String thumbnailSrc;
 	private String type;

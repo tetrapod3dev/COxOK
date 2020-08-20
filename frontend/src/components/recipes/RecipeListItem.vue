@@ -4,21 +4,44 @@
       class="card-link"
       :to="{name: 'RecipeDetailView', params: {recipe_id: recipe.recipeId} }"
     >
-      <card type="profile" style="width:300px;height:300px;">
-        <div class="versus-card-image" :style="'background-image: url('+ imgSrc+')'" alt="레시피 사진"></div>
-        <!-- <card class="card" style="width: 20rem;">
-        <img slot="image" :src="imgSrc" class="card-img-top" alt="레시피 사진" />-->
+      <b-card
+        :img-src=imgSrc
+        img-alt="레시피 사진"
+        img-width="350px"
+        img-height="250px"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="recipe-card mb-2"
+      >
         <div>
-          <p class="card-text">{{ recipe.recipeName }}</p>
+          <div class="mt-auto mb-auto">
+            <b-card-text class="recipe-card-text row">
+              <p class="col-12">{{ recipe.recipeName }}</p>
+              <div class="recipe-icon col-12">
+                <div class="col-4 recipe-info">
+                  <i class="now-ui-icons ui-2_time-alarm" v-b-popover.hover="'조리시간'"></i><br>
+                  {{ recipe.cookTime }}분
+                </div>
+                <div class="col-4 recipe-info">
+                  <i class="far fa-star" v-b-popover.hover="'평점'"></i><br>
+                  {{ avgRound(recipe.avgRating) }}
+                </div>
+                <div class="col-4 recipe-info">
+                  <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
+                  {{ recipe.level }}
+                </div>
+              </div>
+            </b-card-text>
+          </div>
         </div>
-      </card>
+      </b-card>
     </router-link>
   </div>
 </template>
 
 <script>
 import SERVER from "@/api/api";
-import { Card } from "@/components/global";
 
 export default {
   name: "RecipeListItem",
@@ -26,21 +49,46 @@ export default {
     recipe: Object,
   },
   components: {
-    Card,
   },
   computed: {
     imgSrc() {
       return SERVER.IMAGE_URL + this.recipe.recipeThumbnailSrc;
     },
   },
+  methods: {
+    avgRound(avgRating){
+      return Math.round(avgRating * 100) / 100;
+    }
+  }
 };
 </script>
 
 <style scoped>
-.versus-card-image {
-  width: 260px;
-  height: 200px;
-  background-size: cover;
-  background-position: center;
+.recipe-card {
+  width: 350px;
+  height: 500px;
+  display:inline-block;
+  transition: all 0.8s;
 }
+.recipe-card:hover {
+  transform:scale(1.1);
+}
+.recipe-card-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+.list-rating {
+  font-size: 20px;
+}
+
+.recipe-info{
+  color: #a79d9c;
+}
+
+.recipe-icon{
+  display: flex;
+  position: absolute; 
+  bottom: 0px; 
+}
+
 </style>

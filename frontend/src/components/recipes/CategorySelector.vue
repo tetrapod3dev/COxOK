@@ -1,25 +1,25 @@
 <template>
-  <div>
-    <div class="row px-5">
-      <div class="col-6 row">
+  <div class="search-form">
+    <div class="row px-0 ml-auto">
+      <div class="col-12 col-lg-6 row">
         <div v-for="(categoryGroup, index) in categoryGroups" :key="index" class="col-4">
           <div
             v-for="category in categoryGroup"
             :key="category['category_id']"
             class="d-flex justify-content-start my-2"
           >
-            <input
-              type="checkbox"
+            <b-form-checkbox
               v-model="checker[category.category_id]"
-              class="mr-2 mt-1"
-              @click="selectCategory(category.category_id)"
-            />
-            {{ category['category_name']}}
+              class="mt-1 text-nowrap"
+              @click.native.prevent="selectCategory(category.category_id)"
+            >
+              {{ category['category_name']}}
+            </b-form-checkbox>
           </div>
         </div>
       </div>
 
-      <div class="col-6">
+      <div class="col-12 col-md-6 ml-auto">
         <div class="row">
           <div class="col-7 align-self-center">
             <b-form-input
@@ -47,10 +47,74 @@
           </div>
         </div>
       </div>
+    </div>  
+    <div class="mt-5 mb-5">
+      <div id="sliderContainer" class="row">
+        <div class="tick-slider col-8 col-md-4 ml-auto mr-auto mb-0 align-self-center">
+          <div class="tick-slider-header">
+            <h5><label for="weightSlider">난이도</label></h5>
+            <h5>level</h5>
+          </div>
+          <div class="tick-slider-value-container">
+            <div id="weightLabelMin" class="tick-slider-label">1</div>
+            <div id="weightLabelMax" class="tick-slider-label">5</div>
+            <div id="weightValue" class="tick-slider-value"></div>
+          </div>
+          <div class="tick-slider-background"></div>
+          <div id="weightProgress" class="tick-slider-progress"></div>
+          <div id="weightTicks" class="tick-slider-tick-container"></div>
+          <input
+              id="weightSlider"
+              class="tick-slider-input"
+              type="range"
+              min="1"
+              max="5"
+              step="1"
+              value="5"
+              v-model="level"
+              data-tick-step="5"
+              data-tick-id="weightTicks"
+              data-value-id="weightValue"
+              data-progress-id="weightProgress"
+              data-handle-size="18"
+              data-min-label-id="weightLabelMin"
+              data-max-label-id="weightLabelMax"
+          />
+        </div>
+        <div class="tick-slider col-8 col-md-4  ml-auto mr-auto align-self-center">
+          <div class="tick-slider-header">
+            <h5><label for="sizeSlider">소요 시간</label></h5>
+            <h5>분</h5>
+          </div>
+          <div class="tick-slider-value-container">
+            <div id="sizeLabelMin" class="tick-slider-label">0</div>
+            <div id="sizeLabelMax" class="tick-slider-label">120</div>
+            <div id="sizeValue" class="tick-slider-value"></div>
+          </div>
+          <div class="tick-slider-background"></div>
+          <div id="sizeProgress" class="tick-slider-progress"></div>
+          <div id="sizeTicks" class="tick-slider-tick-container"></div>
+          <input
+              id="sizeSlider"
+              class="tick-slider-input"
+              type="range"
+              min="0"
+              max="120"
+              step="5"
+              value="120"
+              v-model="cookTime"
+              data-tick-step="5"
+              data-tick-id="sizeTicks"
+              data-value-id="sizeValue"
+              data-progress-id="sizeProgress"
+              data-handle-size="18"
+              data-min-label-id="sizeLabelMin"
+              data-max-label-id="sizeLabelMax"
+          />
+        </div> 
+      </div>
     </div>
-
     <button class="btn btn-secondary" @click="searchRecipe">검색</button>
-
     <button class="btn btn-danger" @click="removeSelect">초기화</button>
   </div>
 </template>
@@ -74,6 +138,8 @@ export default {
       selectedIngredientsName: [],
       selectedIngredients: [],
       textInput: null,
+      level: 5,
+      cookTime: 120,
     };
   },
   components: {
@@ -92,6 +158,8 @@ export default {
         selectedCategory: this.selectedCategory,
         selectedIngredients: this.selectedIngredients,
         selectedIngredientsName: this.selectedIngredientsName,
+        level: this.level,
+        cookTime: this.cookTime,
       };
     },
     ...mapGetters(["searchingData"]),
@@ -127,9 +195,13 @@ export default {
     },
     addIngredient() {
       if (this.ingredientsName.indexOf(this.textInput) >= 0) {
-        this.selectedIngredients.push(this.ingredients[this.textInput]);
-        this.selectedIngredientsName.push(this.textInput);
-        this.textInput = "";
+        if (this.selectedIngredients.indexOf(this.ingredients[this.textInput]) < 0) {
+          this.selectedIngredients.push(this.ingredients[this.textInput]);
+          this.selectedIngredientsName.push(this.textInput);
+          this.textInput = "";
+        } else {
+          alert('이미 입력한 재료입니다.')
+        }
       } else {
         alert("재료 목록에 존재하는 재료를 입력해주세요!");
       }
@@ -147,12 +219,111 @@ export default {
         selectedCategory: [],
         selectedIngredients: [],
         selectedIngredientsName: [],
+        level: 5,
+        cookTime: 120,
       });
       this.selectedCategory = [];
       this.selectedIngredients = [];
       this.selectedIngredientsName = [];
+      this.level = 5;
+      document.getElementById("weightSlider").value = 5
+      this.cookTime = 120;
+      document.getElementById("sizeSlider").value = 120
+      this.init()
       this.$emit("removeSelect");
     },
+    init() {
+      const sliders = document.getElementsByClassName("tick-slider-input");
+
+      for (let slider of sliders) {
+        slider.oninput = this.onSliderInput;
+        this.updateValue(slider);
+        this.updateValuePosition(slider);
+        this.updateLabels(slider);
+        this.updateProgress(slider);
+
+        this.setTicks(slider);
+      }
+    },
+    onSliderInput(event) {
+      this.updateValue(event.target);
+      this.updateValuePosition(event.target);
+      this.updateLabels(event.target);
+      this.updateProgress(event.target);
+    },
+    updateValue(slider) {
+      let value = document.getElementById(slider.dataset.valueId);
+
+      value.innerHTML = "<div>" + slider.value + "</div>";
+    },
+    updateValuePosition(slider) {
+      let value = document.getElementById(slider.dataset.valueId);
+
+      const percent = this.getSliderPercent(slider);
+      const sliderWidth = slider.getBoundingClientRect().width;
+      const valueWidth = value.getBoundingClientRect().width;
+      const handleSize = slider.dataset.handleSize;
+
+      let left = percent * (sliderWidth - handleSize) + handleSize / 2 - valueWidth / 2;
+
+      left = Math.min(left, sliderWidth - valueWidth);
+      left = slider.value === slider.min ? 0 : left;
+
+      value.style.left = left + "px";
+    },
+    updateLabels(slider) {
+      const value = document.getElementById(slider.dataset.valueId);
+      const minLabel = document.getElementById(slider.dataset.minLabelId);
+      const maxLabel = document.getElementById(slider.dataset.maxLabelId);
+
+      const valueRect = value.getBoundingClientRect();
+      const minLabelRect = minLabel.getBoundingClientRect();
+      const maxLabelRect = maxLabel.getBoundingClientRect();
+
+      const minLabelDelta = valueRect.left - (minLabelRect.left);
+      const maxLabelDelta = maxLabelRect.left - valueRect.left;
+
+      const deltaThreshold = 32;
+
+      if (minLabelDelta < deltaThreshold) minLabel.classList.add("hidden");
+      else minLabel.classList.remove("hidden");
+
+      if (maxLabelDelta < deltaThreshold) maxLabel.classList.add("hidden");
+      else maxLabel.classList.remove("hidden");
+    },
+    updateProgress(slider) {
+      let progress = document.getElementById(slider.dataset.progressId);
+      const percent = this.getSliderPercent(slider);
+
+      progress.style.width = percent * 100 + "%";
+    },
+    getSliderPercent(slider) {
+      const range = slider.max - slider.min;
+      const absValue = slider.value - slider.min;
+
+      return absValue / range;
+    },
+    setTicks(slider) {
+      let container = document.getElementById(slider.dataset.tickId);
+      const spacing = parseFloat(slider.dataset.tickStep);
+      const sliderRange = slider.max - slider.min;
+      const tickCount = sliderRange / spacing + 1; // +1 to account for 0
+
+      for (let ii = 0; ii < tickCount; ii++) {
+        let tick = document.createElement("span");
+
+        tick.className = "tick-slider-tick";
+
+        container.appendChild(tick);
+      }
+    },
+    onResize() {
+      const sliders = document.getElementsByClassName("tick-slider-input");
+
+      for (let slider of sliders) {
+        this.updateValuePosition(slider);
+      }
+    }
   },
   created() {
     axios
@@ -177,9 +348,253 @@ export default {
     this.selectedCategory = this.searchingData.selectedCategory;
     this.selectedIngredients = this.searchingData.selectedIngredients;
     this.selectedIngredientsName = this.searchingData.selectedIngredientsName;
+    this.level = this.searchingData.level;
+    this.cookTime = this.searchingData.cookTime;
   },
+  mounted() {
+    this.init()
+  }
 };
 </script>
 
 <style>
+
+/* 난이도, 소요시간 */
+.wrapper {
+  --yellow: #ffd049;
+  --light-yellow: #fdf2d2;
+  --orange: #ffa929;
+  --light-gray: #e3e4e8;
+  --gray: #71738b;
+  --light-blue: #7a7c93;
+  --blue: #34385a;
+
+  --slider-handle-size: 14px;
+  --slider-handle-border-radius: 2px;
+  --slider-handle-margin-top: 8px;
+  --slider-track-height: 6px;
+  --slider-track-border-radius: 4px;
+}
+
+.search-form {
+  padding: 56px 40px;
+  border-radius: 40px;
+  box-shadow: 0px 8px 40px rgba(128, 128, 128, 0.15);
+}
+
+#sliderContainer > div:first-child {
+  margin-bottom: 48px;
+}
+
+.tick-slider-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tick-slider-header > h5 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.tick-slider {
+  position: relative;
+}
+
+.tick-slider-value-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  color: var(--gray);
+}
+
+.tick-slider-value {
+  position: absolute;
+  top: 0;
+  font-weight: bold;
+  color: var(--blue);
+  border-radius: var(--slider-handle-border-radius);
+}
+
+.tick-slider-value > div {
+  animation: bulge 0.3s ease-out;
+}
+
+.tick-slider-background,
+.tick-slider-progress,
+.tick-slider-tick-container {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  height: var(--slider-track-height);
+  pointer-events: none;
+  border-radius: var(--slider-track-border-radius);
+  z-index: 0;
+}
+
+.tick-slider-background {
+  width: 100%;
+  background-color: var(--light-gray);
+}
+
+.tick-slider-progress {
+  background-color: var(--yellow);
+}
+
+.tick-slider-tick-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 calc(var(--slider-handle-size) / 2);
+}
+
+.tick-slider-tick {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.tick-slider-label {
+  opacity: 0.85;
+  transition: opacity 0.1s ease;
+}
+
+.tick-slider-label.hidden {
+  opacity: 0;
+}
+
+@keyframes bulge {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/*
+
+    REMOVE SLIDER STYLE DEFAULTS
+
+*/
+input[type="range"] {
+  -webkit-appearance: none;
+
+  width: 100%;
+  height: 100%;
+
+  background: transparent;
+  outline: none;
+
+  margin: 5px 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+
+  border: none;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+
+/*
+
+    HANDLE
+
+*/
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+
+  width: var(--slider-handle-size);
+  height: var(--slider-handle-size);
+
+  background: var(--orange);
+
+  border-radius: var(--slider-handle-border-radius);
+
+  cursor: pointer;
+
+  margin-top: var(--slider-handle-margin-top);
+
+  -webkit-transform: scale(1);
+  transform: scale(1);
+
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+input[type="range"]:hover::-webkit-slider-thumb,
+input[type="range"]:focus::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  -webkit-appearance: none;
+
+  width: var(--slider-handle-size);
+  height: var(--slider-handle-size);
+
+  background: var(--orange);
+
+  border: none;
+  border-radius: var(--slider-handle-border-radius);
+
+  cursor: pointer;
+
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+input[type="range"]:hover::-moz-range-thumb,
+input[type="range"]:focus::-moz-range-thumb {
+  transform: scale(1.2);
+}
+
+/*
+
+    TRACK
+
+*/
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: var(--slider-track-height);
+
+  cursor: pointer;
+
+  background: none;
+
+  border-radius: var(--slider-track-border-radius);
+}
+
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: var(--slider-track-height);
+
+  cursor: pointer;
+
+  background: none;
+
+  border-radius: var(--slider-track-border-radius);
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: none;
+}
+input[type="range"]:active::-webkit-slider-runnable-track {
+  background: none;
+}
+
 </style>

@@ -6,7 +6,7 @@
       </router-link>
     </div>
     <h3 class="title">{{user.nickname}}</h3>
-    <p class="category">{{user.email}}</p>
+    <h5 class="category">{{user.email}}</h5>
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
       user: {
         email: "",
         nickname: "",
-        profilePhoto: "",
+        profilePhoto: "dochi.png",
       },
     };
   },

@@ -52,8 +52,6 @@ public class VersusController {
 		ResponseEntity response = null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		
-		System.out.println(versusDto.getRecipeIdList());
-
 		int count = versusService.registerVersus(versusDto);
 		if(count!=0) {
 			map.put("msg", "요리대전 작성에 성공했습니다.");
@@ -161,6 +159,27 @@ public class VersusController {
 			response = new ResponseEntity(map, HttpStatus.OK);
 		}else {
 			map.put("msg", "요리대전 결과를 찾지 못했습니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
+	@ApiOperation("전체 요리대전 중 상위 1,2,3위 레시피")
+	@GetMapping("/all/top3")
+	public Object getTop3VersusResult() {
+		ResponseEntity response = null;
+		Map<String,Object> map = new HashMap<String, Object>();
+
+		List<VersusPointDto> versusResult = versusService.getTop3VersusResult();
+		
+		if(versusResult!=null) {
+			map.put("msg", "요리대전 top3 조회를 성공했습니다.");
+			map.put("status", "success");
+			map.put("versus", versusResult);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "요리대전 top3 결과를 찾지 못했습니다.");
 			map.put("status", "fail");
 			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
 		}

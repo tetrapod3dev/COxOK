@@ -3,7 +3,7 @@
     <div class="page-header page-header-mini header-filter" filter-color="black">
       <parallax
         class="page-header-image"
-        style="background-image: url('https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80')"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/mypage.jpg)' }"
       ></parallax>
       <blog-profile />
     </div>
@@ -74,11 +74,13 @@ export default {
         .get(SERVER.URL + SERVER.ROUTES.userLikeRecipe, configs)
         .then((res) => {
           this.recipes = res.data.userLikeRecipe;
-        });
+        })
+        .catch((err) => {
+          if (err.response.status == 401) {
+            alert('로그인 정보가 만료되었습니다! 다시 로그인해주세요.')
+            this.logout()
+          }});
     },
   },
 };
 </script>
-
-<style>
-</style>

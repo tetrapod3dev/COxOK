@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.cookblog.dto.FoodCategoryDto;
+import com.ssafy.cookblog.dto.IngredientDto;
 import com.ssafy.cookblog.dto.RecipeDto;
 import com.ssafy.cookblog.dto.UserDto;
+import com.ssafy.cookblog.dto.request.IngredientRequestDto;
 import com.ssafy.cookblog.dto.request.UserModifyRequestDto;
 import com.ssafy.cookblog.service.RecipeService;
 import com.ssafy.cookblog.service.UserService;
@@ -103,34 +105,34 @@ public class UserController {
 		return response;
 	}
 	
-	@PostMapping("/kakaologin")
-	public Object kakaoLogin(@RequestParam("code") String code, HttpServletRequest request) throws Exception { 
-		ResponseEntity response = null;
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있음 
-		JsonNode accessToken = node.get("access_token"); // 사용자의 정보 
-		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken); 
-		
-		if(userInfo != null) {
-			String email = null; 
-			String nickname = null; 
-			JsonNode properties = userInfo.path("properties"); 
-			JsonNode kakao_account = userInfo.path("kakao_account"); 
-			email = kakao_account.path("email").asText(); 
-			nickname = properties.path("nickname").asText(); 
-			map.put("email", email);
-			map.put("nickname", nickname);
-			map.put("msg", "로그인 성공");
-			map.put("status", "success");
-			response = new ResponseEntity(map, HttpStatus.OK);
-		} else {
-			map.put("status", "fail");
-			map.put("msg", "로그인 실패");
-			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
-		}
-		return response;
-	}
+//	@PostMapping("/kakaologin")
+//	public Object kakaoLogin(@RequestParam("code") String code, HttpServletRequest request) throws Exception { 
+//		ResponseEntity response = null;
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		
+//		JsonNode node = KakaoController.getAccessToken(code); // accessToken에 사용자의 로그인한 모든 정보가 들어있음 
+//		JsonNode accessToken = node.get("access_token"); // 사용자의 정보 
+//		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken); 
+//		
+//		if(userInfo != null) {
+//			String email = null; 
+//			String nickname = null; 
+//			JsonNode properties = userInfo.path("properties"); 
+//			JsonNode kakao_account = userInfo.path("kakao_account"); 
+//			email = kakao_account.path("email").asText(); 
+//			nickname = properties.path("nickname").asText(); 
+//			map.put("email", email);
+//			map.put("nickname", nickname);
+//			map.put("msg", "로그인 성공");
+//			map.put("status", "success");
+//			response = new ResponseEntity(map, HttpStatus.OK);
+//		} else {
+//			map.put("status", "fail");
+//			map.put("msg", "로그인 실패");
+//			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+//		}
+//		return response;
+//	}
 
 	@ApiOperation("토큰 유효성 체크")
 	@PostMapping("/check")
@@ -180,8 +182,6 @@ public class UserController {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		String email = base64Service.decode(code);
-		System.out.println("code : " + code);
-		System.out.println("email : " + email);
 
 		UserDto user = new UserDto();
 		user.setEmail(email);
@@ -329,11 +329,13 @@ public class UserController {
 	}
 	
 	@ApiOperation("해당 유저가 작성한 레시피, 좋아요 레시피, 소모임의 갯수")
-	@GetMapping("/total/{userId}")
-	public Object getTotal(@PathVariable("userId") long userId) {
+	@GetMapping("/total")
+	public Object getTotal(HttpServletRequest request) {
 		ResponseEntity response = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
 		
 		map.put("msg", "성공");
 		map.put("status", "success");
@@ -360,6 +362,117 @@ public class UserController {
 		map.put("status", "success");
 
 		response = new ResponseEntity(map, HttpStatus.OK);
+		return response;
+	}
+	
+	
+	@ApiOperation("전체 회원 목록(관리자)") 
+	@GetMapping("/admin/list")
+	public Object getAdminList(HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
+
+		if(userId ==0) {	//관리자인 경우
+			List<UserDto> list = userService.findAllUser();
+			map.put("msg", "전체 회원 목록 가져오기 성공");
+			map.put("list",list);
+			map.put("status", "success");
+			response = new ResponseEntity(map, HttpStatus.OK);
+		}else {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
+	@ApiOperation("회원 삭제(관리자)")
+	@DeleteMapping("/admin/{id}")
+	public Object deleteUser(@PathVariable("id") long id, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
+
+
+		if(userId ==0) {	//관리자인 경우
+			int count = userService.removeByUserId(id);
+			if(count !=0) {
+				map.put("msg", "관리자 권한으로 회원 삭제 성공");
+				map.put("status", "success");
+				response = new ResponseEntity(map, HttpStatus.OK);
+			}else {
+				map.put("msg", "관리자 권한으로 회원 삭제 실패");
+				map.put("status", "fail");
+				response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+			}
+		}else {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+	
+	@ApiOperation("회원 수정(관리자)")
+	@PutMapping("/admin")
+	public Object modifyUser(@RequestBody UserDto userDto, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		Long userId = (userService.findUserByEmail(email).getUserId());
+
+		if(userId ==0) {	//관리자인 경우
+			int count = userService.modifyByAdmin(userDto);
+			if(count !=0) {
+				map.put("msg", "관리자 권한으로 회원 수정 성공");
+				map.put("status", "success");
+				response = new ResponseEntity(map, HttpStatus.OK);
+			}else {
+				map.put("msg", "관리자 권한으로 회원 수정 실패");
+				map.put("status", "fail");
+				response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+			}
+		}else {
+			map.put("msg", "관리자가 아닙니다.");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+		return response;
+	}
+
+	@ApiOperation("유저 재료 추가 요청")
+	@PostMapping("/ingredient")
+	public Object requsetAddIngredient(@RequestBody IngredientRequestDto ingredient, HttpServletRequest request) {
+		ResponseEntity response = null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		String email = jwtService.getEmailFromToken(request.getHeader("Authorization").substring(7));
+		
+		UserDto user = userService.findUserByEmail(email);
+		long userId = user.getUserId();
+		String nickname = user.getNickname();
+		
+		int count = recipeService.registerIngredientUser(ingredient);
+		
+		if(count != 0) {
+			map.put("msg", "성공");
+			map.put("status", "success");
+			map.put("userId", userId);
+			map.put("nickname", nickname);
+			map.put("email", email);
+			response = new ResponseEntity(map, HttpStatus.OK);
+		} else {
+			map.put("msg", "이메일 중복");
+			map.put("status", "fail");
+			response = new ResponseEntity(map, HttpStatus.BAD_REQUEST);
+		}
+
 		return response;
 	}
 	

@@ -30,7 +30,7 @@ public class MeetDaoImpl implements MeetDao {
 	public List<MeetJoinDto> selectMeetJoinList(long meetId) {
 		return session.selectList("meet.selectMeetJoinList", meetId);
 	}
-
+	
 	@Override
 	public int delete(long meetId) {
 		return session.delete("meet.delete", meetId);
@@ -52,7 +52,26 @@ public class MeetDaoImpl implements MeetDao {
 	}
 	
 	@Override
-	public int deleteMeetJoin(long meetJoinId) {
-		return session.delete("meet.deleteMeetJoin",meetJoinId);
+	public int deleteMeetJoin(MeetJoinDto meetJoinDto) {
+		return session.delete("meet.deleteMeetJoin",meetJoinDto);
+	}
+	
+	@Override
+	public List<MeetDto> selectMeetByType(MeetDto meetDto) {
+		return session.selectList("meet.selectMeetByType",meetDto);
+	}
+	
+	@Override
+	public long selectMeetTotalByType(String type) {
+		return session.selectOne("meet.selectMeetTotalByType",type);
+	}
+	
+	@Override
+	public List<MeetDto> selectMeetByUserid(long userId) {
+		return session.selectList("meet.selectMeetByUserid",userId);
+	}
+	@Override
+	public List<MeetDto> selectMeetByMeetJoinUserid(long userId) {
+		return session.selectList("meet.selectMeetByMeetJoinUserid",userId);
 	}
 }

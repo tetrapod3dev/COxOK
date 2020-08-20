@@ -4,67 +4,51 @@
       type="primary"
       position="fixed"
       :transparent="transparent"
-      :color-on-scroll="300"
+      :color-on-scroll="20"
       menu-classes="ml-auto"
     >
       <template>
-        <router-link
-          v-popover:popover1
-          class="navbar-brand"
-          :to="isLoggedIn ? '/main/' : '/'"
-          >CO×OK</router-link
-        >
-        <el-popover
-          ref="popover1"
-          popper-class="popover"
-          placement="bottom"
-          width="200"
-          trigger="hover"
-        >
-          <div class="popover-body">4팀 씨 없는 수박</div>
-        </el-popover>
+        <router-link class="navbar-brand" :to="isLoggedIn ? '/main' : '/'">
+          <img src="http://i3a104.p.ssafy.io/logo/CO_OK-logo.png" width="80px" />
+        </router-link>
       </template>
       <template slot="navbar-menu">
-        <li class="nav-item">
-          <router-link class="nav-link" :to="isLoggedIn ? '/main/' : '/'">
-            <i class="now-ui-icons shopping_shop"></i>
-            <p>홈</p>
-          </router-link>
+        <li class="nav-item dropdown">
+          <drop-down class="nav-item" icon="now-ui-icons shopping_shop" title="둘러보기">
+            <router-link class="dropdown-item" :to="{ name: isLoggedIn ? 'Main' : 'Home'}">홈</router-link>
+            <router-link class="dropdown-item" :to="{ name: 'About'}">씨없는수박</router-link>
+          </drop-down>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'PrevRecipeList' }">
             <i class="now-ui-icons education_paper"></i>
-            <p>레시피</p>
+            <p>요리하기</p>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/">
-            <i class="now-ui-icons users_circle-08"></i>
-            <p>소모임</p>
+          <router-link class="nav-link" :to="{ name: 'ClubListView', params: {pageNum: 1} }">
+            <img src="http://i3a104.p.ssafy.io/icons/자산1.svg" style="height:16px;">
+            <!-- <i class="now-ui-icons users_circle-08"></i> -->
+            <p style="padding-left: 5px;">코옥하기</p>
           </router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'VersusHomeView' }">
-            <i class="now-ui-icons users_circle-08"></i>
-            <p>요리대전</p>
+            <i class="now-ui-icons sport_trophy"></i>
+            <p>대결하기</p>
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link 
-            class="nav-link"
-            v-if="isLoggedIn"
-            to="/blog/">
-            <i class="now-ui-icons users_circle-08"></i>
-            <p>블로그</p>
-          </router-link>
+        <li class="nav-item" v-if="isLoggedIn">
+          <drop-down class="nav-item" :image="profileSrc" :title="user.nickname">
+            <router-link class="dropdown-item" :to="{ name: 'BlogHomeView' }">
+              <p>마이페이지</p>
+            </router-link>
+            <a class="dropdown-item custom-cursor" @click="logout">로그아웃</a>
+          </drop-down>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" v-if="isLoggedIn" @click="logout">
-            <p>로그아웃</p>
-            <p></p>
-          </a>
-          <a class="nav-link" v-if="!isLoggedIn">
-            <LoginModal />
+        <li class="nav-item" v-if="!isLoggedIn">
+          <a class="nav-link">
+            <LoginModal icon="now-ui-icons users_circle-08" />
           </a>
         </li>
       </template>
@@ -75,8 +59,10 @@
 </template>
 
 <script>
-import { Navbar } from "@/components/global";
-import { Popover } from "element-ui";
+import SERVER from "@/api/api";
+import axios from "axios";
+
+import { Navbar, DropDown } from "@/components/global";
 import { mapGetters, mapActions } from "vuex";
 import LoginModal from "../accounts/LoginModal.vue";
 
@@ -85,25 +71,61 @@ export default {
   props: {
     transparent: Boolean,
   },
+  data() {
+    return {
+      user: {
+        email: "",
+        nickname: "",
+        profilePhoto: "dochi.png",
+      },
+      keyword: "",
+    };
+  },
   components: {
     LoginModal,
     Navbar,
-    [Popover.name]: Popover,
+    DropDown,
   },
   computed: {
-    ...mapGetters(["isLoggedIn"]),
+    ...mapGetters(["isLoggedIn", "config"]),
+    profileSrc() {
+      return SERVER.IMAGE_URL + this.user.profilePhoto;
+    },
   },
-  watch: {},
-  created() {},
+  watch: {
+    config() {
+      this.getUserInfo();
+    }
+  },
+  created() {
+    this.getUserInfo();
+  },
   methods: {
     ...mapActions(["logout"]),
-  },
-  data() {
-    return {
-      keyword: "",
-    };
+    getUserInfo() {
+      if (this.isLoggedIn) {
+        let configs = {
+          headers: {
+            Authorization: this.config,
+          },
+        };
+        axios
+          .get(SERVER.URL + SERVER.ROUTES.myPage, configs)
+          .then((res) => {
+            this.user = res.data.user;
+          })
+          .catch((err) => {
+            if (err.response.status != 401) {
+              console.log(err.response)
+          }})
+      }
+    }
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-cursor {
+  cursor: pointer;
+}
+</style>
