@@ -46,6 +46,7 @@
 import OfflineClubMake from "@/components/clubs/OfflineClubMake.vue";
 import OnlineClubMake from "@/components/clubs/OnlineClubMake.vue";
 import { Card } from "@/components/global";
+import { mapMutations } from 'vuex'
 
 export default {
   name: "ClubMakeView",
@@ -60,8 +61,16 @@ export default {
     Card,
   },
   computed: {},
-  mounted() {},
+  created() {
+    this.setSearchData({
+      'selectedCategory': [],
+      'selectedIngredients': [],
+      'selectedIngredientsName': [],
+      'level': 5,
+      'cookTime': 120,
+    })},
   methods: {
+    ...mapMutations(['setSearchData']),
     changeToggle(){
       this.isOffline = !this.isOffline;
     },
