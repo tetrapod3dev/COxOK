@@ -49,6 +49,8 @@ public class ReviewServiceImpl implements ReviewService{
 		long recipeId = reviewDao.recipeIdByrevieId(reviewId);
 		int count = reviewDao.delete(reviewId);
 		
+		reviewDto.setRecipeId(recipeId);
+		
 		int cnt = reviewDao.reviewCount(recipeId);
 		if(count == 1) {
 			if(cnt == 0)
