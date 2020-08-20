@@ -201,9 +201,11 @@ export default {
           this.textInput = "";
         } else {
           alert('이미 입력한 재료입니다.')
+          this.textInput = "";
         }
       } else {
         alert("재료 목록에 존재하는 재료를 입력해주세요!");
+        this.textInput = "";
       }
     },
     removeIngredient(index) {

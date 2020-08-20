@@ -7,7 +7,7 @@ export default {
     return {
       datacollection: {
         labels: [
-          "칼로리", "탄수화물", "지방", "나트륨", "단백질"
+          "탄수화물", "지방", "당류", "나트륨", "단백질"
           // "탄수화물", "지방", "단백질"
         ],
         datasets: [
@@ -45,10 +45,10 @@ export default {
   computed: {
     dataTest() {
       return (this.recipeDataSet.calorie !== undefined) ? [
-        this.recipeDataSet.sugar, // 주석처리
         this.recipeDataSet.carbon,
         this.recipeDataSet.fat,
-        this.recipeDataSet.natrium / 1000, // 주석처리
+        this.recipeDataSet.sugar,
+        this.recipeDataSet.natrium / 1000,
         this.recipeDataSet.protein
       ] : null
     }
@@ -57,7 +57,8 @@ export default {
     dataTest() {
       const self = this
       self.datacollection.datasets[0].data = self.dataTest
-      self.options.scale.ticks.stepSize = Math.round((Math.max.apply(null, self.dataTest) - Math.min.apply(null, self.dataTest)) / 100) * 20
+      self.options.scale.ticks.stepSize = Math.round((Math.max.apply(null, self.dataTest) - Math.min.apply(null, self.dataTest)) / 30) * 10
+      self.options.scale.ticks.suggestedMax = (parseInt(Math.max.apply(null, self.dataTest) / 10) + 1) * 10
       
       this.renderChart(self.datacollection, self.options);
     }}

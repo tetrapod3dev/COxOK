@@ -138,12 +138,11 @@
           :key="category.foodCategoryId"
           class="col-2 d-flex justify-content-start"
         >
-          <p>
+          <p @click="selectCategory(category.foodCategoryId, category.foodCategoryName)" class="custom-cursor">
             <input
               type="checkbox"
               class="mr-2"
               v-model="checker[category.foodCategoryId]"
-              @click="selectCategory(category.foodCategoryId, category.foodCategoryName)"
             />
             {{ category['foodCategoryName']}}
           </p>
@@ -446,7 +445,6 @@ export default {
     onClickUpload (addingFiles) {
       const self = this
       addingFiles.forEach(function(file) {
-        console.log(file)
         self.recipe.recipePhotoList.push(
           {'photoSrc': URL.createObjectURL(file), 'photoDetail': null, 'rawFile': file}
           )
@@ -738,6 +736,9 @@ export default {
 </script>
 
 <style scoped>
+.custom-cursor {
+  cursor: pointer;
+}
 
 button {
   position: relative;

@@ -101,7 +101,7 @@ export default {
         axios
           .delete(SERVER.URL + SERVER.ROUTES.adminReportCancel + recipe.reportRecipeDto.reportRecipeId, this.configs)
           .then(() => {
-            alert('신고를 취소했습니다.')
+            alert('신고를 삭제했습니다.')
             this.getRecipes();
           })
           .catch((err) => {

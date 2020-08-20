@@ -279,15 +279,15 @@ export default {
         });
     },
     notChecked() {
-      alert("닉네임 중복확인 필요");
+      alert("닉네임 중복확인이 필요합니다.");
     },
     updateUserInfo() {
       if (this.user.password == null || this.user.password == "") {
-        alert("비밀번호를 입력하세요");
+        alert("비밀번호를 입력해주세요.");
         return;
       }
       if (!this.checkPassword) {
-        alert("비밀번호를 확인하세요");
+        alert("비밀번호가 일치하지 않습니다.");
         return;
       }
 
@@ -306,7 +306,7 @@ export default {
         })
         .then((res) => {
           if (res.data.status == "success") {
-            alert("정보 수정 완료");
+            alert("회원 정보 수정이 완료되었습니다.");
             this.oldNickname = data.nickname;
           }
         })

@@ -152,12 +152,12 @@
               v-for="category in categories"
               :key="category.foodCategoryId"
               class="col-2 d-flex justify-content-start"
-            >
-              <p>
+            > 
+              <p @click="selectCategory(category.foodCategoryId)" class="custom-cursor">
                 <input
+                  v-model="checker[category.foodCategoryId]"
                   type="checkbox"
                   class="mr-2"
-                  @click="selectCategory(category.foodCategoryId)"
                 />
                 {{ category['foodCategoryName']}}
               </p>
@@ -189,7 +189,7 @@
                 <i class="fas fa-exclamation-triangle fa-2x" style="color: rgba(236, 240, 12, 0.959;" id="no-ingredient"></i>
               </div>
               
-              <div v-else class="col-3 m-0 row">
+              <div v-else class="col-5 m-0 row">
                 <fg-input type="number" v-model="selectedIngredient.amount" min="0" class="col-8 offset-1" />
                 <p class="col-3">{{ selectedIngredient.unit }}</p>
               </div>
@@ -301,6 +301,19 @@ export default {
   },
   computed: {
     ...mapGetters(["config"]),
+    checker() {
+      let tempChecker = {};
+      const self = this;
+      this.categories.forEach(function (category) {
+        if (self.selectedCategories.indexOf(category.foodCategoryId) >= 0) {
+          tempChecker[category.foodCategoryId] = true;
+        } else {
+          tempChecker[category.foodCategoryId] = false;
+        }
+      });
+
+      return tempChecker;
+    },
   },
   created() {
     this.getCategory();
@@ -673,6 +686,9 @@ export default {
 </script>
 
 <style scoped>
+.custom-cursor {
+  cursor: pointer;
+}
 
 .detail-image-upload{
   text-align: center;
@@ -1072,7 +1088,7 @@ input[type="range"]:active::-webkit-slider-runnable-track {
 }
 
 .ingredient-select{
-  padding-left: 280px;
+  padding-left: 200px;
 }
 
 .add-btn{

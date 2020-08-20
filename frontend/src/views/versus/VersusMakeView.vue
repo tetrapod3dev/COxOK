@@ -164,8 +164,8 @@ export default {
   data() {
     return {
       widthInterval:'',
-      versusTitle: null,
-      versusContent: null,
+      versusTitle: "",
+      versusContent: "",
       selectedRecipes: [],
       recipes: [],
       selectedCurPage: null,
@@ -372,8 +372,10 @@ export default {
         content: this.versusContent,
         recipeIdList: this.selectedRecipesId,
       };
-      if (this.selectedRecipes.length != 16) {
-        alert('16개의 레시피를 선택해주세요!')
+      if (this.versusTitle == "" || this.versusContent == "") {
+        alert('요리대전 제목과 설명을 확인해주세요.')
+      } else if (this.selectedRecipes.length != 16) {
+        alert('16개의 레시피를 선택해주세요!\n\n현재 ' + this.selectedRecipes.length + '개 선택')
       } else {
         axios
           .post(SERVER.URL + SERVER.ROUTES.versusRegister, versusData, {
