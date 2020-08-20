@@ -49,6 +49,10 @@
             {{ recipe.cookTime }}분
           </div>
           <div class="col-md-2">
+            <i class="far fa-star" v-b-popover.hover="'평점'"></i><br>
+            {{ avgRating }}
+          </div>
+          <div class="col-md-2">
             <i class="fas fa-fire-alt" v-b-popover.hover="'난이도 (1-5)'"></i><br>
             {{ recipe.level }}
           </div>
@@ -65,12 +69,12 @@
           </div>
         </div>
         
-        <div>
+        <!-- <div>
           <h3 class="title text-center mt-5 mb-1">레시피 점수</h3>
           <div class="avgRating">
             <b-form-rating id="rating-lg rating-inline" inline value="4" size="lg" v-model="recipe.avgRating" no-border variant="warning" readonly></b-form-rating>
           </div>
-        </div>
+        </div> -->
         
       </div>
     </div>
