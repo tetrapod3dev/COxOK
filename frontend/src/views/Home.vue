@@ -3,7 +3,7 @@
     <div class="page-header">
       <parallax
         class="page-header-image" style="background-size:80%"
-        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/3753985.jpg)' }"
+        :style="{ backgroundImage: 'url(http://i3a104.p.ssafy.io/header/home.gif)' }"
       ></parallax>
       <div class="content-center">
         <h1 class="title d-inline-block border border-white rounded-lg move-btn py-0" @click="scrollPage">CO~OK</h1>
