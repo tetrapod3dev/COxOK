@@ -509,6 +509,7 @@ export default {
 </script>
 
 <style scoped>
+
 .meet-date {
   height: 30px;
   color: black;
@@ -516,6 +517,7 @@ export default {
   border-color: #ddd;
   border-radius: 15px;
   cursor: pointer;
+  padding: 5px 75px;
 }
 
 .searched-recipes:hover {
