@@ -447,8 +447,6 @@ export default {
         type: this.meet.type,
       };
 
-      console.log(body)
-
       axios
         .put(SERVER.URL + SERVER.ROUTES.clubUpdate, body, {
           headers: {

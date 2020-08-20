@@ -169,14 +169,14 @@ const routes = [
   },
   // Clubs Router
   {
-    path: "/clubs/:pageNum",
-    name: "ClubListView",
-    component: ClubListView,
-  },
-  {
     path: "/clubs/make",
     name: "ClubMakeView",
     component: ClubMakeView,
+  },
+  {
+    path: "/clubs/:pageNum",
+    name: "ClubListView",
+    component: ClubListView,
   },
   {
     path: "/clubs/list/:type/:pageNum",

@@ -62,6 +62,7 @@
     <CxkEditor :value.sync="content" />
     <br />
     <button class="btn" @click="preTest">작성</button>
+
   </div>
 </template>
 

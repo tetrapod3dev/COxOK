@@ -220,7 +220,7 @@ export default {
       axios
         .post(SERVER.URL + SERVER.ROUTES.adminIngredient, body, this.configs)
         .then(() => {
-          alert('재료 추가 성공!')
+          alert('재료 정보 수정에 성공했습니다!')
         })
         .catch((err) => {
           if (err.response.status == 401) {

@@ -63,7 +63,7 @@ export const store = new Vuex.Store({
           if (err.response.data.msg == "이메일 인증 미완료") {
             alert("이메일 미인증 사용자입니다. 이메일 인증을 진행해주세요!");
           } else {
-            alert(err.response.data.msg);
+            alert("아이디 혹은 비밀번호를 다시 한 번 확인해주세요.");
           }
         });
     },

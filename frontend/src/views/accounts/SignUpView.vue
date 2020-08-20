@@ -119,7 +119,7 @@ export default {
       },
       passwordConfirm: "",
       isNotDupEmail: false,
-      isNotDupNickname: null,
+      isNotDupNickname: false,
       emailMessage: null,
       showDismissibleAlert: false,
     };
@@ -176,7 +176,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err.response);
           if (err.response.data.msg == "이메일 중복") {
             alert("이미 존재하는 닉네임입니다!");
           }
@@ -189,7 +188,13 @@ export default {
       this.isNotDupNickname = false;
     },
     notChecked() {
-      alert("아이디와 닉네임의 중복을 확인해주세요!");
+      if (!this.isNotDupEmail) {
+        alert("아이디 중복 확인을 진행해주세요!");
+      } else if (!this.isNotDupNickname) {
+        alert("닉네임 중복 확인을 진행해주세요!");
+      } else {
+        alert("비밀번호가 일치하지 않습니다.")
+      }
     },
   },
 };

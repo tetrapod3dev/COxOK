@@ -412,7 +412,7 @@ export default {
           .post(SERVER.URL + SERVER.ROUTES.clubRegister, frm, configs)
           .then((res) => {
             if (res.status == 200) {
-              alert("작성에 성공했습니다!");
+              alert("오프라인 코옥 작성에 성공했습니다!");
               this.$router.push({ name: "ClubListView", params: { pageNum: 1 } });
             }
           })

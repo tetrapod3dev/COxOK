@@ -11,7 +11,7 @@
       </div>
     </div>
 
-  <div class="section versus-home">
+  <div class="section versus-home pb-0">
       <div class="container">
         <div class="button-container">
           <router-link :to="{ name: 'VersusMakeView' }">
@@ -24,7 +24,7 @@
     <div class="container">
       <div class="row">
         <router-link
-          class="col-12 col-md-6 col-lg-4 text-decoration-none"
+          class="col-12 col-md-6 col-lg-4 text-decoration-none my-5"
           v-for="versus in versusList"
           :key="versus.versusId"
           :to="{name: 'VersusDetailView', params: {versus_id: versus.versusId} }"
@@ -32,7 +32,7 @@
           <b-card
             tag="article"
             style="max-width: 20rem;"
-            class="versus-card mb-2"
+            class="versus-card mb-2 mx-auto"
           >
             <div class="row">
               <div class="versus-img">
