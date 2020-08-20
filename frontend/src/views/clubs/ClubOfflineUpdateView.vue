@@ -192,7 +192,7 @@ import CxkEditor from "@/components/cxkeditor/cxkeditor.vue";
 import CategorySelector from "@/components/recipes/CategorySelector.vue";
 
 import { Card } from "@/components/global";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import { Datetime } from "vue-datetime";
 
 const API_KEY = process.env.VUE_APP_KAKAO_API_KEY;
@@ -250,7 +250,14 @@ export default {
   },
   created() {
     this.getRecipes();
-  },
+    
+    this.setSearchData({
+      'selectedCategory': [],
+      'selectedIngredients': [],
+      'selectedIngredientsName': [],
+      'level': 5,
+      'cookTime': 120,
+  })},
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -278,6 +285,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setSearchData']),
     changeThumbnail(event) {
       const file = event.target.files[0];
       this.meet.thumbnailSrc = URL.createObjectURL(file);

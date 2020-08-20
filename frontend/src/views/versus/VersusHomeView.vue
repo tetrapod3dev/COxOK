@@ -181,7 +181,8 @@ export default {
 	transition: 0.35s;
 }
 .versus-card:hover .versus-card-text{
-	left: 0;
+	left: -2px;
+  top: -8px;
 }
 .versus-card .versus-card-text:hover{
 	opacity: 1;
