@@ -57,11 +57,17 @@
 
 ### backend
 
-|      |      |      |
-| ---- | ---- | ---- |
-|      |      |      |
-|      |      |      |
-|      |      |      |
+| Package | Version | Comment |
+| :--: | :--: | :--- |
+| OpenJDK - zulu |  8.33   | 프로젝트의 Java vendor로써 사용 |
+|   SpringBoot   |  2.3.1  | Java의 서버 개발 환경을 구성하기 위해 사용 |
+| JWT | 0.9.1 | 클라이언트와 서버의 stateless 환경 구성을 위해 사용 |
+|    MariaDB     | 10.5.4  | 프로젝트의 DB vendor로써 사용 |
+|    MyBatis     |  2.1.2  | 서버와 DB의 연동을 위해 사용 |
+|     Lombok     | 1.18.10 | Annotation을 이용한 코드 생성으로 가독성 & 유지 보수를 위해 사용 |
+|    Swagger     |  2.9.2  | API 스펙 문서의 자동화를 위해 사용 |
+|     Nginx     | 1.14.0  | 서버 배포를 용이하게 하기 위해 사용 |
+| pm2 | 4.4.0 | 서버의 무중단 배포를 위해 사용 |
 
 
 
@@ -93,6 +99,22 @@
     yarn serve --port 3000
     ```
 
+- Build back-end & run back-end server
+
+  ``` 
+  mvn clean package
+  
+  java -jar target/cookblog-0.0.1-SNAPSHOT.war
+  ```
+
+- Use Nginx & pm2
+
+  ``` 
+  pm2 start co-ok
+  ```
+
+  
+
 
 
 ## :globe_with_meridians: 지원 브라우저
@@ -118,7 +140,7 @@
 ### branch
 
 ```bash
-master -> developer -> frontend/backend -> frontend-feature
+master -> developer -> frontend/backend -> frontend-feature/backend-feature
 ```
 
 ### merge
