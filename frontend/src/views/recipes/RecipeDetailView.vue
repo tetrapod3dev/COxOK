@@ -83,7 +83,6 @@
               <h3 class="ingre-title text-left pt-5 mb-3">
                 <i class="fas fa-angle-double-right mr-1"></i>
                 재료 리스트 
-                <span>(2인 기준)</span>
               </h3>
               <div class="row col-md-10 ml-auto">
                 <div

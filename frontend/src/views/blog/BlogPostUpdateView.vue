@@ -260,7 +260,7 @@ export default {
       if (problems.length == 0) {
         this.updateBlogPost();
       } else {
-        alert("문제가 있는 위치: " + problems);
+        alert("필수 항목이 누락되었습니다.\n\n누락된 항목: " + problems);
       }
     },
     updateBlogPost() {

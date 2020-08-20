@@ -106,7 +106,7 @@ export default {
           this.searchingData.selectedIngredients.length ==
         0) && (this.searchingData.level == 5) && (this.searchingData.cookTime == 120)
       ) {
-        alert("검색 항목을 입력해주세요!");
+        alert("검색 항목을 입력해주세요");
       } else {
         if (this.$route.params.pageNum != 1) {
           this.$router.push({ params: { pageNum: 1 } });

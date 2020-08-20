@@ -446,7 +446,6 @@ export default {
     onClickUpload (addingFiles) {
       const self = this
       addingFiles.forEach(function(file) {
-        console.log(file)
         self.recipe.recipePhotoList.push(
           {'photoSrc': URL.createObjectURL(file), 'photoDetail': null, 'rawFile': file}
           )
