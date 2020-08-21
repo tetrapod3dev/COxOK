@@ -1,5 +1,4 @@
 
-
 ![logo](assets/CO_OK-logo.png)
 
 <center><h2>A104 - 씨없는 수박</h2></center>
@@ -18,7 +17,7 @@
 <center>
   <a href="http://i3a104.p.ssafy.io">
     <h3>
-      CO~OK 바로가기
+      [CO~OK Wiki 바로가기][home]
     </h3>
   </a>
 </center>
@@ -173,3 +172,6 @@ UPDATE/ADD/FIX | feature
 
 ![image-20200821095620235](assets/working_flow2.png)
 
+
+
+[home]: https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/Home
