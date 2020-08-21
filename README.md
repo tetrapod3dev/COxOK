@@ -20,7 +20,6 @@
     </h3>
   </a>
 </center>
-[CO~OK wiki](https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/Home)
 <br>
 <center>
     사용자들이 자유롭게 레시피를 등록하여 다른 사용자와 공유할 수 있습니다.<br>
@@ -28,6 +27,7 @@
     요리를 해본 적 없는 사용자들도 요리에 자신감을 가질 수 있습니다. 
 </center>
 
+[CO~OK wiki](https://lab.ssafy.com/s03-webmobile1-sub3/s03p13a104/wikis/Home)
 
 
 
