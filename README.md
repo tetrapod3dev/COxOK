@@ -1,4 +1,3 @@
-
 ![logo](assets/CO_OK-logo.png)
 
 <center><h2>A104 - 씨없는 수박</h2></center>
@@ -17,10 +16,11 @@
 <center>
   <a href="http://i3a104.p.ssafy.io">
     <h3>
-      [CO~OK Wiki 바로가기][home]
+      CO~OK 바로가기
     </h3>
   </a>
 </center>
+[CO~OK wiki][home]
 <br>
 <center>
     사용자들이 자유롭게 레시피를 등록하여 다른 사용자와 공유할 수 있습니다.<br>
