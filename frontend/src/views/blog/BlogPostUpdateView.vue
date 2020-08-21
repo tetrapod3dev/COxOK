@@ -137,7 +137,7 @@ import scrollmonitor from "scrollmonitor";
 
 import router from "@/router";
 import SERVER from "@/api/api";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "BlogPostUpdateView",
@@ -174,7 +174,13 @@ export default {
   created() {
     this.getPosts();
     this.getRecipes();
-  },
+    this.setSearchData({
+      'selectedCategory': [],
+      'selectedIngredients': [],
+      'selectedIngredientsName': [],
+      'level': 5,
+      'cookTime': 120,
+  })},
   mounted() {
     window.addEventListener("scroll", this.indexScrollFuncion);
     this.addScrollWatcher();
@@ -199,6 +205,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(["setSearchData"]),
     getPosts() {
       let configs = {
         headers: {

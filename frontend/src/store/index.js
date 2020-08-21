@@ -54,10 +54,11 @@ export const store = new Vuex.Store({
         .then((res) => {
           if (info.name == "signup") {
             alert("회원 가입에 성공했습니다! 이메일을 확인해주세요.");
+            router.push({ name: "Home" });
           } else {
             commit("SET_TOKEN", res.data.token);
+            router.push({ name: "Main" });
           }
-          router.push({ name: "Main" });
         })
         .catch((err) => {
           if (err.response.data.msg == "이메일 인증 미완료") {

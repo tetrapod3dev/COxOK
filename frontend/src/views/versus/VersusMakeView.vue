@@ -32,7 +32,7 @@
       <!-- <p class="selected-recipe-list-title">선택한 레시피 목록</p> -->
       <div class="paragraph">
         <div class="RecipeVersus">
-            <div v-if="versusTitle === null">
+            <div v-if="versusTitle === ''">
               [대회 이름을 입력하세요]
             </div>
             <div v-else>
@@ -153,7 +153,7 @@ import CategorySelector from "@/components/recipes/CategorySelector";
 
 import { Tabs, TabPane, Card } from "@/components/global";
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import SERVER from "@/api/api";
 
 import axios from "axios";
@@ -210,7 +210,13 @@ export default {
   },
   created() {
     this.getRecipes();
-  },
+    this.setSearchData({
+      'selectedCategory': [],
+      'selectedIngredients': [],
+      'selectedIngredientsName': [],
+      'level': 5,
+      'cookTime': 120,
+  })},
   mounted() {
     window.addEventListener("scroll", this.indexScrollFuncion);
     this.addScrollWatcher();
@@ -226,6 +232,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["setSearchData"]),
     ...mapActions(["logout"]),
     removeSelectedRecipe(index) {
       this.selectedRecipes.splice(this.selectedCurPage * 4 + index, 1);
