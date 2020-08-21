@@ -1,6 +1,6 @@
 
 
-![logo](README.assets/CO_OK-logo.png)
+![logo](assets/CO_OK-logo.png)
 
 <center><h2>A104 - 씨없는 수박</h2></center>
 
@@ -15,13 +15,22 @@
 </center>
 
 
-<center><a href="http://i3a104.p.ssafy.io">CO~OK 바로가기</a></center>
-
+<center>
+  <a href="http://i3a104.p.ssafy.io">
+    <h3>
+      CO~OK 바로가기
+    </h3>
+  </a>
+</center>
+<br>
 <center>
     사용자들이 자유롭게 레시피를 등록하여 다른 사용자와 공유할 수 있습니다.<br>
     함께 요리하는 기능인 코옥하기를 통해 기존에는 시도하지 못했던 레시피를 시도하며,<br>
     요리를 해본 적 없는 사용자들도 요리에 자신감을 가질 수 있습니다. 
 </center>
+
+
+
 
 
 ## :point_right: 프로젝트 기술 특이점
@@ -36,7 +45,7 @@
 
 ## :closed_book: 프로젝트 주재료
 
-![Tech_Stack](README.assets/web_stack.png)
+![image-20200821094723586](assets/web_stack.png)
 
 
 
@@ -160,5 +169,7 @@ UPDATE/ADD/FIX | feature
 
 ### :calendar: 개발 일정
 
-# <사진 추가 예정>
+![image-20200821094807921](assets/working_flow1.png)
+
+![image-20200821095620235](assets/working_flow2.png)
 
