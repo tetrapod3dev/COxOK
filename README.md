@@ -1,4 +1,4 @@
-![logo](assets/CO_OK-logo.png)
+![logo](assets/코옥_소형_로고.png)
 
 <center><h2>A104 - 씨없는 수박</h2></center>
 
