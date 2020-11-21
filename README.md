@@ -135,11 +135,11 @@
 
 ## :two_men_holding_hands: 요리사들
 
-* **박태록** - *PM, frontend* - [sdf7575](https://lab.ssafy.com/sdf7575)
-* **권민** - *backend* - [minkwon4](https://lab.ssafy.com/minkwon4)
-* **이동혁** - *frontend* - [lee33843](https://lab.ssafy.com/lee33843)
-* **장윤정** - *backend* - [wkddbswjd325](https://lab.ssafy.com/wkddbswjd325)
-* **최원대** - *backend* - [ryunhoo123](https://lab.ssafy.com/ryunhoo123)
+* **박태록** - *PM, frontend* - sdf7575
+* **권민** - *backend* - minkwon4
+* **이동혁** - *frontend* - lee33843
+* **장윤정** - *backend* - wkddbswjd325
+* **최원대** - *backend* - ryunhoo123
 
 
 
