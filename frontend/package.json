@@ -15,7 +15,7 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "jquery": "^3.5.1",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "luxon": "^1.24.1",
     "nouislider": "^14.6.0",
     "owl.carousel2": "^2.2.1",
